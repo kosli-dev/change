@@ -1,0 +1,9 @@
+{
+    "name": "loancalculator-pull-requests",
+    "description": "The loan calculator application",
+    "owner": "meekrosoft",
+    "template": [
+        "artifact",
+        "test"
+    ]
+}

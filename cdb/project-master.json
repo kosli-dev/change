@@ -1,0 +1,10 @@
+{
+    "name": "compliancedb",
+    "description": "ComplianceDB",
+    "owner": "meekrosoft",
+    "visibility": "public",
+    "template": [
+        "artifact",
+        "test"
+    ]
+}
