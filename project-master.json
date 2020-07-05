@@ -1,10 +1,9 @@
 {
-    "name": "compliancedb",
-    "description": "ComplianceDB",
-    "owner": "meekrosoft",
-    "visibility": "public",
+    "name": "payment-psd2",
+    "description": "Payment Service based upon PSD2 directive",
+    "owner": "ztlpay",
+    "visibility": "private",
     "template": [
-        "artifact",
-        "test"
+        "artifact"
     ]
 }
