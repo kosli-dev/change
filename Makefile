@@ -64,11 +64,11 @@ ifeq ($(patsubst %$(MASTER_BRANCH),,$(lastword $(BRANCH_NAME))),)
 	IS_MASTER=TRUE
 	# Master branch builds are compliant
 	IS_COMPLIANT=TRUE
-	PROJFILE=cdb/project-master.json
+	PROJFILE=project-master.json
 else
 	IS_MASTER=FALSE
 	IS_COMPLIANT=FALSE
-	PROJFILE=cdb/project-pull-requests.json
+	PROJFILE=project-pull-requests.json
 endif
 
 GIT_URL=${CI_PROJECT_URL}/-/commit/${CI_COMMIT_SHA}
@@ -78,8 +78,8 @@ branch:
 	@echo IS_MASTER is ${IS_MASTER}
 	@echo PROJFILE is ${PROJFILE}
 
-ensure_project:
-	docker run --rm --name comply ${IMAGE} python -m cdb.ensure_project -p ${PROJFILE}
+put_project:
+	docker run --rm --name comply ${IMAGE} python -m cdb.put_project -p ${PROJFILE}
 
 publish_artifact:
 	docker run --rm --name comply --volume=/var/run/docker.sock:/var/run/docker.sock \

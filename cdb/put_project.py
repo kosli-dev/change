@@ -1,13 +1,7 @@
 #!/usr/bin/env python
 import os
-
 import requests as req
-
-# from cdb.cdb_utils import project_exists_in_cdb, get_project_list_from_cdb, load_project_configuration, url_for_project, \
-#     parse_cmd_line
-# from cdb.settings import CDB_SERVER
 from requests.auth import HTTPBasicAuth
-
 from cdb.cdb_utils import parse_cmd_line, load_project_configuration, url_for_project
 from cdb.settings import CDB_SERVER
 
