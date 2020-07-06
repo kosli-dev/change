@@ -49,7 +49,7 @@ jobs:
     # Runs a set of commands using the runners shell
     - name: Update compliancedb with the project and artifact information
       env:
-        CDB_API_TOKEN: ${{ secrets.CDB_DEPLOY_TOKEN }}
+        CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
       run: |
         echo Add other actions to build,
         env
@@ -57,5 +57,5 @@ jobs:
         docker run --rm --name comply \
                    --volume ${PWD}/project-master.json:/data/project.json \
                    --env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
-                   --env CDB_API_TOKEN=${CDB_DEPLOY_TOKEN} \
+                   --env CDB_API_TOKEN=${CDB_API_TOKEN} \
                    compliancedb/cdb_controls python -m cdb.put_project -p /data/project.json
