@@ -63,15 +63,15 @@ MASTER_BRANCH := master
 ifeq ($(patsubst %$(MASTER_BRANCH),,$(lastword $(BRANCH_NAME))),)
 	IS_MASTER=TRUE
 	# Master branch builds are compliant
-	IS_COMPLIANT=TRUE
+	CDB_IS_COMPLIANT=TRUE
 	PROJFILE=project-master.json
 else
 	IS_MASTER=FALSE
-	IS_COMPLIANT=FALSE
+	CDB_IS_COMPLIANT=FALSE
 	PROJFILE=project-pull-requests.json
 endif
 
-GIT_URL=${CI_PROJECT_URL}/-/commit/${CI_COMMIT_SHA}
+CDB_ARTIFACT_GIT_URL=${CI_PROJECT_URL}/-/commit/${CI_COMMIT_SHA}
 
 branch:
 	@echo Branch is ${BRANCH_NAME}
@@ -90,28 +90,28 @@ publish_artifact:
  			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
-	        --env IS_COMPLIANT=${IS_COMPLIANT} \
-	        --env GIT_URL=${GIT_URL} \
-	        --env GIT_COMMIT=${GIT_COMMIT} \
-	        --env JOB_DISPLAY_URL=${CI_JOB_URL} \
-	        --env BUILD_TAG=${CI_JOB_ID} \
-	        --env DOCKER_IMAGE=${DOCKER_IMAGE} \
-	        --env CDB_API_TOKEN=${CDB_API_TOKEN} \
-	        ${IMAGE} python -m cdb.publish_artifact -p /data/project.json
+			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
+			--env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
+			--env CDB_ARTIFACT_GIT_URL=${CDB_ARTIFACT_GIT_URL} \
+			--env CDB_ARTIFACT_GIT_COMMIT=${CDB_ARTIFACT_GIT_COMMIT} \
+			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
+			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
+			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+	        ${IMAGE} python -m cdb.put_artifact_image -p /data/project.json
 
 publish_evidence:
 	docker run --rm --name comply \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
-	        --env IS_COMPLIANT=${IS_COMPLIANT} \
-			--env EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
-	        --env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
-	        --env BUILD_TAG=${CI_JOB_ID} \
-	        --env URL=${CI_JOB_URL} \
-	        --env DOCKER_IMAGE=${DOCKER_IMAGE} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
-	        ${IMAGE} python -m cdb.publish_evidence -p /data/project.json
+			--env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
+			--env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
+			--env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
+			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
+			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
+			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+			${IMAGE} python -m cdb.put_evidence -p /data/project.json
 
 publish_release:
 	IMAGE=${IMAGE} ./server/cdb/release.sh

@@ -113,11 +113,11 @@ def parse_cmd_line():
 
 def get_image_details():
     client = docker.from_env()
-    docker_image = os.getenv('DOCKER_IMAGE', "NO_IMAGE_SHA_FOUND")
+    docker_image = os.getenv('CDB_DOCKER_IMAGE', "NO_IMAGE_SHA_FOUND")
     image = client.images.get(docker_image)
     sha256_digest = image.attrs["RepoDigests"][0].split(":")[1]
     return docker_image, sha256_digest
 
 
 def env_is_compliant():
-    return os.getenv('IS_COMPLIANT', "FALSE") == "TRUE"
+    return os.getenv('CDB_IS_COMPLIANT', "FALSE") == "TRUE"
