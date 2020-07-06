@@ -1,8 +1,8 @@
 {
-    "name": "payment-psd2",
-    "description": "Payment Service based upon PSD2 directive",
-    "owner": "ztlpay",
-    "visibility": "private",
+    "name": "cdb_controls",
+    "description": "Pipeline Controls for ComplianceDB",
+    "owner": "compliancedb",
+    "visibility": "public",
     "template": [
         "artifact"
     ]
