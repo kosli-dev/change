@@ -117,3 +117,7 @@ def get_image_details():
     image = client.images.get(docker_image)
     sha256_digest = image.attrs["RepoDigests"][0].split(":")[1]
     return docker_image, sha256_digest
+
+
+def env_is_compliant():
+    return os.getenv('IS_COMPLIANT', "FALSE") == "TRUE"

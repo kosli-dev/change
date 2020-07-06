@@ -79,7 +79,8 @@ branch:
 	@echo PROJFILE is ${PROJFILE}
 
 put_project:
-	docker run --rm --name comply --volume ${PWD}/${PROJFILE}:/data/project.json \
+	docker run --rm --name comply \
+			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			--env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			${IMAGE} python -m cdb.put_project -p /data/project.json
@@ -99,15 +100,18 @@ publish_artifact:
 	        ${IMAGE} python -m cdb.publish_artifact -p /data/project.json
 
 publish_evidence:
-	docker run --rm --name comply --volume=/var/run/docker.sock:/var/run/docker.sock \
+	docker run --rm --name comply \
+			--volume ${PWD}/${PROJFILE}:/data/project.json \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
 	        --env IS_COMPLIANT=${IS_COMPLIANT} \
 			--env EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
 	        --env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
 	        --env BUILD_TAG=${CI_JOB_ID} \
 	        --env URL=${CI_JOB_URL} \
-	        --env DOCKER_IMAGE=${IMAGE} \
+	        --env DOCKER_IMAGE=${DOCKER_IMAGE} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
-	        ${IMAGE} python -m cdb.publish_evidence -p ${PROJFILE}
+	        ${IMAGE} python -m cdb.publish_evidence -p /data/project.json
 
 publish_release:
 	IMAGE=${IMAGE} ./server/cdb/release.sh
