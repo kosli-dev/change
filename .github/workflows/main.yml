@@ -56,16 +56,15 @@ jobs:
                    --env CDB_HOST=https://app.compliancedb.com \
                    --env CDB_API_TOKEN=${CDB_API_TOKEN} \
                    compliancedb/cdb_controls python -m cdb.put_project -p /data/project.json
-        env
-        echo docker run --rm --name comply \
-                --volume ${PWD}/${PROJFILE}:/data/project.json \
+        docker run --rm --name comply \
+                --volume ${PWD}/project-master.json:/data/project.json \
                 --volume=/var/run/docker.sock:/var/run/docker.sock \
                 --env CDB_HOST=https://app.compliancedb.com \
                 --env CDB_IS_COMPLIANT=TRUE \
-                --env CDB_ARTIFACT_GIT_URL=${GITHUB_RUN_ID} \
+                --env CDB_ARTIFACT_GIT_URL=https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA} \
                 --env CDB_ARTIFACT_GIT_COMMIT=${GITHUB_SHA} \
-                --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
-                --env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
-                --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+                --env CDB_CI_BUILD_URL=https://github.com/compliancedb/cdb_controls/runs/${GITHUB_RUN_ID} \
+                --env CDB_BUILD_NUMBER=${GITHUB_RUN_ID} \
+                --env CDB_DOCKER_IMAGE=compliancedb/cdb_controls \
                 --env CDB_API_TOKEN=${CDB_API_TOKEN} \
-                ${IMAGE} python -m cdb.put_artifact_image -p /data/project.json
+                compliancedb/cdb_controls python -m cdb.put_artifact_image -p /data/project.json

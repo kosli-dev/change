@@ -53,7 +53,7 @@ As such, it should only be called after the image has been pushed to the docker 
 
 ```shell script
 docker run --rm --name comply \
-        --volume ${PWD}/${PROJFILE}:/data/project.json \
+        --volume ${PWD}/project-master.json:/data/project.json \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
         --env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
@@ -63,7 +63,7 @@ docker run --rm --name comply \
         --env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
         --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
         --env CDB_API_TOKEN=${CDB_API_TOKEN} \
-        ${IMAGE} python -m cdb.put_artifact_image -p /data/project.json
+        compliancedb/cdb_controls python -m cdb.put_artifact_image -p /data/project.json
 ```
 
 This command expect the following environment variables:
