@@ -90,10 +90,24 @@ docker run --rm --name comply \
         --env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
         --env CDB_API_TOKEN=${CDB_API_TOKEN} \
         --env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
-        --env EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
+        --env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
         --env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
         --env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
         --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
         --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
         ${IMAGE} python -m cdb.put_evidence -p /data/project.json
 ```
+
+This command expect the following environment variables:
+
+| VARIABLE | Requirement | Description |
+|------|-----|-----|
+| CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
+| CDB_API_TOKEN | Required | Your API token for ComplianceDB |
+| CDB_IS_COMPLIANT | Required | Whether this artifact is considered compliant from you build process |
+| CDB_EVIDENCE_TYPE | Required | The evidence type |
+| CDB_DESCRIPTION | Required | The description for the evidence |
+| CDB_BUILD_NUMBER | Required | Build number |
+| CDB_CI_BUILD_URL | Required | Link to the build information |
+| CDB_DOCKER_IMAGE | Required | The docker image that evidence is provided for |
+
