@@ -51,11 +51,8 @@ jobs:
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
       run: |
-        echo Add other actions to build,
-        env
-        docker image ls
         docker run --rm --name comply \
                    --volume ${PWD}/project-master.json:/data/project.json \
-                   --env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
+                   --env CDB_HOST=https://app.compliancedb.com \
                    --env CDB_API_TOKEN=${CDB_API_TOKEN} \
                    compliancedb/cdb_controls python -m cdb.put_project -p /data/project.json
