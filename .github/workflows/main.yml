@@ -55,7 +55,7 @@ jobs:
         env
         docker image ls
         docker run --rm --name comply \
-                   --volume ${PWD}/${PROJFILE}:/data/project.json \
+                   --volume ${PWD}/project-master:/data/project.json \
                    --env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
                    --env CDB_API_TOKEN=${CDB_DEPLOY_TOKEN} \
                    compliancedb/cdb_controls python -m cdb.put_project -p /data/project.json
