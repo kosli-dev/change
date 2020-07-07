@@ -85,7 +85,7 @@ This command expect the following environment variables:
 To publish a generic evidence type, you can use the `put_evidence` command:
 ```shell script
 docker run --rm --name comply \
-        --volume ${PWD}/${PROJFILE}:/data/project.json \
+        --volume ${PWD}/project-master.json:/data/project.json \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
         --env CDB_API_TOKEN=${CDB_API_TOKEN} \
@@ -95,7 +95,7 @@ docker run --rm --name comply \
         --env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
         --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
         --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
-        ${IMAGE} python -m cdb.put_evidence -p /data/project.json
+        compliancedb/cdb_controls python -m cdb.put_evidence -p /data/project.json
 ```
 
 This command expect the following environment variables:

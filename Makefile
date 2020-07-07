@@ -27,6 +27,15 @@ build:
 	@docker build -f Dockerfile -t ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
 
+test:
+	@docker stop test_unit || true
+	@docker rm test_unit || true
+	@docker run --name test_unit --entrypoint ./coverage_entrypoint.sh ${IMAGE}
+	@rm -rf tmp/coverage
+	@mkdir -p tmp/coverage
+	@docker cp test_unit:/app/htmlcov/ tmp/coverage
+	@docker container rm test_unit
+
 push:
 	@docker push ${IMAGE}
 	@docker push ${LATEST}

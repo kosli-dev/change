@@ -8,6 +8,9 @@ RUN pip3 install -r requirements.txt
 
 
 COPY cdb/ cdb/
+COPY tests/ tests/
+
+COPY coverage_entrypoint.sh .
 
 ENTRYPOINT [""]
 CMD ["python", "server.py"]

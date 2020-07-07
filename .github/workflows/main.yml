@@ -68,3 +68,15 @@ jobs:
                 --env CDB_DOCKER_IMAGE=compliancedb/cdb_controls \
                 --env CDB_API_TOKEN=${CDB_API_TOKEN} \
                 compliancedb/cdb_controls python -m cdb.put_artifact_image -p /data/project.json
+
+    - name: Run unit tests
+      env:
+        CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
+      run: |
+        docker run --name test_unit --rm --entrypoint ./coverage_entrypoint.sh compliancedb/cdb_controls
+
+    - name: Archive code coverage results
+        uses: actions/upload-artifact@v1
+        with:
+          name: code-coverage-report
+          path: tmp/coverage/htmlcov/
