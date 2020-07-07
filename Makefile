@@ -77,7 +77,6 @@ else
 	PROJFILE=project-pull-requests.json
 endif
 
-CDB_ARTIFACT_GIT_URL=${CI_PROJECT_URL}/-/commit/${CI_COMMIT_SHA}
 
 branch:
 	@echo Branch is ${BRANCH_NAME}
