@@ -50,7 +50,7 @@ jobs:
     - name: Update compliancedb with the project and artifact information
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
-        CDB_HOST: https://app.compliancedbcom
+        CDB_HOST: https://app.compliancedb.com
         CDB_IS_COMPLIANT: TRUE
         CDB_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
         CDB_ARTIFACT_GIT_COMMIT: ${GITHUB_SHA}
@@ -77,6 +77,7 @@ jobs:
     - name: Publish test results to ComplianceDB
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
+        CDB_HOST: https://app.compliancedb.com
         CDB_IS_COMPLIANT: TRUE
         CDB_EVIDENCE_TYPE: "unit_test"
         CDB_BUILD_NUMBER: ${GITHUB_RUN_ID}
