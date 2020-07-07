@@ -87,15 +87,15 @@ branch:
 put_project:
 	docker run --rm --name comply \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
-			--env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
+			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			${IMAGE} python -m cdb.put_project -p /data/project.json
 
-publish_artifact:
+put_artifact:
 	docker run --rm --name comply \
  			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
-			--env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
+			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
 			--env CDB_ARTIFACT_GIT_URL=${CDB_ARTIFACT_GIT_URL} \

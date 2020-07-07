@@ -50,24 +50,16 @@ jobs:
     - name: Update compliancedb with the project and artifact information
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
+        CDB_HOST: https://app.compliancedbcom
+        CDB_IS_COMPLIANT: TRUE
+        CDB_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
+        CDB_ARTIFACT_GIT_COMMIT: ${GITHUB_SHA}
+        CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
+        CDB_BUILD_NUMBER: ${GITHUB_RUN_ID}
+        CDB_DOCKER_IMAGE: compliancedb/cdb_controls
       run: |
-        docker run --rm --name comply \
-                   --volume ${PWD}/project-master.json:/data/project.json \
-                   --env CDB_HOST=https://app.compliancedb.com \
-                   --env CDB_API_TOKEN=${CDB_API_TOKEN} \
-                   compliancedb/cdb_controls python -m cdb.put_project -p /data/project.json
-        docker run --rm --name comply \
-                --volume ${PWD}/project-master.json:/data/project.json \
-                --volume=/var/run/docker.sock:/var/run/docker.sock \
-                --env CDB_HOST=https://app.compliancedb.com \
-                --env CDB_IS_COMPLIANT=TRUE \
-                --env CDB_ARTIFACT_GIT_URL=https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA} \
-                --env CDB_ARTIFACT_GIT_COMMIT=${GITHUB_SHA} \
-                --env CDB_CI_BUILD_URL=https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID} \
-                --env CDB_BUILD_NUMBER=${GITHUB_RUN_ID} \
-                --env CDB_DOCKER_IMAGE=compliancedb/cdb_controls \
-                --env CDB_API_TOKEN=${CDB_API_TOKEN} \
-                compliancedb/cdb_controls python -m cdb.put_artifact_image -p /data/project.json
+        make put_project
+        make put_artifact
 
     - name: Run unit tests
       env:
