@@ -2,11 +2,8 @@ APP    := cdb_controls
 NAME   := ${APP}
 TAG    := $$(git log -1 --pretty=%h)
 
-ifdef CDB_CI_BUILD
-IMAGE := ${CI_APPLICATION_REPOSITORY}:${CI_APPLICATION_TAG}
-else
-IMAGE  := ${NAME}:${TAG}
-endif
+IMAGE  := compliancedb/${APP}
+
 
 LATEST := ${NAME}:latest
 CONTAINER := cdb_controls
