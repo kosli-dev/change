@@ -4,6 +4,7 @@
     "owner": "compliancedb",
     "visibility": "public",
     "template": [
-        "artifact"
+        "artifact",
+        "unit_test"
     ]
 }
