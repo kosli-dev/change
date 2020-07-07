@@ -74,6 +74,8 @@ jobs:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
       run: |
         docker run --name test_unit --rm --entrypoint ./coverage_entrypoint.sh compliancedb/cdb_controls
+        ls tmp/coverage/htmlcov/
+        pwd
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v1
