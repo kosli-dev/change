@@ -76,7 +76,7 @@ jobs:
         docker run --name test_unit --rm --entrypoint ./coverage_entrypoint.sh compliancedb/cdb_controls
 
     - name: Archive code coverage results
-        uses: actions/upload-artifact@v1
-        with:
-          name: code-coverage-report
-          path: tmp/coverage/htmlcov/
+      uses: actions/upload-artifact@v1
+      with:
+        name: code-coverage-report
+        path: tmp/coverage/htmlcov/
