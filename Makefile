@@ -105,6 +105,20 @@ publish_artifact:
 			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
 	        ${IMAGE} python -m cdb.put_artifact_image -p /data/project.json
 
+publish_test_results:
+	docker run --rm --name comply \
+			--volume ${PWD}/${PROJFILE}:/data/project.json \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--env CDB_HOST=https://app.compliancedb.com \
+			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
+			--env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
+			--env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
+			--env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
+			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
+			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
+			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+			${IMAGE} python -m cdb.put_evidence -p /data/project.json
+
 publish_evidence:
 	docker run --rm --name comply \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
