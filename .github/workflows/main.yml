@@ -63,7 +63,7 @@ jobs:
                 --env CDB_IS_COMPLIANT=TRUE \
                 --env CDB_ARTIFACT_GIT_URL=https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA} \
                 --env CDB_ARTIFACT_GIT_COMMIT=${GITHUB_SHA} \
-                --env CDB_CI_BUILD_URL=https://github.com/compliancedb/cdb_controls/runs/${GITHUB_RUN_ID} \
+                --env CDB_CI_BUILD_URL=https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID} \
                 --env CDB_BUILD_NUMBER=${GITHUB_RUN_ID} \
                 --env CDB_DOCKER_IMAGE=compliancedb/cdb_controls \
                 --env CDB_API_TOKEN=${CDB_API_TOKEN} \
