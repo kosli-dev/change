@@ -27,10 +27,9 @@ build:
 test:
 	@docker stop test_unit || true
 	@docker rm test_unit || true
-	@docker run --name test_unit --entrypoint ./coverage_entrypoint.sh ${IMAGE}
 	@rm -rf tmp/coverage
 	@mkdir -p tmp/coverage
-	@docker cp test_unit:/app/htmlcov/ tmp/coverage
+	@docker run --name test_unit -v ${PWD}/tmp/coverage:/app/htmlcov --entrypoint ./coverage_entrypoint.sh ${IMAGE}
 	@docker container rm test_unit
 
 push:
