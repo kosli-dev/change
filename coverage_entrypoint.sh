@@ -2,7 +2,9 @@
 
 set -e
 
-pytest --capture=no --cov=. --cov-config=.coveragerc -o junit_family=xunit2 --junitxml=htmlcov/junit.xml -v
+pytest -vv --capture=no --cov=. --cov-config=.coveragerc \
+       -o junit_family=xunit1 --junitxml=htmlcov/junit.xml \
+       -W ignore::pytest.PytestCollectionWarning
 
 # Generate html results
 coverage html
