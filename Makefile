@@ -69,8 +69,9 @@ stats:
 # ComplianceDB recording tasks
 
 MASTER_BRANCH := master
-# Check if branch ends with master, i.e. match origin/master AND master
-ifeq ($(patsubst %$(MASTER_BRANCH),,$(lastword $(BRANCH_NAME))),)
+BRANCH_NAME := $(shell git rev-parse --abbrev-ref HEAD)
+# Check if branch ends with master
+ifeq ($(shell git rev-parse --abbrev-ref HEAD),master)
 	IS_MASTER=TRUE
 	# Master branch builds are compliant
 	CDB_IS_COMPLIANT=TRUE
