@@ -51,7 +51,7 @@ jobs:
         CDB_BUILD_NUMBER: ${GITHUB_RUN_ID}
         CDB_DOCKER_IMAGE: compliancedb/cdb_controls
       run: |
-        make branch put_project put_artifact
+        make branch put_project put_artifact_image
 
     - name: Run unit tests
       env:

@@ -95,23 +95,6 @@ put_project:
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			${IMAGE} python -m cdb.put_project -p /data/project.json
 
-put_artifact:
-	DIGEST=$$(docker inspect --format='{{index .RepoDigests 0}}' ${IMAGE} | sed 's/.*://') ;\
-	echo Found 2ha256 repo digest: $$DIGEST ; \
-	docker run --rm --name comply \
- 			--volume ${PWD}/${PROJFILE}:/data/project.json \
-			--volume=/var/run/docker.sock:/var/run/docker.sock \
-			--env CDB_HOST=${CDB_HOST} \
-			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
-			--env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
-			--env CDB_ARTIFACT_GIT_URL=${CDB_ARTIFACT_GIT_URL} \
-			--env CDB_ARTIFACT_GIT_COMMIT=${CDB_ARTIFACT_GIT_COMMIT} \
-			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
-			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
-			--env CDB_ARTIFACT_SHA=$$DIGEST \
-			--env CDB_ARTIFACT_FILENAME=${IMAGE} \
-	        ${IMAGE} python -m cdb.put_artifact -p /data/project.json
-
 put_artifact_image:
 	docker run --rm --name comply \
  			--volume ${PWD}/${PROJFILE}:/data/project.json \
