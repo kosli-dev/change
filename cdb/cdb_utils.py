@@ -4,7 +4,10 @@ import os
 import sys
 import docker
 import requests as req
+from junitparser import JUnitXml
 from requests.auth import HTTPBasicAuth
+
+from cdb.settings import CDB_SERVER
 
 CMD_HELP = 'ensure_project.py -p <project.json>'
 
@@ -115,9 +118,74 @@ def get_image_details():
     client = docker.from_env()
     docker_image = os.getenv('CDB_DOCKER_IMAGE', "NO_IMAGE_SHA_FOUND")
     image = client.images.get(docker_image)
+    print("IMAGE: " + str(image.attrs["RepoDigests"][0]))
     sha256_digest = image.attrs["RepoDigests"][0].split(":")[1]
     return docker_image, sha256_digest
 
 
 def env_is_compliant():
     return os.getenv('CDB_IS_COMPLIANT', "FALSE") == "TRUE"
+
+
+def is_compliant_suite(junit_xml):
+    if junit_xml.failures != 0:
+        return False, "Tests contain failures"
+    if junit_xml.errors != 0:
+        return False, "Tests contain errors"
+    return True, "All tests passed"
+
+
+def load_test_results(file_path):
+    test_xml = JUnitXml.fromfile(file_path)
+    return test_xml
+
+
+def is_compliant_test_results(file_path):
+    """
+    This parses a junit xml file to determine if there are any errors or failures
+
+    return:
+        A tuple, with is_compliant, plus a message string
+    """
+    test_xml = load_test_results(file_path)
+    if test_xml._tag == "testsuites":
+        for suite in test_xml:
+            suite_is_compliant, message = is_compliant_suite(suite)
+            if not suite_is_compliant:
+                return suite_is_compliant, message
+        # every test suite passed, so return True
+        return True, "All tests passed"
+    if test_xml._tag == "testsuite":
+        return is_compliant_suite(test_xml)
+    return False, "Could not find test suite(s)"
+
+
+def put_evidence():
+    print("Publish evidence to ComplianceDB")
+
+    is_compliant = env_is_compliant()
+    evidence_type = os.getenv('CDB_EVIDENCE_TYPE', "EVIDENCE_TYPE_UNDEFINED")
+    description = os.getenv('CDB_DESCRIPTION', "UNDEFINED")
+    build_url = os.getenv('CDB_CI_BUILD_URL', "URL_UNDEFINED")
+
+    evidence = build_evidence_dict(is_compliant, evidence_type, description, build_url)
+
+    print(evidence)
+
+    project_file = parse_cmd_line()
+    with open(project_file) as project_file_contents:
+        _docker_image_unused, sha256_digest = get_image_details()
+        api_token = os.getenv('CDB_API_TOKEN', 'NO_API_TOKEN_DEFINED')
+        host = os.getenv('CDB_HOST', CDB_SERVER)
+        add_evidence(api_token, host, project_file_contents, sha256_digest, evidence)
+
+
+def build_evidence_dict(is_compliant, evidence_type, description, build_url):
+    evidence = {"evidence_type": evidence_type, "contents": {
+        "is_compliant": is_compliant,
+        "url": "",
+        "description": ""
+    }}
+    evidence["contents"]["description"] = description
+    evidence["contents"]["url"] = build_url
+    return evidence
