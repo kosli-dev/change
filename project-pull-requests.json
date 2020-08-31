@@ -1,5 +1,5 @@
 {
-    "name": "cdb-controls",
+    "name": "cdb-controls-branches",
     "description": "Pipeline Controls for ComplianceDB",
     "owner": "compliancedb",
     "visibility": "public",
