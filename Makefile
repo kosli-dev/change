@@ -73,12 +73,9 @@ BRANCH_NAME := $(shell git rev-parse --abbrev-ref HEAD)
 # Check if branch ends with master
 ifeq ($(shell git rev-parse --abbrev-ref HEAD),master)
 	IS_MASTER=TRUE
-	# Master branch builds are compliant
-	CDB_IS_COMPLIANT=TRUE
 	PROJFILE=project-master.json
 else
 	IS_MASTER=FALSE
-	CDB_IS_COMPLIANT=FALSE
 	PROJFILE=project-pull-requests.json
 endif
 
