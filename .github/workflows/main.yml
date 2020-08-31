@@ -64,6 +64,7 @@ jobs:
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
         CDB_HOST: https://app.compliancedb.com
+        CDB_EVIDENCE_TYPE: "unit_test"
         CDB_BUILD_NUMBER: ${GITHUB_RUN_ID}
         CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         CDB_DOCKER_IMAGE: compliancedb/cdb_controls
@@ -82,7 +83,7 @@ jobs:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
         CDB_HOST: https://app.compliancedb.com
         CDB_IS_COMPLIANT: TRUE
-        CDB_EVIDENCE_TYPE: "unit_test"
+        CDB_EVIDENCE_TYPE: "coverage"
         CDB_BUILD_NUMBER: ${GITHUB_RUN_ID}
         CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         CDB_DOCKER_IMAGE: compliancedb/cdb_controls

@@ -86,7 +86,7 @@ branch:
 	@echo Branch is ${BRANCH_NAME}
 	@echo IS_MASTER is ${IS_MASTER}
 	@echo PROJFILE is ${PROJFILE}
-
+ 
 put_project:
 	docker run --rm --name comply \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
@@ -147,6 +147,7 @@ control_and_publish_junit_results:
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--env CDB_HOST=https://app.compliancedb.com \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
+			--env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
 			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
 			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \

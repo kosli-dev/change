@@ -1,9 +1,11 @@
 {
-    "name": "loancalculator-pull-requests",
-    "description": "The loan calculator application",
-    "owner": "meekrosoft",
+    "name": "cdb-controls",
+    "description": "Pipeline Controls for ComplianceDB",
+    "owner": "compliancedb",
+    "visibility": "public",
     "template": [
         "artifact",
-        "test"
+        "unit_test",
+        "coverage"
     ]
 }
