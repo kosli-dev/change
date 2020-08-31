@@ -147,9 +147,6 @@ control_and_publish_junit_results:
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--env CDB_HOST=https://app.compliancedb.com \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
-			--env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
-			--env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
-			--env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
 			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
 			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \

@@ -160,6 +160,19 @@ def is_compliant_test_results(file_path):
     return False, "Could not find test suite(s)"
 
 
+def control_junit():
+    print("Publish evidence to ComplianceDB")
+    junit_results_path = "/data/junit/junit.xml"
+
+    is_compliant = is_compliant_test_results(junit_results_path)
+    evidence_type = "JUnit Results"
+    description = "JUnit results xml verified by compliancedb/cdb_controls"
+    build_url = os.getenv('CDB_CI_BUILD_URL', "URL_UNDEFINED")
+
+    evidence = build_evidence_dict(is_compliant, evidence_type, description, build_url)
+    send_evidence(evidence)
+
+
 def put_evidence():
     print("Publish evidence to ComplianceDB")
 
@@ -169,9 +182,11 @@ def put_evidence():
     build_url = os.getenv('CDB_CI_BUILD_URL', "URL_UNDEFINED")
 
     evidence = build_evidence_dict(is_compliant, evidence_type, description, build_url)
+    send_evidence(evidence)
 
+
+def send_evidence(evidence):
     print(evidence)
-
     project_file = parse_cmd_line()
     with open(project_file) as project_file_contents:
         _docker_image_unused, sha256_digest = get_image_details()

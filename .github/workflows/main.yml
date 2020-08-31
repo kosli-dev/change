@@ -60,6 +60,16 @@ jobs:
       run: |
         make test
 
+    - name: CDB Control Test Results
+      env:
+        CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
+        CDB_HOST: https://app.compliancedb.com
+        CDB_BUILD_NUMBER: ${GITHUB_RUN_ID}
+        CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
+        CDB_DOCKER_IMAGE: compliancedb/cdb_controls
+      run: |
+        make control_and_publish_junit_results
+
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v1
@@ -67,7 +77,7 @@ jobs:
         name: code-coverage-report
         path: tmp/coverage/htmlcov/
 
-    - name: Publish test results to ComplianceDB
+    - name: Publish coverage results to ComplianceDB
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
         CDB_HOST: https://app.compliancedb.com
