@@ -24,13 +24,19 @@ build:
 	@docker build -f Dockerfile -t ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
 
+
+# Github does not support volume mounts so we need to copy the test output from the container
+# and capture the test exit value
 test:
 	@docker stop test_unit || true
 	@docker rm test_unit || true
 	@rm -rf tmp/coverage
 	@mkdir -p tmp/coverage
-	@docker run --name test_unit -v ${PWD}/tmp/coverage:/app/htmlcov --entrypoint ./coverage_entrypoint.sh ${IMAGE}
-	@docker container rm test_unit
+	@docker run --name test_unit --entrypoint ./coverage_entrypoint.sh ${IMAGE}; \
+	e=$$?; \
+	docker cp test_unit:/app/htmlcov/ tmp/coverage; \
+	exit $$e
+
 
 push:
 	@docker push ${IMAGE}
