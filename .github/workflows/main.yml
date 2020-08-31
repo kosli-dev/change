@@ -2,13 +2,8 @@
 
 name: CI
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+# Controls when the action will run. Triggers the workflow on push or pull request events
+on: [push, pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -37,8 +32,6 @@ jobs:
         password: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
         # Docker repository to tag the image with
         repository: compliancedb/cdb_controls
-        # Comma-delimited list of tags. These will be added to the registry/repository to form the image's tags
-        tags: latest
         # Automatically tags the built image with the git reference as per the readme
         tag_with_ref: TRUE
         # Automatically tags the built image with the git short SHA as per the readme
