@@ -51,6 +51,8 @@ jobs:
         CDB_BUILD_NUMBER: ${GITHUB_RUN_ID}
         CDB_DOCKER_IMAGE: compliancedb/cdb_controls
       run: |
+        export BRANCH=${GITHUB_REF##*/}
+        echo Branch is $BRANCH
         make branch put_project put_artifact_image
 
     - name: Run unit tests
