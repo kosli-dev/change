@@ -164,9 +164,9 @@ def control_junit():
     print("Publish evidence to ComplianceDB")
     junit_results_path = "/data/junit/junit.xml"
 
-    is_compliant = is_compliant_test_results(junit_results_path)
+    is_compliant, message = is_compliant_test_results(junit_results_path)
     evidence_type = "JUnit Results"
-    description = "JUnit results xml verified by compliancedb/cdb_controls"
+    description = "JUnit results xml verified by compliancedb/cdb_controls: " + message
     build_url = os.getenv('CDB_CI_BUILD_URL', "URL_UNDEFINED")
 
     evidence = build_evidence_dict(is_compliant, evidence_type, description, build_url)
