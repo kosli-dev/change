@@ -115,10 +115,10 @@ def parse_cmd_line():
 
 
 def get_image_details():
-    client = docker.from_env()
     docker_image = os.getenv('CDB_DOCKER_IMAGE', "NO_DOCKER_IMAGE_FOUND")
     sha256_digest = os.getenv('CDB_ARTIFACT_SHA', None)
     if sha256_digest is None:
+        client = docker.from_env()
         print("Inspecting docker image for sha256Digest")
         image = client.images.get(docker_image)
         sha256_digest = image.attrs["RepoDigests"][0].split(":")[1]
