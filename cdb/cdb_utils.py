@@ -125,7 +125,7 @@ def get_image_details():
     else:
         print("Docker image digest found from environment variable")
 
-    print("IMAGE DIGEST: " + str(image.attrs["RepoDigests"][0]))
+    print("IMAGE DIGEST: " + sha256_digest)
     return docker_image, sha256_digest
 
 
