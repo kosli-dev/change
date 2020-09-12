@@ -106,7 +106,11 @@ def test_create_release_dict():
     assert expected == actual
 
 
-def test_get_artifact_by_commit():
+def latest_artifact_for_commit(artifacts_for_commit_response):
+    return artifacts_for_commit_response["artifacts"][-1]["sha256"]
+
+
+def test_parse_artifact_by_commit():
     """
     Retrieve a list of artifacts registered against a given commit.
 
@@ -118,10 +122,25 @@ def test_get_artifact_by_commit():
         "artifacts": [
             {
                 "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
+            },
+            {
+                "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839c20"
             }
         ]
     }
     """
 
+    api_response = {
+            "artifacts": [
+                {
+                    "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
+                },
+                {
+                    "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839c20"
+                }
+            ]
+        }
+
+    assert latest_artifact_for_commit(api_response) == "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839c20"
 
 
