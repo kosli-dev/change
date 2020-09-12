@@ -41,6 +41,15 @@ def repo_at(root):
     return repo
 
 
+def build_release_json(artifact_sha, description, src_commit_list):
+    json = {}
+    json["base_artifact"] = artifact_sha
+    json["target_artifact"] = artifact_sha
+    json["description"] = description
+    json["src_commit_list"] = src_commit_list
+    return json
+
+
 REPO_ROOT = "/test_src/"
 
 
@@ -77,3 +86,42 @@ def test_list_commits_between_master_and_commit():
         "b6c9e60f281e37d912ec24f038b7937f79723fb4"
     ]
     assert commits == expected
+
+
+def test_create_release_dict():
+    artifact_sha = "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839c23"
+    description = "Release description text"
+    src_commit_list = [
+        "8f5b384644eb83e7f2a6d9499539a077e7256b8b",
+        "e0ad84e1a2464a9486e777c1ecde162edff930a9"]
+
+    expected = {
+        "base_artifact":  artifact_sha,
+        "target_artifact": artifact_sha,
+        "description": description,
+        "src_commit_list": src_commit_list
+    }
+
+    actual = build_release_json(artifact_sha, description, src_commit_list)
+    assert expected == actual
+
+
+def test_get_artifact_by_commit():
+    """
+    Retrieve a list of artifacts registered against a given commit.
+
+    GET
+    'http://localhost/api/v1/projects/test/hadroncollider/commits/e412ad6f7ea530ee9b83df964a0dde2b477be720'
+
+    RESPONSE
+    {
+        "artifacts": [
+            {
+                "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
+            }
+        ]
+    }
+    """
+
+
+

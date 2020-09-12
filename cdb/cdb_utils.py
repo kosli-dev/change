@@ -82,9 +82,13 @@ def url_for_artifacts(host, project_data):
 
 def add_evidence(api_token, host, project_file_contents, sha256_digest, evidence):
     project_data = load_project_configuration(project_file_contents)
-    url_for_artifact = url_for_artifacts(host, project_data) + sha256_digest
+    url = url_for_artifact(host, project_data, sha256_digest)
 
-    put_payload(evidence, url_for_artifact, api_token)
+    put_payload(evidence, url, api_token)
+
+
+def url_for_artifact(host, project_data, sha256_digest):
+    return url_for_artifacts(host, project_data) + sha256_digest
 
 
 def url_for_project(host, project_data):
