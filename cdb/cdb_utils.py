@@ -86,7 +86,7 @@ def put_payload(payload, url, api_token):
     print(resp.text)
 
 
-def post_payload(payload, url, api_token):
+def http_post_payload(payload, url, api_token):
     headers = {"Content-Type": "application/json"}
     print("Putting this payload:")
     print(json.dumps(payload, sort_keys=True, indent=4))
@@ -95,27 +95,11 @@ def post_payload(payload, url, api_token):
     print(resp.text)
 
 
-def url_for_artifacts(host, project_data):
-    return url_for_project(host, project_data) + '/artifacts/'
-
-
 def add_evidence(api_token, host, project_file_contents, sha256_digest, evidence):
     project_data = load_project_configuration(project_file_contents)
     url = url_for_artifact(host, project_data, sha256_digest)
 
     put_payload(evidence, url, api_token)
-
-
-def url_for_artifact(host, project_data, sha256_digest):
-    return url_for_artifacts(host, project_data) + sha256_digest
-
-
-def url_for_project(host, project_data):
-    return host + '/api/v1/projects/' + project_data["owner"] + '/' + project_data["name"]
-
-
-def url_for_artifacts(host, project_data):
-    return url_for_project(host, project_data) + '/artifacts/'
 
 
 def rchop(thestring, ending):
@@ -318,8 +302,10 @@ def create_release():
         commit_list = list_commits_between(repo_at(env["repo_path"]), env["target_src_commit"], env["base_src_commit"])
         release_json = build_release_json(env["artifact_sha"], env["description"], commit_list)
         url = url_for_releases(env["host"], project_data)
-        post_payload(release_json, url, env["api_token"])
+        http_post_payload(release_json, url, env["api_token"])
 
+
+# URL mappings
 
 def url_for_releases(host, project_data):
     return url_for_project(host, project_data) + '/releases/'
@@ -327,3 +313,19 @@ def url_for_releases(host, project_data):
 
 def url_for_commit(host, project_data, commit):
     return url_for_project(host, project_data) + '/commits/' + commit
+
+
+def url_for_artifacts(host, project_data):
+    return url_for_project(host, project_data) + '/artifacts/'
+
+
+def url_for_artifact(host, project_data, sha256_digest):
+    return url_for_artifacts(host, project_data) + sha256_digest
+
+
+def url_for_project(host, project_data):
+    return host + '/api/v1/projects/' + project_data["owner"] + '/' + project_data["name"]
+
+
+def url_for_artifacts(host, project_data):
+    return url_for_project(host, project_data) + '/artifacts/'
