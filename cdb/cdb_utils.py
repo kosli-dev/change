@@ -5,11 +5,14 @@ import sys
 import docker
 import requests as req
 from junitparser import JUnitXml
+from pygit2 import Repository, _pygit2
+from pygit2._pygit2 import GIT_SORT_TIME
 from requests.auth import HTTPBasicAuth
 
 from cdb.settings import CDB_SERVER
 
 CMD_HELP = 'ensure_project.py -p <project.json>'
+DEFAULT_REPO_ROOT = "/src/"
 
 
 def project_exists_in_cdb(project_data, projects):
@@ -67,6 +70,13 @@ def create_artifact(api_token, host, project_config_file, sha256, filename, desc
     put_payload(create_artifact_payload, url, api_token)
 
 
+def http_get_json(url, api_token):
+    print("Getting this endpoint: " + url)
+    resp = req.get(url, auth=HTTPBasicAuth(api_token, 'unused'))
+    print(resp.text)
+    return resp.json()
+
+
 def put_payload(payload, url, api_token):
     headers = {"Content-Type": "application/json"}
     print("Putting this payload:")
@@ -76,8 +86,17 @@ def put_payload(payload, url, api_token):
     print(resp.text)
 
 
+def post_payload(payload, url, api_token):
+    headers = {"Content-Type": "application/json"}
+    print("Putting this payload:")
+    print(json.dumps(payload, sort_keys=True, indent=4))
+    print("To url: " + url)
+    resp = req.post(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
+    print(resp.text)
+
+
 def url_for_artifacts(host, project_data):
-    return url_for_project(host, project_data) + project_data["name"] + '/artifacts/'
+    return url_for_project(host, project_data) + '/artifacts/'
 
 
 def add_evidence(api_token, host, project_file_contents, sha256_digest, evidence):
@@ -92,7 +111,11 @@ def url_for_artifact(host, project_data, sha256_digest):
 
 
 def url_for_project(host, project_data):
-    return host + '/api/v1/projects/' + project_data["owner"] + '/'
+    return host + '/api/v1/projects/' + project_data["owner"] + '/' + project_data["name"]
+
+
+def url_for_artifacts(host, project_data):
+    return url_for_project(host, project_data) + '/artifacts/'
 
 
 def rchop(thestring, ending):
@@ -201,8 +224,12 @@ def send_evidence(evidence):
     with open(project_file) as project_file_contents:
         _docker_image_unused, sha256_digest = get_image_details()
         api_token = os.getenv('CDB_API_TOKEN', 'NO_API_TOKEN_DEFINED')
-        host = os.getenv('CDB_HOST', CDB_SERVER)
+        host = get_host()
         add_evidence(api_token, host, project_file_contents, sha256_digest, evidence)
+
+
+def get_host():
+    return os.getenv('CDB_HOST', CDB_SERVER)
 
 
 def build_evidence_dict(is_compliant, evidence_type, description, build_url):
@@ -214,3 +241,89 @@ def build_evidence_dict(is_compliant, evidence_type, description, build_url):
     evidence["contents"]["description"] = description
     evidence["contents"]["url"] = build_url
     return evidence
+
+
+def commit_for_commitish(repo, commitish):
+    """returns the commit for a given reference as a string"""
+    commit = repo.revparse_single(commitish)
+    return str(commit.id)
+
+
+def list_commits_between(repo, target_commit, base_commit):
+    start = repo.revparse_single(target_commit)
+    stop = repo.revparse_single(base_commit)
+
+    commits = []
+
+    walker = repo.walk(start.id, GIT_SORT_TIME)
+    walker.hide(stop.id)
+    for commit in walker:
+        commits.append(str(commit.id))
+
+    return commits
+
+
+def repo_at(root):
+    try:
+        repo = Repository(root + '.git')
+    except _pygit2.GitError:
+        return None
+    return repo
+
+
+def build_release_json(artifact_sha, description, src_commit_list):
+    json = {}
+    json["base_artifact"] = artifact_sha
+    json["target_artifact"] = artifact_sha
+    json["description"] = description
+    json["src_commit_list"] = src_commit_list
+    return json
+
+
+def latest_artifact_for_commit(artifacts_for_commit_response):
+    return artifacts_for_commit_response["artifacts"][-1]["sha256"]
+
+
+def create_release_environment_variables():
+    env = {
+        "host": get_host(),
+        "base_src_commit": os.getenv('CDB_BASE_SRC_COMMITISH', None),
+        "target_src_commit": os.getenv('CDB_TARGET_SRC_COMMITISH', None),
+        "artifact_sha": os.getenv('CDB_ARTIFACT_SHA', None),
+        "api_token": os.getenv('CDB_API_TOKEN', None),
+        "description": os.getenv('CDB_RELEASE_DESCRIPTION', "No description provided"),
+        "repo_path": os.getenv('CDB_SRC_REPO_ROOT', DEFAULT_REPO_ROOT)
+    }
+    return env
+
+
+def get_artifacts_for_commit(host, api_token, project_config_file, commit):
+    url = url_for_commit(host, project_config_file, commit)
+    artifact_list = http_get_json(url, api_token)
+    return artifact_list
+
+
+def create_release():
+    project_config_file = parse_cmd_line()
+    env = create_release_environment_variables()
+    with open(project_config_file) as json_data_file:
+        project_data = load_project_configuration(json_data_file)
+
+        if env["artifact_sha"] is None:
+            src_commit = commit_for_commitish(repo_at(env["repo_path"]), env["target_src_commit"])
+            response = get_artifacts_for_commit(env["host"], env["api_token"], project_data, src_commit)
+            env["artifact_sha"] = latest_artifact_for_commit(response)
+            print(f"Found artifact {env['artifact_sha']} as latest artifact for source commit {env['target_src_commit']}")
+
+        commit_list = list_commits_between(repo_at(env["repo_path"]), env["target_src_commit"], env["base_src_commit"])
+        release_json = build_release_json(env["artifact_sha"], env["description"], commit_list)
+        url = url_for_releases(env["host"], project_data)
+        post_payload(release_json, url, env["api_token"])
+
+
+def url_for_releases(host, project_data):
+    return url_for_project(host, project_data) + '/releases/'
+
+
+def url_for_commit(host, project_data, commit):
+    return url_for_project(host, project_data) + '/commits/' + commit

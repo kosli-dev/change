@@ -153,3 +153,13 @@ publish_release:
 	IMAGE=${IMAGE} ./server/cdb/release.sh
 
 
+create_release:
+	docker run --rm --name comply \
+			--volume ${PWD}/${PROJFILE}:/data/project.json \
+			--volume ${PWD}:/src \
+			--env CDB_HOST=${CDB_HOST} \
+			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
+			--env CDB_TARGET_SRC_COMMITISH='create_release' \
+			--env CDB_BASE_SRC_COMMITISH='control-junit' \
+			--env CDB_RELEASE_DESCRIPTION="${CDB_RELEASE_DESCRIPTION}" \
+			${IMAGE} python -m cdb.create_release -p /data/project.json
