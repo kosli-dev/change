@@ -214,7 +214,9 @@ def build_release_json(artifact_sha, description, src_commit_list):
 
 
 def latest_artifact_for_commit(artifacts_for_commit_response):
-    return artifacts_for_commit_response["artifacts"][-1]["sha256"]
+    if artifacts_for_commit_response["artifacts"]:
+        return artifacts_for_commit_response["artifacts"][-1]["sha256"]
+    raise ValueError("No artifact found in ComplianceDB with that SHA")
 
 
 def create_release_environment_variables():

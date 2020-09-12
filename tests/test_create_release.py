@@ -16,6 +16,8 @@ Put the JSON
 """
 from pathlib import Path
 
+import pytest
+
 from cdb.cdb_utils import list_commits_between, \
     repo_at, build_release_json, latest_artifact_for_commit, url_for_releases, url_for_commit
 
@@ -107,6 +109,14 @@ def test_parse_artifact_by_commit():
         }
 
     assert latest_artifact_for_commit(api_response) == "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839c20"
+
+
+def test_parse_artifact_by_commit_when_no_artifacts_raises_error():
+    api_response = {
+        "artifacts": []
+    }
+    with pytest.raises(ValueError):
+        latest_artifact_for_commit(api_response)
 
 
 def test_url_for_releases():
