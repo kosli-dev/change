@@ -70,31 +70,6 @@ def create_artifact(api_token, host, project_config_file, sha256, filename, desc
     put_payload(create_artifact_payload, url, api_token)
 
 
-def http_get_json(url, api_token):
-    print("Getting this endpoint: " + url)
-    resp = req.get(url, auth=HTTPBasicAuth(api_token, 'unused'))
-    print(resp.text)
-    return resp.json()
-
-
-def put_payload(payload, url, api_token):
-    headers = {"Content-Type": "application/json"}
-    print("Putting this payload:")
-    print(json.dumps(payload, sort_keys=True, indent=4))
-    print("To url: " + url)
-    resp = req.put(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
-    print(resp.text)
-
-
-def http_post_payload(payload, url, api_token):
-    headers = {"Content-Type": "application/json"}
-    print("Putting this payload:")
-    print(json.dumps(payload, sort_keys=True, indent=4))
-    print("To url: " + url)
-    resp = req.post(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
-    print(resp.text)
-
-
 def add_evidence(api_token, host, project_file_contents, sha256_digest, evidence):
     project_data = load_project_configuration(project_file_contents)
     url = url_for_artifact(host, project_data, sha256_digest)
@@ -329,3 +304,30 @@ def url_for_project(host, project_data):
 
 def url_for_artifacts(host, project_data):
     return url_for_project(host, project_data) + '/artifacts/'
+
+
+# HTTP methods
+
+def http_get_json(url, api_token):
+    print("Getting this endpoint: " + url)
+    resp = req.get(url, auth=HTTPBasicAuth(api_token, 'unused'))
+    print(resp.text)
+    return resp.json()
+
+
+def put_payload(payload, url, api_token):
+    headers = {"Content-Type": "application/json"}
+    print("Putting this payload:")
+    print(json.dumps(payload, sort_keys=True, indent=4))
+    print("To url: " + url)
+    resp = req.put(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
+    print(resp.text)
+
+
+def http_post_payload(payload, url, api_token):
+    headers = {"Content-Type": "application/json"}
+    print("Putting this payload:")
+    print(json.dumps(payload, sort_keys=True, indent=4))
+    print("To url: " + url)
+    resp = req.post(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
+    print(resp.text)
