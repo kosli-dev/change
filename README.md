@@ -111,3 +111,15 @@ This command expect the following environment variables:
 | CDB_CI_BUILD_URL | Required | Link to the build information |
 | CDB_DOCKER_IMAGE | Required | The docker image that evidence is provided for |
 
+
+## Create a release
+
+To create a release in ComplianceDB, you can use the `create_release` command
+
+| VARIABLE | Requirement | Description |
+|------|-----|-----|
+| CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
+| CDB_API_TOKEN | Required | Your API token for ComplianceDB |
+| ARTIFACT_SHA | Optional | The SHA256 for the artifact that you would like to release, if not given then this is retrieved from CDB  |
+| BASE_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the release |
+| TARGET_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the release |
