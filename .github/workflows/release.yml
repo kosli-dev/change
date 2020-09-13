@@ -21,7 +21,7 @@ jobs:
           CDB_HOST: https://app.compliancedb.com
           CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
           CDB_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
-          CDB_BASE_SRC_COMMITISH: "latest"
+          CDB_BASE_SRC_COMMITISH: "origin/latest"
           CDB_RELEASE_DESCRIPTION: "Release created in github actions on git tag ${GITHUB_REF}"
         run: |
           echo Hello, world!
