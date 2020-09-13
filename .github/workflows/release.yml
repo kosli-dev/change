@@ -22,6 +22,6 @@ jobs:
           CDB_RELEASE_DESCRIPTION: "Release created in github actions on git tag ${GITHUB_REF}"
         run: |
           echo Hello, world!
-          log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset"
+          git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
           make create_release
 
