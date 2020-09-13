@@ -159,7 +159,7 @@ create_release:
 			--volume ${PWD}:/src \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
-			--env CDB_TARGET_SRC_COMMITISH=${CDB_RELEASE_TARGET_REF} \
-			--env CDB_BASE_SRC_COMMITISH=${CDB_RELEASE_BASE_REF} \
+			--env CDB_TARGET_SRC_COMMITISH=${CDB_TARGET_SRC_COMMITISH} \
+			--env CDB_BASE_SRC_COMMITISH=${CDB_BASE_SRC_COMMITISH} \
 			--env CDB_RELEASE_DESCRIPTION="${CDB_RELEASE_DESCRIPTION}" \
 			${IMAGE} python -m cdb.create_release -p /data/project.json
