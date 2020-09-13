@@ -112,6 +112,10 @@ This command expect the following environment variables:
 | CDB_DOCKER_IMAGE | Required | The docker image that evidence is provided for |
 
 
+## Control JUnit results
+
+Documentation coming soon...
+
 ## Create a release
 
 To create a release in ComplianceDB, you can use the `create_release` command
