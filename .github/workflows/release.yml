@@ -14,8 +14,14 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run a one-line script
+        env:
+          CDB_HOST: https://app.compliancedb.com
+          CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
+          CDB_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
+          CDB_BASE_SRC_COMMITISH: "latest"
+          CDB_RELEASE_DESCRIPTION: "Release created in github actions on git tag ${GITHUB_REF}"
         run: |
           echo Hello, world!
           log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset"
-
+          make create_release
 
