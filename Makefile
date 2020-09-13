@@ -130,7 +130,6 @@ control_and_publish_junit_results:
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
-			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
 			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
 			${IMAGE} python -m cdb.control_junit -p /data/project.json
 

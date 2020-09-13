@@ -116,7 +116,31 @@ This command expect the following environment variables:
 
 ## Control JUnit results
 
-Documentation coming soon...
+To verify the results a junit test xml, you can use the `control_junit` command.  There are two options for deciding 
+the artifact `sha256`: either you can provide it with the `CDB_ARTIFACT_SHA` environment variable, or if this is not 
+set the control will try to get it via the docker socket by inspecting the docker image given with `CDB_DOCKER_IMAGE`.
+
+```shell script
+docker run --rm --name comply \
+        --volume ${PWD}/${PROJFILE}:/data/project.json \
+        --volume ${PWD}/tmp/coverage/htmlcov/junit.xml:/data/junit/junit.xml \
+        --volume=/var/run/docker.sock:/var/run/docker.sock \
+        --env CDB_HOST=https://app.compliancedb.com \
+        --env CDB_API_TOKEN=${CDB_API_TOKEN} \
+        --env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
+        --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
+        --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+        ${IMAGE} python -m cdb.control_junit -p /data/project.json
+```
+
+
+| VARIABLE | Requirement | Description |
+|------|-----|-----|
+| CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
+| CDB_API_TOKEN | Required | Your API token for ComplianceDB |
+| CDB_EVIDENCE_TYPE | Required | The evidence type for the results |
+| CDB_CI_BUILD_URL | Required | The URL to link to from ComplianceDB |
+| CDB_ARTIFACT_SHA or CDB_DOCKER_IMAGE | Required | The artifact sha to report this evidence against |
 
 ## Create a release
 
