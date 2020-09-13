@@ -12,6 +12,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          # fetch full history
+          fetch-depth: 0
 
       - name: Run a one-line script
         env:
