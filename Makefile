@@ -154,8 +154,9 @@ publish_release:
 
 
 create_release:
+	# Always release from project-master.json project
 	docker run --rm --name comply \
-			--volume ${PWD}/${PROJFILE}:/data/project.json \
+			--volume ${PWD}/project-master.json:/data/project.json \
 			--volume ${PWD}:/src \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
