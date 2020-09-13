@@ -1,5 +1,7 @@
 # ComplianceDB Pipeline Controls
 
+![Continuous Integration Status](https://github.com/compliancedb/cdb_controls/workflows/CI/badge.svg)
+
 This docker image provides some helpers for gathering the audit trail and performing controls in your devops pipelines.
 
     docker pull compliancedb/cdb_controls
