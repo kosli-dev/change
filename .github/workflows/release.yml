@@ -16,7 +16,7 @@ jobs:
           # fetch full history
           fetch-depth: 0
 
-      - name: Run a one-line script
+      - name: Create the release in ComplianceDB
         env:
           CDB_HOST: https://app.compliancedb.com
           CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
