@@ -33,6 +33,7 @@ jobs:
           export DOCKER_TAG=sha-$(git rev-parse --short=7 HEAD)
           docker pull compliancedb/cdb_controls:$DOCKER_TAG
           docker tag compliancedb/cdb_controls:$DOCKER_TAG compliancedb/cdb_controls:latest
+          docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
           docker push compliancedb/cdb_controls:latest
           git checkout latest
           git merge --ff-only ${GITHUB_SHA}
