@@ -274,6 +274,9 @@ def url_for_artifact(host, project_data, sha256_digest):
     return url_for_artifacts(host, project_data) + sha256_digest
 
 
+def url_for_owner_projects(host, project_data):
+    return host + '/api/v1/projects/' + project_data["owner"] + "/"
+
 def url_for_project(host, project_data):
     return host + '/api/v1/projects/' + project_data["owner"] + '/' + project_data["name"]
 

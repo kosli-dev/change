@@ -2,7 +2,7 @@
 import os
 import requests as req
 from requests.auth import HTTPBasicAuth
-from cdb.cdb_utils import parse_cmd_line, load_project_configuration, url_for_project
+from cdb.cdb_utils import parse_cmd_line, load_project_configuration, url_for_owner_projects
 from cdb.settings import CDB_SERVER
 
 
@@ -17,7 +17,7 @@ def main():
         project_data = load_project_configuration(json_data_file)
 
         host = os.getenv('CDB_HOST', CDB_SERVER)
-        projects_url = url_for_project(host, project_data)
+        projects_url = url_for_owner_projects(host, project_data)
 
         api_token = os.getenv('CDB_API_TOKEN', 'NO_API_TOKEN_DEFINED')
 
