@@ -21,6 +21,7 @@ def test_junit_parser_control_passes_WHEN_no_failures_AND_no_errors():
     (control_result, message) = is_compliant_suite(xml)
     assert control_result is True
     assert message == "All tests passed"
+    assert False is True
 
 
 def test_junit_parser_control_fails_WHEN_failures():
