@@ -142,7 +142,7 @@ docker run --rm --name comply \
 | CDB_CI_BUILD_URL | Required | The URL to link to from ComplianceDB |
 | CDB_ARTIFACT_SHA or CDB_DOCKER_IMAGE | Required | The artifact sha to report this evidence against |
 
-## Create a release
+## Create a release from git history
 
 To create a release in ComplianceDB, you can use the `create_release` command
 
