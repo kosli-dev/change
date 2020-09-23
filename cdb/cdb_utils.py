@@ -324,4 +324,4 @@ def http_post_payload(payload, url, api_token):
 
 def ls_test_results(root_directory):
     import glob
-    return glob.glob(root_directory + "/*.xml")
+    return sorted(glob.glob(root_directory + "/*.xml"))
