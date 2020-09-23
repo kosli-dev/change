@@ -6,14 +6,14 @@ This docker image provides some helpers for gathering the audit trail and perfor
 
     docker pull compliancedb/cdb_controls
     
-## Put project
+## Put pipeline
 
-ComplianceDB has a declarative way to specify the project details.  It is recommended to re-assert the project structure 
-on every run of the pipeline.  Since writes are idempotent in ComplianceDB, it will only update if the structure if the 
-project changes.  This way, you only need update the `project.json` in your repo and the changes will be reflected in 
+ComplianceDB has a declarative way to specify the pipeline details.  It is recommended to re-assert the pipeline structure 
+on every run of the pipeline.  Since writes are idempotent in ComplianceDB, it will only update if there is a change
+ to the pipeline.  This way, you only need update the `pipeline.json` in your repo and the changes will be reflected in 
 ComplianceDB.
 
-Here is an example `project.json`:
+Here is an example `pipeline.json`:
 
 ```json
 {
@@ -33,10 +33,10 @@ Here is an example `project.json`:
 To put this in the pipeline:
 ```shell script
 docker run --rm --name comply \
-        --volume ${PWD}/project.json:/data/project.json \
+        --volume ${PWD}/pipeline.json:/data/pipeline.json \
         --env CDB_HOST=https://app.compliancedb.com \
         --env CDB_API_TOKEN=${CDB_API_TOKEN} \
-        compliancedb/cdb_controls python -m cdb.put_project -p /data/project.json
+        compliancedb/cdb_controls python -m cdb.put_pipeline -p /data/pipeline.json
 ```
 
 This command expect the following environment variables:
@@ -55,7 +55,7 @@ As such, it should only be called after the image has been pushed to the docker 
 
 ```shell script
 docker run --rm --name comply \
-        --volume ${PWD}/project-master.json:/data/project.json \
+        --volume ${PWD}/pipeline-master.json:/data/pipeline.json \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
         --env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
@@ -65,7 +65,7 @@ docker run --rm --name comply \
         --env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
         --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
         --env CDB_API_TOKEN=${CDB_API_TOKEN} \
-        compliancedb/cdb_controls python -m cdb.put_artifact_image -p /data/project.json
+        compliancedb/cdb_controls python -m cdb.put_artifact_image -p /data/pipeline.json
 ```
 
 This command expect the following environment variables:
@@ -87,7 +87,7 @@ This command expect the following environment variables:
 To publish a generic evidence type, you can use the `put_evidence` command:
 ```shell script
 docker run --rm --name comply \
-        --volume ${PWD}/project-master.json:/data/project.json \
+        --volume ${PWD}/pipeline-master.json:/data/pipeline.json \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --env CDB_HOST=https://compliancedb-compliancedb-staging.app.compliancedb.com \
         --env CDB_API_TOKEN=${CDB_API_TOKEN} \
@@ -97,7 +97,7 @@ docker run --rm --name comply \
         --env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
         --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
         --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
-        compliancedb/cdb_controls python -m cdb.put_evidence -p /data/project.json
+        compliancedb/cdb_controls python -m cdb.put_evidence -p /data/pipeline.json
 ```
 
 This command expect the following environment variables:
@@ -122,7 +122,7 @@ set the control will try to get it via the docker socket by inspecting the docke
 
 ```shell script
 docker run --rm --name comply \
-        --volume ${PWD}/${PROJFILE}:/data/project.json \
+        --volume ${PWD}/${PROJFILE}:/data/pipeline.json \
         --volume ${PWD}/tmp/coverage/htmlcov/junit.xml:/data/junit/junit.xml \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --env CDB_HOST=https://app.compliancedb.com \
@@ -130,7 +130,7 @@ docker run --rm --name comply \
         --env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
         --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
         --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
-        ${IMAGE} python -m cdb.control_junit -p /data/project.json
+        ${IMAGE} python -m cdb.control_junit -p /data/pipeline.json
 ```
 
 

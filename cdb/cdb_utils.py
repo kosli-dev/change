@@ -325,3 +325,22 @@ def http_post_payload(payload, url, api_token):
     print("To url: " + url)
     resp = req.post(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
     print(resp.text)
+
+
+def put_pipeline():
+    project_file = parse_cmd_line()
+    print("Ensure Project - loading " + project_file)
+    with open(project_file) as json_data_file:
+        project_data = load_project_configuration(json_data_file)
+
+        host = os.getenv('CDB_HOST', CDB_SERVER)
+        projects_url = url_for_owner_projects(host, project_data)
+
+        api_token = os.getenv('CDB_API_TOKEN', 'NO_API_TOKEN_DEFINED')
+
+        print("PUT: " + projects_url)
+        print("PAYLOAD: " + str(project_data))
+
+        print("Create project")
+        create_response = req.put(projects_url, json=project_data, auth=HTTPBasicAuth(api_token, 'unused'))
+        print(create_response.text)
