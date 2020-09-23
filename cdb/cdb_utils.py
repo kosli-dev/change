@@ -126,6 +126,11 @@ def is_compliant_test_results(file_path):
     return False, "Could not find test suite(s)"
 
 
+def ls_test_results(root_directory):
+    import glob
+    return sorted(glob.glob(root_directory + "/*.xml"))
+
+
 def is_compliant_tests_directory(test_results_directory):
     results_files = ls_test_results(test_results_directory)
     for test_xml in results_files:
@@ -137,9 +142,9 @@ def is_compliant_tests_directory(test_results_directory):
 
 def control_junit():
     print("Publish evidence to ComplianceDB")
-    junit_results_path = "/data/junit/"
+    junit_results_dir = "/data/junit/"
 
-    is_compliant, message = is_compliant_test_results(junit_results_path)
+    is_compliant, message = is_compliant_tests_directory(junit_results_dir)
     evidence_type = os.getenv('CDB_EVIDENCE_TYPE', "junit")
     description = "JUnit results xml verified by compliancedb/cdb_controls: " + message
     build_url = os.getenv('CDB_CI_BUILD_URL', "URL_UNDEFINED")
@@ -320,8 +325,3 @@ def http_post_payload(payload, url, api_token):
     print("To url: " + url)
     resp = req.post(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
     print(resp.text)
-
-
-def ls_test_results(root_directory):
-    import glob
-    return sorted(glob.glob(root_directory + "/*.xml"))
