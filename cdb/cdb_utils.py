@@ -126,9 +126,18 @@ def is_compliant_test_results(file_path):
     return False, "Could not find test suite(s)"
 
 
+def is_compliant_tests_directory(test_results_directory):
+    results_files = ls_test_results(test_results_directory)
+    for test_xml in results_files:
+        is_compliant, message = is_compliant_test_results(test_xml)
+        if not is_compliant:
+            return is_compliant, message
+    return True, f"All tests passed in {len(results_files)} test suites"
+
+
 def control_junit():
     print("Publish evidence to ComplianceDB")
-    junit_results_path = "/data/junit/junit.xml"
+    junit_results_path = "/data/junit/"
 
     is_compliant, message = is_compliant_test_results(junit_results_path)
     evidence_type = os.getenv('CDB_EVIDENCE_TYPE', "junit")
@@ -277,6 +286,7 @@ def url_for_artifact(host, project_data, sha256_digest):
 def url_for_owner_projects(host, project_data):
     return host + '/api/v1/projects/' + project_data["owner"] + "/"
 
+
 def url_for_project(host, project_data):
     return host + '/api/v1/projects/' + project_data["owner"] + '/' + project_data["name"]
 
@@ -310,3 +320,8 @@ def http_post_payload(payload, url, api_token):
     print("To url: " + url)
     resp = req.post(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
     print(resp.text)
+
+
+def ls_test_results(root_directory):
+    import glob
+    return glob.glob(root_directory + "/*.xml")

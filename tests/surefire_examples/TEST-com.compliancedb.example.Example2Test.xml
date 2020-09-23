@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="TEST-com.compliancedb.example.Example2Test.xml" time="0.076" tests="7" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="14"/>
+  </properties>
+  <testcase name="revokeConsent_Success" classname="com.compliancedb.example.Example2Test" time="0.036"/>
+  <testcase name="createConsent_ValidInput_ClientError" classname="com.compliancedb.example.Example2Test" time="0.011"/>
+  <testcase name="createConsent_DNB_Success" classname="com.compliancedb.example.Example2Test" time="0.008"/>
+  <testcase name="createConsent_Customer_Success" classname="com.compliancedb.example.Example2Test" time="0.018"/>
+  <testcase name="getConsentDetails_ClientError" classname="com.compliancedb.example.Example2Test" time="0.004"/>
+  <testcase name="revokeConsent_ClientError" classname="com.compliancedb.example.Example2Test" time="0.003"/>
+  <testcase name="getConsentDetails_Success" classname="com.compliancedb.example.Example2Test" time="0.006"/>
+  <testcase name="createConsent_ValidInput_Success" classname="com.compliancedb.example.Example2Test" time="0.007"/>
+</testsuite>
