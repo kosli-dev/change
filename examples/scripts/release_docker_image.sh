@@ -83,4 +83,4 @@ echo "$RELEASE_TEMPLATE" \
       -u ${CDB_API_TOKEN}:unused \
       -X POST \
       --data-binary @- \
-     http://localhost/api/v1/projects/$CDB_OWNER/$CDB_PROJECT/releases/
+     https://app.compliancedb.com/api/v1/projects/$CDB_OWNER/$CDB_PROJECT/releases/
