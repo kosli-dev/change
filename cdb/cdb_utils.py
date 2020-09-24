@@ -128,7 +128,11 @@ def is_compliant_test_results(file_path):
 
 def ls_test_results(root_directory):
     import glob
-    return sorted(glob.glob(root_directory + "/*.xml"))
+    files = sorted(glob.glob(root_directory + "/*.xml"))
+    excluded_files = ["failsafe-summary.xml"]
+    for exclude in excluded_files:
+        test_files = [file for file in files if not file.endswith(exclude)]
+    return test_files
 
 
 def is_compliant_tests_directory(test_results_directory):

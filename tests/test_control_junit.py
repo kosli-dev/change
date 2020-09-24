@@ -177,6 +177,11 @@ def test_list_test_result_files():
                      'tests/surefire_examples/TEST-com.compliancedb.example.Example2Test.xml']
 
 
+def test_list_test_result_files_filters_failsafe_summary_xml():
+    files = ls_test_results('tests/failsafe_examples/')
+    assert files == ['tests/failsafe_examples/TEST-com.compliancedb.example.Example1Test.xml']
+
+
 @mock.patch('cdb.cdb_utils.is_compliant_test_results')
 @mock.patch('cdb.cdb_utils.ls_test_results')
 def test_is_compliant_tests_directory_passes_if_every_file_has_no_failures(mocked_ls, mocked_results):
