@@ -164,7 +164,7 @@ def test_failing_surefire_testxml_results_in_non_compliant_evidence():
     assert message == "Tests contain failures"
 
 
-def test_failing_surefire_testxml_results_in_non_compliant_evidence():
+def test_passing_surefire_testxml_results_in_compliant_evidence():
     test_xml = load_test_results('tests/surefire_examples/TEST-com.compliancedb.example.Example2Test.xml')
     (control_result, message) = is_compliant_suite(test_xml)
     assert control_result is True
@@ -205,3 +205,10 @@ def test_is_compliant_tests_directory_fails_if_a_file_has_failures(mocked_ls, mo
     assert mocked_results.call_count == 2
     assert result is False
     assert message == "Bad stuff"
+
+
+def test_passing_failsafe_testxml_results_in_compliant_evidence():
+    test_xml = load_test_results('tests/failsafe_examples/TEST-com.compliancedb.example.Example1Test.xml')
+    (control_result, message) = is_compliant_suite(test_xml)
+    assert control_result is True
+    assert message == "All tests passed"
