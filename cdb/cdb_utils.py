@@ -297,7 +297,7 @@ def control_latest_release():
             print(f"INCOMPLIANT: latest release {release['release_number']}")
             print(f"    released sha: {release['target_artifact']} ")
             print(f"    expected sha: {artifact_sha} ")
-            exit(1)
+            sys.exit(1)
         else:
             print(f"COMPLIANT: latest release {release['release_number']}")
             print(f"    released sha: {release['target_artifact']} ")
