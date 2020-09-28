@@ -163,3 +163,13 @@ create_release:
 			--env CDB_BASE_SRC_COMMITISH=${CDB_BASE_SRC_COMMITISH} \
 			--env CDB_RELEASE_DESCRIPTION="${CDB_RELEASE_DESCRIPTION}" \
 			${IMAGE} python -m cdb.create_release -p /data/project.json
+
+
+control_latest_release:
+	# Always release from project-master.json project
+	docker run --rm --name comply \
+			--volume ${PWD}/project-master.json:/data/project.json \
+			--env CDB_HOST=${CDB_HOST} \
+			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
+			--env CDB_ARTIFACT_SHA=${CDB_ARTIFACT_SHA} \
+			${IMAGE} python -m cdb.control_latest_release -p /data/project.json

@@ -155,3 +155,16 @@ To create a release in ComplianceDB, you can use the `create_release` command
 | CDB_BASE_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the release |
 | CDB_RELEASE_DESCRIPTION | Optional | A description of the release |
 | CDB_SRC_REPO_ROOT | Optional | The path where the source git repository is mounted, default to `/src` |
+
+
+## Control that an artifact is latest released
+
+To control that a given artifact is the latest release ComplianceDB, you can use the `control_latest_release` command
+
+| VARIABLE | Requirement | Description |
+|------|-----|-----|
+| CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
+| CDB_API_TOKEN | Required | Your API token for ComplianceDB |
+| CDB_ARTIFACT_SHA | Optional | The SHA256 for the artifact  |
+
+This will return a non-zero exit code in case of no release found.

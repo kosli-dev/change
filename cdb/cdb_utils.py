@@ -242,12 +242,20 @@ def create_release_environment_variables():
         "host": get_host(),
         "base_src_commit": os.getenv('CDB_BASE_SRC_COMMITISH', None),
         "target_src_commit": os.getenv('CDB_TARGET_SRC_COMMITISH', None),
-        "artifact_sha": os.getenv('CDB_ARTIFACT_SHA', None),
-        "api_token": os.getenv('CDB_API_TOKEN', None),
+        "artifact_sha": get_artifact_sha(),
+        "api_token": get_api_token(),
         "description": os.getenv('CDB_RELEASE_DESCRIPTION', "No description provided"),
         "repo_path": os.getenv('CDB_SRC_REPO_ROOT', DEFAULT_REPO_ROOT)
     }
     return env
+
+
+def get_artifact_sha():
+    return os.getenv('CDB_ARTIFACT_SHA', None)
+
+
+def get_api_token():
+    return os.getenv('CDB_API_TOKEN', None)
 
 
 def get_artifacts_for_commit(host, api_token, project_config_file, commit):
@@ -273,6 +281,27 @@ def create_release():
         url = url_for_releases(env["host"], project_data)
         http_post_payload(release_json, url, env["api_token"])
 
+
+def control_latest_release():
+    host = get_host()
+    api_token = get_api_token()
+    artifact_sha = get_artifact_sha()
+    project_config_file = parse_cmd_line()
+
+    with open(project_config_file) as json_data_file:
+        project_data = load_project_configuration(json_data_file)
+        url = url_for_release(host, project_data, "latest")
+        release = http_get_json(url, api_token)
+
+        if release["target_artifact"] != artifact_sha:
+            print(f"INCOMPLIANT: latest release {release['release_number']}")
+            print(f"    released sha: {release['target_artifact']} ")
+            print(f"    expected sha: {artifact_sha} ")
+            exit(1)
+        else:
+            print(f"COMPLIANT: latest release {release['release_number']}")
+            print(f"    released sha: {release['target_artifact']} ")
+            print(f"    expected sha: {artifact_sha} ")
 
 # URL mappings
 
@@ -302,6 +331,10 @@ def url_for_project(host, project_data):
 
 def url_for_artifacts(host, project_data):
     return url_for_project(host, project_data) + '/artifacts/'
+
+
+def url_for_release(host, project_data, release_number):
+    return url_for_releases(host, project_data) + release_number
 
 
 # HTTP methods
