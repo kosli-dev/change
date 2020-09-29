@@ -173,3 +173,5 @@ control_latest_release:
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_ARTIFACT_SHA=${CDB_ARTIFACT_SHA} \
 			${IMAGE} python -m cdb.control_latest_release -p /data/project.json
+
+

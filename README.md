@@ -165,6 +165,22 @@ To control that a given artifact is the latest release ComplianceDB, you can use
 |------|-----|-----|
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
-| CDB_ARTIFACT_SHA | Optional | The SHA256 for the artifact  |
+| CDB_ARTIFACT_SHA | Required | The SHA256 for the artifact  |
 
 This will return a non-zero exit code in case of no release found.
+
+
+## Record Bitbucket pull request approval state
+
+To publish the bitbucket pull request information this artifact comes from, use the `put_bitbucket_pr` command.
+
+| VARIABLE | Requirement | Description |
+|------|-----|-----|
+| CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
+| CDB_API_TOKEN | Required | Your API token for ComplianceDB |
+| CDB_ARTIFACT_SHA | Required | The SHA256 for the artifact  |
+| BITBUCKET_WORKSPACE | Required | The bitbucket workspace this repo is in |
+| BITBUCKET_REPO_SLUG | Required | The bitbucket repo slug |
+| BITBUCKET_COMMIT | Required | The bitbucket commit |
+| BITBUCKET_USER | Required | The username to authenticate with |
+| BITBUCKET_PWD | Required | The app password to authenticate with |
