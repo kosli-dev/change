@@ -157,6 +157,32 @@ To create a release in ComplianceDB, you can use the `create_release` command
 | CDB_SRC_REPO_ROOT | Optional | The path where the source git repository is mounted, default to `/src` |
 
 
+## Create a deployment
+
+To create a deployment in ComplianceDB, you can use the `create_deployment` command.  You can optionally provide a 
+json file with user_data if required.
+
+
+```shell script
+echo "{'url':'https:'https://gitlab.com/compliancedb/compliancedb/-/jobs/785151532'}" > tmp/deployment_user_data.json
+docker run --rm --name comply \
+        --volume ${PWD}/${PIPELINEFILE}:/data/pipeline.json \
+        --volume ${PWD}/tmp/deployment_user_data.json:/data/deployment_user_data.json \
+        --env CDB_API_TOKEN=${CDB_API_TOKEN} \
+        --env CDB_ARTIFACT_SHA=${CDB_ARTIFACT_SHA} \
+        --env CDB_ENVIRONMENT=production \
+        --env USER_DATA_FILE=/data/pipeline.json \
+        ${IMAGE} python -m cdb.create_deployment -p /data/pipeline.json
+```
+
+| VARIABLE | Requirement | Description |
+|------|-----|-----|
+| CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
+| CDB_API_TOKEN | Required | Your API token for ComplianceDB |
+| CDB_ARTIFACT_SHA | Required | The SHA256 for the artifact that is being deployed  |
+| CDB_ENVIRONMENT | Required | The environment the artifact is being deployed to |
+| USER_DATA_FILE | Optional | The user data to embed in the deployment, if any (should be mounted in the container) |
+
 ## Control that an artifact is latest released
 
 To control that a given artifact is the latest release ComplianceDB, you can use the `control_latest_release` command
