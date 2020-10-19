@@ -1,5 +1,7 @@
 FROM compliancedb/cdb_controls:latest
 
+RUN apk add openssl
+
 COPY bitbucket_pipe/pipe.py .
 COPY bitbucket_pipe/requirements.txt .
 RUN pip install -r requirements.txt
