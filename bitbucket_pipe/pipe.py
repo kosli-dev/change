@@ -1,4 +1,5 @@
-
+import os
+import subprocess
 import sys
 from bitbucket_pipes_toolkit import Pipe, get_logger
 
@@ -13,7 +14,7 @@ schema = {
     # PUT Pipeline Variables
     #   ...none...
     # Put Artifact Variables
-    'CDB_IS_COMPLIANT': {'type': 'string', 'required': False},
+    'CDB_IS_COMPLIANT': {'type': 'boolean', 'required': False},
     'CDB_ARTIFACT_GIT_URL': {'type': 'string', 'required': False},
     'CDB_ARTIFACT_GIT_COMMIT': {'type': 'string', 'required': False},
     'CDB_CI_BUILD_URL': {'type': 'string', 'required': False},
@@ -22,28 +23,6 @@ schema = {
     'CDB_ARTIFACT_FILENAME': {'type': 'string', 'required': False},
 
 }
-"""
-
-
-
-export CDB_ARTIFACT_GIT_URL=https://bitbucket.org/ztlpay/${BITBUCKET_REPO_SLUG}/commits/${BITBUCKET_COMMIT}
-export CDB_ARTIFACT_GIT_COMMIT=${BITBUCKET_COMMIT}
-CDB_CI_BUILD_URL="https://bitbucket.org/ztlpay/${BITBUCKET_REPO_SLUG}/addon/pipelines"
-CDB_CI_BUILD_URL+='/home#!/results/'
-CDB_CI_BUILD_URL+=${BITBUCKET_BUILD_NUMBER}
-export CDB_CI_BUILD_URL
-export CDB_BUILD_NUMBER=${BITBUCKET_BUILD_NUMBER}
-export CDB_DOCKER_IMAGE=$IMAGE_NAME
-
-
-            --env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
-            --env CDB_ARTIFACT_GIT_URL=${CDB_ARTIFACT_GIT_URL} \
-            --env CDB_ARTIFACT_GIT_COMMIT=${CDB_ARTIFACT_GIT_COMMIT} \
-            --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
-            --env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
-            --env CDB_ARTIFACT_SHA=$DIGEST \
-            --env CDB_ARTIFACT_FILENAME=${IMAGE_NAME} \
-"""
 
 logger = get_logger()
 
@@ -65,7 +44,43 @@ class DemoPipe(Pipe):
         cdb.cdb_utils.hello_world()
         if command == "put_pipeline":
             cdb.cdb_utils.put_pipeline(pipeline_definition_file)
+        if command == "put_artifact":
+            self.adapt_put_artifact_env_variables()
+            cdb.cdb_utils.put_artifact(pipeline_definition_file)
+
         self.success(message="Success!")
+
+    @staticmethod
+    def adapt_put_artifact_env_variables():
+        bb_repo_slug = os.environ.get("BITBUCKET_REPO_SLUG")
+        bb_commit = os.environ.get("BITBUCKET_COMMIT")
+        bb_build_number = os.environ.get("BITBUCKET_BUILD_NUMBER")
+        bb_workspace = os.environ.get("BITBUCKET_WORKSPACE")
+
+        repo_url = f"https://bitbucket.org/{bb_workspace}/{bb_repo_slug}"
+
+        os.environ["CDB_ARTIFACT_GIT_URL"] = f"{repo_url}/commits/{bb_commit}"
+        os.environ["CDB_ARTIFACT_GIT_COMMIT"] = bb_commit
+        os.environ["CDB_BUILD_NUMBER"] = bb_build_number
+
+        build_url = f"{repo_url}/addon/pipelines/home#!/results/{bb_build_number}"
+
+        os.environ["CDB_CI_BUILD_URL"] = build_url
+        artifact_filename = os.environ.get("CDB_ARTIFACT_FILENAME")
+
+        print("Getting SHA for artifact: " + artifact_filename)
+        artifact_sha = DemoPipe.calculate_sha_digest(artifact_filename)
+        print("Calculated digest: " + artifact_sha)
+        os.environ["CDB_ARTIFACT_SHA"] = artifact_sha
+
+    @staticmethod
+    def calculate_sha_digest(artifact_filename):
+        if not os.path.isfile(artifact_filename):
+            raise FileNotFoundError
+        output = subprocess.check_output(["openssl", "dgst", "-sha256", artifact_filename])
+        digest_in_bytes = output.split()[1]
+        artifact_sha = digest_in_bytes.decode('utf-8')
+        return artifact_sha
 
 
 if __name__ == '__main__':
