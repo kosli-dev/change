@@ -364,8 +364,7 @@ def http_post_payload(payload, url, api_token):
     print(resp.text)
 
 
-def put_pipeline():
-    project_file = parse_cmd_line()
+def put_pipeline(project_file):
     print("Ensure Project - loading " + project_file)
     with open(project_file) as json_data_file:
         project_data = load_project_configuration(json_data_file)
@@ -381,3 +380,7 @@ def put_pipeline():
         print("Create project")
         create_response = req.put(projects_url, json=project_data, auth=HTTPBasicAuth(api_token, 'unused'))
         print(create_response.text)
+
+
+def hello_world():
+    print("Hello from CDB Controls...")

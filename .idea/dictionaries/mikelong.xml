@@ -4,6 +4,7 @@
       <w>bitbucket</w>
       <w>commitish</w>
       <w>compliancedb</w>
+      <w>entrypoint</w>
       <w>junitparser</w>
       <w>pytestmark</w>
     </words>

@@ -3,7 +3,7 @@ NAME   := ${APP}
 TAG    := $$(git log -1 --pretty=%h)
 
 IMAGE  := compliancedb/${APP}
-
+IMAGE_PIPE := compliancedb/${APP}-bbpipe
 
 LATEST := ${NAME}:latest
 CONTAINER := cdb_controls
@@ -24,6 +24,10 @@ build:
 	@docker build -f Dockerfile -t ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
 
+
+build_pipe:
+	@echo ${IMAGE_PIPE}
+	@docker build -f Dockerfile.bb_pipe -t ${IMAGE_PIPE} .
 
 # Github does not support volume mounts so we need to copy the test output from the container
 # and capture the test exit value
