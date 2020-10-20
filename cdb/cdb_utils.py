@@ -185,11 +185,12 @@ def get_host():
     return os.getenv('CDB_HOST', CDB_SERVER)
 
 
-def build_evidence_dict(is_compliant, evidence_type, description, build_url, user_data):
+def build_evidence_dict(is_compliant, evidence_type, description, build_url, user_data={}):
     evidence = {"evidence_type": evidence_type, "contents": {
         "is_compliant": is_compliant,
         "url": "",
-        "description": ""
+        "description": "", 
+        user_data: user_data
     }}
     evidence["contents"]["description"] = description
     evidence["contents"]["url"] = build_url

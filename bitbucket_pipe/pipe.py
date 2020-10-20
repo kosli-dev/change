@@ -41,7 +41,6 @@ class DemoPipe(Pipe):
         print("Pipeline: " + pipeline_definition_file)
         print("API_TOKEN: " + api_token)
 
-        cdb.cdb_utils.hello_world()
         if command == "put_pipeline":
             cdb.cdb_utils.put_pipeline(pipeline_definition_file)
         if command == "put_artifact":
