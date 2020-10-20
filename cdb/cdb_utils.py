@@ -144,8 +144,10 @@ def is_compliant_tests_directory(test_results_directory):
     return True, f"All tests passed in {len(results_files)} test suites"
 
 
-def control_junit():
+def control_junit(project_file):
     print("Publish evidence to ComplianceDB")
+
+    # TODO parameterize this location
     junit_results_dir = "/data/junit/"
 
     is_compliant, message = is_compliant_tests_directory(junit_results_dir)
@@ -154,24 +156,24 @@ def control_junit():
     build_url = os.getenv('CDB_CI_BUILD_URL', "URL_UNDEFINED")
 
     evidence = build_evidence_dict(is_compliant, evidence_type, description, build_url)
-    send_evidence(evidence)
+    send_evidence(project_file, evidence)
 
 
-def put_evidence():
+def put_evidence(project_file):
     print("Publish evidence to ComplianceDB")
 
     is_compliant = env_is_compliant()
     evidence_type = os.getenv('CDB_EVIDENCE_TYPE', "EVIDENCE_TYPE_UNDEFINED")
     description = os.getenv('CDB_DESCRIPTION', "UNDEFINED")
     build_url = os.getenv('CDB_CI_BUILD_URL', "URL_UNDEFINED")
+    user_data = os.getenv('CDB_USER_DATA', None)
 
-    evidence = build_evidence_dict(is_compliant, evidence_type, description, build_url)
-    send_evidence(evidence)
+    evidence = build_evidence_dict(is_compliant, evidence_type, description, build_url, user_data)
+    send_evidence(project_file, evidence)
 
 
-def send_evidence(evidence):
+def send_evidence(project_file, evidence):
     print(evidence)
-    project_file = parse_cmd_line()
     with open(project_file) as project_file_contents:
         _docker_image_unused, sha256_digest = get_image_details()
         api_token = os.getenv('CDB_API_TOKEN', 'NO_API_TOKEN_DEFINED')
@@ -183,7 +185,7 @@ def get_host():
     return os.getenv('CDB_HOST', CDB_SERVER)
 
 
-def build_evidence_dict(is_compliant, evidence_type, description, build_url):
+def build_evidence_dict(is_compliant, evidence_type, description, build_url, user_data):
     evidence = {"evidence_type": evidence_type, "contents": {
         "is_compliant": is_compliant,
         "url": "",

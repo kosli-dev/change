@@ -47,31 +47,44 @@ class DemoPipe(Pipe):
         if command == "put_artifact":
             self.adapt_put_artifact_env_variables()
             cdb.cdb_utils.put_artifact(pipeline_definition_file)
+        if command == "control_junit":
+            self.adapt_control_junit_env_variables()
+            cdb.cdb_utils.control_junit(pipeline_definition_file)
 
         self.success(message="Success!")
 
     @staticmethod
+    def adapt_control_junit_env_variables():
+        DemoPipe.adapt_bitbucket_env_variables()
+        DemoPipe.compute_artifact_sha()
+
+    @staticmethod
     def adapt_put_artifact_env_variables():
+        DemoPipe.adapt_bitbucket_env_variables()
+        DemoPipe.compute_artifact_sha()
+
+    @staticmethod
+    def compute_artifact_sha():
+        artifact_filename = os.environ.get("CDB_ARTIFACT_FILENAME")
+        print("Getting SHA for artifact: " + artifact_filename)
+        artifact_sha = DemoPipe.calculate_sha_digest(artifact_filename)
+        print("Calculated digest: " + artifact_sha)
+        os.environ["CDB_ARTIFACT_SHA"] = artifact_sha
+
+    @staticmethod
+    def adapt_bitbucket_env_variables():
         bb_repo_slug = os.environ.get("BITBUCKET_REPO_SLUG")
         bb_commit = os.environ.get("BITBUCKET_COMMIT")
         bb_build_number = os.environ.get("BITBUCKET_BUILD_NUMBER")
         bb_workspace = os.environ.get("BITBUCKET_WORKSPACE")
 
         repo_url = f"https://bitbucket.org/{bb_workspace}/{bb_repo_slug}"
+        build_url = f"{repo_url}/addon/pipelines/home#!/results/{bb_build_number}"
 
         os.environ["CDB_ARTIFACT_GIT_URL"] = f"{repo_url}/commits/{bb_commit}"
         os.environ["CDB_ARTIFACT_GIT_COMMIT"] = bb_commit
         os.environ["CDB_BUILD_NUMBER"] = bb_build_number
-
-        build_url = f"{repo_url}/addon/pipelines/home#!/results/{bb_build_number}"
-
         os.environ["CDB_CI_BUILD_URL"] = build_url
-        artifact_filename = os.environ.get("CDB_ARTIFACT_FILENAME")
-
-        print("Getting SHA for artifact: " + artifact_filename)
-        artifact_sha = DemoPipe.calculate_sha_digest(artifact_filename)
-        print("Calculated digest: " + artifact_sha)
-        os.environ["CDB_ARTIFACT_SHA"] = artifact_sha
 
     @staticmethod
     def calculate_sha_digest(artifact_filename):
