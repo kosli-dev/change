@@ -189,8 +189,8 @@ def build_evidence_dict(is_compliant, evidence_type, description, build_url, use
     evidence = {"evidence_type": evidence_type, "contents": {
         "is_compliant": is_compliant,
         "url": "",
-        "description": "", 
-        user_data: user_data
+        "description": "",
+        "user_data": user_data
     }}
     evidence["contents"]["description"] = description
     evidence["contents"]["url"] = build_url
