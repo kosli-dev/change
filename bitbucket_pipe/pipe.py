@@ -49,8 +49,17 @@ class DemoPipe(Pipe):
         if command == "control_junit":
             self.adapt_control_junit_env_variables()
             cdb.cdb_utils.control_junit(pipeline_definition_file)
+        if command == "create_release":
+            self.adapt_create_release_variables()
+            cdb.cdb_utils.create_release(pipeline_definition_file)
 
         self.success(message="Success!")
+
+    @staticmethod
+    def adapt_create_release_variables():
+        DemoPipe.adapt_bitbucket_env_variables()
+        DemoPipe.compute_artifact_sha()
+        os.environ["CDB_SRC_REPO_ROOT"] = os.environ.get("BITBUCKET_CLONE_DIR")
 
     @staticmethod
     def adapt_control_junit_env_variables():

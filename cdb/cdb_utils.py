@@ -274,8 +274,7 @@ def get_artifacts_for_commit(host, api_token, project_config_file, commit):
     return artifact_list
 
 
-def create_release():
-    project_config_file = parse_cmd_line()
+def create_release(project_config_file):
     env = create_release_environment_variables()
     with open(project_config_file) as json_data_file:
         project_data = load_project_configuration(json_data_file)
