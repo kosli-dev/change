@@ -154,8 +154,9 @@ def control_junit(project_file):
     evidence_type = os.getenv('CDB_EVIDENCE_TYPE', "junit")
     description = "JUnit results xml verified by compliancedb/cdb_controls: " + message
     build_url = os.getenv('CDB_CI_BUILD_URL', "URL_UNDEFINED")
+    user_data = load_user_data()
 
-    evidence = build_evidence_dict(is_compliant, evidence_type, description, build_url)
+    evidence = build_evidence_dict(is_compliant, evidence_type, description, build_url, user_data)
     send_evidence(project_file, evidence)
 
 
@@ -166,10 +167,15 @@ def put_evidence(project_file):
     evidence_type = os.getenv('CDB_EVIDENCE_TYPE', "EVIDENCE_TYPE_UNDEFINED")
     description = os.getenv('CDB_DESCRIPTION', "UNDEFINED")
     build_url = os.getenv('CDB_CI_BUILD_URL', "URL_UNDEFINED")
-    user_data = os.getenv('CDB_USER_DATA', None)
+    user_data = load_user_data()
 
     evidence = build_evidence_dict(is_compliant, evidence_type, description, build_url, user_data)
     send_evidence(project_file, evidence)
+
+
+def load_user_data():
+    # Todo load from file, return None if not defined
+    return os.getenv('CDB_USER_DATA', None)
 
 
 def send_evidence(project_file, evidence):
@@ -185,13 +191,14 @@ def get_host():
     return os.getenv('CDB_HOST', CDB_SERVER)
 
 
-def build_evidence_dict(is_compliant, evidence_type, description, build_url, user_data={}):
+def build_evidence_dict(is_compliant, evidence_type, description, build_url, user_data=None):
     evidence = {"evidence_type": evidence_type, "contents": {
         "is_compliant": is_compliant,
         "url": "",
-        "description": "",
-        "user_data": user_data
+        "description": ""
     }}
+    if user_data is not None:
+        evidence["user_data"]: user_data
     evidence["contents"]["description"] = description
     evidence["contents"]["url"] = build_url
     return evidence
