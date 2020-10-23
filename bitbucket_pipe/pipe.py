@@ -59,7 +59,7 @@ class DemoPipe(Pipe):
     def adapt_create_release_variables():
         DemoPipe.adapt_bitbucket_env_variables()
         DemoPipe.compute_artifact_sha()
-        os.environ["CDB_SRC_REPO_ROOT"] = os.environ.get("BITBUCKET_CLONE_DIR")
+        os.environ["CDB_SRC_REPO_ROOT"] = os.environ.get("BITBUCKET_CLONE_DIR") + "/"
 
     @staticmethod
     def adapt_control_junit_env_variables():

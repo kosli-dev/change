@@ -227,7 +227,8 @@ def list_commits_between(repo, target_commit, base_commit):
 def repo_at(root):
     try:
         repo = Repository(root + '.git')
-    except _pygit2.GitError:
+    except _pygit2.GitError as err:
+        print("Error: " + str(err))
         return None
     return repo
 
