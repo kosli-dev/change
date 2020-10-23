@@ -23,7 +23,7 @@ The artifact sha256 is automatically calculated from the artifact file.
               CDB_COMMAND: 'put_artifact'
               CDB_API_TOKEN: $CDB_API_TOKEN
               CDB_IS_COMPLIANT: "TRUE"
-              CDB_ARTIFACT_FILENAME: "artifact.txt"
+              CDB_ARTIFACT_DOCKER_IMAGE: compliancedb/helloworld
 ```
 
 ## Control junit

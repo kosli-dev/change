@@ -46,6 +46,9 @@ class DemoPipe(Pipe):
         if command == "put_artifact":
             self.adapt_put_artifact_env_variables()
             cdb.cdb_utils.put_artifact(pipeline_definition_file)
+        if command == "put_artifact_image":
+            self.adapt_bitbucket_env_variables()
+            cdb.cdb_utils.put_artifact_image(pipeline_definition_file)
         if command == "control_junit":
             self.adapt_control_junit_env_variables()
             cdb.cdb_utils.control_junit(pipeline_definition_file)
@@ -73,11 +76,22 @@ class DemoPipe(Pipe):
 
     @staticmethod
     def compute_artifact_sha():
-        artifact_filename = os.environ.get("CDB_ARTIFACT_FILENAME")
-        print("Getting SHA for artifact: " + artifact_filename)
-        artifact_sha = DemoPipe.calculate_sha_digest(artifact_filename)
-        print("Calculated digest: " + artifact_sha)
-        os.environ["CDB_ARTIFACT_SHA"] = artifact_sha
+        artifact_filename = os.environ.get("CDB_ARTIFACT_FILENAME", None)
+        artifact_docker_image = os.environ.get("CDB_ARTIFACT_DOCKER_IMAGE", None)
+
+        if artifact_filename is not None:
+            print("Getting SHA for artifact: " + artifact_filename)
+            artifact_sha = DemoPipe.calculate_sha_digest(artifact_filename)
+            print("Calculated digest: " + artifact_sha)
+            os.environ["CDB_ARTIFACT_SHA"] = artifact_sha
+        elif artifact_docker_image is not None:
+            print("Getting SHA for docker image: " + artifact_filename)
+            artifact_sha = DemoPipe.calculate_sha_digest(artifact_docker_image)
+            print("Calculated digest: " + artifact_sha)
+            os.environ["CDB_ARTIFACT_SHA"] = artifact_sha
+        else:
+            raise Exception('Error: CDB_ARTIFACT_FILENAME or CDB_ARTIFACT_DOCKER_IMAGE must be defined')
+
 
     @staticmethod
     def adapt_bitbucket_env_variables():
