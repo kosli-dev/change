@@ -1,7 +1,9 @@
 import getopt
 import json
 import os
+import subprocess
 import sys
+
 import docker
 import requests as req
 from junitparser import JUnitXml
@@ -78,15 +80,21 @@ def get_image_details():
     docker_image = os.getenv('CDB_DOCKER_IMAGE', "NO_DOCKER_IMAGE_FOUND")
     sha256_digest = os.getenv('CDB_ARTIFACT_SHA', None)
     if sha256_digest is None:
-        client = docker.from_env()
-        print("Inspecting docker image for sha256Digest")
-        image = client.images.get(docker_image)
-        sha256_digest = image.attrs["RepoDigests"][0].split(":")[1]
+        repo_digest = repo_digest_for_docker_image(docker_image)
+        sha256_digest = repo_digest
     else:
         print("Docker image digest found from environment variable")
 
     print("IMAGE DIGEST: " + sha256_digest)
     return docker_image, sha256_digest
+
+
+def repo_digest_for_docker_image(docker_image):
+    client = docker.from_env()
+    print("Inspecting docker image for sha256Digest")
+    image = client.images.get(docker_image)
+    repo_digest = image.attrs["RepoDigests"][0].split(":")[1]
+    return repo_digest
 
 
 def env_is_compliant():
@@ -442,3 +450,34 @@ def put_artifact_image(project_file):
     with open(project_file) as project_file_contents:
         create_artifact(api_token, host, project_file_contents, sha256_digest, docker_image, description, git_commit,
                         commit_url, build_url, is_compliant)
+
+
+def set_artifact_sha_env_variable_from_file_or_image():
+    # Only set if not already in environment
+    if "CDB_ARTIFACT_SHA" in os.environ:
+        return
+
+    artifact_filename = os.environ.get("CDB_ARTIFACT_FILENAME", None)
+    artifact_docker_image = os.environ.get("CDB_ARTIFACT_DOCKER_IMAGE", None)
+
+    if artifact_filename is not None:
+        print("Getting SHA for artifact: " + artifact_filename)
+        artifact_sha = calculate_sha_digest(artifact_filename)
+        print("Calculated digest: " + artifact_sha)
+        os.environ["CDB_ARTIFACT_SHA"] = artifact_sha
+    elif artifact_docker_image is not None:
+        print("Getting SHA for docker image: " + artifact_docker_image)
+        artifact_sha = repo_digest_for_docker_image(artifact_docker_image)
+        print("Calculated digest: " + artifact_sha)
+        os.environ["CDB_ARTIFACT_SHA"] = artifact_sha
+    else:
+        raise Exception('Error: CDB_ARTIFACT_FILENAME or CDB_ARTIFACT_DOCKER_IMAGE must be defined')
+
+
+def calculate_sha_digest(artifact_filename):
+    if not os.path.isfile(artifact_filename):
+        raise FileNotFoundError
+    output = subprocess.check_output(["openssl", "dgst", "-sha256", artifact_filename])
+    digest_in_bytes = output.split()[1]
+    artifact_sha = digest_in_bytes.decode('utf-8')
+    return artifact_sha
