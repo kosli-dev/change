@@ -77,7 +77,7 @@ def parse_cmd_line():
 
 
 def get_image_details():
-    docker_image = os.getenv('CDB_DOCKER_IMAGE', "NO_DOCKER_IMAGE_FOUND")
+    docker_image = os.getenv('CDB_ARTIFACT_DOCKER_IMAGE', "NO_DOCKER_IMAGE_FOUND")
     sha256_digest = os.getenv('CDB_ARTIFACT_SHA', None)
     if sha256_digest is None:
         repo_digest = repo_digest_for_docker_image(docker_image)
@@ -405,7 +405,7 @@ def hello_world():
 
 
 def put_artifact(project_file):
-    # Get the SHA and Filename from string provided in CDB_DOCKER_IMAGE
+    # Get the SHA and Filename from string provided in CDB_ARTIFACT_DOCKER_IMAGE
     filename = os.getenv('CDB_ARTIFACT_FILENAME', "UNDEFINED")
     if filename == "UNDEFINED":
         print("Cannot find CDB_ARTIFACT_FILENAME in the environment variables")
@@ -436,7 +436,7 @@ def put_artifact(project_file):
 
 
 def put_artifact_image(project_file):
-    # Get the SHA and Image from string provided in CDB_DOCKER_IMAGE
+    # Get the SHA and Image from string provided in CDB_ARTIFACT_DOCKER_IMAGE
     docker_image, sha256_digest = get_image_details()
     print("Publish artifact to ComplianceDB")
     host = os.getenv('CDB_HOST', CDB_SERVER)

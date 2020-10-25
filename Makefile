@@ -107,7 +107,7 @@ put_artifact_image:
 			--env CDB_ARTIFACT_GIT_COMMIT=${CDB_ARTIFACT_GIT_COMMIT} \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
 			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
-			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
 	        ${IMAGE} python -m cdb.put_artifact_image -p /data/project.json
 
 publish_test_results:
@@ -121,7 +121,7 @@ publish_test_results:
 			--env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
 			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
-			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
 			${IMAGE} python -m cdb.put_evidence -p /data/project.json
 
 
@@ -134,7 +134,7 @@ control_and_publish_junit_results:
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
-			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
 			${IMAGE} python -m cdb.control_junit -p /data/project.json
 
 
@@ -149,7 +149,7 @@ publish_evidence:
 			--env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
 			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
-			--env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
 			${IMAGE} python -m cdb.put_evidence -p /data/project.json
 
 publish_release:

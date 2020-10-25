@@ -63,7 +63,7 @@ docker run --rm --name comply \
         --env CDB_ARTIFACT_GIT_COMMIT=${CDB_ARTIFACT_GIT_COMMIT} \
         --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
         --env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
-        --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+        --env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
         --env CDB_API_TOKEN=${CDB_API_TOKEN} \
         compliancedb/cdb_controls python -m cdb.put_artifact_image -p /data/pipeline.json
 ```
@@ -79,7 +79,7 @@ This command expect the following environment variables:
 | CDB_ARTIFACT_GIT_COMMIT | Required | The sha of the git commit that produced this build |
 | CDB_CI_BUILD_URL | Required | Link to the build in the ci system |
 | CDB_BUILD_NUMBER | Required | Build number |
-| CDB_DOCKER_IMAGE | Required | The resulting docker image |
+| CDB_ARTIFACT_DOCKER_IMAGE | Required | The resulting docker image |
 
 
 ## Publish evidence
@@ -96,7 +96,7 @@ docker run --rm --name comply \
         --env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
         --env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
         --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
-        --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+        --env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
         compliancedb/cdb_controls python -m cdb.put_evidence -p /data/pipeline.json
 ```
 
@@ -111,14 +111,14 @@ This command expect the following environment variables:
 | CDB_DESCRIPTION | Required | The description for the evidence |
 | CDB_BUILD_NUMBER | Required | Build number |
 | CDB_CI_BUILD_URL | Required | Link to the build information |
-| CDB_DOCKER_IMAGE | Required | The docker image that evidence is provided for |
+| CDB_ARTIFACT_DOCKER_IMAGE | Required | The docker image that evidence is provided for |
 
 
 ## Control JUnit results
 
 To verify the results a junit test xml, you can use the `control_junit` command.  There are two options for deciding 
 the artifact `sha256`: either you can provide it with the `CDB_ARTIFACT_SHA` environment variable, or if this is not 
-set the control will try to get it via the docker socket by inspecting the docker image given with `CDB_DOCKER_IMAGE`.
+set the control will try to get it via the docker socket by inspecting the docker image given with `CDB_ARTIFACT_DOCKER_IMAGE`.
 
 ```shell script
 docker run --rm --name comply \
@@ -129,7 +129,7 @@ docker run --rm --name comply \
         --env CDB_API_TOKEN=${CDB_API_TOKEN} \
         --env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
         --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
-        --env CDB_DOCKER_IMAGE=${CDB_DOCKER_IMAGE} \
+        --env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
         ${IMAGE} python -m cdb.control_junit -p /data/pipeline.json
 ```
 
@@ -140,7 +140,7 @@ docker run --rm --name comply \
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
 | CDB_EVIDENCE_TYPE | Required | The evidence type for the results |
 | CDB_CI_BUILD_URL | Required | The URL to link to from ComplianceDB |
-| CDB_ARTIFACT_SHA or CDB_DOCKER_IMAGE | Required | The artifact sha to report this evidence against |
+| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE | Required | The artifact sha to report this evidence against |
 
 ## Create a release from git history
 

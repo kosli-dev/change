@@ -7,7 +7,7 @@ set -e
 # It relies on the following environment variables being present
 #
 #   $CDB_API_TOKEN - Your api token for ComplianceDB
-#   $CDB_DOCKER_IMAGE - The docker image specification
+#   $CDB_ARTIFACT_DOCKER_IMAGE - The docker image specification
 #   $CDB_TARGET_SRC_COMMITISH - The commit that is going into produciton
 #   $CDB_BASE_SRC_COMMITISH - The commit from the previous release
 #   $CDB_RELEASE_DESCRIPTION - The description for the list
@@ -34,8 +34,8 @@ if [[ -z "$CDB_PROJECT" ]]; then
     exit 1
 fi
 
-if [[ -z "$CDB_DOCKER_IMAGE" ]]; then
-    echo "Must provide CDB_DOCKER_IMAGE in environment" 1>&2
+if [[ -z "$CDB_ARTIFACT_DOCKER_IMAGE" ]]; then
+    echo "Must provide CDB_ARTIFACT_DOCKER_IMAGE in environment" 1>&2
     exit 1
 fi
 
@@ -71,8 +71,8 @@ commits=[$(echo "${commits[*]}" | awk -v q="\"" '{ print q$1q }' | paste -s -d, 
 
 echo 'Relevent commits found in git'="${commits[@]}"
 
-ARTIFACT_SHA=$(docker inspect --format='{{index .RepoDigests 0}}' $CDB_DOCKER_IMAGE | sed 's/.*://')
-echo "Found repoDigest of $ARTIFACT_SHA for $CDB_DOCKER_IMAGE"
+ARTIFACT_SHA=$(docker inspect --format='{{index .RepoDigests 0}}' $CDB_ARTIFACT_DOCKER_IMAGE | sed 's/.*://')
+echo "Found repoDigest of $ARTIFACT_SHA for $CDB_ARTIFACT_DOCKER_IMAGE"
 
 echo "$RELEASE_TEMPLATE" \
   | jq --argjson commits "${commits[@]}" '.src_commit_list = $commits' \
