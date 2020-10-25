@@ -25,8 +25,8 @@ def get_pull_request_for_current_commit():
     workspace = os.getenv('BITBUCKET_WORKSPACE', None)
     repository = os.getenv('BITBUCKET_REPO_SLUG', None)
     commit = os.getenv('BITBUCKET_COMMIT', None)
-    user = os.getenv('BITBUCKET_USER', None)
-    password = os.getenv('BITBUCKET_PWD', None)
+    user = os.getenv('BITBUCKET_API_USER', None)
+    password = os.getenv('BITBUCKET_API_TOKEN', None)
     pull_requests = get_pull_requests_from_bitbucket_api(
         workspace=workspace, repository=repository, commit=commit, username=user, password=password)
     return pull_requests
