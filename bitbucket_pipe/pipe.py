@@ -2,10 +2,11 @@ import os
 import sys
 from bitbucket_pipes_toolkit import Pipe, get_logger
 
-from cdb.cdb_utils import set_artifact_sha_env_variable_from_file_or_image
 
 sys.path.append('/app/')
 import cdb.cdb_utils
+import cdb.bitbucket
+from cdb.cdb_utils import set_artifact_sha_env_variable_from_file_or_image
 
 
 schema = {
@@ -53,6 +54,9 @@ class DemoPipe(Pipe):
         if command == "control_junit":
             self.adapt_control_junit_env_variables()
             cdb.cdb_utils.control_junit(pipeline_definition_file)
+        if command == "control_bitbucket_pr":
+            set_artifact_sha_env_variable_from_file_or_image()
+            cdb.bitbucket.put_bitbucket_pull_request(pipeline_definition_file)
         if command == "create_release":
             self.adapt_create_release_variables()
             cdb.cdb_utils.create_release(pipeline_definition_file)
