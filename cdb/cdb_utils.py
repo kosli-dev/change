@@ -155,8 +155,7 @@ def is_compliant_tests_directory(test_results_directory):
 def control_junit(project_file):
     print("Publish evidence to ComplianceDB")
 
-    # TODO parameterize this location
-    junit_results_dir = "/data/junit/"
+    junit_results_dir = os.getenv('CDB_TEST_RESULTS_DIR', '/data/junit/')
 
     is_compliant, message = is_compliant_tests_directory(junit_results_dir)
     evidence_type = os.getenv('CDB_EVIDENCE_TYPE', "junit")
@@ -481,3 +480,7 @@ def calculate_sha_digest(artifact_filename):
     digest_in_bytes = output.split()[1]
     artifact_sha = digest_in_bytes.decode('utf-8')
     return artifact_sha
+
+
+def create_deployment():
+    pass
