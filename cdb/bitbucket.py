@@ -9,11 +9,11 @@ from cdb.cdb_utils import build_evidence_dict, send_evidence
 
 def put_bitbucket_pull_request(project_config_file):
 
-    pull_requests = get_pull_request_for_current_commit()
+    is_compliant, pull_requests = get_pull_request_for_current_commit()
 
     print("Found pull request info: " + str(pull_requests))
     evidence = build_evidence_dict(
-        is_compliant=True,
+        is_compliant=is_compliant,
         evidence_type="pull_request",
         description="Bitbucket pull request",
         build_url=pull_requests[0]["pullRequestURL"])
@@ -34,8 +34,10 @@ def get_pull_request_for_current_commit():
 
 def get_pull_requests_from_bitbucket_api(workspace, repository, commit, username, password):
     pull_requests_evidence = []
+    is_compliant = False
 
     url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repository}/commit/{commit}/pullrequests"
+    print("Getting pull requests from " + url)
     r = requests.get(url, auth=(username, password))
     if r.status_code == 200:
         pull_requests_json = json.loads(r.text)
@@ -61,9 +63,10 @@ def get_pull_requests_from_bitbucket_api(workspace, repository, commit, username
         sys.exit(2)
     else:
         print(f"Exception occured in fetching pull requests. Http return code is {r.status_code}")
+        print("    " + r.text)
         sys.exit(3)
 
-    return pull_requests_evidence
+    return is_compliant, pull_requests_evidence
 
 
 def get_pull_request_details_from_bitbucket(pr_evidence, pr_api_url, username, password):
