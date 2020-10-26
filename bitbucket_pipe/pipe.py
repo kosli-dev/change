@@ -2,6 +2,7 @@ import os
 import sys
 from bitbucket_pipes_toolkit import Pipe, get_logger
 
+from cdb.bitbucket import get_bitbucket_repo_url
 
 sys.path.append('/app/')
 import cdb.cdb_utils
@@ -85,12 +86,11 @@ class DemoPipe(Pipe):
 
     @staticmethod
     def adapt_bitbucket_env_variables():
-        bb_repo_slug = os.environ.get("BITBUCKET_REPO_SLUG")
+        repo_url = get_bitbucket_repo_url()
+
         bb_commit = os.environ.get("BITBUCKET_COMMIT")
         bb_build_number = os.environ.get("BITBUCKET_BUILD_NUMBER")
-        bb_workspace = os.environ.get("BITBUCKET_WORKSPACE")
 
-        repo_url = f"https://bitbucket.org/{bb_workspace}/{bb_repo_slug}"
         build_url = f"{repo_url}/addon/pipelines/home#!/results/{bb_build_number}"
 
         os.environ["CDB_ARTIFACT_GIT_URL"] = f"{repo_url}/commits/{bb_commit}"
