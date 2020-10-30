@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-from cdb.cdb_utils import put_pipeline, parse_cmd_line
+from cdb.cdb_utils import parse_cmd_line
+from cdb.put_pipeline import put_pipeline
 
 
 def main():

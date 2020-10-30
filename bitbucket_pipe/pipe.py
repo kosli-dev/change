@@ -1,6 +1,11 @@
 import sys
 from bitbucket_pipes_toolkit import Pipe, get_logger
 
+import cdb.control_junit
+import cdb.create_release
+import cdb.put_artifact
+import cdb.put_artifact_image
+import cdb.put_pipeline
 from cdb.bitbucket import get_bitbucket_repo_url, adapt_put_artifact_image_env_variables, \
     adapt_create_release_variables, adapt_control_junit_env_variables, adapt_put_artifact_env_variables
 
@@ -45,22 +50,22 @@ class BitbucketPipe(Pipe):
         print("API_TOKEN: " + api_token)
 
         if command == "put_pipeline":
-            cdb.cdb_utils.put_pipeline(pipeline_definition_file)
+            cdb.put_pipeline.put_pipeline(pipeline_definition_file)
         if command == "put_artifact":
             adapt_put_artifact_env_variables()
-            cdb.cdb_utils.put_artifact(pipeline_definition_file)
+            cdb.put_artifact.put_artifact(pipeline_definition_file)
         if command == "put_artifact_image":
             adapt_put_artifact_image_env_variables()
-            cdb.cdb_utils.put_artifact_image(pipeline_definition_file)
+            cdb.put_artifact_image.put_artifact_image(pipeline_definition_file)
         if command == "control_junit":
             adapt_control_junit_env_variables()
-            cdb.cdb_utils.control_junit(pipeline_definition_file)
+            cdb.control_junit.control_junit(pipeline_definition_file)
         if command == "control_bitbucket_pr":
             set_artifact_sha_env_variable_from_file_or_image()
             cdb.bitbucket.put_bitbucket_pull_request(pipeline_definition_file)
         if command == "create_release":
             adapt_create_release_variables()
-            cdb.cdb_utils.create_release(pipeline_definition_file)
+            cdb.create_release.create_release(pipeline_definition_file)
 
         self.success(message="Success!")
 

@@ -2,8 +2,8 @@ from unittest import mock
 
 from junitparser import JUnitXml, TestCase, Skipped, Error, Failure, TestSuite
 
-from cdb.cdb_utils import is_compliant_suite, load_test_results, is_compliant_test_results, ls_test_results, \
-    is_compliant_tests_directory
+from cdb.control_junit import is_compliant_suite, ls_test_results, is_compliant_tests_directory, load_test_results, \
+    is_compliant_test_results
 
 
 def test_junit_parser_control_passes_WHEN_no_failures_AND_no_errors():
@@ -182,8 +182,8 @@ def test_list_test_result_files_filters_failsafe_summary_xml():
     assert files == ['tests/failsafe_examples/TEST-com.compliancedb.example.Example1Test.xml']
 
 
-@mock.patch('cdb.cdb_utils.is_compliant_test_results')
-@mock.patch('cdb.cdb_utils.ls_test_results')
+@mock.patch('cdb.control_junit.is_compliant_test_results')
+@mock.patch('cdb.control_junit.ls_test_results')
 def test_is_compliant_tests_directory_passes_if_every_file_has_no_failures(mocked_ls, mocked_results):
     mocked_ls.return_value = \
         ['tests/surefire_examples/TEST-com.compliancedb.example.Example1Test.xml',
@@ -197,8 +197,8 @@ def test_is_compliant_tests_directory_passes_if_every_file_has_no_failures(mocke
     assert message == "All tests passed in 2 test suites"
 
 
-@mock.patch('cdb.cdb_utils.is_compliant_test_results')
-@mock.patch('cdb.cdb_utils.ls_test_results')
+@mock.patch('cdb.control_junit.is_compliant_test_results')
+@mock.patch('cdb.control_junit.ls_test_results')
 def test_is_compliant_tests_directory_fails_if_a_file_has_failures(mocked_ls, mocked_results):
     mocked_ls.return_value = \
         ['tests/surefire_examples/TEST-com.compliancedb.example.Example1Test.xml',
