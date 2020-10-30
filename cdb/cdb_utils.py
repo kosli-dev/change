@@ -11,6 +11,8 @@ from pygit2 import Repository, _pygit2
 from pygit2._pygit2 import GIT_SORT_TIME
 from requests.auth import HTTPBasicAuth
 
+from cdb.api_schema import ApiSchema
+from cdb.http import http_get_json, put_payload, http_post_payload
 from cdb.settings import CDB_SERVER
 
 CMD_HELP = 'ensure_project.py -p <project.json>'
@@ -42,21 +44,15 @@ def create_artifact(api_token, host, project_config_file, sha256, filename, desc
         "build_url": build_url,
         "is_compliant": is_compliant
     }
-    url = url_for_artifacts(host, project_data)
+    url = ApiSchema.url_for_artifacts(host, project_data)
     put_payload(create_artifact_payload, url, api_token)
 
 
 def add_evidence(api_token, host, project_file_contents, sha256_digest, evidence):
     project_data = load_project_configuration(project_file_contents)
-    url = url_for_artifact(host, project_data, sha256_digest)
+    url = ApiSchema.url_for_artifact(host, project_data, sha256_digest)
 
     put_payload(evidence, url, api_token)
-
-
-def rchop(thestring, ending):
-    if thestring.endswith(ending):
-        return thestring[:-len(ending)]
-    return thestring
 
 
 def parse_cmd_line():
@@ -277,7 +273,7 @@ def get_api_token():
 
 
 def get_artifacts_for_commit(host, api_token, project_config_file, commit):
-    url = url_for_commit(host, project_config_file, commit)
+    url = ApiSchema.url_for_commit(host, project_config_file, commit)
     artifact_list = http_get_json(url, api_token)
     return artifact_list
 
@@ -295,7 +291,7 @@ def create_release(project_config_file):
 
         commit_list = list_commits_between(repo_at(env["repo_path"]), env["target_src_commit"], env["base_src_commit"])
         release_json = build_release_json(env["artifact_sha"], env["description"], commit_list)
-        url = url_for_releases(env["host"], project_data)
+        url = ApiSchema.url_for_releases(env["host"], project_data)
         http_post_payload(release_json, url, env["api_token"])
 
 
@@ -307,7 +303,7 @@ def control_latest_release():
 
     with open(project_config_file) as json_data_file:
         project_data = load_project_configuration(json_data_file)
-        url = url_for_release(host, project_data, "latest")
+        url = ApiSchema.url_for_release(host, project_data, "latest")
         release = http_get_json(url, api_token)
 
         if release["target_artifact"] != artifact_sha:
@@ -320,66 +316,6 @@ def control_latest_release():
             print(f"    released sha: {release['target_artifact']} ")
             print(f"    expected sha: {artifact_sha} ")
 
-# URL mappings
-
-def url_for_releases(host, project_data):
-    return url_for_project(host, project_data) + '/releases/'
-
-
-def url_for_commit(host, project_data, commit):
-    return url_for_project(host, project_data) + '/commits/' + commit
-
-
-def url_for_artifacts(host, project_data):
-    return url_for_project(host, project_data) + '/artifacts/'
-
-
-def url_for_artifact(host, project_data, sha256_digest):
-    return url_for_artifacts(host, project_data) + sha256_digest
-
-
-def url_for_owner_projects(host, project_data):
-    return host + '/api/v1/projects/' + project_data["owner"] + "/"
-
-
-def url_for_project(host, project_data):
-    return host + '/api/v1/projects/' + project_data["owner"] + '/' + project_data["name"]
-
-
-def url_for_artifacts(host, project_data):
-    return url_for_project(host, project_data) + '/artifacts/'
-
-
-def url_for_release(host, project_data, release_number):
-    return url_for_releases(host, project_data) + release_number
-
-
-# HTTP methods
-
-def http_get_json(url, api_token):
-    print("Getting this endpoint: " + url)
-    resp = req.get(url, auth=HTTPBasicAuth(api_token, 'unused'))
-    print(resp.text)
-    return resp.json()
-
-
-def put_payload(payload, url, api_token):
-    headers = {"Content-Type": "application/json"}
-    print("Putting this payload:")
-    print(json.dumps(payload, sort_keys=True, indent=4))
-    print("To url: " + url)
-    resp = req.put(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
-    print(resp.text)
-
-
-def http_post_payload(payload, url, api_token):
-    headers = {"Content-Type": "application/json"}
-    print("Putting this payload:")
-    print(json.dumps(payload, sort_keys=True, indent=4))
-    print("To url: " + url)
-    resp = req.post(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
-    print(resp.text)
-
 
 def put_pipeline(project_file):
     print("Ensure Project - loading " + project_file)
@@ -387,7 +323,7 @@ def put_pipeline(project_file):
         project_data = load_project_configuration(json_data_file)
 
         host = os.getenv('CDB_HOST', CDB_SERVER)
-        projects_url = url_for_owner_projects(host, project_data)
+        projects_url = ApiSchema.url_for_owner_projects(host, project_data)
 
         api_token = os.getenv('CDB_API_TOKEN', 'NO_API_TOKEN_DEFINED')
 

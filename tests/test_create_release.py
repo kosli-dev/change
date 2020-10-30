@@ -15,11 +15,11 @@ Put the JSON
 
 """
 from pathlib import Path
-
 import pytest
 
 from cdb.cdb_utils import list_commits_between, \
-    repo_at, build_release_json, latest_artifact_for_commit, url_for_releases, url_for_commit
+    repo_at, build_release_json, latest_artifact_for_commit
+from cdb.api_schema import ApiSchema
 
 TEST_REPO_ROOT = "/test_src/"
 
@@ -121,11 +121,11 @@ def test_parse_artifact_by_commit_when_no_artifacts_raises_error():
 
 def test_url_for_releases():
     partial_project_data = {"name": "hadroncollider", "owner": "cern"}
-    url = url_for_releases(host="http://localhost", project_data=partial_project_data)
+    url = ApiSchema.url_for_releases(host="http://localhost", project_data=partial_project_data)
     assert url == "http://localhost/api/v1/projects/cern/hadroncollider/releases/"
 
 
 def test_url_for_commit():
     partial_project_data = {"name": "hadroncollider", "owner": "cern"}
-    url = url_for_commit(host="http://localhost", project_data=partial_project_data, commit="12345678")
+    url = ApiSchema.url_for_commit(host="http://localhost", project_data=partial_project_data, commit="12345678")
     assert url == "http://localhost/api/v1/projects/cern/hadroncollider/commits/12345678"

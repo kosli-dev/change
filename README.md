@@ -138,7 +138,7 @@ docker run --rm --name comply \
 |------|-----|-----|
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
-| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE | Required | The artifact sha to report this evidence against |
+| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILE | Required | The artifact sha to report this evidence against |
 | CDB_EVIDENCE_TYPE | Required | The evidence type for the results |
 | CDB_CI_BUILD_URL | Required | The URL to link to from ComplianceDB |
 
@@ -179,7 +179,7 @@ docker run --rm --name comply \
 |------|-----|-----|
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
-| CDB_ARTIFACT_SHA | Required | The SHA256 for the artifact that is being deployed  |
+| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILE | Required | The artifact sha that is being deployed |
 | CDB_ENVIRONMENT | Required | The environment the artifact is being deployed to |
 | USER_DATA_FILE | Optional | The user data to embed in the deployment, if any (should be mounted in the container) |
 
