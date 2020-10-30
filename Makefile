@@ -190,5 +190,5 @@ create_deployment:
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
 			--env CDB_ENVIRONMENT=test \
-			--env CDB_DESCRIPTION="Fake deployment for testing" \
+			--env CDB_DESCRIPTION=${CDB_DESCRIPTION} \
 			${IMAGE} python -m cdb.create_deployment -p /data/project.json
