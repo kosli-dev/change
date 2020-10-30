@@ -181,7 +181,8 @@ docker run --rm --name comply \
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
 | CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILE | Required | The artifact sha that is being deployed |
 | CDB_ENVIRONMENT | Required | The environment the artifact is being deployed to |
-| USER_DATA_FILE | Optional | The user data to embed in the deployment, if any (should be mounted in the container) |
+| CDB_DESCRIPTION | Optional | A description for the deployment |
+| CDB_USER_DATA_FILE | Optional | The user data to embed in the deployment, if any (should be mounted in the container) |
 
 ## Control that an artifact is latest released
 

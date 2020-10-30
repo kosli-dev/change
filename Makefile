@@ -10,6 +10,8 @@ CONTAINER := cdb_controls
 REPOSITORY   := registry.gitlab.com/compliancedb/compliancedb/${APP}
 SERVER_PORT := 8001
 
+CDB_HOST=https://app.compliancedb.com
+
 # all non-latest images - for prune target
 IMAGES := $(shell docker image ls --format '{{.Repository}}:{{.Tag}}' $(NAME) | grep -v latest)
 
@@ -179,3 +181,14 @@ control_latest_release:
 			${IMAGE} python -m cdb.control_latest_release -p /data/project.json
 
 
+create_deployment:
+	docker run --rm --name comply \
+			--volume ${PWD}/project-master.json:/data/project.json \
+			--volume ${PWD}:/src \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--env CDB_HOST=${CDB_HOST} \
+			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
+			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
+			--env CDB_ENVIRONMENT=test \
+			--env CDB_DESCRIPTION="Fake deployment for testing" \
+			${IMAGE} python -m cdb.create_deployment -p /data/project.json
