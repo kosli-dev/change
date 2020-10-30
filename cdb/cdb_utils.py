@@ -119,8 +119,15 @@ def calculate_sha_digest_for_docker_image(docker_image):
 
 
 def load_user_data():
-    # Todo load from file, return None if not defined
-    return os.getenv('CDB_USER_DATA', None)
+    """
+    Loads user data from the file specified in CDB_USER_DATA
+    If CDB_USER_DATA unspecified, returns None
+    """
+    user_data_file = os.getenv('CDB_USER_DATA', None)
+    if user_data_file is None:
+        return None
+    return json.load(user_data_file)
+
 
 
 def send_evidence(project_file, evidence):
