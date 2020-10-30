@@ -4,7 +4,7 @@ import sys
 
 import requests
 
-from cdb.cdb_utils import build_evidence_dict, send_evidence
+from cdb.cdb_utils import build_evidence_dict, send_evidence, set_artifact_sha_env_variable_from_file_or_image
 
 
 def put_bitbucket_pull_request(project_config_file):
@@ -112,3 +112,38 @@ def get_bitbucket_repo_url():
     bb_repo_slug = os.environ.get("BITBUCKET_REPO_SLUG")
     repo_url = f"https://bitbucket.org/{bb_workspace}/{bb_repo_slug}"
     return repo_url
+
+
+def adapt_put_artifact_image_env_variables():
+    adapt_bitbucket_env_variables()
+    set_artifact_sha_env_variable_from_file_or_image()
+
+
+def adapt_create_release_variables():
+    adapt_bitbucket_env_variables()
+    set_artifact_sha_env_variable_from_file_or_image()
+    os.environ["CDB_SRC_REPO_ROOT"] = os.environ.get("BITBUCKET_CLONE_DIR") + "/"
+
+
+def adapt_control_junit_env_variables():
+    adapt_bitbucket_env_variables()
+    set_artifact_sha_env_variable_from_file_or_image()
+
+
+def adapt_put_artifact_env_variables():
+    adapt_bitbucket_env_variables()
+    set_artifact_sha_env_variable_from_file_or_image()
+
+
+def adapt_bitbucket_env_variables():
+    repo_url = get_bitbucket_repo_url()
+
+    bb_commit = os.environ.get("BITBUCKET_COMMIT")
+    bb_build_number = os.environ.get("BITBUCKET_BUILD_NUMBER")
+
+    build_url = f"{repo_url}/addon/pipelines/home#!/results/{bb_build_number}"
+
+    os.environ["CDB_ARTIFACT_GIT_URL"] = f"{repo_url}/commits/{bb_commit}"
+    os.environ["CDB_ARTIFACT_GIT_COMMIT"] = bb_commit
+    os.environ["CDB_BUILD_NUMBER"] = bb_build_number
+    os.environ["CDB_CI_BUILD_URL"] = build_url
