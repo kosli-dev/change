@@ -129,7 +129,6 @@ def load_user_data():
     return json.load(user_data_file)
 
 
-
 def send_evidence(project_file, evidence):
     print(evidence)
     with open(project_file) as project_file_contents:

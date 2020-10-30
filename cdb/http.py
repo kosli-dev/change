@@ -21,7 +21,7 @@ def put_payload(payload, url, api_token):
         resp = req.put(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
         print(resp.text)
     else:
-        print("DRY RUN: Put not requested")
+        print("DRY RUN: Put not sent")
 
 
 def http_post_payload(payload, url, api_token):
@@ -29,5 +29,8 @@ def http_post_payload(payload, url, api_token):
     print("Putting this payload:")
     print(json.dumps(payload, sort_keys=True, indent=4))
     print("To url: " + url)
-    resp = req.post(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
-    print(resp.text)
+    if os.getenv('CDB_DRY_RUN', "FALSE") != "TRUE":
+        resp = req.post(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
+        print(resp.text)
+    else:
+        print("DRY RUN: POST not sent")
