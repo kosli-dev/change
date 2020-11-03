@@ -5,3 +5,4 @@ pytest-cov
 junitparser
 pygit2==1.2.1
 pytest-mock
+pyfakefs

@@ -125,6 +125,10 @@ def adapt_create_release_variables():
     os.environ["CDB_SRC_REPO_ROOT"] = os.environ.get("BITBUCKET_CLONE_DIR") + "/"
 
 
+def adapt_create_deployment_variables():
+    adapt_bitbucket_env_variables()
+
+
 def adapt_control_junit_env_variables():
     adapt_bitbucket_env_variables()
     set_artifact_sha_env_variable_from_file_or_image()

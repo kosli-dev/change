@@ -126,7 +126,8 @@ def load_user_data():
     user_data_file = os.getenv('CDB_USER_DATA', None)
     if user_data_file is None:
         return None
-    return json.load(user_data_file)
+    with open(user_data_file) as file:
+        return json.load(file)
 
 
 def send_evidence(project_file, evidence):

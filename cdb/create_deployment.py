@@ -3,7 +3,7 @@ import os
 
 from cdb.api_schema import ApiSchema
 from cdb.cdb_utils import set_artifact_sha_env_variable_from_file_or_image, load_user_data, parse_cmd_line, \
-    send_evidence, load_project_configuration, get_host, get_api_token
+    load_project_configuration, get_host, get_api_token
 from cdb.http import http_post_payload
 
 

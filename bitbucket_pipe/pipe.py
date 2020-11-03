@@ -3,6 +3,7 @@ from bitbucket_pipes_toolkit import Pipe, get_logger
 
 import cdb.control_junit
 import cdb.create_release
+import cdb.create_deployment
 import cdb.put_artifact
 import cdb.put_artifact_image
 import cdb.put_pipeline
@@ -66,6 +67,8 @@ class BitbucketPipe(Pipe):
         if command == "create_release":
             adapt_create_release_variables()
             cdb.create_release.create_release(pipeline_definition_file)
+        if command == "create_deployment":
+            cdb.create_deployment.create_deployment(pipeline_definition_file)
 
         self.success(message="Success!")
 
