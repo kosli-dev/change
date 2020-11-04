@@ -9,9 +9,9 @@ from cdb.http import http_post_payload
 
 def create_deployment_payload(env=os.environ):
     deployment = {}
-    deployment["artifact_sha256"] = env.get('CDB_ARTIFACT_SHA', None)
-    deployment["environment"] = env.get('CDB_ENVIRONMENT', None)
-    deployment["description"] = env.get('CDB_DESCRIPTION', None)
+    deployment["artifact_sha256"] = env.get('CDB_ARTIFACT_SHA', 'None')
+    deployment["environment"] = env.get('CDB_ENVIRONMENT', 'None')
+    deployment["description"] = env.get('CDB_DESCRIPTION', 'None')
 
     if env.get("CDB_USER_DATA"):
         deployment["user_data"] = load_user_data()
