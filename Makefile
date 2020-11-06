@@ -192,3 +192,21 @@ create_deployment:
 			--env CDB_ENVIRONMENT=test \
 			--env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
 			${IMAGE} python -m cdb.create_deployment -p /data/project.json
+
+
+## Test dry runs
+dry_run_put_artifact:
+	docker run --rm --name comply \
+ 			--volume ${PWD}/${PROJFILE}:/data/project.json \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume=${PWD}/Dockerfile:/data/artifact.txt \
+			--env CDB_HOST=${CDB_HOST} \
+			--env CDB_API_TOKEN="${CDB_API_TOKEN}" \
+			--env CDB_IS_COMPLIANT="TRUE" \
+			--env CDB_ARTIFACT_GIT_URL="http://github/me/project/commits/3451345234523453245" \
+			--env CDB_ARTIFACT_GIT_COMMIT="134125123541234123513425" \
+			--env CDB_CI_BUILD_URL="https://gitlab/build/1234" \
+			--env CDB_BUILD_NUMBER="1234" \
+			--env CDB_ARTIFACT_FILENAME=/data/artifact.txt \
+			--env CDB_DRY_RUN="TRUE" \
+	        ${IMAGE} python -m cdb.put_artifact -p /data/project.json

@@ -2,7 +2,8 @@
 import os
 
 from cdb.api_schema import ApiSchema
-from cdb.cdb_utils import parse_cmd_line, load_project_configuration, env_is_compliant
+from cdb.cdb_utils import parse_cmd_line, load_project_configuration, env_is_compliant, \
+    set_artifact_sha_env_variable_from_file_or_image
 from cdb.http import put_payload
 from cdb.settings import CDB_SERVER
 
@@ -36,6 +37,7 @@ def put_artifact(project_file):
         print("Cannot find CDB_ARTIFACT_FILENAME in the environment variables")
         return
 
+    set_artifact_sha_env_variable_from_file_or_image()
     sha256_digest = os.getenv('CDB_ARTIFACT_SHA', "UNDEFINED")
     if sha256_digest == "UNDEFINED":
         print("Cannot find CDB_ARTIFACT_SHA in the environment variables")
