@@ -18,6 +18,6 @@ ADD test_data/test_source_repo.tar.gz /
 
 COPY coverage_entrypoint.sh .
 
+ENV PYTHONPATH="/app"
 ENTRYPOINT [""]
 CMD ["python", "server.py"]
-
