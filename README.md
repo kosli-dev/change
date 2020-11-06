@@ -46,6 +46,39 @@ This command expect the following environment variables:
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
 
+## Publish file-based build artifact
+
+This command creates an artifact in compliancedb based on a file.
+
+| VARIABLE | Requirement | Description |
+|------|-----|-----|
+| CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
+| CDB_API_TOKEN | Required | Your API token for ComplianceDB |
+| CDB_ARTIFACT_SHA or CDB_ARTIFACT_FILENAME | Required | The build artifact specification |
+| CDB_IS_COMPLIANT | Required | Whether this artifact is considered compliant from you build process |
+| CDB_ARTIFACT_GIT_URL | Required | Link to the source git commit this build was based on |
+| CDB_ARTIFACT_GIT_COMMIT | Required | The sha of the git commit that produced this build |
+| CDB_CI_BUILD_URL | Required | Link to the build in the ci system |
+| CDB_BUILD_NUMBER | Required | Build number |
+
+If you use a `CDB_ARTIFACT_FILENAME` to specify the artifact, you must mount it into the container so the openssl 
+digest can be calculated.  Alternatively, you can specify directly by setting the `CDB_ARTIFACT_SHA` variable.
+
+```shell script
+docker run --rm --name comply \
+ 			--volume ${PWD}/${PROJFILE}:/data/project.json \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume=${PWD}/Dockerfile:/data/artifact.txt \
+			--env CDB_HOST=${CDB_HOST} \
+			--env CDB_API_TOKEN="${CDB_API_TOKEN}" \
+			--env CDB_IS_COMPLIANT="TRUE" \
+			--env CDB_ARTIFACT_GIT_URL="http://github/me/project/commits/3451345234523453245" \
+			--env CDB_ARTIFACT_GIT_COMMIT="134125123541234123513425" \
+			--env CDB_CI_BUILD_URL="https://gitlab/build/1234" \
+			--env CDB_BUILD_NUMBER="1234" \
+			--env CDB_ARTIFACT_FILENAME=/data/artifact.txt \
+	        ${IMAGE} python -m cdb.put_artifact -p /data/project.json
+```
 
 ## Publish docker image build artifact
 
