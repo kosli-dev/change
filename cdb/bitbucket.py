@@ -36,7 +36,9 @@ def get_pull_request_for_current_commit():
     return is_compliant, pull_requests
 
 
-def verify_pull_request_evidence(pull_requests_evidence, force_compliant):
+def verify_pull_request_evidence(pull_requests_evidence, force_compliant=False):
+    if pull_requests_evidence == []:
+        return False
     return True
 
 

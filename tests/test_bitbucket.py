@@ -34,3 +34,7 @@ def test_verify_pull_request_evidence_true_if_force_compliant():
     is_compliant = verify_pull_request_evidence(OPEN_PR_EVIDENCE, force_compliant=True)
     assert is_compliant is True
 
+
+def test_verify_pull_request_WHEN_empty_pr_data_THEN_returns_false():
+    is_compliant = verify_pull_request_evidence([])
+    assert is_compliant is False
