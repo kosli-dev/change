@@ -204,6 +204,8 @@ docker run --rm --name comply \
         --env CDB_API_TOKEN=${CDB_API_TOKEN} \
         --env CDB_ARTIFACT_SHA=${CDB_ARTIFACT_SHA} \
         --env CDB_ENVIRONMENT=production \
+        --env CDB_CI_BUILD_URL=${CI_BUILD_URL} \
+        --env CDB_DESCRIPTION="Deployed to production in pipeline"
         --env USER_DATA_FILE=/data/pipeline.json \
         ${IMAGE} python -m cdb.create_deployment -p /data/pipeline.json
 ```
@@ -215,6 +217,7 @@ docker run --rm --name comply \
 | CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILE | Required | The artifact sha that is being deployed |
 | CDB_ENVIRONMENT | Required | The environment the artifact is being deployed to |
 | CDB_DESCRIPTION | Optional | A description for the deployment |
+| CDB_CI_BUILD_URL | Optional | A url for the deployment |
 | CDB_USER_DATA_FILE | Optional | The user data to embed in the deployment, if any (should be mounted in the container) |
 
 ## Control that an artifact is latest released
