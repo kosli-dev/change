@@ -41,23 +41,24 @@ Environment parsing
 """
 
 
-def get_artifact_sha():
-    return os.getenv('CDB_ARTIFACT_SHA', None)
+def get_artifact_sha(env=os.environ):
+    set_artifact_sha_env_variable_from_file_or_image(env)
+    return env.get('CDB_ARTIFACT_SHA', None)
 
 
-def get_api_token():
-    return os.getenv('CDB_API_TOKEN', None)
+def get_api_token(env=os.environ):
+    return env.get('CDB_API_TOKEN', None)
 
 
 def env_is_compliant():
     return os.getenv('CDB_IS_COMPLIANT', "FALSE") == "TRUE"
 
 
-def get_host():
-    return os.getenv('CDB_HOST', CDB_SERVER)
+def get_host(env=os.environ):
+    return env.get('CDB_HOST', CDB_SERVER)
 
 
-def set_artifact_sha_env_variable_from_file_or_image():
+def set_artifact_sha_env_variable_from_file_or_image(env=os.environ):
     """
     This function will update the environment variable CDB_ARTIFACT_SHA.
 
@@ -68,11 +69,11 @@ def set_artifact_sha_env_variable_from_file_or_image():
     if the variable CDB_ARTIFACT_DOCKER_IMAGE is set, CDB_ARTIFACT_SHA will be set to the repoDigest for the image.
     """
     # Only set if not already in environment
-    if "CDB_ARTIFACT_SHA" in os.environ:
+    if "CDB_ARTIFACT_SHA" in env:
         return
 
-    artifact_filename = os.environ.get("CDB_ARTIFACT_FILENAME", None)
-    artifact_docker_image = os.environ.get("CDB_ARTIFACT_DOCKER_IMAGE", None)
+    artifact_filename = env.get("CDB_ARTIFACT_FILENAME", None)
+    artifact_docker_image = env.get("CDB_ARTIFACT_DOCKER_IMAGE", None)
 
     if artifact_filename is not None:
         print("Getting SHA for artifact: " + artifact_filename)
@@ -85,7 +86,7 @@ def set_artifact_sha_env_variable_from_file_or_image():
         print("Calculated digest: " + artifact_sha)
         os.environ["CDB_ARTIFACT_SHA"] = artifact_sha
     else:
-        raise Exception('Error: CDB_ARTIFACT_FILENAME or CDB_ARTIFACT_DOCKER_IMAGE must be defined')
+        raise Exception('Error: One of CDB_ARTIFACT_SHA, CDB_ARTIFACT_FILENAME or CDB_ARTIFACT_DOCKER_IMAGE must be defined')
 
 
 def calculate_sha_digest_for_file(artifact_filename):
@@ -163,6 +164,16 @@ def build_release_json(artifact_sha, description, src_commit_list):
     release_json = {"base_artifact": artifact_sha, "target_artifact": artifact_sha, "description": description,
                     "src_commit_list": src_commit_list}
     return release_json
+
+
+def build_approval_json(artifact_sha256, description, is_approved, src_commit_list):
+    approval_json = {
+        "artifact_sha256": artifact_sha256,
+        "description": description,
+        "is_approved": is_approved,
+        "src_commit_list": src_commit_list
+    }
+    return approval_json
 
 
 def latest_artifact_for_commit(artifacts_for_commit_response):

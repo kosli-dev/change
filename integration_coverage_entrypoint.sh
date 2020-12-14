@@ -5,7 +5,7 @@ set -e
 pytest -vv --capture=no --cov=. --cov-config=.coveragerc \
        -o junit_family=xunit1 --junitxml=htmlcov/junit.xml \
        -W ignore::pytest.PytestCollectionWarning \
-       tests
+       integration_tests
 
 # Generate html results
 coverage html

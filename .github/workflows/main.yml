@@ -74,13 +74,30 @@ jobs:
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
       run: |
-        make test
+        make test test_integration
 
-    - name: CDB Control Test Results
+    - name: CDB Control Unit Test Results
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
         CDB_HOST: https://app.compliancedb.com
-        CDB_EVIDENCE_TYPE: "unit_test"
+        CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
+      run: |
+        export SHA7=$(git log -1 --pretty=%h)
+        export CDB_ARTIFACT_DOCKER_IMAGE=compliancedb/cdb_controls:sha-${SHA7}
+
+        export CDB_TEST_RESULTS=${PWD}/tmp/coverage/unit/htmlcov/junit.xml
+        export CDB_EVIDENCE_TYPE="unit_test"
+        make control_and_publish_junit_results
+
+        export CDB_TEST_RESULTS=${PWD}/tmp/coverage/integration/htmlcov/junit.xml
+        export CDB_EVIDENCE_TYPE="integration_test"
+        make control_and_publish_junit_results
+
+    - name: CDB Control Unit Test Results
+      env:
+        CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
+        CDB_HOST: https://app.compliancedb.com
+        CDB_EVIDENCE_TYPE: "integration_test"
         CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
       run: |
         export SHA7=$(git log -1 --pretty=%h)
@@ -92,7 +109,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: code-coverage-report
-        path: tmp/coverage/htmlcov/
+        path: tmp/coverage/
 
     - name: Publish coverage results to ComplianceDB
       env:
@@ -105,7 +122,7 @@ jobs:
       run: |
         export SHA7=$(git log -1 --pretty=%h)
         export CDB_ARTIFACT_DOCKER_IMAGE=compliancedb/cdb_controls:sha-${SHA7}
-        source tmp/coverage/htmlcov/test_coverage.txt
-        source tmp/coverage/htmlcov/test_cases.txt
+        source tmp/coverage/unit/htmlcov/test_coverage.txt
+        source tmp/coverage/unit/htmlcov/test_cases.txt
         export CDB_DESCRIPTION="$TEST_CASES tests passed with $COVERAGE coverage"
         make publish_test_results

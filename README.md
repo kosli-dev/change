@@ -175,18 +175,19 @@ docker run --rm --name comply \
 | CDB_EVIDENCE_TYPE | Required | The evidence type for the results |
 | CDB_CI_BUILD_URL | Required | The URL to link to from ComplianceDB |
 
-## Create a release from git history
+## Create an approval with a git history
 
-To create a release in ComplianceDB, you can use the `create_release` command
+To create an approval in ComplianceDB, you can use the `create_approval` command
 
 | VARIABLE | Requirement | Description |
 |------|-----|-----|
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
-| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE | Optional | The SHA256 for the artifact that you would like to release, if not given then this is retrieved from CDB  |
-| CDB_TARGET_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the release |
-| CDB_BASE_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the release |
-| CDB_RELEASE_DESCRIPTION | Optional | A description of the release |
+| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE | Optional | The SHA256 for the artifact that you would like to approve, if not given then this is retrieved from CDB  |
+| CDB_BASE_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the approval |
+| CDB_TARGET_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the approval |
+| CDB_DESCRIPTION | Optional | A description for the approval |
+| CDB_IS_APPROVED_EXTERNALLY | Optional | Use this if the approval has taken place outside compliancedb, default false |
 | CDB_SRC_REPO_ROOT | Optional | The path where the source git repository is mounted, default to `/src` |
 
 

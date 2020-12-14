@@ -6,3 +6,5 @@ junitparser
 pygit2==1.2.1
 pytest-mock
 pyfakefs
+git+git://github.com/approvals/ApprovalTests.Python.git@master#egg=approvaltests
+pytest-approvaltests

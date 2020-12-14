@@ -36,13 +36,23 @@ build_pipe:
 test:
 	@docker stop test_unit || true
 	@docker rm test_unit || true
-	@rm -rf tmp/coverage
-	@mkdir -p tmp/coverage
+	@rm -rf tmp/coverage/unit
+	@mkdir -p tmp/coverage/unit
 	@docker run --name test_unit --entrypoint ./coverage_entrypoint.sh ${IMAGE}; \
 	e=$$?; \
-	docker cp test_unit:/app/htmlcov/ tmp/coverage; \
+	docker cp test_unit:/app/htmlcov/ tmp/coverage/unit; \
 	exit $$e
 
+
+test_integration:
+	@docker stop test_integration || true
+	@docker rm test_integration || true
+	@rm -rf tmp/coverage/integration
+	@mkdir -p tmp/coverage/integration
+	@docker run --name test_integration --entrypoint ./integration_coverage_entrypoint.sh ${IMAGE}; \
+	e=$$?; \
+	docker cp test_integration:/app/htmlcov/ tmp/coverage/integration; \
+	exit $$e
 
 push:
 	@docker push ${IMAGE}
@@ -130,7 +140,7 @@ publish_test_results:
 control_and_publish_junit_results:
 	docker run --rm --name comply \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
-			--volume ${PWD}/tmp/coverage/htmlcov/junit.xml:/data/junit/junit.xml \
+			--volume ${CDB_TEST_RESULTS}:/data/junit/junit.xml \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--env CDB_HOST=https://app.compliancedb.com \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
@@ -210,3 +220,6 @@ dry_run_put_artifact:
 			--env CDB_ARTIFACT_FILENAME=/data/artifact.txt \
 			--env CDB_DRY_RUN="TRUE" \
 	        ${IMAGE} python -m cdb.put_artifact -p /data/project.json
+
+copy_approvals:
+	@docker logs test_integration | grep mv | sed 's/mv -f /docker cp test_integration:/' | sed 's/ \/app\// /'

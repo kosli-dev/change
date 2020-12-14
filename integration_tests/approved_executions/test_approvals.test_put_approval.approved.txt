@@ -1,0 +1,12 @@
+Putting this payload:
+{
+    "artifact_sha256": "1234",
+    "description": "Description",
+    "is_approved": false,
+    "src_commit_list": [
+        "8f5b384644eb83e7f2a6d9499539a077e7256b8b",
+        "e0ad84e1a2464a9486e777c1ecde162edff930a9"
+    ]
+}
+To url: https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/releases/
+DRY RUN: POST not sent

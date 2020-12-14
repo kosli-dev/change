@@ -24,39 +24,10 @@ from cdb.api_schema import ApiSchema
 TEST_REPO_ROOT = "/test_src/"
 
 
-def test_repo_is_present_in_image():
-    repo_path = Path("/test_src/.git")
-    assert repo_path.is_dir()
-
-
-def test_is_repo():
-    assert repo_at(TEST_REPO_ROOT) is not None
-    assert repo_at("/cdb_data/") is None
-
-
-def test_list_commits_between_master_and_production():
-    commits = list_commits_between(repo_at(TEST_REPO_ROOT), "master", "production")
-    expected = [
-        "8f5b384644eb83e7f2a6d9499539a077e7256b8b",
-        "e0ad84e1a2464a9486e777c1ecde162edff930a9"]
-    assert commits == expected
-
-
-def test_list_commits_between_release_branch_and_production():
-    commits = list_commits_between(repo_at(TEST_REPO_ROOT), "release-branch", "master")
-    expected = [
-        "e0d1acf1adb9e263c1b6e0cfe3e0d2c1ade371e1"]
-    assert commits == expected
-
-
-def test_list_commits_between_master_and_commit():
-    commits = list_commits_between(repo_at(TEST_REPO_ROOT), "master", "b7e6aa63087fcb1e64a5f2a99c8d255415d8cb99")
-    expected = [
-        "8f5b384644eb83e7f2a6d9499539a077e7256b8b",
-        "e0ad84e1a2464a9486e777c1ecde162edff930a9",
-        "b6c9e60f281e37d912ec24f038b7937f79723fb4"
-    ]
-    assert commits == expected
+def test_url_for_release():
+    partial_project_data = {"name": "hadroncollider", "owner": "cern"}
+    url = ApiSchema.url_for_release(host="http://localhost", project_data=partial_project_data, release_number="12")
+    assert url == "http://localhost/api/v1/projects/cern/hadroncollider/releases/12"
 
 
 def test_create_release_dict():
