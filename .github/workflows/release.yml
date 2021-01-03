@@ -16,28 +16,24 @@ jobs:
           # fetch full history
           fetch-depth: 0
 
-      - name: Create the release in ComplianceDB
+      - name: Create approval in compliancedb, update latest docker image and git branch
         env:
-          CDB_HOST: https://app.compliancedb.com
           CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
+          CDB_ARTIFACT_DOCKER_IMAGE: compliancedb/cdb_controls:latest
           CDB_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
           CDB_BASE_SRC_COMMITISH: "origin/latest"
           CDB_RELEASE_DESCRIPTION: "Release created in github actions on git tag ${GITHUB_REF}"
         run: |
-          echo Hello, world!
-          git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
-          make create_release
-
-      - name: Update latest docker image and git branch
-        run: |
           export DOCKER_TAG=sha-$(git rev-parse --short=7 HEAD)
           docker pull compliancedb/cdb_controls:$DOCKER_TAG
-          docker tag compliancedb/cdb_controls:$DOCKER_TAG compliancedb/cdb_controls:latest
+          docker tag compliancedb/cdb_controls:$DOCKER_TAG $CDB_ARTIFACT_DOCKER_IMAGE
           docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
           docker push compliancedb/cdb_controls:latest
           git checkout latest
           git merge --ff-only ${GITHUB_SHA}
           git push origin latest
+          git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
+          make create_release
 
       - name: Create the deployment in ComplianceDB
         env:

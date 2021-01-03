@@ -173,8 +173,10 @@ create_release:
 	docker run --rm --name comply \
 			--volume ${PWD}/project-master.json:/data/project.json \
 			--volume ${PWD}:/src \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
+			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
 			--env CDB_TARGET_SRC_COMMITISH=${CDB_TARGET_SRC_COMMITISH} \
 			--env CDB_BASE_SRC_COMMITISH=${CDB_BASE_SRC_COMMITISH} \
 			--env CDB_RELEASE_DESCRIPTION="${CDB_RELEASE_DESCRIPTION}" \
