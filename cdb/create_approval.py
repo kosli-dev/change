@@ -30,7 +30,7 @@ def create_approval(project_config_file, env):
             is_approved=env["is_externally_approved"],
             src_commit_list=commit_list)
 
-        url = ApiSchema.url_for_releases(env["host"], project_data)
+        url = ApiSchema.url_for_approvals(env["host"], project_data)
         http_post_payload(approval_json, url, env["api_token"])
 
 

@@ -32,6 +32,14 @@ class ApiSchema:
         return ApiSchema.url_for_releases(host, project_data) + release_number
 
     @staticmethod
+    def url_for_approvals(host, project_data):
+        return ApiSchema.url_for_project(host, project_data) + '/approvals/'
+
+    @staticmethod
+    def url_for_approval(host, project_data, approval_number):
+        return ApiSchema.url_for_approvals(host, project_data) + approval_number
+
+    @staticmethod
     def url_for_deployments(host, project_data):
         return ApiSchema.url_for_project(host, project_data) + '/deployments/'
 
