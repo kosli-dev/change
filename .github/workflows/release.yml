@@ -41,6 +41,7 @@ jobs:
           CDB_HOST: https://app.compliancedb.com
           CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
           CDB_ARTIFACT_DOCKER_IMAGE: compliancedb/cdb_controls:latest
+          CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
           CDB_ENVIRONMENT: "docker_hub"
           CDB_DESCRIPTION: "Deployment of compliancedb/cdb_controls:latest to docker hub"
         run: |
