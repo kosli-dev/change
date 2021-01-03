@@ -29,11 +29,12 @@ jobs:
           docker tag compliancedb/cdb_controls:$DOCKER_TAG $CDB_ARTIFACT_DOCKER_IMAGE
           docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
           docker push compliancedb/cdb_controls:latest
+          git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
+          make create_release
+          # Merge latest -> master
           git checkout latest
           git merge --ff-only ${GITHUB_SHA}
           git push origin latest
-          git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
-          make create_release
 
       - name: Create the deployment in ComplianceDB
         env:
