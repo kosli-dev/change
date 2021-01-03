@@ -64,4 +64,4 @@ def create_approval_environment_variables(env=os.environ):
 
 if __name__ == '__main__':
     project_config_file = parse_cmd_line()
-    create_approval(project_config_file, env=create_approval_environment_variables())
+    create_approval(project_config_file, env=os.environ)
