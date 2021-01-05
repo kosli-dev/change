@@ -207,7 +207,7 @@ docker run --rm --name comply \
         --env CDB_ARTIFACT_SHA=${CDB_ARTIFACT_SHA} \
         --env CDB_ENVIRONMENT=production \
         --env CDB_CI_BUILD_URL=${CI_BUILD_URL} \
-        --env CDB_DESCRIPTION="Deployed to production in pipeline"
+        --env CDB_DESCRIPTION="Deployed to production in pipeline" \
         --env USER_DATA_FILE=/data/pipeline.json \
         ${IMAGE} python -m cdb.create_deployment -p /data/pipeline.json
 ```
