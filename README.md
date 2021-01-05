@@ -202,6 +202,7 @@ echo "{'url':'https:'https://gitlab.com/compliancedb/compliancedb/-/jobs/7851515
 docker run --rm --name comply \
         --volume ${PWD}/${PIPELINEFILE}:/data/pipeline.json \
         --volume ${PWD}/tmp/deployment_user_data.json:/data/deployment_user_data.json \
+        --volume=/var/run/docker.sock:/var/run/docker.sock \		
         --env CDB_API_TOKEN=${CDB_API_TOKEN} \
         --env CDB_ARTIFACT_SHA=${CDB_ARTIFACT_SHA} \
         --env CDB_ENVIRONMENT=production \
