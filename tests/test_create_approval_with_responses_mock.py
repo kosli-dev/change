@@ -1,6 +1,4 @@
-#import os
 import responses
-import requests as r
 
 from cdb.create_approval import create_approval
 from tests.test_git import TEST_REPO_ROOT
@@ -14,9 +12,8 @@ https://github.com/getsentry/responses
 
 @responses.activate
 def test_create_approval_with_responses_mock():
-    #os.environ["CDB_DRY_RUN"] = "FALSE"
-
-    responses.add(responses.POST, 'https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/',
+    url = 'https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/'
+    responses.add(responses.POST, url,
                       json={'error': 'service unavailable'}, status=503)
     env = {
         "CDB_ARTIFACT_SHA": "1234",
