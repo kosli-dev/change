@@ -26,7 +26,7 @@ def put_payload(payload, url, api_token):
 
 def http_post_payload(payload, url, api_token):
     headers = {"Content-Type": "application/json"}
-    print("Putting this payload:")
+    print("Posting this payload:")
     print(json.dumps(payload, sort_keys=True, indent=4))
     print("To url: " + url)
     if os.getenv('CDB_DRY_RUN', "FALSE") != "TRUE":
