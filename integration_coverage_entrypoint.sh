@@ -2,10 +2,12 @@
 
 set -e
 
+readonly INTEGRATION_TESTS_TARGET="${1}" # set in Makefile. Defaults to integration_tests
+
 pytest -vv --capture=no --cov=. --cov-config=.coveragerc \
        -o junit_family=xunit1 --junitxml=htmlcov/junit.xml \
        -W ignore::pytest.PytestCollectionWarning \
-       integration_tests
+         "${INTEGRATION_TESTS_TARGET}"
 
 # Generate html results
 coverage html

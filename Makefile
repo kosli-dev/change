@@ -15,6 +15,8 @@ CDB_HOST=https://app.compliancedb.com
 # all non-latest images - for prune target
 IMAGES := $(shell docker image ls --format '{{.Repository}}:{{.Tag}}' $(NAME) | grep -v latest)
 
+INTEGRATION_TESTS_TARGET?=integration_tests
+
 # list the targets: from https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
 .PHONY: list
 list:
@@ -49,7 +51,7 @@ test_integration:
 	@docker rm test_integration || true
 	@rm -rf tmp/coverage/integration
 	@mkdir -p tmp/coverage/integration
-	@docker run --name test_integration --entrypoint ./integration_coverage_entrypoint.sh ${IMAGE}; \
+	@docker run --name test_integration --entrypoint ./integration_coverage_entrypoint.sh ${IMAGE} ${INTEGRATION_TESTS_TARGET} ; \
 	e=$$?; \
 	docker cp test_integration:/app/htmlcov/ tmp/coverage/integration; \
 	exit $$e
@@ -100,7 +102,7 @@ branch:
 	@echo Branch is ${BRANCH_NAME}
 	@echo IS_MASTER is ${IS_MASTER}
 	@echo PROJFILE is ${PROJFILE}
- 
+
 put_project:
 	docker run --rm --name comply \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
