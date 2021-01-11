@@ -1,4 +1,4 @@
-Putting this payload:
+Posting this payload:
 {
     "artifact_sha256": "1234",
     "description": "Description",
