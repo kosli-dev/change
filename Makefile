@@ -49,7 +49,7 @@ test_integration:
 	@docker rm test_integration || true
 	@rm -rf tmp/coverage/integration
 	@mkdir -p tmp/coverage/integration
-	@docker run --name test_integration --entrypoint ./integration_coverage_entrypoint.sh ${IMAGE} integration_tests/${TARGET} ; \
+	@docker run -it --name test_integration --entrypoint ./integration_coverage_entrypoint.sh ${IMAGE} integration_tests/${TARGET} ; \
 	e=$$?; \
 	docker cp test_integration:/app/htmlcov/ tmp/coverage/integration; \
 	exit $$e
