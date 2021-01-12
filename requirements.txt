@@ -8,4 +8,4 @@ pytest-mock
 pyfakefs
 git+git://github.com/approvals/ApprovalTests.Python.git@master#egg=approvaltests
 pytest-approvaltests
-responses
+httpretty
