@@ -6,11 +6,11 @@ from cdb.control_junit import is_compliant_suite, ls_test_results, is_compliant_
     is_compliant_test_results
 
 
-def test_junit_parser_control_passes_WHEN_no_failures_AND_no_errors():
+def test_is_compliant_suite_returns_true_WHEN_no_failures_AND_no_errors_in_JUnitXML():
     # Create cases
     case1 = TestCase('case1')
     case2 = TestCase('case2')
-    case2.result = Skipped()
+    case2.result = [Skipped()]
     # Create suite and add cases
     suite = TestSuite('suite1')
     suite.add_property('build', '55')
@@ -26,10 +26,10 @@ def test_junit_parser_control_passes_WHEN_no_failures_AND_no_errors():
     assert message == "All tests passed"
 
 
-def test_junit_parser_control_fails_WHEN_failures():
+def test_is_compliant_suite_returns_fails_WHEN_failures_in_JUnitXML():
     # Create cases
     case1 = TestCase('case1')
-    case1.result = Failure()
+    case1.result = [Failure()]
     case2 = TestCase('case2')
 
     # Create suite and add cases
@@ -47,10 +47,10 @@ def test_junit_parser_control_fails_WHEN_failures():
     assert message == "Tests contain failures"
 
 
-def test_junit_parser_control_fails_WHEN_errors():
+def test_is_compliant_suite_returns_false_WHEN_errors_in_JUnitXML():
     # Create cases
     case1 = TestCase('case1')
-    case1.result = Error()
+    case1.result = [Error()]
     case2 = TestCase('case2')
 
     # Create suite and add cases
