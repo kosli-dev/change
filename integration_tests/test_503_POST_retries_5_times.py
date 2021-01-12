@@ -16,10 +16,11 @@ See https://github.com/getsentry/responses/issues/135
 @httpretty.activate
 def test_503_POST_retries_5_times(capsys):
     # This is mostly for deployment rollover
-    url = 'https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/'
+    hostname = 'https://app.compliancedb.com'
+    route = "/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/"
     httpretty.register_uri(
         httpretty.POST,
-        url,
+        hostname + route,
         responses=[
             httpretty.Response(
                 body='{"error": "service unavailable"}',
@@ -36,10 +37,19 @@ def test_503_POST_retries_5_times(capsys):
         "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,
     }
     try:
-        # The 5 retry sleep delays are [ 0.5, 1, 2, 4, 8 ]
-        # So this test will take 15.5 seconds to pass :-(
+        # The retry sleep delays are [ 0, 2, 4, 8, 16 ]
+        # So this test will take ~30 seconds to pass :-(
         create_approval("integration_tests/test-pipefile.json", env=env)
     except requests.exceptions.RetryError:
+        captured = capsys.readouterr()
+        stdout = captured.out
+        assert "POST failed" in stdout
+        assert "URL={}".format(route) in stdout
+        assert "STATUS=503" in stdout
+        assert "Retry 1/4 in 2 seconds" in stdout
+        assert "Retry 2/4 in 4 seconds" in stdout
+        assert "Retry 3/4 in 8 seconds" in stdout
+        assert "Retry 4/4 in 16 seconds" in stdout
         assert len(httpretty.latest_requests()) == 5+1
 
 

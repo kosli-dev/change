@@ -38,13 +38,12 @@ def http_post_payload(payload, url, api_token):
         print("DRY RUN: POST not sent")
 
 
+RETRY_COUNT = 5  # See LoggingRetry comment below.
+
+
 def retry_http():
-    # The backoff_factor controls how long to sleep between retries. The algorithm is
-    # {backoff factor} * (2 ** ({number of total retries} - 1))
-    # So for 1, the 5 retry sleeps are [ 0.5, 1, 2, 4, 8 ]
-    # for a total sleep of 15.5 seconds
-    strategy = Retry(
-        total=5,
+    strategy = LoggingRetry(
+        total=RETRY_COUNT,
         backoff_factor=1,
         status_forcelist=[503],
         allowed_methods=["POST"]
@@ -54,3 +53,31 @@ def retry_http():
     s.mount("https://", adapter)
     s.mount("http://", adapter)
     return s
+
+
+class LoggingRetry(Retry):
+    """"
+    Retry documentation is https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html
+    It says the backoff algorithm is:
+       {backoff factor} * (2 ** ({number of total retries} - 1))
+    With backoff_factor==1, this gives successive sleeps of:
+       [ 0.5, 1, 2, 4, 8, 16, 32, ... ]
+    However, the self.get_backoff_time() values are actually:
+       [ 0, 2, 4, 8 16, 32, ... ]
+    Zero would look strange in a log message so not using it.
+    0+2+4+8+16==30 seconds, about right, so RETRY_COUNT==5
+    """
+    def increment(self, *args, **kwargs):
+        count = len(self.history)
+        if count > 0:
+            request = self.history[-1]
+            if count == 1:
+                print("{} failed".format(request.method))
+                print("URL={}".format(request.url))
+                print("STATUS={}".format(request.status))
+            backoff_time = 2 ** count
+            if backoff_time != (2 ** RETRY_COUNT):
+                # The last time increment() is called is _after_ the last retry.
+                print("Retry {}/{} in {} seconds".format(count, RETRY_COUNT-1, backoff_time), flush=True)
+        return super().increment(*args, **kwargs)
+
