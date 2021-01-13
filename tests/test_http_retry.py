@@ -32,6 +32,15 @@ def test_503_post_retries_5_times(capsys):
             )
         ]
     )
+
+    # TODO: api_token is needed to prevent warning...
+    #   DeprecationWarning: Non-string usernames will no longer be supported in Requests 3.0.0.
+    #   Please convert the object you've passed in (None) to a string or bytes object in the
+    #   near future to avoid problems.
+    # This is because cdb_utils.py has:
+    # def get_api_token(env=os.environ):
+    #    return env.get('CDB_API_TOKEN', None)
+    
     env = {
         "CDB_ARTIFACT_SHA": "1234",
         "CDB_BASE_SRC_COMMITISH": "production",
@@ -39,6 +48,7 @@ def test_503_post_retries_5_times(capsys):
         "CDB_DESCRIPTION": "Description",
         "CDB_IS_APPROVED_EXTERNALLY": "FALSE",
         "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,
+        "api_token": "not-None"
     }
     try:
         original_backoff_factor = cdb.http_retry.RETRY_BACKOFF_FACTOR
