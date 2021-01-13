@@ -3,7 +3,7 @@ import requests
 
 from cdb.create_approval import create_approval
 from tests.test_git import TEST_REPO_ROOT
-
+from cdb.http import LoggingRetry
 
 """
 At first this tried to use the responses library to stub the http calls.
@@ -13,8 +13,12 @@ See https://github.com/getsentry/responses/issues/135
 """
 
 
+def test_total_retry_time_is_about_30_seconds():
+    assert LoggingRetry().total_backoff_time() == 31  # 1+2+4+8+16
+
+
 @httpretty.activate
-def test_503_POST_retries_5_times(capsys):
+def test_503_post_retries_5_times(capsys):
     # This is mostly for deployment rollover
     hostname = 'https://app.compliancedb.com'
     route = "/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/"
@@ -44,6 +48,7 @@ def test_503_POST_retries_5_times(capsys):
         captured = capsys.readouterr()
         stdout = captured.out
         assert "POST failed" in stdout
+        # request.url drops the protocol and hostname :(
         assert "URL={}".format(route) in stdout
         assert "STATUS=503" in stdout
         assert "Retrying in 2 seconds (1/4)" in stdout

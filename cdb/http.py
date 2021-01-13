@@ -38,7 +38,7 @@ def http_post_payload(payload, url, api_token):
         print("DRY RUN: POST not sent")
 
 
-RETRY_COUNT = 5  # [ 0+2+4+8+16 ] == 30 seconds, about right
+RETRY_COUNT = 5
 RETRY_BACKOFF_FACTOR = 1
 
 
@@ -75,13 +75,14 @@ class LoggingRetry(Retry):
 
     def log_failed_http_call(self):
         request = self.failed_request()
+        print(dir(request))
         print("{} failed".format(request.method))
         print("URL={}".format(request.url))
         print("STATUS={}".format(request.status))
 
     def log_retrying(self):
         message = "Retrying in {} seconds ({}/{})".format(
-            self.backoff_time(),
+            self.next_backoff_time(),
             self.retry_count(),
             RETRY_COUNT - 1
             )
@@ -93,7 +94,10 @@ class LoggingRetry(Retry):
     def failed_request(self):
         return self.history[-1]
 
-    def backoff_time(self):
+    def next_backoff_time(self):
+        return self.backoff_time(self.retry_count())
+
+    def backoff_time(self, n):
         """"
         Retry documentation is at
         https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html
@@ -101,10 +105,13 @@ class LoggingRetry(Retry):
            {backoff factor} * (2 ** ({number of retries} - 1))
         With backoff_factor==1, this gives successive sleeps of:
            [ 0.5, 1, 2, 4, 8, 16, 32, ... ]
-        However, the self.get_backoff_time() actually returns:
+        However, self.get_backoff_time() _actually_ returns:
            [ 0, 2, 4, 8 16, 32, ... ]
-        It appears get_backoff_time() gives the value of just finished sleep.
+        It appears this is the value of just-finished sleep.
         Zero would look strange in the log message, so not using it.
-        Instead, calculating it. Empirically, this value is the forthcoming sleep.
+        Empirically, this value _is_ the forthcoming sleep.
         """
-        return RETRY_BACKOFF_FACTOR * (2 ** self.retry_count())
+        return RETRY_BACKOFF_FACTOR * (2 ** n)
+
+    def total_backoff_time(self):
+        return sum(self.backoff_time(n) for n in range(0, RETRY_COUNT))
