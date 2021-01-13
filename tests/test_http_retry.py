@@ -1,4 +1,5 @@
 import httpretty
+import pytest
 import requests
 
 from cdb.create_approval import create_approval
@@ -37,10 +38,10 @@ def test_503_post_retries_5_times(capsys):
     #   DeprecationWarning: Non-string usernames will no longer be supported in Requests 3.0.0.
     #   Please convert the object you've passed in (None) to a string or bytes object in the
     #   near future to avoid problems.
-    # This is because cdb_utils.py has:
+    # I think this is because cdb_utils.py has:
     # def get_api_token(env=os.environ):
     #    return env.get('CDB_API_TOKEN', None)
-    
+
     env = {
         "CDB_ARTIFACT_SHA": "1234",
         "CDB_BASE_SRC_COMMITISH": "production",
@@ -48,25 +49,31 @@ def test_503_post_retries_5_times(capsys):
         "CDB_DESCRIPTION": "Description",
         "CDB_IS_APPROVED_EXTERNALLY": "FALSE",
         "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,
-        "api_token": "not-None"
+        "XXXX_api_token": "not-None"
     }
+
+    original_backoff_factor = cdb.http_retry.RETRY_BACKOFF_FACTOR
+    cdb.http_retry.RETRY_BACKOFF_FACTOR = 0.001  # otherwise test takes 30 seconds
     try:
-        original_backoff_factor = cdb.http_retry.RETRY_BACKOFF_FACTOR
-        cdb.http_retry.RETRY_BACKOFF_FACTOR = 0.001  # otherwise test takes 30 seconds
-        create_approval("integration_tests/test-pipefile.json", env=env)
-    except requests.exceptions.RetryError:
-        captured = capsys.readouterr()
-        stdout = captured.out
-        assert "POST failed" in stdout
-        # request.url drops the protocol and hostname :(
-        assert "URL={}".format(route) in stdout
-        assert "STATUS=503" in stdout
-        assert "Retrying in 0.002 seconds (1/4)" in stdout
-        assert "Retrying in 0.004 seconds (2/4)" in stdout
-        assert "Retrying in 0.008 seconds (3/4)" in stdout
-        assert "Retrying in 0.016 seconds (4/4)" in stdout
-        assert len(httpretty.latest_requests()) == 5+1
+        with pytest.raises(requests.exceptions.RetryError):
+            create_approval("integration_tests/test-pipefile.json", env=env)
     finally:
         cdb.http_retry.RETRY_BACKOFF_FACTOR = original_backoff_factor
         assert cdb.http_retry.RETRY_BACKOFF_FACTOR != 0.001
+
+    captured = capsys.readouterr()
+    stderr = captured.err
+    lines = (
+        "POST failed",
+        "URL={}".format(route),  # request.url drops the protocol and hostname :(
+        "STATUS=503",
+        "Retrying in 0.002 seconds (1/4)",
+        "Retrying in 0.004 seconds (2/4)",
+        "Retrying in 0.008 seconds (3/4)",
+        "Retrying in 0.016 seconds (4/4)"
+    )
+    for line in lines:
+        assert line in stderr, line
+
+    assert len(httpretty.latest_requests()) == 5+1
 
