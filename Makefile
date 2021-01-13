@@ -40,7 +40,7 @@ test_unit: build
 	@mkdir -p tmp/coverage/unit
 	@docker run \
 	    --name test_unit \
-	    --entrypoint ./coverage_entrypoint.sh \
+	    --entrypoint ./unit_coverage_entrypoint.sh \
 	    ${IMAGE} \
 	    tests/${TARGET} ; \
 	e=$$?; \
