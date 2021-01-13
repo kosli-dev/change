@@ -27,7 +27,7 @@ def create_artifact(api_token, host, project_config_file, sha256, filename, desc
         "is_compliant": is_compliant
     }
     url = ApiSchema.url_for_artifacts(host, project_data)
-    http_put_payload(create_artifact_payload, url, api_token)
+    http_put_payload(url, create_artifact_payload, api_token)
 
 
 def put_artifact(project_file):

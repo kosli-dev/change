@@ -24,7 +24,7 @@ def create_release(project_config_file):
         commit_list = list_commits_between(repo_at(env["repo_path"]), env["target_src_commit"], env["base_src_commit"])
         release_json = build_release_json(env["artifact_sha"], env["description"], commit_list)
         url = ApiSchema.url_for_releases(env["host"], project_data)
-        http_post_payload(release_json, url, env["api_token"])
+        http_post_payload(url, release_json, env["api_token"])
 
 
 def create_release_environment_variables():

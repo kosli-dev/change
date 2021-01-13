@@ -27,7 +27,7 @@ def create_deployment(project_file):
     with open(project_file) as json_data_file:
         project_data = load_project_configuration(json_data_file)
         url = ApiSchema.url_for_deployments(get_host(), project_data)
-        http_post_payload(payload, url, get_api_token())
+        http_post_payload(url, payload, get_api_token())
 
 
 

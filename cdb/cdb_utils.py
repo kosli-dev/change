@@ -144,7 +144,7 @@ def add_evidence(api_token, host, project_file_contents, sha256_digest, evidence
     project_data = load_project_configuration(project_file_contents)
     url = ApiSchema.url_for_artifact(host, project_data, sha256_digest)
 
-    http_put_payload(evidence, url, api_token)
+    http_put_payload(url, evidence, api_token)
 
 
 def build_evidence_dict(is_compliant, evidence_type, description, build_url, user_data=None):
