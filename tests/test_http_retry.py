@@ -35,14 +35,6 @@ def test_503_post_retries_5_times(capsys):
         ]
     )
 
-    # TODO: api_token is needed to prevent warning...
-    #   DeprecationWarning: Non-string usernames will no longer be supported in Requests 3.0.0.
-    #   Please convert the object you've passed in (None) to a string or bytes object in the
-    #   near future to avoid problems.
-    # I think this is because cdb_utils.py has:
-    # def get_api_token(env=os.environ):
-    #    return env.get('CDB_API_TOKEN', None)
-
     env = {
         "CDB_ARTIFACT_SHA": "1234",
         "CDB_BASE_SRC_COMMITISH": "production",
@@ -53,18 +45,10 @@ def test_503_post_retries_5_times(capsys):
         "XXXX_api_token": "not-None"
     }
 
-    original_backoff_factor = cdb.http_retry.RETRY_BACKOFF_FACTOR
-    cdb.http_retry.RETRY_BACKOFF_FACTOR = 0.001  # otherwise test takes 30 seconds
-    try:
-        with pytest.raises(requests.exceptions.RetryError):
-            create_approval("integration_tests/test-pipefile.json", env=env)
-    finally:
-        cdb.http_retry.RETRY_BACKOFF_FACTOR = original_backoff_factor
-        assert cdb.http_retry.RETRY_BACKOFF_FACTOR != 0.001
+    with backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
+        create_approval("integration_tests/test-pipefile.json", env=env)
 
-    captured = capsys.readouterr()
-    stderr = captured.err
-    lines = (
+    expected_lines = (
         "POST failed",
         "URL={}".format(route),  # request.url drops the protocol and hostname :(
         "STATUS=503",
@@ -73,8 +57,25 @@ def test_503_post_retries_5_times(capsys):
         "Retrying in 0.008 seconds (3/4)...failed",
         "Retrying in 0.016 seconds (4/4)...failed"
     )
-    for line in lines:
+    stderr = capsys.readouterr().err
+    for line in expected_lines:
         assert line in stderr, line
 
     assert len(httpretty.latest_requests()) == 5+1
+
+
+def backoff_factor(f):
+    return WithBackOffFactor(f)
+
+
+class WithBackOffFactor(object):
+    def __init__(self, factor):
+        self._factor = factor
+
+    def __enter__(self):
+        self._original = cdb.http_retry.RETRY_BACKOFF_FACTOR
+        cdb.http_retry.RETRY_BACKOFF_FACTOR = self._factor
+
+    def __exit__(self, _type, _value, _traceback):
+        cdb.http_retry.RETRY_BACKOFF_FACTOR = self._original
 
