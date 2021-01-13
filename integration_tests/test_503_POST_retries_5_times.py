@@ -46,10 +46,10 @@ def test_503_POST_retries_5_times(capsys):
         assert "POST failed" in stdout
         assert "URL={}".format(route) in stdout
         assert "STATUS=503" in stdout
-        assert "Retry 1/4 in 2 seconds" in stdout
-        assert "Retry 2/4 in 4 seconds" in stdout
-        assert "Retry 3/4 in 8 seconds" in stdout
-        assert "Retry 4/4 in 16 seconds" in stdout
+        assert "Retrying in 2 seconds (1/4)" in stdout
+        assert "Retrying in 4 seconds (2/4)" in stdout
+        assert "Retrying in 8 seconds (3/4)" in stdout
+        assert "Retrying in 16 seconds (4/4)" in stdout
         assert len(httpretty.latest_requests()) == 5+1
 
 
