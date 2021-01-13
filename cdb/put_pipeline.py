@@ -6,7 +6,7 @@ from requests.auth import HTTPBasicAuth
 
 from cdb.api_schema import ApiSchema
 from cdb.cdb_utils import parse_cmd_line, load_project_configuration
-from cdb.http import put_payload
+from cdb.http import http_put_payload
 from cdb.settings import CDB_SERVER
 
 
@@ -29,7 +29,7 @@ def put_pipeline(project_file, env=os.environ):
         api_token = env.get('CDB_API_TOKEN', 'NO_API_TOKEN_DEFINED')
 
         print("Put pipeline")
-        create_response = put_payload(url=projects_url, payload=project_data, api_token=api_token)
+        create_response = http_put_payload(url=projects_url, payload=project_data, api_token=api_token)
 
 
 

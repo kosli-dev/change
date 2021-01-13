@@ -4,7 +4,7 @@ import os
 from cdb.api_schema import ApiSchema
 from cdb.cdb_utils import parse_cmd_line, load_project_configuration, env_is_compliant, \
     set_artifact_sha_env_variable_from_file_or_image
-from cdb.http import put_payload
+from cdb.http import http_put_payload
 from cdb.settings import CDB_SERVER
 
 
@@ -27,7 +27,7 @@ def create_artifact(api_token, host, project_config_file, sha256, filename, desc
         "is_compliant": is_compliant
     }
     url = ApiSchema.url_for_artifacts(host, project_data)
-    put_payload(create_artifact_payload, url, api_token)
+    http_put_payload(create_artifact_payload, url, api_token)
 
 
 def put_artifact(project_file):

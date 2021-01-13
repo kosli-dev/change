@@ -7,7 +7,7 @@ import sys
 import docker
 
 from cdb.api_schema import ApiSchema
-from cdb.http import http_get_json, put_payload
+from cdb.http import http_get_json, http_put_payload
 from cdb.settings import CDB_SERVER
 
 CMD_HELP = 'ensure_project.py -p <project.json>'
@@ -144,7 +144,7 @@ def add_evidence(api_token, host, project_file_contents, sha256_digest, evidence
     project_data = load_project_configuration(project_file_contents)
     url = ApiSchema.url_for_artifact(host, project_data, sha256_digest)
 
-    put_payload(evidence, url, api_token)
+    http_put_payload(evidence, url, api_token)
 
 
 def build_evidence_dict(is_compliant, evidence_type, description, build_url, user_data=None):

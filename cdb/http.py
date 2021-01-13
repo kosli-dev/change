@@ -13,7 +13,7 @@ def http_get_json(url, api_token):
     return resp.json()
 
 
-def put_payload(payload, url, api_token):
+def http_put_payload(payload, url, api_token):
     headers = {"Content-Type": "application/json"}
     print("Putting this payload:")
     print(json.dumps(payload, sort_keys=True, indent=4))
