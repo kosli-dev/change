@@ -68,10 +68,10 @@ def test_503_post_retries_5_times(capsys):
         "POST failed",
         "URL={}".format(route),  # request.url drops the protocol and hostname :(
         "STATUS=503",
-        "Retrying in 0.002 seconds (1/4)",
-        "Retrying in 0.004 seconds (2/4)",
-        "Retrying in 0.008 seconds (3/4)",
-        "Retrying in 0.016 seconds (4/4)"
+        "Retrying in 0.002 seconds (1/4)...failed",
+        "Retrying in 0.004 seconds (2/4)...failed",
+        "Retrying in 0.008 seconds (3/4)...failed",
+        "Retrying in 0.016 seconds (4/4)...failed"
     )
     for line in lines:
         assert line in stderr, line

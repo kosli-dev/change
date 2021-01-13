@@ -9,13 +9,13 @@ RETRY_BACKOFF_FACTOR = 1
 
 
 def http_retry():
-    strategy = LoggingRetry(
+    retry = LoggingRetry(
         total=RETRY_COUNT,
         backoff_factor=RETRY_BACKOFF_FACTOR,
         status_forcelist=[503],
         allowed_methods=["POST"]
     )
-    adapter = HTTPAdapter(max_retries=strategy)
+    adapter = HTTPAdapter(max_retries=retry)
     s = Session()
     s.mount("https://", adapter)
     s.mount("http://", adapter)
@@ -33,25 +33,30 @@ class LoggingRetry(Retry):
             return
         if count == 1:
             self.log_failed_http_call()
-        if count != RETRY_COUNT:
+        if count > 1:
+            self.log_retry_failed()
+        if count < RETRY_COUNT:
             self.log_retrying()
-        # TODO: last retry failure results in exception
-        #           requests.exceptions.RetryError
-        #       which needs to be caught in top-level handler.
 
     def log_failed_http_call(self):
         request = self.failed_request()
-        print("{} failed".format(request.method), file=sys.stderr)
-        print("URL={}".format(request.url), file=sys.stderr)
-        print("STATUS={}".format(request.status), file=sys.stderr)
+        self.err_print("{} failed".format(request.method))
+        self.err_print("URL={}".format(request.url))
+        self.err_print("STATUS={}".format(request.status))
+
+    def log_retry_failed(self):
+        self.err_print('failed')
 
     def log_retrying(self):
-        message = "Retrying in {} seconds ({}/{})".format(
+        message = "Retrying in {} seconds ({}/{})...".format(
             self.next_backoff_time(),
             self.retry_count(),
             RETRY_COUNT - 1
             )
-        print(message, file=sys.stderr, flush=True)
+        self.err_print(message, end='')
+
+    def err_print(self, message, **kwargs):
+        print(message, **dict(kwargs, file=sys.stderr, flush=True))
 
     def retry_count(self):
         return len(self.history)
