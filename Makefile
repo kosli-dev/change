@@ -38,7 +38,11 @@ test: build
 	@docker rm test_unit || true
 	@rm -rf tmp/coverage/unit
 	@mkdir -p tmp/coverage/unit
-	@docker run --name test_unit --entrypoint ./coverage_entrypoint.sh ${IMAGE} tests/${TARGET} ; \
+	@docker run \
+	    --name test_unit \
+	    --entrypoint ./coverage_entrypoint.sh \
+	    ${IMAGE} \
+	    tests/${TARGET} ; \
 	e=$$?; \
 	docker cp test_unit:/app/htmlcov/ tmp/coverage/unit; \
 	exit $$e
