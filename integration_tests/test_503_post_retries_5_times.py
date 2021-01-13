@@ -3,7 +3,7 @@ import requests
 
 from cdb.create_approval import create_approval
 from tests.test_git import TEST_REPO_ROOT
-from cdb.http import LoggingRetry
+from cdb.http_retry import LoggingRetry
 
 """
 At first this tried to use the responses library to stub the http calls.
