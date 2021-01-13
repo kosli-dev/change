@@ -12,6 +12,7 @@ readonly TARGET="${1}"
 pytest -vv --capture=no --cov=. --cov-config=.coveragerc \
        -o junit_family=xunit1 --junitxml=htmlcov/junit.xml \
        -W ignore::pytest.PytestCollectionWarning \
+       --approvaltests-use-reporter='PythonNative' \
          "${TARGET}"
 
 # Generate html results

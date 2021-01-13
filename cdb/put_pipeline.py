@@ -6,6 +6,7 @@ from requests.auth import HTTPBasicAuth
 
 from cdb.api_schema import ApiSchema
 from cdb.cdb_utils import parse_cmd_line, load_project_configuration
+from cdb.http import put_payload
 from cdb.settings import CDB_SERVER
 
 
@@ -17,22 +18,20 @@ def main():
     put_pipeline(project_file)
 
 
-def put_pipeline(project_file):
+def put_pipeline(project_file, env=os.environ):
     print("Ensure Project - loading " + project_file)
     with open(project_file) as json_data_file:
         project_data = load_project_configuration(json_data_file)
 
-        host = os.getenv('CDB_HOST', CDB_SERVER)
+        host = env.get('CDB_HOST', CDB_SERVER)
         projects_url = ApiSchema.url_for_owner_projects(host, project_data)
 
-        api_token = os.getenv('CDB_API_TOKEN', 'NO_API_TOKEN_DEFINED')
+        api_token = env.get('CDB_API_TOKEN', 'NO_API_TOKEN_DEFINED')
 
-        print("PUT: " + projects_url)
-        print("PAYLOAD: " + str(project_data))
+        print("Put pipeline")
+        create_response = put_payload(url=projects_url, payload=project_data, api_token=api_token)
 
-        print("Create project")
-        create_response = req.put(projects_url, json=project_data, auth=HTTPBasicAuth(api_token, 'unused'))
-        print(create_response.text)
+
 
 
 if __name__ == '__main__':
