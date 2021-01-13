@@ -40,7 +40,6 @@ class LoggingRetry(Retry):
 
     def log_failed_http_call(self):
         request = self.failed_request()
-        print(dir(request))
         print("{} failed".format(request.method))
         print("URL={}".format(request.url))
         print("STATUS={}".format(request.status))
