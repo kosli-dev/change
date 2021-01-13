@@ -23,9 +23,10 @@ def test_repo_is_present_in_image():
     assert repo_path.is_dir()
 
 
-def test_is_repo():
+def test_is_repo(capsys):
     assert repo_at(TEST_REPO_ROOT) is not None
     assert repo_at("/cdb_data/") is None
+    read_stdout_stderr_to_keep_test_output_clean(capsys)
 
 
 def test_list_commits_between_master_and_production():
@@ -51,3 +52,7 @@ def test_list_commits_between_master_and_commit():
         "b6c9e60f281e37d912ec24f038b7937f79723fb4"
     ]
     assert commits == expected
+
+
+def read_stdout_stderr_to_keep_test_output_clean(capsys):
+    capsys.readouterr()
