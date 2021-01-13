@@ -1,6 +1,7 @@
 from requests import Session
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from os import sys
 
 
 RETRY_COUNT = 5
@@ -40,9 +41,9 @@ class LoggingRetry(Retry):
 
     def log_failed_http_call(self):
         request = self.failed_request()
-        print("{} failed".format(request.method))
-        print("URL={}".format(request.url))
-        print("STATUS={}".format(request.status))
+        print("{} failed".format(request.method), file=sys.stderr)
+        print("URL={}".format(request.url), file=sys.stderr)
+        print("STATUS={}".format(request.status), file=sys.stderr)
 
     def log_retrying(self):
         message = "Retrying in {} seconds ({}/{})".format(
@@ -50,7 +51,7 @@ class LoggingRetry(Retry):
             self.retry_count(),
             RETRY_COUNT - 1
             )
-        print(message, flush=True)
+        print(message, file=sys.stderr, flush=True)
 
     def retry_count(self):
         return len(self.history)
