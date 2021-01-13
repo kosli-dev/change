@@ -33,7 +33,7 @@ build_pipe:
 
 # Github does not support volume mounts so we need to copy the test output from the container
 # and capture the test exit value
-test: build
+test_unit: build
 	@docker stop test_unit || true
 	@docker rm test_unit || true
 	@rm -rf tmp/coverage/unit
@@ -63,7 +63,7 @@ test_integration: build
 	exit $$e
 
 
-test_all: test test_integration
+test_all: test_unit test_integration
 
 
 push:
