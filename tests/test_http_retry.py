@@ -42,8 +42,15 @@ def test_503_post_retries_5_times(capsys):
         "CDB_DESCRIPTION": "Description",
         "CDB_IS_APPROVED_EXTERNALLY": "FALSE",
         "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,
-        "XXXX_api_token": "not-None"
+        "CDB_API_TOKEN": "not-None"  # [1]
     }
+    # TODO: [1] CDB_API_TOKEN is needed to prevent the warning...
+    #   DeprecationWarning: Non-string usernames will no longer be supported in Requests 3.0.0.
+    #   Please convert the object you've passed in (None) to a string or bytes object in the
+    #   near future to avoid problems.
+    # I think this is because cdb_utils.py has:
+    # def get_api_token(env=os.environ):
+    #    return env.get('CDB_API_TOKEN', None)
 
     with backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         create_approval("integration_tests/test-pipefile.json", env=env)
