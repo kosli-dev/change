@@ -23,6 +23,7 @@ def test_503_post_retries_5_times(capsys):
     # This is mostly for deployment rollover
     hostname = 'https://app.compliancedb.com'
     route = "/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/"
+
     httpretty.register_uri(
         httpretty.POST,
         hostname + route,
