@@ -1,11 +1,13 @@
-import httpretty
-import pytest
-import requests
-
 from cdb.create_approval import create_approval
-from tests.test_git import TEST_REPO_ROOT
+import requests
 import cdb.http_retry
 
+import httpretty
+import pytest
+
+from tests.test_git import TEST_REPO_ROOT
+from approvaltests.approvals import verify
+from approvaltests.reporters import PythonNativeReporter
 
 """
 We are using httpretty to stub the http calls.
@@ -53,20 +55,8 @@ def test_503_post_retries_5_times(capsys):
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         create_approval("integration_tests/test-pipefile.json", env)
 
-    expected_lines = (
-        "POST failed",
-        "URL={}".format(route),  # request.url drops the protocol and hostname :(
-        "STATUS=503",
-        "Retrying in 0.002 seconds (1/4)...failed",
-        "Retrying in 0.004 seconds (2/4)...failed",
-        "Retrying in 0.008 seconds (3/4)...failed",
-        "Retrying in 0.016 seconds (4/4)...failed"
-    )
-    stderr = capsys.readouterr().err
-    for line in expected_lines:
-        assert line in stderr, line
-
     assert len(httpretty.latest_requests()) == 5+1
+    verify(capsys.readouterr().err, PythonNativeReporter())
 
 
 def retry_backoff_factor(f):
