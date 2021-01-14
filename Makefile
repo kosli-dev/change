@@ -66,6 +66,15 @@ test_integration: build
 test_all: test_unit test_integration
 
 
+pytest_help:
+	@docker run \
+		--name pytest_help \
+		--entrypoint="" \
+		--rm \
+		${IMAGE} \
+		  python3 -m pytest --help
+
+
 push:
 	@docker push ${IMAGE}
 
