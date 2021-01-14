@@ -1,4 +1,4 @@
-Ensure Project - loading integration_tests/test-pipeline.json
+Ensure Project - loading integration_tests/test-pipefile.json
 Put pipeline
 Putting this payload:
 {

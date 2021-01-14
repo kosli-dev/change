@@ -52,7 +52,7 @@ def test_503_post_retries_5_times(capsys):
     }
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
-        create_approval("tests/test-pipeline.json", env)
+        create_approval("tests/test-pipefile.json", env)
 
     assert len(httpretty.latest_requests()) == 5+1
     verify(capsys.readouterr().err)
