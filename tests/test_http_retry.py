@@ -7,10 +7,11 @@ from tests.test_git import TEST_REPO_ROOT
 import cdb.http_retry
 
 """
-At first this tried to use the responses library to stub the http calls.
+At first this tried to use the responses package to stub the http calls.
 https://github.com/getsentry/responses
 Alas it does not (currently) work when you are http-retrying.
 See https://github.com/getsentry/responses/issues/135
+Also tried the requests_mock package. Couldn't get that working either.
 """
 
 
@@ -52,7 +53,7 @@ def test_503_post_retries_5_times(capsys):
     # def get_api_token(env=os.environ):
     #    return env.get('CDB_API_TOKEN', None)
 
-    with backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
+    with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         create_approval("integration_tests/test-pipefile.json", env=env)
 
     expected_lines = (
@@ -71,11 +72,11 @@ def test_503_post_retries_5_times(capsys):
     assert len(httpretty.latest_requests()) == 5+1
 
 
-def backoff_factor(f):
-    return WithBackOffFactor(f)
+def retry_backoff_factor(f):
+    return RetryBackOffFactor(f)
 
 
-class WithBackOffFactor(object):
+class RetryBackOffFactor(object):
     def __init__(self, factor):
         self._factor = factor
 
