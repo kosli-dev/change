@@ -15,6 +15,6 @@ def test_put_approval(capsys):
         "CDB_IS_APPROVED_EXTERNALLY": "FALSE",
         "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,
     }
-    create_approval("integration_tests/test-pipefile.json", env=env)
+    create_approval("integration_tests/test-pipeline.json", env=env)
     captured = capsys.readouterr()
     verify(captured.out + captured.err)
