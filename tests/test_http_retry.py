@@ -6,12 +6,16 @@ from cdb.create_approval import create_approval
 from tests.test_git import TEST_REPO_ROOT
 import cdb.http_retry
 
+
 """
-At first this tried to use the responses package to stub the http calls.
-https://github.com/getsentry/responses
-Alas it does not (currently) work when you are http-retrying.
-See https://github.com/getsentry/responses/issues/135
-Also tried the requests_mock package. Couldn't get that working either.
+We are using httpretty to stub the http calls.
+This works when you are using a requests.packages.urllib3.util.retry.Retry 
+object inside a requests.adapters.HTTPAdapter object mounted inside a
+requests.Session object.
+Packages we have tried that did not work are:
+1) responses (https://github.com/getsentry/responses)
+   See https://github.com/getsentry/responses/issues/135
+2) requests_mock (https://requests-mock.readthedocs.io/en/latest/)
 """
 
 
@@ -21,8 +25,7 @@ def test_total_retry_time_is_about_30_seconds():
 
 @httpretty.activate
 def test_503_post_retries_5_times(capsys):
-    # This is mostly for deployment rollover
-    hostname = 'https://app.compliancedb.com'
+    hostname = 'https://test.compliancedb.com'
     route = "/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/"
 
     httpretty.register_uri(
@@ -31,7 +34,7 @@ def test_503_post_retries_5_times(capsys):
         responses=[
             httpretty.Response(
                 body='{"error": "service unavailable"}',
-                status=503,
+                status=503,  # Eg deployment rollover
             )
         ]
     )
@@ -43,15 +46,8 @@ def test_503_post_retries_5_times(capsys):
         "CDB_DESCRIPTION": "Description",
         "CDB_IS_APPROVED_EXTERNALLY": "FALSE",
         "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,
-        "CDB_API_TOKEN": "not-None"  # [1]
+        "CDB_API_TOKEN": "not-None"  # To prevent DeprecationWarning:  Non-string usernames
     }
-    # TODO: [1] CDB_API_TOKEN is needed to prevent the warning...
-    #   DeprecationWarning: Non-string usernames will no longer be supported in Requests 3.0.0.
-    #   Please convert the object you've passed in (None) to a string or bytes object in the
-    #   near future to avoid problems.
-    # I think this is because cdb_utils.py has:
-    # def get_api_token(env=os.environ):
-    #    return env.get('CDB_API_TOKEN', None)
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         create_approval("integration_tests/test-pipefile.json", env=env)

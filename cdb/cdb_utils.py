@@ -47,6 +47,12 @@ def get_artifact_sha(env=os.environ):
 
 
 def get_api_token(env=os.environ):
+    """
+    The default None causes the following warning:
+       DeprecationWarning: Non-string usernames will no longer be supported in Requests 3.0.0.
+       Please convert the object you've passed in (None) to a string or bytes object in the
+       near future to avoid problems.
+    """
     return env.get('CDB_API_TOKEN', None)
 
 

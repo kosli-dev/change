@@ -2,11 +2,9 @@
 
 def auto_reading(capsys):
     """
-    If tests do not flush capsys then the
-    captured stdout and stderr are dumped to
-    the console, even for passing tests.
-    This makes it harder to spot the output
-    related to failing tests.
+    We only want is output when there are failing tests.
+    If tests do not read capsys then the captured stdout/stderr
+    are dumped to the terminal, even for passing tests.
     """
     return AutoReadingCapsys(capsys)
 
