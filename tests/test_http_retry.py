@@ -40,6 +40,7 @@ def test_503_post_retries_5_times(capsys):
     )
 
     env = {
+        "CDB_HOST": hostname,
         "CDB_ARTIFACT_SHA": "1234",
         "CDB_BASE_SRC_COMMITISH": "production",
         "CDB_TARGET_SRC_COMMITISH": "master",
@@ -50,7 +51,7 @@ def test_503_post_retries_5_times(capsys):
     }
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
-        create_approval("integration_tests/test-pipefile.json", env=env)
+        create_approval("integration_tests/test-pipefile.json", env)
 
     expected_lines = (
         "POST failed",
