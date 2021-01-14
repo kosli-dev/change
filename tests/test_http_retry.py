@@ -7,7 +7,6 @@ import pytest
 
 from tests.test_git import TEST_REPO_ROOT
 from approvaltests.approvals import verify
-from approvaltests.reporters import PythonNativeReporter
 
 """
 We are using httpretty to stub the http calls.
@@ -56,7 +55,7 @@ def test_503_post_retries_5_times(capsys):
         create_approval("integration_tests/test-pipefile.json", env)
 
     assert len(httpretty.latest_requests()) == 5+1
-    verify(capsys.readouterr().err, PythonNativeReporter())
+    verify(capsys.readouterr().err)
 
 
 def retry_backoff_factor(f):

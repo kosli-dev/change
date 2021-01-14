@@ -9,10 +9,15 @@ set -e
 # which will result in ${1}==integration_tests/test_approvals.py
 readonly TARGET="${1}"
 
-pytest -vv --capture=no --cov=. --cov-config=.coveragerc \
-       -o junit_family=xunit1 --junitxml=htmlcov/junit.xml \
-       -W ignore::pytest.PytestCollectionWarning \
+pytest \
        --approvaltests-use-reporter='PythonNative' \
+       --capture=no \
+       --cov=. \
+       --cov-config=.coveragerc \
+       --junitxml=htmlcov/junit.xml \
+       -o junit_family=xunit1 \
+       --pythonwarnings=ignore::pytest.PytestCollectionWarning \
+       --verbose \
          "${TARGET}"
 
 # Generate html results
