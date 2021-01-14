@@ -1,6 +1,6 @@
 
 
-def flushing_capsys(capsys):
+def auto_reading(capsys):
     """
     If tests do not flush capsys then the
     captured stdout and stderr are dumped to
@@ -8,10 +8,10 @@ def flushing_capsys(capsys):
     This makes it harder to spot the output
     related to failing tests.
     """
-    return FlushingCapsys(capsys)
+    return AutoReadingCapsys(capsys)
 
 
-class FlushingCapsys(object):
+class AutoReadingCapsys(object):
     def __init__(self, capsys):
         self._capsys = capsys
 

@@ -4,7 +4,7 @@ from os import environ
 def cdb_dry_run():
     """
     Important tests use this to prevent env-vars
-    set in one test from polluting subsequent tests.
+    set in one test from affecting subsequent tests.
     """
     return SetEnv("CDB_DRY_RUN", "TRUE")
 
