@@ -6,9 +6,8 @@ Putting this payload:
         "coverage"
     ]
 }
-To url: https://test.compliancedb.com/api/v1/any/path/
+To this url: https://test.compliancedb.com/api/v1/any/path/
 PUT failed
-URL=https://test.compliancedb.com:443/api/v1/any/path/
 STATUS=503
 Retrying in 0.002 seconds (1/4)...failed
 Retrying in 0.004 seconds (2/4)...failed

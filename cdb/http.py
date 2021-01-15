@@ -16,7 +16,7 @@ def http_get_json(url, api_token):
 def http_put_payload(url, payload, api_token):
     print("Putting this payload:")
     print(pretty_json(payload))
-    print("To url: " + url)
+    print("To this url: " + url)
     if in_cdb_dry_run():
         print("DRY RUN: Put not sent")
     else:
@@ -30,7 +30,7 @@ def http_put_payload(url, payload, api_token):
 def http_post_payload(url, payload, api_token):
     print("Posting this payload:")
     print(pretty_json(payload))
-    print("To url: " + url)
+    print("To this url: " + url)
     if in_cdb_dry_run():
         print("DRY RUN: Post not sent")
     else:

@@ -12,5 +12,5 @@ Putting this payload:
     ],
     "visibility": "public"
 }
-To url: http://app2.compliancedb.com/api/v1/projects/compliancedb/
+To this url: http://app2.compliancedb.com/api/v1/projects/compliancedb/
 DRY RUN: Put not sent
