@@ -1,5 +1,5 @@
 import requests
-from cdb.http import http_post_payload
+from cdb.http import http_post_payload, http_put_payload
 import cdb.http_retry
 
 import httpretty
@@ -24,10 +24,9 @@ def test_total_retry_sleep_time_is_about_30_seconds():
 
 @httpretty.activate
 def test_503_post_retries_5_times(capsys):
-    hostname = 'https://test.compliancedb.com'
-    route = "/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/"
-    url = hostname + route
-
+    scheme_host = 'https://test.compliancedb.com'
+    path = "/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/"
+    url = scheme_host + path
     httpretty.register_uri(
         httpretty.POST,
         url,
@@ -40,10 +39,34 @@ def test_503_post_retries_5_times(capsys):
     )
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
-        http_post_payload(url, {}, "api-token")
+        http_post_payload(url, {}, "the-api-token")
 
-    assert len(httpretty.latest_requests()) == 5+1
     verify(capsys.readouterr().err)
+    assert len(httpretty.latest_requests()) == 5+1
+
+
+@httpretty.activate
+def test_503_put_retries_5_times(capsys):
+    scheme_host = 'https://test.compliancedb.com'
+    path = "/api/v1/any/path/"
+    url = scheme_host + path
+
+    httpretty.register_uri(
+        httpretty.PUT,
+        url,
+        responses=[
+            httpretty.Response(
+                body='{"error": "service unavailable"}',
+                status=503,  # Eg deployment rollover
+            )
+        ]
+    )
+
+    with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
+        http_put_payload(url, {}, "the-api-token")
+
+    verify(capsys.readouterr().err)
+    assert len(httpretty.latest_requests()) == 5+1
 
 
 def retry_backoff_factor(f):

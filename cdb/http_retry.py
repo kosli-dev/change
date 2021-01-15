@@ -13,7 +13,7 @@ def http_retry():
         total=RETRY_COUNT,
         backoff_factor=RETRY_BACKOFF_FACTOR,
         status_forcelist=[503],
-        allowed_methods=["POST"]
+        allowed_methods=["POST","PUT"]
     )
     adapter = HTTPAdapter(max_retries=retry)
     s = Session()
