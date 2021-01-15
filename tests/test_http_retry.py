@@ -1,5 +1,5 @@
 import requests
-from cdb.http import http_post_payload, http_put_payload
+from cdb.http import http_post_payload, http_put_payload, http_get_json
 import cdb.http_retry
 
 import httpretty
@@ -69,6 +69,31 @@ def test_503_put_retries_5_times(capsys):
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         payload = {"name": "git", "template": ["artefact", "coverage"]}
         http_put_payload(url, payload, "the-api-token")
+
+    captured = capsys.readouterr()
+    verify(captured.out + captured.err, PythonNativeReporter())
+    assert len(httpretty.latest_requests()) == 5+1
+
+
+@httpretty.activate
+def test_503_get_retries_5_times(capsys):
+    scheme_host = 'https://test.compliancedb.com'
+    path = "/api/v1/any/path/"
+    url = scheme_host + path
+
+    httpretty.register_uri(
+        httpretty.GET,
+        url,
+        responses=[
+            httpretty.Response(
+                body='{"error": "service unavailable"}',
+                status=503,  # Eg deployment rollover
+            )
+        ]
+    )
+
+    with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
+        http_get_json(url, "the-api-token")
 
     captured = capsys.readouterr()
     verify(captured.out + captured.err, PythonNativeReporter())

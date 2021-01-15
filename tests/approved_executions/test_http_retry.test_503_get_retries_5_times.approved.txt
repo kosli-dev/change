@@ -1,0 +1,8 @@
+Getting json:
+From this url: https://test.compliancedb.com/api/v1/any/path/
+GET failed
+STATUS=503
+Retrying in 0.002 seconds (1/4)...failed
+Retrying in 0.004 seconds (2/4)...failed
+Retrying in 0.008 seconds (3/4)...failed
+Retrying in 0.016 seconds (4/4)...failed

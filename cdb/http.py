@@ -7,8 +7,9 @@ from cdb.http_retry import http_retry
 
 
 def http_get_json(url, api_token):
-    print("Getting this endpoint: " + url)
-    resp = req.get(url, auth=HTTPBasicAuth(api_token, 'unused'))
+    print("Getting json:")
+    print("From this url: " + url)
+    resp = http_retry().get(url, auth=HTTPBasicAuth(api_token, 'unused'))
     print(resp.text)
     return resp.json()
 
