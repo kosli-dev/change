@@ -1,5 +1,5 @@
 POST failed
-URL=/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/
+URL=https://test.compliancedb.com:443/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/
 STATUS=503
 Retrying in 0.002 seconds (1/4)...failed
 Retrying in 0.004 seconds (2/4)...failed

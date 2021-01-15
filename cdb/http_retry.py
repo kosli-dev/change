@@ -27,25 +27,28 @@ class LoggingRetry(Retry):
     https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#module-urllib3.util.retry
     """
     def increment(self, *args, **kwargs):
-        self.log_increment()
+        self.log_increment(**kwargs)
         return super().increment(*args, **kwargs)
 
-    def log_increment(self):
+    def log_increment(self, **kwargs):
         count = self.retry_count()
         if count == 0:
             return
         if count == 1:
-            self.log_original_http_call_failed()
+            self.log_original_http_call_failed(**kwargs)
         if count > 1:
             self.log_previous_retry_failed()
         if count < RETRY_COUNT:
             self.log_retrying_in_n_seconds()
 
-    def log_original_http_call_failed(self):
+    def log_original_http_call_failed(self, **kwargs):
         request = self.failed_request()
-        # request.url does not contain hostname or port!
-        self.err_print("{} failed".format(request.method))
-        self.err_print("URL={}".format(request.url))
+        # request.url (a string) contains only the path :(
+        pool = kwargs['_pool']
+        path = request.url
+        url = "{}://{}:{}{}".format(pool.scheme, pool.host, pool.port, path)
+        self.err_print("{} failed".format(request.method))  # eg POST
+        self.err_print("URL={}".format(url))
         self.err_print("STATUS={}".format(request.status))
 
     def log_previous_retry_failed(self):
@@ -54,8 +57,8 @@ class LoggingRetry(Retry):
     def log_retrying_in_n_seconds(self):
         """
         The printed message does _not_ say 'Press Control^C to exit.'
-        For this to work the program environment needs a tty, and the
-        target environment is a CI pipeline which typically has no tty.
+        For this to work the program environment needs a tty, but the
+        target environment is a CI pipeline which invariably has no tty.
         """
         message = "Retrying in {} seconds ({}/{})...".format(
             self.next_backoff_time(),
