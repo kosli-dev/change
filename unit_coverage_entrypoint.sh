@@ -9,8 +9,18 @@ set -e
 # which will result in ${1}==tests/test_release.py
 readonly TARGET="${1}"
 
+# According to https://github.com/approvals/ApprovalTests.Python
+# you can setup the approval-test report with this command line
+# option:
+#   --approvaltests-use-reporter='PythonNative'
+# When this option is added to the pytest call below you _lose_ output.
+# Until this is resolved, what works, is explicitly setting the reporter
+# in the test. Eg
+#   from approvaltests.approvals import verify
+#   from approvaltests.reporters import PythonNativeReporter
+#   verify(actual, PythonNativeReporter())
+
 pytest \
-       --approvaltests-use-reporter='PythonNative' \
        --capture=no \
        --cov=. \
        --cov-config=.coveragerc \

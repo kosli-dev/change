@@ -5,6 +5,8 @@ import cdb.http_retry
 import httpretty
 import pytest
 from approvaltests.approvals import verify
+from approvaltests.reporters import PythonNativeReporter
+
 
 """
 We are using httpretty to stub the http calls.
@@ -43,7 +45,7 @@ def test_503_post_retries_5_times(capsys):
         http_post_payload(url, payload, "the-api-token")
 
     captured = capsys.readouterr()
-    verify(captured.out + captured.err)
+    verify(captured.out + captured.err, PythonNativeReporter())
     assert len(httpretty.latest_requests()) == 5+1
 
 
@@ -69,7 +71,7 @@ def test_503_put_retries_5_times(capsys):
         http_put_payload(url, payload, "the-api-token")
 
     captured = capsys.readouterr()
-    verify(captured.out + captured.err)
+    verify(captured.out + captured.err, PythonNativeReporter())
     assert len(httpretty.latest_requests()) == 5+1
 
 
