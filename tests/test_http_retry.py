@@ -28,10 +28,11 @@ def test_total_retry_time_is_about_30_seconds():
 def test_503_post_retries_5_times(capsys):
     hostname = 'https://test.compliancedb.com'
     route = "/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/"
+    url = hostname + route
 
     httpretty.register_uri(
         httpretty.POST,
-        hostname + route,
+        url,
         responses=[
             httpretty.Response(
                 body='{"error": "service unavailable"}',

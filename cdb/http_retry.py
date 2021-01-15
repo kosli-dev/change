@@ -43,6 +43,7 @@ class LoggingRetry(Retry):
 
     def log_original_http_call_failed(self):
         request = self.failed_request()
+        # request.url does not contain hostname or port!
         self.err_print("{} failed".format(request.method))
         self.err_print("URL={}".format(request.url))
         self.err_print("STATUS={}".format(request.status))
@@ -53,8 +54,8 @@ class LoggingRetry(Retry):
     def log_retrying_in_n_seconds(self):
         """
         The printed message does _not_ say 'Press Control^C to exit.'
-        For this to work the program environment needs a tty,
-        and the target environment is a CI pipeline which has no tty.
+        For this to work the program environment needs a tty, and the
+        target environment is a CI pipeline which typically has no tty.
         """
         message = "Retrying in {} seconds ({}/{})...".format(
             self.next_backoff_time(),
@@ -77,9 +78,7 @@ class LoggingRetry(Retry):
 
     def backoff_time(self, n):
         """"
-        Retry documentation is at
-        https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html
-        It says the backoff algorithm is:
+        Retry documentation says the backoff algorithm is:
            {backoff factor} * (2 ** ({number of retries} - 1))
         With backoff_factor==1, this would give successive sleeps of:
            [ 0.5, 1, 2, 4, 8, 16, 32, ... ]
@@ -87,8 +86,8 @@ class LoggingRetry(Retry):
            [ 0, 2, 4, 8, 16, 32, ... ]
         Empirically, this _is_ the forthcoming sleep duration.
         The [0] is the _original_ http call, so zero never appears
-        in a log message (where it would look strange). The first retry
-        sleep is [2], the second is [4] etc.
+        in a log message (where it would look strange).
+        The first retry sleep is [2], the second is [4] etc.
         """
         return RETRY_BACKOFF_FACTOR * (2 ** n)
 
