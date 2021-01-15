@@ -50,4 +50,4 @@ def pretty_json(payload):
 
 
 def in_cdb_dry_run():
-    return os.getenv('CDB_DRY_RUN', "FALSE") == "TRUE"
+    return os.getenv('CDB_DRY_RUN') == "TRUE"
