@@ -14,24 +14,40 @@ def http_get_json(url, api_token):
 
 
 def http_put_payload(url, payload, api_token):
-    headers = {"Content-Type": "application/json"}
     print("Putting this payload:")
-    print(json.dumps(payload, sort_keys=True, indent=4))
+    print(pretty_json(payload))
     print("To url: " + url)
-    if os.getenv('CDB_DRY_RUN', "FALSE") != "TRUE":
-        resp = http_retry().put(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
-        print(resp.text)
-    else:
+    if in_cdb_dry_run():
         print("DRY RUN: Put not sent")
+    else:
+        response = http_retry().put(url,
+                                    data=json.dumps(payload),
+                                    headers=json_content_header(),
+                                    auth=HTTPBasicAuth(api_token, 'unused'))
+        print(response.text)
 
 
 def http_post_payload(url, payload, api_token):
-    headers = {"Content-Type": "application/json"}
     print("Posting this payload:")
-    print(json.dumps(payload, sort_keys=True, indent=4))
+    print(pretty_json(payload))
     print("To url: " + url)
-    if os.getenv('CDB_DRY_RUN', "FALSE") != "TRUE":
-        resp = http_retry().post(url, data=json.dumps(payload), headers=headers, auth=HTTPBasicAuth(api_token, 'unused'))
-        print(resp.text)
-    else:
+    if in_cdb_dry_run():
         print("DRY RUN: POST not sent")
+    else:
+        response = http_retry().post(url,
+                                     data=json.dumps(payload),
+                                     headers=json_content_header(),
+                                     auth=HTTPBasicAuth(api_token, 'unused'))
+        print(response.text)
+
+
+def json_content_header():
+    return {"Content-Type": "application/json"}
+
+
+def pretty_json(payload):
+    return json.dumps(payload, sort_keys=True, indent=4)
+
+
+def in_cdb_dry_run():
+    return os.getenv('CDB_DRY_RUN', "FALSE") == "TRUE"
