@@ -25,6 +25,8 @@ def http_retry():
 class LoggingRetry(Retry):
     """
     https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#module-urllib3.util.retry
+    Note: Don't put any attributes in this class!
+    The Retry subclass is doing tricky things with __getattr__
     """
     def increment(self, *args, **kwargs):
         self.log_increment(**kwargs)
@@ -67,9 +69,6 @@ class LoggingRetry(Retry):
             )
         self.err_print(message, end='')
 
-    def err_print(self, message, **kwargs):
-        print(message, **dict(kwargs, file=sys.stderr, flush=True))
-
     def retry_count(self):
         return len(self.history)
 
@@ -79,7 +78,11 @@ class LoggingRetry(Retry):
     def next_backoff_time(self):
         return self.backoff_time(self.retry_count())
 
-    def backoff_time(self, n):
+    def total_backoff_time(self):
+        return sum(self.backoff_time(n) for n in range(0, RETRY_COUNT))
+
+    @staticmethod
+    def backoff_time(n):
         """"
         Retry documentation says the backoff algorithm is:
            {backoff factor} * (2 ** ({number of retries} - 1))
@@ -94,5 +97,6 @@ class LoggingRetry(Retry):
         """
         return RETRY_BACKOFF_FACTOR * (2 ** n)
 
-    def total_backoff_time(self):
-        return sum(self.backoff_time(n) for n in range(0, RETRY_COUNT))
+    @staticmethod
+    def err_print(message, **kwargs):
+        print(message, **dict(kwargs, file=sys.stderr, flush=True))
