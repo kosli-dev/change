@@ -1,3 +1,12 @@
+Putting this payload:
+{
+    "name": "git",
+    "template": [
+        "artefact",
+        "coverage"
+    ]
+}
+To url: https://test.compliancedb.com/api/v1/any/path/
 PUT failed
 URL=https://test.compliancedb.com:443/api/v1/any/path/
 STATUS=503

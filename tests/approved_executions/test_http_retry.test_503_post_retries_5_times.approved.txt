@@ -1,3 +1,12 @@
+Posting this payload:
+{
+    "name": "cern",
+    "template": [
+        "artefact",
+        "unit_test"
+    ]
+}
+To url: https://test.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/
 POST failed
 URL=https://test.compliancedb.com:443/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/
 STATUS=503

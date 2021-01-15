@@ -39,9 +39,11 @@ def test_503_post_retries_5_times(capsys):
     )
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
-        http_post_payload(url, {}, "the-api-token")
+        payload = {"name": "cern", "template": ["artefact", "unit_test"]}
+        http_post_payload(url, payload, "the-api-token")
 
-    verify(capsys.readouterr().err)
+    captured = capsys.readouterr()
+    verify(captured.out + captured.err)
     assert len(httpretty.latest_requests()) == 5+1
 
 
@@ -63,9 +65,11 @@ def test_503_put_retries_5_times(capsys):
     )
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
-        http_put_payload(url, {}, "the-api-token")
+        payload = {"name": "git", "template": ["artefact", "coverage"]}
+        http_put_payload(url, payload, "the-api-token")
 
-    verify(capsys.readouterr().err)
+    captured = capsys.readouterr()
+    verify(captured.out + captured.err)
     assert len(httpretty.latest_requests()) == 5+1
 
 
