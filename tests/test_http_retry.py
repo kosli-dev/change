@@ -29,16 +29,7 @@ def test_503_post_retries_5_times(capsys):
     scheme_host = 'https://test.compliancedb.com'
     path = "/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/"
     url = scheme_host + path
-    httpretty.register_uri(
-        httpretty.POST,
-        url,
-        responses=[
-            httpretty.Response(
-                body='{"error": "service unavailable"}',
-                status=503,  # Eg deployment rollover
-            )
-        ]
-    )
+    http_stub_503('POST', url, service_unavailable_payload())
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         payload = {"name": "cern", "template": ["artefact", "unit_test"]}
@@ -54,17 +45,7 @@ def test_503_put_retries_5_times(capsys):
     scheme_host = 'https://test.compliancedb.com'
     path = "/api/v1/any/path/"
     url = scheme_host + path
-
-    httpretty.register_uri(
-        httpretty.PUT,
-        url,
-        responses=[
-            httpretty.Response(
-                body='{"error": "service unavailable"}',
-                status=503,  # Eg deployment rollover
-            )
-        ]
-    )
+    http_stub_503('PUT', url, service_unavailable_payload())
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         payload = {"name": "git", "template": ["artefact", "coverage"]}
@@ -80,17 +61,7 @@ def test_503_get_retries_5_times(capsys):
     scheme_host = 'https://test.compliancedb.com'
     path = "/api/v1/any/path/"
     url = scheme_host + path
-
-    httpretty.register_uri(
-        httpretty.GET,
-        url,
-        responses=[
-            httpretty.Response(
-                body='{"error": "service unavailable"}',
-                status=503,  # Eg deployment rollover
-            )
-        ]
-    )
+    http_stub_503('GET', url, service_unavailable_payload())
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         http_get_json(url, "the-api-token")
@@ -98,6 +69,23 @@ def test_503_get_retries_5_times(capsys):
     captured = capsys.readouterr()
     verify(captured.out + captured.err, PythonNativeReporter())
     assert len(httpretty.latest_requests()) == 5+1
+
+
+def http_stub_503(method, url, payload):
+    httpretty.register_uri(
+        getattr(httpretty, method),
+        url,
+        responses=[
+            httpretty.Response(
+                body=payload,
+                status=503,  # Eg during deployment rollover
+            )
+        ]
+    )
+
+
+def service_unavailable_payload():
+    return '{"error": "service unavailable"}'
 
 
 def retry_backoff_factor(f):
