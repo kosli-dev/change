@@ -3,6 +3,7 @@ from cdb.http import http_post_payload, http_put_payload, http_get_json
 import cdb.http_retry
 
 import httpretty
+import json
 import pytest
 from approvaltests.approvals import verify
 from approvaltests.reporters import PythonNativeReporter
@@ -85,7 +86,7 @@ def http_stub_503(method, url, payload):
 
 
 def service_unavailable_payload():
-    return '{"error": "service unavailable"}'
+    return json.dumps({"error": "service unavailable"})
 
 
 def retry_backoff_factor(f):
