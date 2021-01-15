@@ -43,11 +43,16 @@ class LoggingRetry(Retry):
         if count < RETRY_COUNT:
             self.log_retrying_in_n_seconds()
 
+    def retry_count(self):
+        """
+        The number of retries so far.
+        """
+        return len(self.history)
+
     def log_original_http_call_failed(self, **kwargs):
-        request = self.failed_request()
-        # request.url (a string) contains only the path :(
+        request = self.most_recent_failed_request()
+        path = request.url  # has no scheme, host, or port
         pool = kwargs['_pool']
-        path = request.url
         url = "{}://{}:{}{}".format(pool.scheme, pool.host, pool.port, path)
         self.err_print("{} failed".format(request.method))  # eg POST
         self.err_print("URL={}".format(url))
@@ -63,26 +68,20 @@ class LoggingRetry(Retry):
         target environment is a CI pipeline which invariably has no tty.
         """
         message = "Retrying in {} seconds ({}/{})...".format(
-            self.next_backoff_time(),
+            self.next_sleep_time(),
             self.retry_count(),
             RETRY_COUNT - 1
             )
-        self.err_print(message, end='')
+        self.err_print(message, end='')  # no newline
 
-    def retry_count(self):
-        return len(self.history)
-
-    def failed_request(self):
+    def most_recent_failed_request(self):
         return self.history[-1]
 
-    def next_backoff_time(self):
-        return self.backoff_time(self.retry_count())
-
-    def total_backoff_time(self):
-        return sum(self.backoff_time(n) for n in range(0, RETRY_COUNT))
+    def next_sleep_time(self):
+        return self.sleep_time(self.retry_count())
 
     @staticmethod
-    def backoff_time(n):
+    def sleep_time(n):
         """"
         Retry documentation says the backoff algorithm is:
            {backoff factor} * (2 ** ({number of retries} - 1))
@@ -96,6 +95,10 @@ class LoggingRetry(Retry):
         The first retry sleep is [2], the second is [4] etc.
         """
         return RETRY_BACKOFF_FACTOR * (2 ** n)
+
+    @staticmethod
+    def total_sleep_time():
+        return sum(LoggingRetry.sleep_time(n) for n in range(0, RETRY_COUNT))
 
     @staticmethod
     def err_print(message, **kwargs):

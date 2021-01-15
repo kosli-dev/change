@@ -13,15 +13,15 @@ We are using httpretty to stub the http calls.
 This works when you are using a requests.packages.urllib3.util.retry.Retry 
 object inside a requests.adapters.HTTPAdapter object mounted inside a
 requests.Session object.
-Packages we have tried that did not work are:
+Packages we tried that did not work in this situation are:
 1) responses (https://github.com/getsentry/responses)
    See https://github.com/getsentry/responses/issues/135
 2) requests_mock (https://requests-mock.readthedocs.io/en/latest/)
 """
 
 
-def test_total_retry_time_is_about_30_seconds():
-    assert cdb.http_retry.LoggingRetry().total_backoff_time() == 31  # 1+2+4+8+16
+def test_total_retry_sleep_time_is_about_30_seconds():
+    assert cdb.http_retry.LoggingRetry.total_sleep_time() == 31  # 1+2+4+8+16
 
 
 @httpretty.activate
