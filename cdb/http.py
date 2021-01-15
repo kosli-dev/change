@@ -20,10 +20,10 @@ def http_put_payload(url, payload, api_token):
     if in_cdb_dry_run():
         print("DRY RUN: Put not sent")
     else:
-        response = http_retry().put(url,
-                                    data=json.dumps(payload),
-                                    headers=json_content_header(),
-                                    auth=HTTPBasicAuth(api_token, 'unused'))
+        auth = HTTPBasicAuth(api_token, 'unused')
+        headers = json_content_header()
+        data = json.dumps(payload)
+        response = http_retry().put(url, auth=auth, headers=headers, data=data)
         print(response.text)
 
 
@@ -34,10 +34,10 @@ def http_post_payload(url, payload, api_token):
     if in_cdb_dry_run():
         print("DRY RUN: Post not sent")
     else:
-        response = http_retry().post(url,
-                                     data=json.dumps(payload),
-                                     headers=json_content_header(),
-                                     auth=HTTPBasicAuth(api_token, 'unused'))
+        auth = HTTPBasicAuth(api_token, 'unused')
+        headers = json_content_header()
+        data = json.dumps(payload)
+        response = http_retry().post(url, auth=auth, headers=headers, data=data)
         print(response.text)
 
 
