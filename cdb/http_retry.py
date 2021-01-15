@@ -23,6 +23,9 @@ def http_retry():
 
 
 class LoggingRetry(Retry):
+    """
+    https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#module-urllib3.util.retry
+    """
     def increment(self, *args, **kwargs):
         self.log_increment()
         return super().increment(*args, **kwargs)
@@ -32,22 +35,27 @@ class LoggingRetry(Retry):
         if count == 0:
             return
         if count == 1:
-            self.log_failed_http_call()
+            self.log_original_http_call_failed()
         if count > 1:
-            self.log_retry_failed()
+            self.log_previous_retry_failed()
         if count < RETRY_COUNT:
-            self.log_retrying()
+            self.log_retrying_in_n_seconds()
 
-    def log_failed_http_call(self):
+    def log_original_http_call_failed(self):
         request = self.failed_request()
         self.err_print("{} failed".format(request.method))
         self.err_print("URL={}".format(request.url))
         self.err_print("STATUS={}".format(request.status))
 
-    def log_retry_failed(self):
+    def log_previous_retry_failed(self):
         self.err_print('failed')
 
-    def log_retrying(self):
+    def log_retrying_in_n_seconds(self):
+        """
+        The printed message does _not_ say 'Press Control^C to exit.'
+        For this to work the program environment needs a tty,
+        and the target environment is a CI pipeline which has no tty.
+        """
         message = "Retrying in {} seconds ({}/{})...".format(
             self.next_backoff_time(),
             self.retry_count(),
@@ -73,13 +81,14 @@ class LoggingRetry(Retry):
         https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html
         It says the backoff algorithm is:
            {backoff factor} * (2 ** ({number of retries} - 1))
-        With backoff_factor==1, this gives successive sleeps of:
+        With backoff_factor==1, this would give successive sleeps of:
            [ 0.5, 1, 2, 4, 8, 16, 32, ... ]
         However, self.get_backoff_time() _actually_ returns:
-           [ 0, 2, 4, 8 16, 32, ... ]
-        It appears this is the value of just-finished sleep.
-        Zero would look strange in the log message, so not using it.
-        Empirically, this value _is_ the forthcoming sleep.
+           [ 0, 2, 4, 8, 16, 32, ... ]
+        Empirically, this _is_ the forthcoming sleep duration.
+        The [0] is the _original_ http call, so zero never appears
+        in a log message (where it would look strange). The first retry
+        sleep is [2], the second is [4] etc.
         """
         return RETRY_BACKOFF_FACTOR * (2 ** n)
 
