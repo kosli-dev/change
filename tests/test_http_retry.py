@@ -1,11 +1,9 @@
-from cdb.create_approval import create_approval
 import requests
+from cdb.http import http_post_payload
 import cdb.http_retry
 
 import httpretty
 import pytest
-
-from tests.test_git import TEST_REPO_ROOT
 from approvaltests.approvals import verify
 
 """
@@ -41,19 +39,8 @@ def test_503_post_retries_5_times(capsys):
         ]
     )
 
-    env = {
-        "CDB_HOST": hostname,
-        "CDB_ARTIFACT_SHA": "1234",
-        "CDB_BASE_SRC_COMMITISH": "production",
-        "CDB_TARGET_SRC_COMMITISH": "master",
-        "CDB_DESCRIPTION": "Description",
-        "CDB_IS_APPROVED_EXTERNALLY": "FALSE",
-        "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,
-        "CDB_API_TOKEN": "not-None"  # To prevent DeprecationWarning:  Non-string usernames
-    }
-
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
-        create_approval("tests/test-pipefile.json", env)
+        http_post_payload(url, {}, "api-token")
 
     assert len(httpretty.latest_requests()) == 5+1
     verify(capsys.readouterr().err)
