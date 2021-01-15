@@ -32,7 +32,7 @@ def http_post_payload(url, payload, api_token):
     print(pretty_json(payload))
     print("To url: " + url)
     if in_cdb_dry_run():
-        print("DRY RUN: POST not sent")
+        print("DRY RUN: Post not sent")
     else:
         response = http_retry().post(url,
                                      data=json.dumps(payload),

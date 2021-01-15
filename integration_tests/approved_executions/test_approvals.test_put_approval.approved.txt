@@ -9,4 +9,4 @@ Posting this payload:
     ]
 }
 To url: https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/
-DRY RUN: POST not sent
+DRY RUN: Post not sent
