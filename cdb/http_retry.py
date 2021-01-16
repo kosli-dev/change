@@ -13,10 +13,10 @@ def http_retry():
     Create a http requests object with an embedded retry strategy.
     Affects only GET,PUT,POST requests whose response status is 503.
     Intention is to hide small server downtimes during deployments.
-    Retries 5 times. The sleep duration between retries is [0,2,4,8,16].
-    Note the first retry is immediate.
+    The sleep duration between retries is [0,2,4,8,16] seconds.
+    Retries 5 times. The first retry is immediate.
 
-    NOTE: The logged message does _not_ say 'Press Control^C to exit.'
+    The logged message does _not_ say 'Press Control^C to exit.'
     because Control^C requires a runtime environment with a tty.
     That would require a [docker run -it] which would fail in the
     target environment, a CI pipeline, which invariably has no tty.
@@ -40,12 +40,12 @@ class LoggingRetry(Retry):
     https://github.com/urllib3/urllib3/blob/master/src/urllib3/util/retry.py
     https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#module-urllib3.util.retry
 
-    NOTE: I tried moving the kwargs in http_retry() into a LoggingRetry.__init__(...)
+    I tried moving the kwargs in http_retry() into a LoggingRetry.__init__(...)
     I got: TypeError: __init__() got an unexpected keyword argument
-    The reason is beyond my current Python understanding, so they stay in http_retry()
+    Don't know why, so for now they stay in http_retry()
 
-    NOTE: Putting attributes in this class causes problems which I _think_ are to do
-    with the Retry super-class doing tricky things with __init__(), new(), and __getattr__()
+    Adding attributes to this class causes error due, I think, to the Retry
+    super-class doing clever things with __init__(), new(), and __getattr__()
     """
     def increment(self, *args, **kwargs):
         if self.count() == 0:
