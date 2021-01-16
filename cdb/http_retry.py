@@ -1,3 +1,8 @@
+"""
+
+"""
+
+
 from requests import Session
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -9,6 +14,12 @@ RETRY_BACKOFF_FACTOR = 1
 
 
 def http_retry():
+    """
+    I tried moving these kwargs into LoggingRetry.__init__()
+    and got: TypeError: __init__() got an unexpected keyword argument
+    for reasons beyond my current Python understanding, so here they stay.
+    https://github.com/urllib3/urllib3/blob/master/src/urllib3/util/retry.py
+    """
     strategy = LoggingRetry(
         total=RETRY_COUNT,
         backoff_factor=RETRY_BACKOFF_FACTOR,
@@ -30,21 +41,25 @@ class LoggingRetry(Retry):
 
     The logged message does _not_ say 'Press Control^C to exit.'
     because Control^C requires a runtime environment with a tty.
-    That would require the [docker run] calls to use the -it option.
-    That would fail in the target environment, a CI pipeline, which invariably has no tty.
+    That would require a [docker run -it] which would fails in the
+    target environment, a CI pipeline, which invariably has no tty.
     """
-    def increment(self, *args, **kwargs):
-        self.log_increment()
-        return super().increment(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-    def log_increment(self):
-        count = len(self.history)
-        if count == 0:
+    def increment(self, *args, **kwargs):
+        if len(self.history) == 0:
             # I can find no way (from here) to access the
             # original failed request we are retrying :-(
             err_print("The HTTP call failed. Retrying...")
-            return
+        # IMPORTANT: increment() creates a new Retry object.
+        new_retry = super().increment(*args, **kwargs)
+        new_retry.log_increment()
+        return new_retry
+
+    def log_increment(self):
         failed_request = self.history[-1]
+        count = len(self.history)
         message = "Retry {}/{} failed, status={}{}".format(
             count,
             RETRY_COUNT,
