@@ -31,8 +31,7 @@ class LoggingRetry(Retry):
     The logged message does _not_ say 'Press Control^C to exit.'
     because Control^C requires a runtime environment with a tty.
     That would require the [docker run] calls to use the -it option.
-    That would fail in the target environment, a CI pipeline, which
-    invariably has no tty.
+    That would fail in the target environment, a CI pipeline, which invariably has no tty.
     """
     def increment(self, *args, **kwargs):
         self.log_increment()
@@ -41,17 +40,17 @@ class LoggingRetry(Retry):
     def log_increment(self):
         count = len(self.history)
         if count == 0:
-            # I can find no way to access the original
-            # failed response we are retrying against :-(
+            # I can find no way (from here) to access the
+            # original failed request we are retrying :-(
             err_print("The HTTP call failed. Retrying...")
             return
         failed_request = self.history[-1]
         message = "Retry {}/{} failed, status={}{}".format(
-            count,                    # 3
-            RETRY_COUNT,              # 5
-            failed_request.status,    # 503
+            count,
+            RETRY_COUNT,
+            failed_request.status,
             self.sleep_message(count)
-            )
+        )
         err_print(message)
 
     def sleep_message(self, count):
