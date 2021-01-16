@@ -8,18 +8,26 @@ RETRY_COUNT = 5
 RETRY_BACKOFF_FACTOR = 1
 
 
-def http_retry():
-    retry = LoggingRetry(
-        total=RETRY_COUNT,
-        backoff_factor=RETRY_BACKOFF_FACTOR,
-        status_forcelist=[503],
-        allowed_methods=["GET", "POST", "PUT"]
-    )
-    adapter = HTTPAdapter(max_retries=retry)
-    s = Session()
-    s.mount("https://", adapter)
-    s.mount("http://", adapter)
-    return s
+class RetryingHttp(object):
+    def __enter__(self):
+        return self
+
+    def retry(self):
+        strategy = LoggingRetry(
+            total=RETRY_COUNT,
+            backoff_factor=RETRY_BACKOFF_FACTOR,
+            status_forcelist=[503],
+            allowed_methods=["GET", "POST", "PUT"]
+        )
+        adapter = HTTPAdapter(max_retries=strategy)
+        s = Session()
+        s.mount("https://", adapter)
+        s.mount("http://", adapter)
+        return s
+
+    def __exit__(self, _type, _value, _traceback):
+        #err_print("failed")
+        pass
 
 
 class LoggingRetry(Retry):
@@ -51,11 +59,11 @@ class LoggingRetry(Retry):
 
     def log_original_http_call_failed(self):
         request = self.most_recent_failed_request()
-        self.err_print("{} failed".format(request.method))  # eg POST
-        self.err_print("STATUS={}".format(request.status))  # eg 503
+        err_print("{} failed".format(request.method))  # eg POST
+        err_print("STATUS={}".format(request.status))  # eg 503
 
     def log_previous_retry_failed(self):
-        self.err_print('failed')
+        err_print('failed')
 
     def log_retrying_in_n_seconds(self):
         """
@@ -65,16 +73,16 @@ class LoggingRetry(Retry):
         That would fail in the target environment, a CI pipeline, which
         invariably has no tty.
 
-        [1] The RETRY_COUNT-1 is because there is no call to increment()
+        [X] The RETRY_COUNT-1 is because there is no call to increment()
         _after_ the last http call fails. For now the log does _not_ log
         the actual last http-call.
         """
         message = "Retrying in {} seconds ({}/{})...".format(
             self.next_sleep_time(),
             self.retry_count(),
-            RETRY_COUNT - 1  # [1]
+            RETRY_COUNT - 1  # [X]
             )
-        self.err_print(message, end='')  # no newline
+        err_print(message, end='')  # no newline
 
     def most_recent_failed_request(self):
         return self.history[-1]
@@ -102,6 +110,6 @@ class LoggingRetry(Retry):
     def total_sleep_time():
         return sum(LoggingRetry.sleep_time(n) for n in range(0, RETRY_COUNT))
 
-    @staticmethod
-    def err_print(message, **kwargs):
-        print(message, **dict(kwargs, file=sys.stderr, flush=True))
+
+def err_print(message, **kwargs):
+    print(message, **dict(kwargs, file=sys.stderr, flush=True))
