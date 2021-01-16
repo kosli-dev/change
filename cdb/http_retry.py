@@ -1,5 +1,6 @@
 from requests import Session
 from requests.adapters import HTTPAdapter
+from requests.exceptions import RetryError
 from requests.packages.urllib3.util.retry import Retry
 from os import sys
 
@@ -27,8 +28,9 @@ class RetryingHttp(object):
         s.mount("http://", adapter)
         return s
 
-    def __exit__(self, _type, _value, _traceback):
-        self._strategy.log_last_retry_failed()
+    def __exit__(self, type, _value, _traceback):
+        if type is RetryError:
+            self._strategy.log_last_retry_failed()
         pass
 
 
