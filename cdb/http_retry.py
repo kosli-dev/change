@@ -78,8 +78,7 @@ class LoggingRetry(Retry):
 
     @staticmethod
     def total_sleep_time():
-        total = sum(LoggingRetry.sleep_time(n) for n in range(1, RETRY_COUNT))
-        return total
+        return sum(LoggingRetry.sleep_time(n) for n in range(1, RETRY_COUNT))
 
 
 def err_print(message):
