@@ -7,10 +7,8 @@ Putting this payload:
     ]
 }
 To this url: https://test.compliancedb.com/api/v1/put/
-PUT failed
-STATUS=503
-Retrying in 0.002 seconds (1/5)...failed
-Retrying in 0.004 seconds (2/5)...failed
-Retrying in 0.008 seconds (3/5)...failed
-Retrying in 0.016 seconds (4/5)...failed
-Retrying in 0.032 seconds (5/5)...failed
+PUT failed, status=503, retrying in 0.002 seconds (1/5)...failed
+PUT failed, status=503, retrying in 0.004 seconds (2/5)...failed
+PUT failed, status=503, retrying in 0.008 seconds (3/5)...failed
+PUT failed, status=503, retrying in 0.016 seconds (4/5)...failed
+PUT failed, status=503, retrying in 0.032 seconds (5/5)...failed

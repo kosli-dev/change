@@ -48,11 +48,9 @@ class LoggingRetry(Retry):
         count = self.retry_count()
         if count == 0:
             return
-        if count == 1:
-            self.log_original_http_call_failed()
         if count > 1:
             self.log_last_retry_failed()
-        self.log_retrying_in_n_seconds()
+        self.log_failed_retrying_in_n_seconds()
 
     def retry_count(self):
         """
@@ -60,15 +58,10 @@ class LoggingRetry(Retry):
         """
         return len(self.history)
 
-    def log_original_http_call_failed(self):
-        request = self.most_recent_failed_request()
-        err_print("{} failed".format(request.method))  # eg POST
-        err_print("STATUS={}".format(request.status))  # eg 503
-
     def log_last_retry_failed(self):
         err_print('failed')
 
-    def log_retrying_in_n_seconds(self):
+    def log_failed_retrying_in_n_seconds(self):
         """
         The printed message does _not_ say 'Press Control^C to exit.'
         because Control^C requires the runtime environment has a tty.
@@ -76,10 +69,13 @@ class LoggingRetry(Retry):
         That would fail in the target environment, a CI pipeline, which
         invariably has no tty.
         """
-        message = "Retrying in {} seconds ({}/{})...".format(
-            self.next_sleep_time(),
-            self.retry_count(),
-            RETRY_COUNT
+        request = self.most_recent_failed_request()
+        message = "{} failed, status={}, retrying in {} seconds ({}/{})...".format(
+            request.method,          # POST
+            request.status,          # 503
+            self.next_sleep_time(),  # 16
+            self.retry_count(),      # 3
+            RETRY_COUNT              # 5
             )
         err_print(message, end='')  # no newline
 
