@@ -58,7 +58,7 @@ def test_503_get_retries_5_times(capsys):
     assert len(httpretty.latest_requests()) == 5+1
 
 
-def verify_approval(capsys, streams=["out", "err"]):
+def verify_approval(capsys, streams=("out", "err")):
     captured = capsys.readouterr()
     actual = ""
     for stream in streams:

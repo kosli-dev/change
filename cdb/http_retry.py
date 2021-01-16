@@ -13,7 +13,7 @@ def http_retry():
         total=RETRY_COUNT,
         backoff_factor=RETRY_BACKOFF_FACTOR,
         status_forcelist=[503],
-        allowed_methods=["POST", "PUT", "GET"]
+        allowed_methods=["GET", "POST", "PUT"]
     )
     adapter = HTTPAdapter(max_retries=retry)
     s = Session()
@@ -26,7 +26,7 @@ class LoggingRetry(Retry):
     """
     https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#module-urllib3.util.retry
     Note: Don't put any attributes in this class!
-    The Retry subclass is doing tricky things with __getattr__
+    The Retry super-class is doing tricky things with __getattr__
     """
     def increment(self, *args, **kwargs):
         self.log_increment()
@@ -60,13 +60,19 @@ class LoggingRetry(Retry):
     def log_retrying_in_n_seconds(self):
         """
         The printed message does _not_ say 'Press Control^C to exit.'
-        For this to work the runtime environment needs a tty, but the
-        target environment is a CI pipeline which invariably has no tty.
+        because Control^C requires the runtime environment has a tty.
+        That would require the [docker run] calls to use the -it option.
+        That would fail in the target environment, a CI pipeline, which
+        invariably has no tty.
+
+        [1] The RETRY_COUNT-1 is because there is no call to increment()
+        _after_ the last http call fails. For now the log does _not_ log
+        the actual last http-call.
         """
         message = "Retrying in {} seconds ({}/{})...".format(
             self.next_sleep_time(),
             self.retry_count(),
-            RETRY_COUNT - 1
+            RETRY_COUNT - 1  # [1]
             )
         self.err_print(message, end='')  # no newline
 
