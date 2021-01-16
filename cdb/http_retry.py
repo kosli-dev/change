@@ -9,32 +9,34 @@ RETRY_BACKOFF_FACTOR = 1
 
 
 class RetryingHttp(object):
-    def __enter__(self):
-        return self
-
-    def retry(self):
-        strategy = LoggingRetry(
+    def __init__(self):
+        self._strategy = LoggingRetry(
             total=RETRY_COUNT,
             backoff_factor=RETRY_BACKOFF_FACTOR,
             status_forcelist=[503],
             allowed_methods=["GET", "POST", "PUT"]
         )
-        adapter = HTTPAdapter(max_retries=strategy)
+
+    def __enter__(self):
+        return self
+
+    def retry(self):
+        adapter = HTTPAdapter(max_retries=self._strategy)
         s = Session()
         s.mount("https://", adapter)
         s.mount("http://", adapter)
         return s
 
     def __exit__(self, _type, _value, _traceback):
-        #err_print("failed")
+        self._strategy.log_last_retry_failed()
         pass
 
 
 class LoggingRetry(Retry):
     """
     https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#module-urllib3.util.retry
-    Note: Don't put any attributes in this class!
-    The Retry super-class is doing tricky things with __getattr__
+    WARNING: Putting attributes in this class causes problems due to
+    the Retry super-class doing tricky things with __getattr__
     """
     def increment(self, *args, **kwargs):
         self.log_increment()
@@ -47,9 +49,8 @@ class LoggingRetry(Retry):
         if count == 1:
             self.log_original_http_call_failed()
         if count > 1:
-            self.log_previous_retry_failed()
-        if count < RETRY_COUNT:
-            self.log_retrying_in_n_seconds()
+            self.log_last_retry_failed()
+        self.log_retrying_in_n_seconds()
 
     def retry_count(self):
         """
@@ -62,7 +63,7 @@ class LoggingRetry(Retry):
         err_print("{} failed".format(request.method))  # eg POST
         err_print("STATUS={}".format(request.status))  # eg 503
 
-    def log_previous_retry_failed(self):
+    def log_last_retry_failed(self):
         err_print('failed')
 
     def log_retrying_in_n_seconds(self):
@@ -72,15 +73,11 @@ class LoggingRetry(Retry):
         That would require the [docker run] calls to use the -it option.
         That would fail in the target environment, a CI pipeline, which
         invariably has no tty.
-
-        [X] The RETRY_COUNT-1 is because there is no call to increment()
-        _after_ the last http call fails. For now the log does _not_ log
-        the actual last http-call.
         """
         message = "Retrying in {} seconds ({}/{})...".format(
             self.next_sleep_time(),
             self.retry_count(),
-            RETRY_COUNT - 1  # [X]
+            RETRY_COUNT
             )
         err_print(message, end='')  # no newline
 
