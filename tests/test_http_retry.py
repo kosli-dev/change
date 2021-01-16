@@ -11,18 +11,21 @@ from approvaltests.reporters import PythonNativeReporter
 
 """
 We are using httpretty to stub the http calls.
+https://pypi.org/project/httpretty/
 This works when you are using a requests.packages.urllib3.util.retry.Retry 
 object inside a requests.adapters.HTTPAdapter object mounted inside a
 requests.Session object.
 Packages we tried that did not work in this situation are:
-1) responses (https://github.com/getsentry/responses)
+1) responses 
+   See https://github.com/getsentry/responses
    See https://github.com/getsentry/responses/issues/135
-2) requests_mock (https://requests-mock.readthedocs.io/en/latest/)
+2) requests_mock 
+   See https://requests-mock.readthedocs.io/en/latest/
 """
 
 
-def test_total_retry_sleep_time_is_about_30_seconds():
-    assert cdb.http_retry.LoggingRetry.total_sleep_time() == 31  # 1+2+4+8+16
+def test_total_retry_sleep_time_is_30_seconds():
+    assert cdb.http_retry.LoggingRetry.total_sleep_time() == 30  # 2+4+8+16
 
 
 @httpretty.activate
@@ -33,7 +36,7 @@ def test_503_post_retries_5_times(capsys):
         http_post_payload(url, payload, api_token)
 
     verify_approval(capsys)
-    assert len(httpretty.latest_requests()) == 5+1
+    assert len(httpretty.latest_requests()) == 1+5
 
 
 @httpretty.activate
@@ -44,7 +47,7 @@ def test_503_put_retries_5_times(capsys):
         http_put_payload(url, payload, api_token)
 
     verify_approval(capsys)
-    assert len(httpretty.latest_requests()) == 5+1
+    assert len(httpretty.latest_requests()) == 1+5
 
 
 @httpretty.activate
@@ -55,7 +58,7 @@ def test_503_get_retries_5_times(capsys):
         http_get_json(url, api_token)
 
     verify_approval(capsys)
-    assert len(httpretty.latest_requests()) == 5+1
+    assert len(httpretty.latest_requests()) == 1+5
 
 
 def verify_approval(capsys, streams=("out", "err")):
