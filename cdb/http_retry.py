@@ -44,55 +44,53 @@ class LoggingRetry(Retry):
     That would require a [docker run -it] which would fails in the
     target environment, a CI pipeline, which invariably has no tty.
     """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
     def increment(self, *args, **kwargs):
-        if len(self.history) == 0:
-            # I can find no way (from here) to access the
-            # original failed request we are retrying :-(
+        if self.count() == 0:
             err_print("The HTTP call failed. Retrying...")
-        # IMPORTANT: increment() creates a new Retry object.
         new_retry = super().increment(*args, **kwargs)
         new_retry.log_increment()
         return new_retry
 
     def log_increment(self):
         failed_request = self.history[-1]
-        count = len(self.history)
         message = "Retry {}/{} failed, status={}{}".format(
-            count,
+            self.count(),
             RETRY_COUNT,
             failed_request.status,
-            self.sleep_message(count)
+            self.sleep_message()
         )
         err_print(message)
 
-    def sleep_message(self, count):
-        if count < RETRY_COUNT:
-            return ", sleeping for {} seconds...".format(self.sleep_time(count))
+    def count(self):
+        return len(self.history)
+
+    def sleep_message(self):
+        if self.count() < RETRY_COUNT:
+            return ", sleeping for {} seconds...".format(self.sleep_time())
         else:
             return ""
 
-    @staticmethod
-    def sleep_time(n):
+    def sleep_time(self, n=None):
         """"
         Retry documentation says the backoff algorithm is:
            {backoff factor} * (2 ** ({number of retries} - 1))
         With backoff_factor==1, this would give successive sleeps of:
            [ 0.5, 1, 2, 4, 8, 16, ... ]
-        However, the _actual_ sleep durations you get are:
+        However, the _actual_ sleep durations you get from get_backoff_time() are:
            [ 0, 2, 4, 8, 16, ... ]
-        And empirically, before the first retry...
-          o) there is indeed no sleep
-          o) Retry.get_backoff_time() does indeed return zero
-          o) So the range() in total_sleep_time() below starts at 1.
+        And empirically, before the first retry there is indeed no sleep.
+        So the first retry is happening immediately.
         """
-        return RETRY_BACKOFF_FACTOR * (2 ** n)
+        if n is None:
+            n = self.count()
+        if n == 0:
+            return 0
+        else:
+            return RETRY_BACKOFF_FACTOR * (2 ** n)
 
-    @staticmethod
-    def total_sleep_time():
-        return sum(LoggingRetry.sleep_time(n) for n in range(1, RETRY_COUNT))
+
+def total_sleep_time():
+    return sum(LoggingRetry().sleep_time(n) for n in range(0, RETRY_COUNT))
 
 
 def err_print(message):
