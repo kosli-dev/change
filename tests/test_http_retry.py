@@ -32,8 +32,7 @@ def test_503_post_retries_5_times(capsys):
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         http_post_payload(url, payload, api_token)
 
-    captured = capsys.readouterr()
-    verify(captured.out + captured.err, PythonNativeReporter())
+    verify_approval(capsys)
     assert len(httpretty.latest_requests()) == 5+1
 
 
@@ -44,8 +43,7 @@ def test_503_put_retries_5_times(capsys):
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         http_put_payload(url, payload, api_token)
 
-    captured = capsys.readouterr()
-    verify(captured.out + captured.err, PythonNativeReporter())
+    verify_approval(capsys)
     assert len(httpretty.latest_requests()) == 5+1
 
 
@@ -56,9 +54,19 @@ def test_503_get_retries_5_times(capsys):
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         http_get_json(url, api_token)
 
-    captured = capsys.readouterr()
-    verify(captured.out + captured.err, PythonNativeReporter())
+    verify_approval(capsys)
     assert len(httpretty.latest_requests()) == 5+1
+
+
+def verify_approval(capsys, streams=["out", "err"]):
+    captured = capsys.readouterr()
+    actual = ""
+    for stream in streams:
+        if stream == "out":
+            actual += captured.out
+        if stream == "err":
+            actual += captured.err
+    verify(actual, PythonNativeReporter())
 
 
 def stub_http_503(method):
