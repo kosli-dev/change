@@ -27,14 +27,10 @@ def test_total_retry_sleep_time_is_about_30_seconds():
 
 @httpretty.activate
 def test_503_post_retries_5_times(capsys):
-    scheme_host = 'https://test.compliancedb.com'
-    path = "/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/"
-    url = scheme_host + path
-    http_stub_503('POST', url, service_unavailable_payload())
+    url, payload, api_token = stub_http_503('POST')
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
-        payload = {"name": "cern", "template": ["artefact", "unit_test"]}
-        http_post_payload(url, payload, "the-api-token")
+        http_post_payload(url, payload, api_token)
 
     captured = capsys.readouterr()
     verify(captured.out + captured.err, PythonNativeReporter())
@@ -43,14 +39,10 @@ def test_503_post_retries_5_times(capsys):
 
 @httpretty.activate
 def test_503_put_retries_5_times(capsys):
-    scheme_host = 'https://test.compliancedb.com'
-    path = "/api/v1/any/path/"
-    url = scheme_host + path
-    http_stub_503('PUT', url, service_unavailable_payload())
+    url, payload, api_token = stub_http_503('PUT')
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
-        payload = {"name": "git", "template": ["artefact", "coverage"]}
-        http_put_payload(url, payload, "the-api-token")
+        http_put_payload(url, payload, api_token)
 
     captured = capsys.readouterr()
     verify(captured.out + captured.err, PythonNativeReporter())
@@ -59,34 +51,36 @@ def test_503_put_retries_5_times(capsys):
 
 @httpretty.activate
 def test_503_get_retries_5_times(capsys):
-    scheme_host = 'https://test.compliancedb.com'
-    path = "/api/v1/any/path/"
-    url = scheme_host + path
-    http_stub_503('GET', url, service_unavailable_payload())
+    url, _, api_token = stub_http_503('GET')
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
-        http_get_json(url, "the-api-token")
+        http_get_json(url, api_token)
 
     captured = capsys.readouterr()
     verify(captured.out + captured.err, PythonNativeReporter())
     assert len(httpretty.latest_requests()) == 5+1
 
 
-def http_stub_503(method, url, payload):
+def stub_http_503(method):
+    url = "https://test.compliancedb.com/api/v1/{}/".format(method.lower())
     httpretty.register_uri(
         getattr(httpretty, method),
         url,
         responses=[
             httpretty.Response(
-                body=payload,
+                body=json.dumps({"error": "service unavailable"}),
                 status=503,  # Eg during deployment rollover
             )
         ]
     )
-
-
-def service_unavailable_payload():
-    return json.dumps({"error": "service unavailable"})
+    if method == "GET":
+        payload = None
+    if method == "POST":
+        payload = {"name": "cern", "template": ["artefact", "unit_test"]}
+    if method == "PUT":
+        payload = {"name": "git", "template": ["artefact", "coverage"]}
+    api_token = ""
+    return url, payload, api_token
 
 
 def retry_backoff_factor(f):

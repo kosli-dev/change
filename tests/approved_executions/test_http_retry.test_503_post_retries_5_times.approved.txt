@@ -6,7 +6,7 @@ Posting this payload:
         "unit_test"
     ]
 }
-To this url: https://test.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/approvals/
+To this url: https://test.compliancedb.com/api/v1/post/
 POST failed
 STATUS=503
 Retrying in 0.002 seconds (1/4)...failed
