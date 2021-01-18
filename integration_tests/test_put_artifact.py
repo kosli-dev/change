@@ -6,7 +6,7 @@ from approvaltests.reporters import PythonNativeReporter
 from tests.cdb_dry_run import cdb_dry_run
 
 
-def test_put_artifact_message_when_env_var_CDB_ARTIFACT_FILENAME_is_missing(capsys):
+def test_message_when_env_var_CDB_ARTIFACT_FILENAME_is_missing(capsys):
     with cdb_dry_run():
         put_artifact("integration_tests/test-pipefile.json")
 
@@ -14,7 +14,7 @@ def test_put_artifact_message_when_env_var_CDB_ARTIFACT_FILENAME_is_missing(caps
     verify(captured.out + captured.err, PythonNativeReporter())
 
 
-def test_put_artifact_message_when_env_var_CDB_ARTIFACT_SHA_is_missing(capsys):
+def test_message_when_env_var_CDB_ARTIFACT_SHA_is_missing(capsys):
     with cdb_dry_run():
         with SetEnv("CDB_ARTIFACT_FILENAME", "tests_data/put-artifact.txt"):
             with SetEnv("CDB_ARTIFACT_SHA", "UNDEFINED"):
