@@ -19,6 +19,9 @@ class HttpRetry():
     def put(self, url, auth, headers, data):
         return self._retry(lambda: req.put(url, auth=auth, headers=headers, data=data))
 
+    def post(self, url, auth, headers, data):
+        return self._retry(lambda: req.post(url, auth=auth, headers=headers, data=data))
+
     def _retry(self, http_call):
         response = http_call()
         if response.status_code != 503:

@@ -3,7 +3,7 @@ import os
 
 import requests as req
 from requests.auth import HTTPBasicAuth
-from cdb.http_retry import http_retry, HttpRetry
+from cdb.http_retry import HttpRetry
 
 
 def http_get_json(url, api_token):
@@ -39,7 +39,7 @@ def http_post_payload(url, payload, api_token):
         auth = HTTPBasicAuth(api_token, 'unused')
         headers = json_content_header()
         data = json.dumps(payload)
-        response = http_retry().post(url, auth=auth, headers=headers, data=data)
+        response = HttpRetry().post(url, auth=auth, headers=headers, data=data)
         print(response.text)
 
 
