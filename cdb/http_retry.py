@@ -56,7 +56,7 @@ class HttpRetry():
         if status != 503:
             return response
 
-        err_print("Response.status={}{}".format(status, self._sleep_message(0)))
+        print("Response.status={}{}".format(status, self._sleep_message(0)))
         for count in range(1, MAX_RETRY_COUNT + 1):
             sleep(self.sleep_time(count))
             response = http_call()
@@ -70,7 +70,7 @@ class HttpRetry():
         raise http.exceptions.RetryError("TODO")
 
     def _log_retry_failed(self, count, status):
-        err_print("Retry {}/{}: response.status={}{}".format(
+        print("Retry {}/{}: response.status={}{}".format(
             count,
             MAX_RETRY_COUNT,
             status,
@@ -82,10 +82,6 @@ class HttpRetry():
             return ", retrying in {} seconds...".format(self.sleep_time(count))
         else:
             return ""
-
-
-def err_print(message):
-    print(message, file=sys.stdout, flush=True)
 
 
 def total_sleep_time():
