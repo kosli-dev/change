@@ -16,8 +16,8 @@ def test_message_when_env_var_CDB_ARTIFACT_FILENAME_is_missing(capsys):
 
 def test_message_when_env_var_CDB_ARTIFACT_SHA_is_missing(capsys):
     with cdb_dry_run():
-        with SetEnv("CDB_ARTIFACT_FILENAME", "tests_data/put-artifact.txt"):
-            with SetEnv("CDB_ARTIFACT_SHA", "UNDEFINED"):
+        with SetEnv({"CDB_ARTIFACT_FILENAME": "tests_data/put-artifact.txt"}):
+            with SetEnv({"CDB_ARTIFACT_SHA": "UNDEFINED"}):
                 put_artifact("integration_tests/test-pipefile.json")
 
     captured = capsys.readouterr()
@@ -25,12 +25,16 @@ def test_message_when_env_var_CDB_ARTIFACT_SHA_is_missing(capsys):
 
 
 class SetEnv(object):
-    def __init__(self, key, value):
-        self._key = key
-        environ[key] = value
+    def __init__(self, env_vars):
+        self._env_vars = env_vars
+        for (name, value) in env_vars.items():
+            environ[name] = value
 
     def __enter__(self):
         return self
 
     def __exit__(self, _type, _value, _traceback):
-        environ.pop(self._key)
+        for name in self._env_vars:
+            environ.pop(name)
+
+
