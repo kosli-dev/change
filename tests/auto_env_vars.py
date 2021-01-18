@@ -1,7 +1,7 @@
 from os import environ
 
 
-class SetEnvVars(object):
+class AutoEnvVars(object):
     def __init__(self, env_vars):
         self._env_vars = env_vars
         for (name, value) in env_vars.items():
