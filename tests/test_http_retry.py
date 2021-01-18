@@ -1,48 +1,48 @@
-import requests
 from cdb.http import http_post_payload, http_put_payload, http_get_json
-import cdb.http_retry
+import cdb.http_retry as http_retry
+from requests.exceptions import RetryError
 
-import responses
 import json
 from pytest import raises
 from tests.utils import verify_approval
+import responses
 
 
 def test_total_retry_sleep_time_is_about_30_seconds():
-    assert cdb.http_retry.total_sleep_time() == 31  # 1+2+4+8+16
+    assert http_retry.total_sleep_time() == 31  # 1+2+4+8+16
 
 
 @responses.activate
 def test_503_post_retries_5_times_then_raises_RetryError(capsys):
-    url, payload, api_token = stub_http_503('POST', 1+5)
+    url, payload, api_token = stub_http_503('POST', 1+http_retry.MAX_RETRY_COUNT)
 
-    with retry_backoff_factor(0.001), raises(requests.exceptions.RetryError):
+    with retry_backoff_factor(0.001), raises(RetryError):
         http_post_payload(url, payload, api_token)
 
     verify_approval(capsys)
-    assert len(responses.calls) == 1+5
+    assert len(responses.calls) == 1+http_retry.MAX_RETRY_COUNT
 
 
 @responses.activate
 def test_503_put_retries_5_times_then_raises_RetryError(capsys):
-    url, payload, api_token = stub_http_503('PUT', 1+5)
+    url, payload, api_token = stub_http_503('PUT', 1+http_retry.MAX_RETRY_COUNT)
 
-    with retry_backoff_factor(0.001), raises(requests.exceptions.RetryError):
+    with retry_backoff_factor(0.001), raises(RetryError):
         http_put_payload(url, payload, api_token)
 
     verify_approval(capsys)
-    assert len(responses.calls) == 1+5
+    assert len(responses.calls) == 1+http_retry.MAX_RETRY_COUNT
 
 
 @responses.activate
 def test_503_get_retries_5_times_then_raises_RetryError(capsys):
-    url, _, api_token = stub_http_503('GET', 1+5)
+    url, _, api_token = stub_http_503('GET', 1+http_retry.MAX_RETRY_COUNT)
 
-    with retry_backoff_factor(0.001), raises(requests.exceptions.RetryError):
+    with retry_backoff_factor(0.001), raises(RetryError):
         http_get_json(url, api_token)
 
     verify_approval(capsys)
-    assert len(responses.calls) == 1+5
+    assert len(responses.calls) == 1+http_retry.MAX_RETRY_COUNT
 
 
 def stub_http_503(method, count):
@@ -81,8 +81,8 @@ class RetryBackOffFactor(object):
         self._factor = factor
 
     def __enter__(self):
-        self._original = cdb.http_retry.RETRY_BACKOFF_FACTOR
-        cdb.http_retry.RETRY_BACKOFF_FACTOR = self._factor
+        self._original = http_retry.RETRY_BACKOFF_FACTOR
+        http_retry.RETRY_BACKOFF_FACTOR = self._factor
 
     def __exit__(self, _type, _value, _traceback):
-        cdb.http_retry.RETRY_BACKOFF_FACTOR = self._original
+        http_retry.RETRY_BACKOFF_FACTOR = self._original
