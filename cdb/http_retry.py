@@ -31,14 +31,18 @@ class HttpRetry():
             response = req.get(url, auth=auth)
             if response.status_code != 503:
                 return response
+            else:
+                self._log_retry_failure(response)
 
-            err_print("Retry {}/{} failed, status={}{}".format(
-                self._retry_count,
-                self._max_retry_count,
-                response.status_code,
-                self._sleep_message()
-            ))
         raise req.exceptions.RetryError("sss")
+
+    def _log_retry_failure(self, response):
+        err_print("Retry {}/{} failed, status={}{}".format(
+            self._retry_count,
+            self._max_retry_count,
+            response.status_code,
+            self._sleep_message()
+        ))
 
     def _sleep_message(self):
         if self._retry_count < self._max_retry_count:
