@@ -48,18 +48,18 @@ class HttpRetry():
         self._status_retry_list = [503]
 
     def get(self, url, **kwargs):
-        return self._retry(url, lambda: http.get(url, **kwargs))
+        return self._http_retry(url, lambda: http.get(url, **kwargs))
 
     def put(self, url, **kwargs):
-        return self._retry(url, lambda: http.put(url, **kwargs))
+        return self._http_retry(url, lambda: http.put(url, **kwargs))
 
     def post(self, url, **kwargs):
-        return self._retry(url, lambda: http.post(url, **kwargs))
+        return self._http_retry(url, lambda: http.post(url, **kwargs))
 
-    def _retry(self, url, http_call):
+    def _http_retry(self, url, http_call):
         response = http_call()
         status = response.status_code
-        if self._do_not_retry(status):
+        if not self._retry(status):
             return response
         count = 0
         seconds = self.sleep_time(count)
@@ -70,13 +70,13 @@ class HttpRetry():
             response = http_call()
             status = response.status_code
             self._log(count, status, seconds)
-            if self._do_not_retry(status):
+            if not self._retry(status):
                 return response
 
         raise Error(url)
 
-    def _do_not_retry(self, status):
-        return status not in self._status_retry_list
+    def _retry(self, status):
+        return status in self._status_retry_list
 
     def _log(self, count, status, seconds):
         lhs = self._response_message(count, status)
@@ -95,7 +95,7 @@ class HttpRetry():
             return "Retry {}/{}: response.status={}".format(count, MAX_RETRY_COUNT, status)
 
     def _retry_message(self, count, status, seconds):
-        if self._do_not_retry(status):
+        if not self._retry(status):
             return ""
         elif count < MAX_RETRY_COUNT:
             return ", retrying in {} seconds...".format(seconds)
