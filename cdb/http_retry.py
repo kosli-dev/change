@@ -82,7 +82,7 @@ class HttpRetry():
 
 
 def err_print(message):
-    print(message, file=sys.stderr, flush=True)
+    print(message, file=sys.stdout, flush=True)
 
 
 def total_sleep_time():

@@ -13,7 +13,6 @@ MAX_RETRY_COUNT = http_retry.MAX_RETRY_COUNT
 def test_total_retry_sleep_time_is_about_30_seconds():
     assert http_retry.total_sleep_time() == 31  # 1+2+4+8+16
 
-
 @responses.activate
 def test_503_post_retries_5_times_then_raises_RetryError(capsys):
     url, payload, api_token = stub_http_503('POST', 1+MAX_RETRY_COUNT)
@@ -21,8 +20,8 @@ def test_503_post_retries_5_times_then_raises_RetryError(capsys):
     with retry_backoff_factor(0.001), raises(RetryError):
         http_post_payload(url, payload, api_token)
 
-    verify_approval(capsys)
     assert len(responses.calls) == 1+MAX_RETRY_COUNT
+    verify_approval(capsys)
 
 
 @responses.activate
@@ -32,8 +31,8 @@ def test_503_put_retries_5_times_then_raises_RetryError(capsys):
     with retry_backoff_factor(0.001), raises(RetryError):
         http_put_payload(url, payload, api_token)
 
-    verify_approval(capsys)
     assert len(responses.calls) == 1+MAX_RETRY_COUNT
+    verify_approval(capsys)
 
 
 @responses.activate
@@ -43,8 +42,20 @@ def test_503_get_retries_5_times_then_raises_RetryError(capsys):
     with retry_backoff_factor(0.001), raises(RetryError):
         http_get_json(url, api_token)
 
-    verify_approval(capsys)
     assert len(responses.calls) == 1+MAX_RETRY_COUNT
+    verify_approval(capsys)
+
+
+@responses.activate
+def test_GET_stops_retrying_when_non_503_and_returns_response_json(capsys):
+    url, _, api_token = stub_http_503('GET', 1+1)
+
+    with retry_backoff_factor(0.001):
+        response_json = http_get_json(url, api_token)
+
+    assert response_json == {"success": 42}
+    assert len(responses.calls) == 1+1+1
+    verify_approval(capsys)
 
 
 def stub_http_503(method, count):
@@ -56,7 +67,7 @@ def stub_http_503(method, count):
         if len(responses.calls) < count:
             return 503, headers, json.dumps({"error": "service unavailable"})
         else:
-            return 200, headers, json.dumps({})
+            return 200, headers, json.dumps({"success": 42})
 
     responses.add_callback(
         getattr(responses, method),

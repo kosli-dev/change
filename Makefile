@@ -247,3 +247,4 @@ dry_run_put_artifact:
 
 copy_approvals:
 	@docker logs test_integration | grep mv | sed 's/mv -f /docker cp test_integration:/' | sed 's/ \/app\// /'
+	@docker logs test_unit        | grep mv | sed 's/mv -f /docker cp test_unit:/'        | sed 's/ \/app\// /'
