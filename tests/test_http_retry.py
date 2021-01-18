@@ -51,6 +51,30 @@ def test_503_get_retries_5_times_then_raises_RetryError(capsys):
 
 
 @responses.activate
+def test_POST_stops_retrying_when_non_503_and_returns_None(capsys):
+    url, payload, api_token = stub_http_503('POST', 1+1)
+
+    with retry_backoff_factor(0.001):
+        response = http_post_payload(url, payload, api_token)
+
+    assert response is None
+    assert len(responses.calls) == 1+1+1
+    verify_approval(capsys)
+
+
+@responses.activate
+def test_PUT_stops_retrying_when_non_503_and_returns_None(capsys):
+    url, payload, api_token = stub_http_503('PUT', 1+1)
+
+    with retry_backoff_factor(0.001):
+        response = http_put_payload(url, payload, api_token)
+
+    assert response is None
+    assert len(responses.calls) == 1+1+1
+    verify_approval(capsys)
+
+
+@responses.activate
 def test_GET_stops_retrying_when_non_503_and_returns_response_json(capsys):
     url, _, api_token = stub_http_503('GET', 1+1)
 
