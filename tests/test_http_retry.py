@@ -7,6 +7,8 @@ from pytest import raises
 from tests.utils import verify_approval
 import responses
 
+MAX_RETRY_COUNT = http_retry.MAX_RETRY_COUNT
+
 
 def test_total_retry_sleep_time_is_about_30_seconds():
     assert http_retry.total_sleep_time() == 31  # 1+2+4+8+16
@@ -14,35 +16,35 @@ def test_total_retry_sleep_time_is_about_30_seconds():
 
 @responses.activate
 def test_503_post_retries_5_times_then_raises_RetryError(capsys):
-    url, payload, api_token = stub_http_503('POST', 1+http_retry.MAX_RETRY_COUNT)
+    url, payload, api_token = stub_http_503('POST', 1+MAX_RETRY_COUNT)
 
     with retry_backoff_factor(0.001), raises(RetryError):
         http_post_payload(url, payload, api_token)
 
     verify_approval(capsys)
-    assert len(responses.calls) == 1+http_retry.MAX_RETRY_COUNT
+    assert len(responses.calls) == 1+MAX_RETRY_COUNT
 
 
 @responses.activate
 def test_503_put_retries_5_times_then_raises_RetryError(capsys):
-    url, payload, api_token = stub_http_503('PUT', 1+http_retry.MAX_RETRY_COUNT)
+    url, payload, api_token = stub_http_503('PUT', 1+MAX_RETRY_COUNT)
 
     with retry_backoff_factor(0.001), raises(RetryError):
         http_put_payload(url, payload, api_token)
 
     verify_approval(capsys)
-    assert len(responses.calls) == 1+http_retry.MAX_RETRY_COUNT
+    assert len(responses.calls) == 1+MAX_RETRY_COUNT
 
 
 @responses.activate
 def test_503_get_retries_5_times_then_raises_RetryError(capsys):
-    url, _, api_token = stub_http_503('GET', 1+http_retry.MAX_RETRY_COUNT)
+    url, _, api_token = stub_http_503('GET', 1+MAX_RETRY_COUNT)
 
     with retry_backoff_factor(0.001), raises(RetryError):
         http_get_json(url, api_token)
 
     verify_approval(capsys)
-    assert len(responses.calls) == 1+http_retry.MAX_RETRY_COUNT
+    assert len(responses.calls) == 1+MAX_RETRY_COUNT
 
 
 def stub_http_503(method, count):
