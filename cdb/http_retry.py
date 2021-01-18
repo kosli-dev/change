@@ -36,6 +36,8 @@ class HttpRetry():
       Eg, its crucial increment() method returned a _new_ Retry() object.
     - In short, it was complicated and hard to test.
     """
+    def __init__(self):
+        self._status_forcelist = [503]
 
     def get(self, url, **kwargs):
         return self._retry(lambda: http.get(url, **kwargs))
@@ -49,7 +51,7 @@ class HttpRetry():
     def _retry(self, http_call):
         response = http_call()
         status = response.status_code
-        if status != 503:
+        if not self._force_retry(status):
             return response
         count = 0
         seconds = self.sleep_time(count)
@@ -60,10 +62,13 @@ class HttpRetry():
             response = http_call()
             status = response.status_code
             self._log(count, status, seconds)
-            if status != 503:
+            if not self._force_retry(status):
                 return response
 
         raise http.exceptions.RetryError("TODO")
+
+    def _force_retry(self, status):
+        return status in self._status_forcelist
 
     def _log(self, count, status, seconds):
         lhs = self._response_message(count, status)
@@ -81,9 +86,8 @@ class HttpRetry():
         else:
             return "Retry {}/{}: response.status={}".format(count, MAX_RETRY_COUNT, status)
 
-    @staticmethod
-    def _retry_message(count, status, seconds):
-        if status != 503:
+    def _retry_message(self, count, status, seconds):
+        if not self._force_retry(status):
             return ""
         elif count < MAX_RETRY_COUNT:
             return ", retrying in {} seconds...".format(seconds)
