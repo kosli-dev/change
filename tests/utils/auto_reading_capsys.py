@@ -2,7 +2,7 @@
 
 def auto_reading(capsys):
     """
-    We only want is output when there are failing tests.
+    We only want output when there are failing tests.
     If tests do not read capsys then the captured stdout/stderr
     are dumped to the terminal, even for passing tests.
     """
