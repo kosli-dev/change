@@ -15,7 +15,6 @@ import requests as http
 from time import sleep
 
 RETRY_BACKOFF_FACTOR = 1
-MAX_RETRY_COUNT = 5
 
 
 class Error(http.exceptions.RequestException):
@@ -46,6 +45,10 @@ class HttpRetry():
     """
     def __init__(self):
         self._status_retry_list = [503]
+        self._max_count = 5
+
+    def total_sleep_time(self):
+        return sum(self._sleep_time(n) for n in range(0, self._max_count))
 
     def get(self, url, **kwargs):
         return self._http_retry(url, lambda: http.get(url, **kwargs))
@@ -62,10 +65,10 @@ class HttpRetry():
         if not self._retry(status):
             return response
         count = 0
-        seconds = self.sleep_time(count)
+        seconds = self._sleep_time(count)
         self._log(count, status, seconds)
-        for count in range(1, MAX_RETRY_COUNT + 1):
-            seconds = self.sleep_time(count)
+        for count in range(1, self._max_count + 1):
+            seconds = self._sleep_time(count)
             sleep(seconds)
             response = http_call()
             status = response.status_code
@@ -83,25 +86,21 @@ class HttpRetry():
         rhs = self._retry_message(count, status, seconds)
         print("{}{}".format(lhs, rhs))
 
-    @staticmethod
-    def sleep_time(count):
-        return RETRY_BACKOFF_FACTOR * (2 ** count)
-
-    @staticmethod
-    def _response_message(count, status):
+    def _response_message(self, count, status):
         if count == 0:
             return "Response.status={}".format(status)
         else:
-            return "Retry {}/{}: response.status={}".format(count, MAX_RETRY_COUNT, status)
+            return "Retry {}/{}: response.status={}".format(count, self._max_count, status)
 
     def _retry_message(self, count, status, seconds):
         if not self._retry(status):
             return ""
-        elif count < MAX_RETRY_COUNT:
+        elif count < self._max_count:
             return ", retrying in {} seconds...".format(seconds)
         else:
             return ""
 
+    @staticmethod
+    def _sleep_time(count):
+        return RETRY_BACKOFF_FACTOR * (2 ** count)
 
-def total_sleep_time():
-    return sum(HttpRetry().sleep_time(n) for n in range(0, MAX_RETRY_COUNT))

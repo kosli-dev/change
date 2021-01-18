@@ -7,11 +7,11 @@ from pytest import raises
 from tests.utils import verify_approval
 import responses
 
-MAX_RETRY_COUNT = http_retry.MAX_RETRY_COUNT
+MAX_RETRY_COUNT = 5
 
 
 def test_total_retry_sleep_time_is_about_30_seconds():
-    assert http_retry.total_sleep_time() == 31  # 1+2+4+8+16
+    assert http_retry.HttpRetry().total_sleep_time() == 31  # 1+2+4+8+16
 
 
 @responses.activate
