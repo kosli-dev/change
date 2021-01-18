@@ -4,7 +4,7 @@ import cdb.http_retry
 
 import httpretty
 import json
-import pytest
+from pytest import raises
 from tests.utils import verify_approval
 
 
@@ -31,7 +31,7 @@ def test_total_retry_sleep_time_is_30_seconds():
 def test_503_post_retries_5_times(capsys):
     url, payload, api_token = stub_http('POST', 503)
 
-    with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
+    with retry_backoff_factor(0.001), raises(requests.exceptions.RetryError):
         http_post_payload(url, payload, api_token)
 
     verify_approval(capsys)
@@ -42,7 +42,7 @@ def test_503_post_retries_5_times(capsys):
 def test_503_put_retries_5_times(capsys):
     url, payload, api_token = stub_http('PUT', 503)
 
-    with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
+    with retry_backoff_factor(0.001), raises(requests.exceptions.RetryError):
         http_put_payload(url, payload, api_token)
 
     verify_approval(capsys)
@@ -53,7 +53,7 @@ def test_503_put_retries_5_times(capsys):
 def test_503_get_retries_5_times(capsys):
     url, _, api_token = stub_http('GET', 503)
 
-    with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
+    with retry_backoff_factor(0.001), raises(requests.exceptions.RetryError):
         http_get_json(url, api_token)
 
     verify_approval(capsys)
