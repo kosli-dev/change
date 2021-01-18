@@ -13,6 +13,7 @@ MAX_RETRY_COUNT = http_retry.MAX_RETRY_COUNT
 def test_total_retry_sleep_time_is_about_30_seconds():
     assert http_retry.total_sleep_time() == 31  # 1+2+4+8+16
 
+
 @responses.activate
 def test_503_post_retries_5_times_then_raises_RetryError(capsys):
     url, payload, api_token = stub_http_503('POST', 1+MAX_RETRY_COUNT)
