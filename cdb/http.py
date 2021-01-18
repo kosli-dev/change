@@ -3,14 +3,14 @@ import os
 
 import requests as req
 from requests.auth import HTTPBasicAuth
-from cdb.http_retry import http_retry
+from cdb.http_retry import http_retry, http_retry_get
 
 
 def http_get_json(url, api_token):
     print("Getting json:")
     print("From this url: " + url)
     auth = HTTPBasicAuth(api_token, 'unused')
-    response = http_retry().get(url, auth=auth)
+    response = http_retry_get(url, auth=auth)
     print(response.text)
     return response.json()
 

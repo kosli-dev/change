@@ -2,10 +2,42 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from os import sys
+from time import sleep
 
+import requests as req
 
 MAX_RETRY_COUNT = 5
 RETRY_BACKOFF_FACTOR = 1
+
+
+def http_retry_get(url, auth):
+    response = req.get(url, auth=auth)
+    if response.status_code != 503:
+        return response
+
+    err_print("The HTTP call failed. Retrying...")
+    retry_count = 0
+    while retry_count != MAX_RETRY_COUNT:
+        retry_count += 1
+        seconds = RETRY_BACKOFF_FACTOR * (2 ** retry_count)
+        sleep(seconds)
+        response = req.get(url, auth=auth)
+        if response.status_code != 503:
+            return response
+
+        if retry_count < MAX_RETRY_COUNT:
+            sleep_message = ", sleeping for {} seconds...".format(seconds)
+        else:
+            sleep_message = ""
+
+        err_print("Retry {}/{} failed, status={}{}".format(
+            retry_count,
+            MAX_RETRY_COUNT,
+            response.status_code,
+            sleep_message
+        ))
+    raise req.exceptions.RetryError("sss")
+
 
 
 def http_retry():
