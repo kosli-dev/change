@@ -17,7 +17,8 @@ RUN pip3 install -r requirements.txt
 COPY cdb/ cdb/
 COPY tests/ tests/
 COPY integration_tests/ integration_tests/
-ADD test_data/test_source_repo.tar.gz /
+ADD tests_data/test_source_repo.tar.gz /
+COPY tests_data/ tests_data/
 
 COPY unit_coverage_entrypoint.sh .
 COPY integration_coverage_entrypoint.sh .
