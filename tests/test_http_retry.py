@@ -14,7 +14,7 @@ def test_total_retry_sleep_time_is_about_30_seconds():
 
 @responses.activate
 def test_503_post_retries_5_times(capsys):
-    url, payload, api_token = stub_http_503('POST')
+    url, payload, api_token = stub_http_503('POST', 1+5)
 
     with retry_backoff_factor(0.001), raises(requests.exceptions.RetryError):
         http_post_payload(url, payload, api_token)
@@ -25,7 +25,7 @@ def test_503_post_retries_5_times(capsys):
 
 @responses.activate
 def test_503_put_retries_5_times(capsys):
-    url, payload, api_token = stub_http_503('PUT')
+    url, payload, api_token = stub_http_503('PUT', 1+5)
 
     with retry_backoff_factor(0.001), raises(requests.exceptions.RetryError):
         http_put_payload(url, payload, api_token)
@@ -36,7 +36,7 @@ def test_503_put_retries_5_times(capsys):
 
 @responses.activate
 def test_503_get_retries_5_times(capsys):
-    url, _, api_token = stub_http_503('GET')
+    url, _, api_token = stub_http_503('GET', 1+5)
 
     with retry_backoff_factor(0.001), raises(requests.exceptions.RetryError):
         http_get_json(url, api_token)
@@ -45,13 +45,16 @@ def test_503_get_retries_5_times(capsys):
     assert len(responses.calls) == 1+5
 
 
-def stub_http_503(method):
+def stub_http_503(method, count):
     # Eg during deployment rollover
     url = "https://test.compliancedb.com/api/v1/{}/".format(method.lower())
 
     def request_callback(request):
         headers = {}
-        return 503, headers, json.dumps({"error": "service unavailable"})
+        if len(responses.calls) < count:
+            return 503, headers, json.dumps({"error": "service unavailable"})
+        else:
+            return 200, headers, json.dumps({})
 
     responses.add_callback(
         getattr(responses, method),
