@@ -10,7 +10,7 @@ def http_get_json(url, api_token):
     print("Getting json:")
     print("From this url: " + url)
     auth = HTTPBasicAuth(api_token, 'unused')
-    response = HttpRetry().get(url, auth)
+    response = HttpRetry().get(url, auth=auth)
     print(response.text)
     return response.json()
 
@@ -25,7 +25,7 @@ def http_put_payload(url, payload, api_token):
         auth = HTTPBasicAuth(api_token, 'unused')
         headers = json_content_header()
         data = json.dumps(payload)
-        response = HttpRetry().put(url, auth, headers, data)
+        response = HttpRetry().put(url, auth=auth, headers=headers, data=data)
         print(response.text)
 
 

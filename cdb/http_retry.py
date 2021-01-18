@@ -13,14 +13,14 @@ RETRY_BACKOFF_FACTOR = 1
 class HttpRetry():
     MAX_RETRY_COUNT = 5
 
-    def get(self, url, auth):
-        return self._retry(lambda: req.get(url, auth=auth))
+    def get(self, url, **kwargs):
+        return self._retry(lambda: req.get(url, **kwargs))
 
-    def put(self, url, auth, headers, data):
-        return self._retry(lambda: req.put(url, auth=auth, headers=headers, data=data))
+    def put(self, url, **kwargs):
+        return self._retry(lambda: req.put(url, **kwargs))
 
-    def post(self, url, auth, headers, data):
-        return self._retry(lambda: req.post(url, auth=auth, headers=headers, data=data))
+    def post(self, url, **kwargs):
+        return self._retry(lambda: req.post(url, **kwargs))
 
     def _retry(self, http_call):
         response = http_call()
@@ -54,7 +54,6 @@ class HttpRetry():
 
     def _sleep_time(self, count):
         return RETRY_BACKOFF_FACTOR * (2 ** count)
-
 
 
 def http_retry():
