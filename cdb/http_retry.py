@@ -1,3 +1,15 @@
+"""
+Wraps http requests with a simple retry strategy.
+Affects only GET,PUT,POST requests whose response status is 503.
+Intention is to hide small server downtimes during deployments.
+Retries 5 times with successive sleep durations of [1,2,4,8,16] seconds.
+
+The logged message does _not_ say 'Press Control^C to exit.'
+because Control^C requires a runtime environment with a tty.
+That would require a [docker run -it] which would fail in the
+target environment, a CI pipeline, which invariably has no tty.
+"""
+
 from os import sys
 import requests as req
 from time import sleep
@@ -7,6 +19,23 @@ MAX_RETRY_COUNT = 5
 
 
 class HttpRetry():
+    """
+    Originally we implemented http-retries with this Retry class:
+    https://github.com/urllib3/urllib3/blob/master/src/urllib3/util/retry.py
+    https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#module-urllib3.util.retry
+    We soon abandoned it.
+    - The only way we could mock the deeply occurring http calls was with httpretty
+      which mocks at the socket level and has no way to mock only the
+      first N calls in a retry situation. Thus it was impossible to test
+      the happy-path scenario of a few 503's followed by a 200/201.
+    - It proved impossible create a Retry subclass containing attributes because
+      of clever meta-programming with __init__, new, and __getattr__
+    - Its empirical behaviour differed from its limited documented behaviour.
+      Eg, its sleep backoff actually had _no_ sleep before the first retry.
+    - Its implementation was hard to understand.
+      Eg, its crucial increment() method returned a _new_ Retry() object.
+      In short, it was complicated.
+    """
 
     def get(self, url, **kwargs):
         return self._retry(lambda: req.get(url, **kwargs))
@@ -58,43 +87,3 @@ def err_print(message):
 
 def total_sleep_time():
     return sum(HttpRetry().sleep_time(n) for n in range(0, MAX_RETRY_COUNT))
-
-
-"""
-Create a http requests object with an embedded retry strategy.
-Affects only GET,PUT,POST requests whose response status is 503.
-Intention is to hide small server downtimes during deployments.
-The sleep duration between retries is [0,2,4,8,16] seconds.
-Retries 5 times. The first retry is immediate.
-
-The logged message does _not_ say 'Press Control^C to exit.'
-because Control^C requires a runtime environment with a tty.
-That would require a [docker run -it] which would fail in the
-target environment, a CI pipeline, which invariably has no tty.
-"""
-
-
-"""
-Superclass source and docs are here:
-https://github.com/urllib3/urllib3/blob/master/src/urllib3/util/retry.py
-https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html#module-urllib3.util.retry
-
-I tried moving the kwargs in http_retry() into a LoggingRetry.__init__(...)
-I got: TypeError: __init__() got an unexpected keyword argument
-Don't know why, so for now they stay in http_retry()
-
-Adding attributes to this class causes errors due, I think, to the Retry
-super-class doing clever things with __init__(), new(), and __getattr__()
-"""
-
-""""
-Retry documentation says the backoff algorithm is:
-   {backoff factor} * (2 ** ({number of retries} - 1))
-With backoff_factor==1, this would give successive sleeps of:
-   [ 0.5, 1, 2, 4, 8, 16, ... ]
-However, the _actual_ sleep durations you get from get_backoff_time() are:
-   [ 0, 2, 4, 8, 16, ... ]
-And empirically, before the first retry there is indeed no sleep.
-So the first retry is happening immediately.
-"""
-
