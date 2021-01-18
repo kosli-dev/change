@@ -5,8 +5,7 @@ import cdb.http_retry
 import httpretty
 import json
 import pytest
-from approvaltests.approvals import verify
-from approvaltests.reporters import PythonNativeReporter
+from tests.verify_approval import verify_approval
 
 
 """
@@ -59,17 +58,6 @@ def test_503_get_retries_5_times(capsys):
 
     verify_approval(capsys)
     assert len(httpretty.latest_requests()) == 1+5
-
-
-def verify_approval(capsys, streams=("out", "err")):
-    captured = capsys.readouterr()
-    actual = ""
-    for stream in streams:
-        if stream == "out":
-            actual += captured.out
-        if stream == "err":
-            actual += captured.err
-    verify(actual, PythonNativeReporter())
 
 
 def stub_http(method, status):

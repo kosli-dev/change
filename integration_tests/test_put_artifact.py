@@ -1,6 +1,6 @@
 from cdb.put_artifact import put_artifact
-from approvaltests.approvals import verify
-from approvaltests.reporters import PythonNativeReporter
+
+from tests.verify_approval import verify_approval
 from tests.cdb_dry_run import cdb_dry_run
 from tests.auto_env_vars import AutoEnvVars
 
@@ -9,8 +9,7 @@ def test_message_when_env_var_CDB_ARTIFACT_FILENAME_is_missing(capsys):
     with cdb_dry_run():
         put_artifact("integration_tests/test-pipefile.json")
 
-    captured = capsys.readouterr()
-    verify(captured.out, PythonNativeReporter())
+    verify_approval(capsys, ["out"])
 
 
 def test_message_when_env_var_CDB_ARTIFACT_SHA_is_missing(capsys):
@@ -21,5 +20,4 @@ def test_message_when_env_var_CDB_ARTIFACT_SHA_is_missing(capsys):
     with cdb_dry_run(), AutoEnvVars(env):
         put_artifact("integration_tests/test-pipefile.json")
 
-    captured = capsys.readouterr()
-    verify(captured.out, PythonNativeReporter())
+    verify_approval(capsys, ["out"])
