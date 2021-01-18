@@ -11,32 +11,40 @@ RETRY_BACKOFF_FACTOR = 1
 
 
 def http_retry_get(url, auth):
-    response = req.get(url, auth=auth)
-    if response.status_code != 503:
-        return response
+    return HttpRetry().get(url, auth)
 
-    err_print("The HTTP call failed. Retrying...")
-    retry_count = 0
-    while retry_count != MAX_RETRY_COUNT:
-        retry_count += 1
-        seconds = RETRY_BACKOFF_FACTOR * (2 ** retry_count)
-        sleep(seconds)
+
+class HttpRetry():
+    def __init__(self):
+        self._retry_count = 0
+        self._max_retry_count = 5
+
+    def get(self, url, auth):
         response = req.get(url, auth=auth)
         if response.status_code != 503:
             return response
 
-        if retry_count < MAX_RETRY_COUNT:
-            sleep_message = ", sleeping for {} seconds...".format(seconds)
-        else:
-            sleep_message = ""
+        err_print("The HTTP call failed. Retrying...")
+        while self._retry_count != self._max_retry_count:
+            self._retry_count += 1
+            seconds = RETRY_BACKOFF_FACTOR * (2 ** self._retry_count)
+            sleep(seconds)
+            response = req.get(url, auth=auth)
+            if response.status_code != 503:
+                return response
 
-        err_print("Retry {}/{} failed, status={}{}".format(
-            retry_count,
-            MAX_RETRY_COUNT,
-            response.status_code,
-            sleep_message
-        ))
-    raise req.exceptions.RetryError("sss")
+            if self._retry_count < MAX_RETRY_COUNT:
+                sleep_message = ", sleeping for {} seconds...".format(seconds)
+            else:
+                sleep_message = ""
+
+            err_print("Retry {}/{} failed, status={}{}".format(
+                self._retry_count,
+                self._max_retry_count,
+                response.status_code,
+                sleep_message
+            ))
+        raise req.exceptions.RetryError("sss")
 
 
 
