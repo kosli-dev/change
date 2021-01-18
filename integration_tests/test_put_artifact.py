@@ -1,5 +1,4 @@
 from cdb.put_artifact import put_artifact
-from os import environ
 from approvaltests.approvals import verify
 from approvaltests.reporters import PythonNativeReporter
 from tests.cdb_dry_run import cdb_dry_run
