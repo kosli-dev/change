@@ -10,22 +10,24 @@ MAX_RETRY_COUNT = 5
 RETRY_BACKOFF_FACTOR = 1
 
 
-def http_retry_get(url, auth):
-    return HttpRetry().get(url, auth)
-
-
 class HttpRetry():
     MAX_RETRY_COUNT = 5
 
     def get(self, url, auth):
-        response = req.get(url, auth=auth)
+        return self._retry(lambda: req.get(url, auth=auth))
+
+    def put(self, url, auth, headers, data):
+        return self._retry(lambda: req.put(url, auth=auth, headers=headers, data=data))
+
+    def _retry(self, http_call):
+        response = http_call()
         if response.status_code != 503:
             return response
 
         err_print("The HTTP call failed. Retrying...")
         for count in range(1, MAX_RETRY_COUNT + 1):
             sleep(self._sleep_time(count))
-            response = req.get(url, auth=auth)
+            response = http_call()
             if response.status_code != 503:
                 return response
             else:
