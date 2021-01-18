@@ -62,7 +62,7 @@ class HttpRetry():
             response = http_call()
             status = response.status_code
             if status != 503:
-                # TODO: log message here
+                print("Retry {}/{}: response.status={}".format(count,MAX_RETRY_COUNT, status))
                 return response
             else:
                 self._log_retry_failed(count, status)
