@@ -1,8 +1,7 @@
 from cdb.create_approval import create_approval
 
-from tests.cdb_dry_run import cdb_dry_run
+from tests.utils import cdb_dry_run, verify_approval
 from tests.test_git import TEST_REPO_ROOT
-from tests.verify_approval import verify_approval
 
 
 def test_put_approval(capsys):

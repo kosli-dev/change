@@ -1,6 +1,6 @@
 from cdb.http import http_put_payload, http_post_payload
-from tests.cdb_dry_run import cdb_dry_run
-from tests.auto_reading_capsys import auto_reading
+from tests.utils.cdb_dry_run import cdb_dry_run
+from tests.utils.auto_reading_capsys import auto_reading
 
 
 def test_put_dry_run_doesnt_call(mocker, capsys):

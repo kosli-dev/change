@@ -5,7 +5,7 @@ import cdb.http_retry
 import httpretty
 import json
 import pytest
-from tests.verify_approval import verify_approval
+from tests.utils import verify_approval
 
 
 """

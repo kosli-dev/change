@@ -1,7 +1,6 @@
 from cdb.put_pipeline import put_pipeline
 
-from tests.cdb_dry_run import cdb_dry_run
-from tests.verify_approval import verify_approval
+from tests.utils import cdb_dry_run, verify_approval
 
 
 def test_put_pipeline(capsys):
