@@ -18,6 +18,14 @@ RETRY_BACKOFF_FACTOR = 1
 MAX_RETRY_COUNT = 5
 
 
+class Error(http.exceptions.RequestException):
+    def __init__(self, url):
+        self._url = url
+
+    def url(self):
+        return self._url
+
+
 class HttpRetry():
     """
     Originally we implemented http retries with this Retry class:
@@ -40,15 +48,15 @@ class HttpRetry():
         self._status_retry_list = [503]
 
     def get(self, url, **kwargs):
-        return self._retry(lambda: http.get(url, **kwargs))
+        return self._retry(url, lambda: http.get(url, **kwargs))
 
     def put(self, url, **kwargs):
-        return self._retry(lambda: http.put(url, **kwargs))
+        return self._retry(url, lambda: http.put(url, **kwargs))
 
     def post(self, url, **kwargs):
-        return self._retry(lambda: http.post(url, **kwargs))
+        return self._retry(url, lambda: http.post(url, **kwargs))
 
-    def _retry(self, http_call):
+    def _retry(self, url, http_call):
         response = http_call()
         status = response.status_code
         if self._do_not_retry(status):
@@ -65,7 +73,7 @@ class HttpRetry():
             if self._do_not_retry(status):
                 return response
 
-        raise http.exceptions.RetryError("TODO")
+        raise Error(url)
 
     def _do_not_retry(self, status):
         return status not in self._status_retry_list
