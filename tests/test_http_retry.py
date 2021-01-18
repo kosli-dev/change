@@ -23,8 +23,8 @@ Packages we tried that did not work in this situation are:
 """
 
 
-def test_total_retry_sleep_time_is_30_seconds():
-    assert cdb.http_retry.total_sleep_time() == 30  # 0+2+4+8+16
+def test_total_retry_sleep_time_is_about_30_seconds():
+    assert cdb.http_retry.total_sleep_time() == 31  # 1+2+4+8+16
 
 
 @httpretty.activate
