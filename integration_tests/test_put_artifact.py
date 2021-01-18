@@ -11,7 +11,7 @@ def test_message_when_env_var_CDB_ARTIFACT_FILENAME_is_missing(capsys):
         put_artifact("integration_tests/test-pipefile.json")
 
     captured = capsys.readouterr()
-    verify(captured.out + captured.err, PythonNativeReporter())
+    verify(captured.out, PythonNativeReporter())
 
 
 def test_message_when_env_var_CDB_ARTIFACT_SHA_is_missing(capsys):
@@ -21,7 +21,7 @@ def test_message_when_env_var_CDB_ARTIFACT_SHA_is_missing(capsys):
                 put_artifact("integration_tests/test-pipefile.json")
 
     captured = capsys.readouterr()
-    verify(captured.out + captured.err, PythonNativeReporter())
+    verify(captured.out, PythonNativeReporter())
 
 
 class SetEnv(object):
