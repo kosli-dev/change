@@ -37,7 +37,7 @@ class HttpRetry():
     - In short, it was complicated and hard to test.
     """
     def __init__(self):
-        self._status_forcelist = [503]
+        self._status_retry_list = [503]
 
     def get(self, url, **kwargs):
         return self._retry(lambda: http.get(url, **kwargs))
@@ -51,7 +51,7 @@ class HttpRetry():
     def _retry(self, http_call):
         response = http_call()
         status = response.status_code
-        if not self._force_retry(status):
+        if self._do_not_retry(status):
             return response
         count = 0
         seconds = self.sleep_time(count)
@@ -62,13 +62,13 @@ class HttpRetry():
             response = http_call()
             status = response.status_code
             self._log(count, status, seconds)
-            if not self._force_retry(status):
+            if self._do_not_retry(status):
                 return response
 
         raise http.exceptions.RetryError("TODO")
 
-    def _force_retry(self, status):
-        return status in self._status_forcelist
+    def _do_not_retry(self, status):
+        return status not in self._status_retry_list
 
     def _log(self, count, status, seconds):
         lhs = self._response_message(count, status)
@@ -87,7 +87,7 @@ class HttpRetry():
             return "Retry {}/{}: response.status={}".format(count, MAX_RETRY_COUNT, status)
 
     def _retry_message(self, count, status, seconds):
-        if not self._force_retry(status):
+        if self._do_not_retry(status):
             return ""
         elif count < MAX_RETRY_COUNT:
             return ", retrying in {} seconds...".format(seconds)
