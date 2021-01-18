@@ -10,15 +10,20 @@ set -e
 readonly TARGET="${1}"
 
 # According to https://github.com/approvals/ApprovalTests.Python
-# you can setup the approval-test report with this command line
-# option:
+# you can setup the approval-test reporter with this option:
+#
 #   --approvaltests-use-reporter='PythonNative'
-# When this option is added to the pytest call below you _lose_ output.
-# Until this is resolved, what works, is explicitly setting the reporter
-# in the test. Eg
-#   from approvaltests.approvals import verify
-#   from approvaltests.reporters import PythonNativeReporter
-#   verify(actual, PythonNativeReporter())
+#
+# Unfortunately this is currently broken with the latest release
+# of pytest-approvals. For now you have to specify the reporter
+# individually on each verify call. For example:
+#
+#    from approvaltests.approvals import verify
+#    from approvaltests.reporters import PythonNativeReporter
+#    verify(actual, PythonNativeReporter())
+#
+# If you don't do this you _lose_ output, eg for a new test the
+# name of the missing approval file does not appear.
 
 pytest \
        --capture=no \

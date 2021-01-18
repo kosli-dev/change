@@ -4,7 +4,7 @@ from requests.packages.urllib3.util.retry import Retry
 from os import sys
 
 
-RETRY_COUNT = 5
+MAX_RETRY_COUNT = 5
 RETRY_BACKOFF_FACTOR = 1
 
 
@@ -22,7 +22,7 @@ def http_retry():
     target environment, a CI pipeline, which invariably has no tty.
     """
     strategy = LoggingRetry(
-        total=RETRY_COUNT,
+        total=MAX_RETRY_COUNT,
         backoff_factor=RETRY_BACKOFF_FACTOR,
         status_forcelist=[503],
         allowed_methods=["GET", "POST", "PUT"]
@@ -44,7 +44,7 @@ class LoggingRetry(Retry):
     I got: TypeError: __init__() got an unexpected keyword argument
     Don't know why, so for now they stay in http_retry()
 
-    Adding attributes to this class causes error due, I think, to the Retry
+    Adding attributes to this class causes errors due, I think, to the Retry
     super-class doing clever things with __init__(), new(), and __getattr__()
     """
     def increment(self, *args, **kwargs):
@@ -55,20 +55,18 @@ class LoggingRetry(Retry):
         return new_retry
 
     def log_increment(self):
-        failed_request = self.history[-1]
-        message = "Retry {}/{} failed, status={}{}".format(
+        err_print("Retry {}/{} failed, status={}{}".format(
             self.count(),
-            RETRY_COUNT,
-            failed_request.status,
+            MAX_RETRY_COUNT,
+            self.history[-1].status,
             self.sleep_message()
-        )
-        err_print(message)
+        ))
 
     def count(self):
         return len(self.history)
 
     def sleep_message(self):
-        if self.count() < RETRY_COUNT:
+        if self.count() < MAX_RETRY_COUNT:
             return ", sleeping for {} seconds...".format(self.sleep_time())
         else:
             return ""
@@ -93,7 +91,7 @@ class LoggingRetry(Retry):
 
 
 def total_sleep_time():
-    return sum(LoggingRetry().sleep_time(n) for n in range(0, RETRY_COUNT))
+    return sum(LoggingRetry().sleep_time(n) for n in range(0, MAX_RETRY_COUNT))
 
 
 def err_print(message):
