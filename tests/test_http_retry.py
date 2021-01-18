@@ -1,6 +1,5 @@
 from cdb.http import http_post_payload, http_put_payload, http_get_json
 import cdb.http_retry as http_retry
-from requests.exceptions import RetryError
 
 import json
 from pytest import raises
