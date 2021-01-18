@@ -46,42 +46,47 @@ class HttpRetry():
     def post(self, url, **kwargs):
         return self._retry(lambda: http.post(url, **kwargs))
 
-    @staticmethod
-    def sleep_time(count):
-        return RETRY_BACKOFF_FACTOR * (2 ** count)
-
     def _retry(self, http_call):
         response = http_call()
         status = response.status_code
         if status != 503:
             return response
-
-        print("Response.status={}{}".format(status, self._sleep_message(0, status)))
+        count = 0
+        seconds = self.sleep_time(count)
+        self._log(count, status, seconds)
         for count in range(1, MAX_RETRY_COUNT + 1):
-            sleep(self.sleep_time(count))
+            seconds = self.sleep_time(count)
+            sleep(seconds)
             response = http_call()
             status = response.status_code
+            self._log(count, status, seconds)
             if status != 503:
-                self._log_retry(count, status)
                 return response
-            else:
-                self._log_retry(count, status)
 
         raise http.exceptions.RetryError("TODO")
 
-    def _log_retry(self, count, status):
-        print("Retry {}/{}: response.status={}{}".format(
-            count,
-            MAX_RETRY_COUNT,
-            status,
-            self._sleep_message(count, status)
-        ))
+    def _log(self, count, status, seconds):
+        lhs = self._response_message(count, status)
+        rhs = self._retry_message(count, status, seconds)
+        print("{}{}".format(lhs, rhs))
 
-    def _sleep_message(self, count, status):
+    @staticmethod
+    def sleep_time(count):
+        return RETRY_BACKOFF_FACTOR * (2 ** count)
+
+    @staticmethod
+    def _response_message(count, status):
+        if count == 0:
+            return "Response.status={}".format(status)
+        else:
+            return "Retry {}/{}: response.status={}".format(count, MAX_RETRY_COUNT, status)
+
+    @staticmethod
+    def _retry_message(count, status, seconds):
         if status != 503:
             return ""
         elif count < MAX_RETRY_COUNT:
-            return ", retrying in {} seconds...".format(self.sleep_time(count))
+            return ", retrying in {} seconds...".format(seconds)
         else:
             return ""
 
