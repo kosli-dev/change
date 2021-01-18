@@ -30,7 +30,7 @@ def test_total_retry_sleep_time_is_30_seconds():
 
 @httpretty.activate
 def test_503_post_retries_5_times(capsys):
-    url, payload, api_token = stub_http_503('POST')
+    url, payload, api_token = stub_http('POST', 503)
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         http_post_payload(url, payload, api_token)
@@ -41,7 +41,7 @@ def test_503_post_retries_5_times(capsys):
 
 @httpretty.activate
 def test_503_put_retries_5_times(capsys):
-    url, payload, api_token = stub_http_503('PUT')
+    url, payload, api_token = stub_http('PUT', 503)
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         http_put_payload(url, payload, api_token)
@@ -52,7 +52,7 @@ def test_503_put_retries_5_times(capsys):
 
 @httpretty.activate
 def test_503_get_retries_5_times(capsys):
-    url, _, api_token = stub_http_503('GET')
+    url, _, api_token = stub_http('GET', 503)
 
     with retry_backoff_factor(0.001), pytest.raises(requests.exceptions.RetryError):
         http_get_json(url, api_token)
@@ -72,7 +72,7 @@ def verify_approval(capsys, streams=("out", "err")):
     verify(actual, PythonNativeReporter())
 
 
-def stub_http_503(method):
+def stub_http(method, status):
     url = "https://test.compliancedb.com/api/v1/{}/".format(method.lower())
     httpretty.register_uri(
         getattr(httpretty, method),
@@ -80,7 +80,7 @@ def stub_http_503(method):
         responses=[
             httpretty.Response(
                 body=json.dumps({"error": "service unavailable"}),
-                status=503,  # Eg during deployment rollover
+                status=503  # Eg during deployment rollover
             )
         ]
     )
