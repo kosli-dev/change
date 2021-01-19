@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 import os
-
-import requests as req
-from requests.auth import HTTPBasicAuth
-
 from cdb.api_schema import ApiSchema
 from cdb.cdb_utils import parse_cmd_line, load_project_configuration
 from cdb.http import http_put_payload
 from cdb.settings import CDB_SERVER
+from cdb.http_retry import HttpRetryError
 
 
 def main():
     """
     project.json
     """
-    project_file = parse_cmd_line()
-    put_pipeline(project_file)
+    try:
+        project_file = parse_cmd_line()
+        put_pipeline(project_file)
+    except HttpRetryError:
+        pass
 
 
 def put_pipeline(project_file, env=os.environ):
@@ -30,8 +30,6 @@ def put_pipeline(project_file, env=os.environ):
 
         print("Put pipeline")
         create_response = http_put_payload(url=projects_url, payload=project_data, api_token=api_token)
-
-
 
 
 if __name__ == '__main__':
