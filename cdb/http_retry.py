@@ -17,7 +17,7 @@ from time import sleep
 RETRY_BACKOFF_FACTOR = 1
 MAX_RETRY_COUNT = 5
 
-class HttpRetryError(http.exceptions.RequestException):
+class HttpRetryExhauted(http.exceptions.RequestException):
     def __init__(self, url):
         self._url = url
 
@@ -76,7 +76,7 @@ class HttpRetry():
             if not self._retry(status):
                 return response
 
-        raise HttpRetryError(url)
+        raise HttpRetryExhauted(url)
 
     def _retry(self, status):
         return status in self._status_retry_list

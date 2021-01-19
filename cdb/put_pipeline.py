@@ -4,7 +4,7 @@ from cdb.api_schema import ApiSchema
 from cdb.cdb_utils import parse_cmd_line, load_project_configuration
 from cdb.http import http_put_payload
 from cdb.settings import CDB_SERVER
-from cdb.http_retry import HttpRetryError
+from cdb.http_retry import HttpRetryExhauted
 
 
 def main():
@@ -14,8 +14,11 @@ def main():
     try:
         project_file = parse_cmd_line()
         put_pipeline(project_file)
-    except HttpRetryError:
-        pass
+        return 0
+    except HttpRetryExhauted:
+        print("Retry limit exhausted.")
+        print("Command failed.")
+        return 1
 
 
 def put_pipeline(project_file, env=os.environ):
