@@ -34,26 +34,26 @@ build_pipe:
 # Github does not support volume mounts so we need to copy the test output from the container
 # and capture the test exit value
 test_unit: build
-	@docker stop test_unit || true
-	@docker rm test_unit || true
+	@docker stop $@ || true
+	@docker rm $@ || true
 	@rm -rf tmp/coverage/unit
 	@mkdir -p tmp/coverage/unit
 	@docker run \
-	    --name test_unit \
+	    --name $@ \
 	    --entrypoint ./unit_coverage_entrypoint.sh \
 	    ${IMAGE} \
 	    tests/${TARGET} ; \
 	e=$$?; \
-	docker cp test_unit:/app/htmlcov/ tmp/coverage/unit; \
+	docker cp $@:/app/htmlcov/ tmp/coverage/unit; \
 	exit $$e
 
 test_unit_via_volume_mounts:
-	@docker stop test_unit_via_volume_mounts || true
-	@docker rm test_unit_via_volume_mounts || true
+	@docker stop $@ || true
+	@docker rm $@ || true
 	@rm -rf tmp/coverage/unit
 	@mkdir -p tmp/coverage/unit
 	@docker run --tty \
-        --name test_unit_via_volume_mounts \
+        --name $@ \
 		--volume ${PWD}/cdb:/app/cdb \
 		--volume ${PWD}/integration_tests:/app/integration_tests \
 		--volume ${PWD}/tests:/app/tests \
@@ -62,30 +62,30 @@ test_unit_via_volume_mounts:
 	    ${IMAGE} \
 	    tests/${TARGET} \
 	e=$$?; \
-	docker cp test_unit_via_volume_mounts:/app/htmlcov/ tmp/coverage/unit; \
+	docker cp $@:/app/htmlcov/ tmp/coverage/unit; \
 	exit $$e
 
 test_integration: build
-	@docker stop test_integration || true
-	@docker rm test_integration || true
+	@docker stop $@ || true
+	@docker rm $@ || true
 	@rm -rf tmp/coverage/integration
 	@mkdir -p tmp/coverage/integration
 	@docker run \
-		--name test_integration \
+		--name $@ \
 		--entrypoint ./integration_coverage_entrypoint.sh \
 		${IMAGE} \
 		integration_tests/${TARGET} ; \
 	e=$$?; \
-	docker cp test_integration:/app/htmlcov/ tmp/coverage/integration; \
+	docker cp $@:/app/htmlcov/ tmp/coverage/integration; \
 	exit $$e
 
 test_integration_via_volume_mounts:
-	@docker stop test_integration_via_volume_mounts || true
-	@docker rm test_integration_via_volume_mounts || true
+	@docker stop $@ || true
+	@docker rm $@ || true
 	@rm -rf tmp/coverage/integration
 	@mkdir -p tmp/coverage/integration
 	@docker run --tty \
-        --name test_integration_via_volume_mounts \
+        --name $@ \
 		--volume ${PWD}/cdb:/app/cdb \
 		--volume ${PWD}/integration_tests:/app/integration_tests \
 		--volume ${PWD}/tests:/app/tests \
@@ -94,7 +94,7 @@ test_integration_via_volume_mounts:
 	    ${IMAGE} \
 		integration_tests/${TARGET} ; \
 	e=$$?; \
-	docker cp test_integration_via_volume_mounts:/app/htmlcov/ tmp/coverage/integration; \
+	docker cp $@:/app/htmlcov/ tmp/coverage/integration; \
 	exit $$e
 
 test_all: test_unit test_integration
@@ -108,7 +108,6 @@ pytest_help:
 		--rm \
 		${IMAGE} \
 		  python3 -m pytest --help
-
 
 push:
 	@docker push ${IMAGE}
