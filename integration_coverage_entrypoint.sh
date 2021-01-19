@@ -2,21 +2,22 @@
 
 set -e
 
-# ${1} is set in Makefile.
+# ${1} is set in the Makefile.
 # Defaults to integration_tests/ (the dir name)
 # To run an individual test file...
 # $ make test_integration TARGET=test_approvals.py
 # which will result in ${1}==integration_tests/test_approvals.py
 readonly TARGET="${1}"
 
+# Beware using --approvaltests-use-reporter='PythonNative'
+# See comment in tests/utils/verify_approval.py
+
 pytest \
-       --approvaltests-use-reporter='PythonNative' \
        --capture=no \
        --cov=. \
        --cov-config=.coveragerc \
        --junitxml=htmlcov/junit.xml \
        -o junit_family=xunit1 \
-       --pythonwarnings=ignore::pytest.PytestCollectionWarning \
        --verbose \
          "${TARGET}"
 

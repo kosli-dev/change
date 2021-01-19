@@ -2,28 +2,15 @@
 
 set -e
 
-# ${1} is set in Makefile.
+# ${1} is set in the Makefile.
 # Defaults to tests/ (the dir name)
 # To run an individual test file...
 # $ make test TARGET=test_create_release.py
 # which will result in ${1}==tests/test_release.py
 readonly TARGET="${1}"
 
-# According to https://github.com/approvals/ApprovalTests.Python
-# you can setup the approval-test reporter with this option:
-#
-#   --approvaltests-use-reporter='PythonNative'
-#
-# Unfortunately this is currently broken with the latest release
-# of pytest-approvals. For now you have to specify the reporter
-# individually on each verify call. For example:
-#
-#    from approvaltests.approvals import verify
-#    from approvaltests.reporters import PythonNativeReporter
-#    verify(actual, PythonNativeReporter())
-#
-# If you don't do this you _lose_ output, eg for a new test the
-# name of the missing approval file does not appear.
+# Beware using --approvaltests-use-reporter='PythonNative'
+# See comment in tests/utils/verify_approval.py
 
 pytest \
        --capture=no \
@@ -31,7 +18,6 @@ pytest \
        --cov-config=.coveragerc \
        --junitxml=htmlcov/junit.xml \
        -o junit_family=xunit1 \
-       --pythonwarnings=ignore::pytest.PytestCollectionWarning \
        --verbose \
          "${TARGET}"
 

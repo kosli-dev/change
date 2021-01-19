@@ -11,11 +11,12 @@ like this:
 
 Unfortunately this is currently broken with the latest release
 of pytest-approvals. You get a DiffReporter. So, for now you have 
-to specify the reporter individually on each verify call. 
+to specify the reporter individually on each verify() call. 
 For example:
 
    from approvaltests.approvals import verify
    from approvaltests.reporters import PythonNativeReporter
+   ...
    verify(actual, PythonNativeReporter())
 
 If you don't do this you _lose_ output, eg for a new test the
