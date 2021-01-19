@@ -5,22 +5,19 @@ from cdb.api_schema import ApiSchema
 from cdb.cdb_utils import parse_cmd_line, load_project_configuration, env_is_compliant, \
     set_artifact_sha_env_variable_from_file_or_image
 from cdb.http import http_put_payload
-from cdb.http_retry import HttpRetryExhauted
 from cdb.settings import CDB_SERVER
+from cdb.exception_handling_main import exception_handling_main
 
 
 def main():
-    try:
+    def put_artifact_main():
         project_file = parse_cmd_line()
         put_artifact(project_file)
-        return 0
-    except HttpRetryExhauted:
-        print("Retry limit exhausted.")
-        print("Command failed.")
-        return 1
+    return exception_handling_main(put_artifact_main)
 
 
-def create_artifact(api_token, host, project_config_file, sha256, filename, description, git_commit, commit_url, build_url,
+def create_artifact(api_token, host, project_config_file,
+                    sha256, filename, description, git_commit, commit_url, build_url,
                     is_compliant):
     project_data = load_project_configuration(project_config_file)
 
