@@ -18,6 +18,7 @@ def test_503_exception_for_put_pipeline_main(capsys, mocker):
     mocker.patch.object(sys, 'argv', ['name', '--project', '/app/tests_data/pipefile.json'])
 
     with retry_backoff_factor(0.001), AutoEnvVars(env):
-        main_put_pipeline()
+        exit_code = main_put_pipeline()
 
+    assert exit_code != 0
     verify_approval(capsys)
