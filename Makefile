@@ -52,8 +52,9 @@ test_unit_via_volume_mounts:
 	@docker rm $@ || true
 	@rm -rf tmp/coverage/unit
 	@mkdir -p tmp/coverage/unit
-	@docker run --tty \
+	@docker run \
         --name $@ \
+		--tty \
 		--volume ${PWD}/cdb:/app/cdb \
 		--volume ${PWD}/integration_tests:/app/integration_tests \
 		--volume ${PWD}/tests:/app/tests \
@@ -84,8 +85,9 @@ test_integration_via_volume_mounts:
 	@docker rm $@ || true
 	@rm -rf tmp/coverage/integration
 	@mkdir -p tmp/coverage/integration
-	@docker run --tty \
+	@docker run \
         --name $@ \
+		--tty \
 		--volume ${PWD}/cdb:/app/cdb \
 		--volume ${PWD}/integration_tests:/app/integration_tests \
 		--volume ${PWD}/tests:/app/tests \
