@@ -1,5 +1,4 @@
 from cdb.put_artifact import put_artifact
-import os
 
 from tests.utils import AutoEnvVars, cdb_dry_run, verify_approval
 
