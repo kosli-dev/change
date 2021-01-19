@@ -1,9 +1,8 @@
 from cdb.http import http_post_payload, http_put_payload, http_get_json
 import cdb.http_retry as http_retry
 
-import json
 from pytest import raises
-from tests.utils import verify_approval
+from tests.utils import verify_approval, stub_http_503, retry_backoff_factor
 import responses
 
 MAX_RETRY_COUNT = 5
@@ -83,46 +82,3 @@ def test_get_stops_retrying_when_non_503_and_returns_response_json(capsys):
     assert response_json == {"success": 42}
     assert len(responses.calls) == 1+1+1
     verify_approval(capsys)
-
-
-def stub_http_503(method, count):
-    # Eg during deployment rollover
-    url = "https://test.compliancedb.com/api/v1/{}/".format(method.lower())
-
-    def request_callback(request):
-        headers = {}
-        if len(responses.calls) < count:
-            return 503, headers, json.dumps({"error": "service unavailable"})
-        else:
-            return 200, headers, json.dumps({"success": 42})
-
-    responses.add_callback(
-        getattr(responses, method),
-        url=url,
-        callback=request_callback
-    )
-
-    if method == "GET":
-        payload = None
-    if method == "POST":
-        payload = {"name": "cern", "template": ["artefact", "unit_test"]}
-    if method == "PUT":
-        payload = {"name": "git", "template": ["artefact", "coverage"]}
-    api_token = ""
-    return url, payload, api_token
-
-
-def retry_backoff_factor(f):
-    return RetryBackOffFactor(f)
-
-
-class RetryBackOffFactor(object):
-    def __init__(self, factor):
-        self._factor = factor
-
-    def __enter__(self):
-        self._original = http_retry.RETRY_BACKOFF_FACTOR
-        http_retry.RETRY_BACKOFF_FACTOR = self._factor
-
-    def __exit__(self, _type, _value, _traceback):
-        http_retry.RETRY_BACKOFF_FACTOR = self._original
