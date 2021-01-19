@@ -8,10 +8,7 @@ from cdb.exception_handling_main import exception_handling_main
 
 
 def main():
-    def put_pipeline_main():
-        project_file = parse_cmd_line()
-        put_pipeline(project_file)
-    return exception_handling_main(put_pipeline_main)
+    return exception_handling_main(lambda: put_pipeline(parse_cmd_line()))
 
 
 def put_pipeline(project_file, env=os.environ):

@@ -10,28 +10,7 @@ from cdb.exception_handling_main import exception_handling_main
 
 
 def main():
-    def put_artifact_main():
-        project_file = parse_cmd_line()
-        put_artifact(project_file)
-    return exception_handling_main(put_artifact_main)
-
-
-def create_artifact(api_token, host, project_config_file,
-                    sha256, filename, description, git_commit, commit_url, build_url,
-                    is_compliant):
-    project_data = load_project_configuration(project_config_file)
-
-    create_artifact_payload = {
-        "sha256": sha256,
-        "filename": filename,
-        "description": description,
-        "git_commit": git_commit,
-        "commit_url": commit_url,
-        "build_url": build_url,
-        "is_compliant": is_compliant
-    }
-    url = ApiSchema.url_for_artifacts(host, project_data)
-    http_put_payload(url, create_artifact_payload, api_token)
+    return exception_handling_main(lambda: put_artifact(parse_cmd_line()))
 
 
 def put_artifact(project_file):
@@ -64,6 +43,24 @@ def put_artifact(project_file):
     with open(project_file) as project_file_contents:
         create_artifact(api_token, host, project_file_contents, sha256_digest, filename, description, git_commit,
                         commit_url, build_url, is_compliant)
+
+
+def create_artifact(api_token, host, project_config_file,
+                    sha256, filename, description, git_commit, commit_url, build_url,
+                    is_compliant):
+    project_data = load_project_configuration(project_config_file)
+
+    create_artifact_payload = {
+        "sha256": sha256,
+        "filename": filename,
+        "description": description,
+        "git_commit": git_commit,
+        "commit_url": commit_url,
+        "build_url": build_url,
+        "is_compliant": is_compliant
+    }
+    url = ApiSchema.url_for_artifacts(host, project_data)
+    http_put_payload(url, create_artifact_payload, api_token)
 
 
 if __name__ == '__main__':
