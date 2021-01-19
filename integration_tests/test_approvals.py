@@ -4,6 +4,7 @@ from tests.utils import cdb_dry_run, verify_approval
 from tests.test_git import TEST_REPO_ROOT
 
 
+# This is setting the CDB_ARTIFACT_SHA env-var
 def test_put_approval(capsys):
     env = {
         "CDB_ARTIFACT_SHA": "1234",
