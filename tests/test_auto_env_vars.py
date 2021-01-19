@@ -50,3 +50,6 @@ def test_new_env_vars_set_inside_with_statement_can_be_interrogated_after_the_wi
     assert sorted(list(new_env_vars.keys())) == ["ALPHA", "BETA"]
     assert new_env_vars["ALPHA"] == "123"
     assert new_env_vars["BETA"] == "456"
+    assert context_manager.is_creating_env_var("ALPHA")
+    assert context_manager.is_creating_env_var("BETA")
+    assert not context_manager.is_creating_env_var("GAMMA")
