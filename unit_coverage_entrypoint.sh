@@ -15,7 +15,6 @@ readonly TARGET="${1}"
 pytest \
        --capture=no \
        --cov=. \
-       --cov-config=.coveragerc \
        --junitxml=htmlcov/junit.xml \
        -o junit_family=xunit1 \
        --verbose \
