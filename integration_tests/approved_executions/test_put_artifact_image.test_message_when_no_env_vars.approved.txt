@@ -1,5 +1,5 @@
 Docker image digest found from environment variable
-IMAGE DIGEST: eee8d8f0df2d745496d8ea583dc213ee64ea004118079ab52a92a7e446d72995
+IMAGE DIGEST: ccee89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc
 Publish artifact to ComplianceDB
 CDB_IS_COMPLIANT: False
 Putting this payload:
@@ -10,7 +10,7 @@ Putting this payload:
     "filename": "NO_DOCKER_IMAGE_FOUND",
     "git_commit": "0000000000000000000000000000000000000000",
     "is_compliant": false,
-    "sha256": "eee8d8f0df2d745496d8ea583dc213ee64ea004118079ab52a92a7e446d72995"
+    "sha256": "ccee89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
 }
 To this url: https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/
 DRY RUN: Put not sent
