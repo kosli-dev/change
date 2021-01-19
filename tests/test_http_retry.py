@@ -22,7 +22,7 @@ def test_no_retries_when_http_call_is_not_503(capsys):
 
 
 @responses.activate
-def test_503_post_retries_5_times_then_raises_RetryError(capsys):
+def test_503_post_retries_5_times_then_raises_HttpRetryExhausted(capsys):
     url, payload, api_token = stub_http_503('POST', 1+MAX_RETRY_COUNT)
 
     with retry_backoff_factor(0.001), raises(HttpRetryExhausted) as exc_info:
@@ -34,7 +34,7 @@ def test_503_post_retries_5_times_then_raises_RetryError(capsys):
 
 
 @responses.activate
-def test_503_put_retries_5_times_then_raises_RetryError(capsys):
+def test_503_put_retries_5_times_then_raises_HttpRetryExhausted(capsys):
     url, payload, api_token = stub_http_503('PUT', 1+MAX_RETRY_COUNT)
 
     with retry_backoff_factor(0.001), raises(HttpRetryExhausted) as exc_info:
@@ -46,7 +46,7 @@ def test_503_put_retries_5_times_then_raises_RetryError(capsys):
 
 
 @responses.activate
-def test_503_get_retries_5_times_then_raises_RetryError(capsys):
+def test_503_get_retries_5_times_then_raises_HttpRetryExhausted(capsys):
     url, _, api_token = stub_http_503('GET', 1+MAX_RETRY_COUNT)
 
     with retry_backoff_factor(0.001), raises(HttpRetryExhausted) as exc_info:
