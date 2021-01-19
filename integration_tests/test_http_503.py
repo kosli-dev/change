@@ -6,9 +6,6 @@ import sys
 from tests.utils import AutoEnvVars, verify_approval, stub_http_503, retry_backoff_factor
 
 
-#MAX_RETRY_COUNT = 5
-
-
 @responses.activate
 def test_503_exception_for_put_pipeline_main(capsys, mocker):
     host = 'http://test.compliancedb.com'
