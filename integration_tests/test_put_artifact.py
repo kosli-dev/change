@@ -28,11 +28,13 @@ def test_message_when_env_var_CDB_ARTIFACT_SHA_is_not_defined(capsys):
     }
 
     with cdb_dry_run(), AutoEnvVars(env) as ev_context:
-        # This is setting the CDB_ARTIFACT_SHA env-var!
         put_artifact("integration_tests/test-pipefile.json")
 
-    created_env_vars = ["CDB_ARTIFACT_FILENAME", "CDB_ARTIFACT_SHA"]
-    assert sorted(list(ev_context.new_env_vars().keys())) == sorted(created_env_vars)
-    assert ev_context.is_creating_env_var("CDB_ARTIFACT_SHA")
-    assert ev_context.is_creating_env_var("CDB_ARTIFACT_FILENAME")
+    expected_new_env_vars = {
+        "CDB_ARTIFACT_SHA": "ccee89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc",
+        "CDB_ARTIFACT_FILENAME": "tests_data/coverage.txt"
+    }
+    actual_new_env_vars = ev_context.new_env_vars()
+    assert expected_new_env_vars == actual_new_env_vars
+
     verify_approval(capsys, ["out"])
