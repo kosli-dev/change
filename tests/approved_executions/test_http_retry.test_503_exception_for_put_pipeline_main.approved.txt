@@ -1,0 +1,23 @@
+--project: /app/tests_data/pipefile.json
+Ensure Project - loading /app/tests_data/pipefile.json
+Put pipeline
+Putting this payload:
+{
+    "description": "Pipeline Controls for ComplianceDB",
+    "name": "cdb-controls",
+    "owner": "compliancedb",
+    "template": [
+        "artifact",
+        "unit_test",
+        "integration_test",
+        "coverage"
+    ],
+    "visibility": "public"
+}
+To this url: http://test.compliancedb.com/api/v1/projects/compliancedb/
+Response.status=503, retrying in 0.001 seconds...
+Retry 1/5: response.status=503, retrying in 0.002 seconds...
+Retry 2/5: response.status=503, retrying in 0.004 seconds...
+Retry 3/5: response.status=503, retrying in 0.008 seconds...
+Retry 4/5: response.status=503, retrying in 0.016 seconds...
+Retry 5/5: response.status=503

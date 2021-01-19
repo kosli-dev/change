@@ -1,9 +1,11 @@
 import json
 import responses
 
-def stub_http_503(method, count):
+
+def stub_http_503(method, count, url=None):
     # Eg during deployment rollover
-    url = "https://test.compliancedb.com/api/v1/{}/".format(method.lower())
+    if url is None:
+        url = "https://test.compliancedb.com/api/v1/{}/".format(method.lower())
 
     def request_callback(request):
         headers = {}
