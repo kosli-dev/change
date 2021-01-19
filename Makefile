@@ -39,10 +39,11 @@ test_unit: build
 	@rm -rf tmp/coverage/unit
 	@mkdir -p tmp/coverage/unit
 	@docker run \
-	    --name $@ \
-	    --entrypoint ./unit_coverage_entrypoint.sh \
-	    ${IMAGE} \
-	    tests/${TARGET} ; \
+		--name $@ \
+		--tty `# for colour on terminal` \
+		--entrypoint ./unit_coverage_entrypoint.sh \
+		${IMAGE} \
+		tests/${TARGET} ; \
 	e=$$?; \
 	docker cp $@:/app/htmlcov/ tmp/coverage/unit; \
 	exit $$e
@@ -53,15 +54,15 @@ test_unit_via_volume_mounts:
 	@rm -rf tmp/coverage/unit
 	@mkdir -p tmp/coverage/unit
 	@docker run \
-        --name $@ \
-		--tty \
+		--name $@ \
+		--tty `# for colour on terminal` \
 		--volume ${PWD}/cdb:/app/cdb \
 		--volume ${PWD}/integration_tests:/app/integration_tests \
 		--volume ${PWD}/tests:/app/tests \
 		--volume ${PWD}/tests_data:/app/tests_data \
 		--entrypoint ./unit_coverage_entrypoint.sh \
-	    ${IMAGE} \
-	    tests/${TARGET} \
+		${IMAGE} \
+		tests/${TARGET} \
 	e=$$?; \
 	docker cp $@:/app/htmlcov/ tmp/coverage/unit; \
 	exit $$e
@@ -73,6 +74,7 @@ test_integration: build
 	@mkdir -p tmp/coverage/integration
 	@docker run \
 		--name $@ \
+		--tty `# for colour on terminal` \
 		--entrypoint ./integration_coverage_entrypoint.sh \
 		${IMAGE} \
 		integration_tests/${TARGET} ; \
@@ -86,14 +88,14 @@ test_integration_via_volume_mounts:
 	@rm -rf tmp/coverage/integration
 	@mkdir -p tmp/coverage/integration
 	@docker run \
-        --name $@ \
-		--tty \
+		--name $@ \
+		--tty `# for colour on terminal` \
 		--volume ${PWD}/cdb:/app/cdb \
 		--volume ${PWD}/integration_tests:/app/integration_tests \
 		--volume ${PWD}/tests:/app/tests \
 		--volume ${PWD}/tests_data:/app/tests_data \
 		--entrypoint ./integration_coverage_entrypoint.sh \
-	    ${IMAGE} \
+		${IMAGE} \
 		integration_tests/${TARGET} ; \
 	e=$$?; \
 	docker cp $@:/app/htmlcov/ tmp/coverage/integration; \
