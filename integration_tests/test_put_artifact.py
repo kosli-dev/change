@@ -5,7 +5,7 @@ from tests.utils import AutoEnvVars, cdb_dry_run, verify_approval
 
 
 def test_message_when_env_var_CDB_ARTIFACT_FILENAME_is_missing(capsys):
-    with cdb_dry_run():
+    with cdb_dry_run(), AutoEnvVars():
         put_artifact("integration_tests/test-pipefile.json")
 
     verify_approval(capsys, ["out"])
@@ -27,14 +27,8 @@ def test_message_when_env_var_CDB_ARTIFACT_SHA_is_not_defined(capsys):
         "CDB_ARTIFACT_FILENAME": "tests_data/coverage.txt",
     }
 
-    rogue = "CDB_ARTIFACT_SHA"
-    assert os.getenv(rogue) is None
-
     with cdb_dry_run(), AutoEnvVars(env):
         # This is setting the CDB_ARTIFACT_SHA env-var!
         put_artifact("integration_tests/test-pipefile.json")
-
-    os.environ.pop(rogue) # Hacked fix for now
-    assert os.getenv(rogue) is None
 
     verify_approval(capsys, ["out"])
