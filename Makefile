@@ -55,6 +55,7 @@ test_unit_via_volume_mounts:
 	@mkdir -p tmp/coverage/unit
 	@docker run \
 		--name $@ \
+		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
 		--volume ${PWD}/cdb:/app/cdb \
 		--volume ${PWD}/integration_tests:/app/integration_tests \
@@ -89,6 +90,7 @@ test_integration_via_volume_mounts:
 	@mkdir -p tmp/coverage/integration
 	@docker run \
 		--name $@ \
+		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
 		--volume ${PWD}/cdb:/app/cdb \
 		--volume ${PWD}/integration_tests:/app/integration_tests \
