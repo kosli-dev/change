@@ -47,6 +47,23 @@ test_unit: build
 	docker cp test_unit:/app/htmlcov/ tmp/coverage/unit; \
 	exit $$e
 
+test_unit_via_volume_mounts:
+	@docker stop test_unit_via_volume_mounts || true
+	@docker rm test_unit_via_volume_mounts || true
+	@rm -rf tmp/coverage/unit
+	@mkdir -p tmp/coverage/unit
+	@docker run --tty \
+        --name test_unit_via_volume_mounts \
+		--volume ${PWD}/cdb:/app/cdb \
+		--volume ${PWD}/integration_tests:/app/integration_tests \
+		--volume ${PWD}/tests:/app/tests \
+		--volume ${PWD}/tests_data:/app/tests_data \
+		--entrypoint ./unit_coverage_entrypoint.sh \
+	    ${IMAGE} \
+	    tests/${TARGET} \
+	e=$$?; \
+	docker cp test_unit_via_volume_mounts:/app/htmlcov/ tmp/coverage/unit; \
+	exit $$e
 
 test_integration: build
 	@docker stop test_integration || true
@@ -62,9 +79,27 @@ test_integration: build
 	docker cp test_integration:/app/htmlcov/ tmp/coverage/integration; \
 	exit $$e
 
+test_integration_via_volume_mounts:
+	@docker stop test_integration_via_volume_mounts || true
+	@docker rm test_integration_via_volume_mounts || true
+	@rm -rf tmp/coverage/integration
+	@mkdir -p tmp/coverage/integration
+	@docker run --tty \
+        --name test_integration_via_volume_mounts \
+		--volume ${PWD}/cdb:/app/cdb \
+		--volume ${PWD}/integration_tests:/app/integration_tests \
+		--volume ${PWD}/tests:/app/tests \
+		--volume ${PWD}/tests_data:/app/tests_data \
+		--entrypoint ./integration_coverage_entrypoint.sh \
+	    ${IMAGE} \
+		integration_tests/${TARGET} ; \
+	e=$$?; \
+	docker cp test_integration_via_volume_mounts:/app/htmlcov/ tmp/coverage/integration; \
+	exit $$e
 
 test_all: test_unit test_integration
 
+test_all_via_volume_mounts: test_unit_via_volume_mounts test_integration_via_volume_mounts
 
 pytest_help:
 	@docker run \
