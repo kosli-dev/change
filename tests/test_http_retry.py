@@ -11,6 +11,17 @@ def test_total_retry_sleep_time_is_about_30_seconds():
 
 
 @responses.activate
+def test_no_retries_when_http_call_is_not_503(capsys):
+    url, payload, api_token = stub_http_503('POST', 0)
+
+    with retry_backoff_factor(0.001):
+        http_post_payload(url, payload, api_token)
+
+    assert len(responses.calls) == 1
+    verify_approval(capsys)
+
+
+@responses.activate
 def test_503_post_retries_5_times_then_raises_RetryError(capsys):
     url, payload, api_token = stub_http_503('POST', 1+MAX_RETRY_COUNT)
 

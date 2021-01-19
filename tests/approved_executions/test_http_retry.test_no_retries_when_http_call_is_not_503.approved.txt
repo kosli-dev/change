@@ -1,0 +1,10 @@
+Posting this payload:
+{
+    "name": "cern",
+    "template": [
+        "artefact",
+        "unit_test"
+    ]
+}
+To this url: https://test.compliancedb.com/api/v1/post/
+{"success": 42}
