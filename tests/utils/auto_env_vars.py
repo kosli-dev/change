@@ -1,16 +1,16 @@
-from os import environ
+import os
 
 
 class AutoEnvVars(object):
-    def __init__(self, env_vars):
+    def __init__(self, env_vars={}):
         self._env_vars = env_vars
-        for (name, value) in env_vars.items():
-            environ[name] = value
 
     def __enter__(self):
+        for (name, value) in self._env_vars.items():
+            os.environ[name] = value
         return self
 
     def __exit__(self, _type, _value, _traceback):
         for name in self._env_vars:
-            environ.pop(name)
+            os.environ.pop(name)
 
