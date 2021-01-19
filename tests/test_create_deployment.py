@@ -2,7 +2,11 @@ from cdb.create_deployment import create_deployment_payload
 
 
 def test_create_deployment_payload():
-    env = {"CDB_ARTIFACT_SHA": "1234", "CDB_ENVIRONMENT": "test-env", "CDB_DESCRIPTION": "Description"}
+    env = {
+        "CDB_ARTIFACT_SHA": "1234",
+        "CDB_ENVIRONMENT": "test-env",
+        "CDB_DESCRIPTION": "Description"
+    }
     payload = create_deployment_payload(env)
 
     assert payload == {
