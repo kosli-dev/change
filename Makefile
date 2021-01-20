@@ -15,6 +15,8 @@ CDB_HOST=https://app.compliancedb.com
 # all non-latest images - for prune target
 IMAGES := $(shell docker image ls --format '{{.Repository}}:{{.Tag}}' $(NAME) | grep -v latest)
 
+ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+
 # list the targets: from https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
 .PHONY: list
 list:
@@ -53,11 +55,11 @@ test_unit_via_volume_mounts:
 		--name $@ \
 		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
-		--volume ${PWD}/cdb:/app/cdb \
-		--volume ${PWD}/integration_tests:/app/integration_tests \
-		--volume ${PWD}/tests:/app/tests \
-		--volume ${PWD}/tests_data:/app/tests_data \
-		--volume ${PWD}/tmp/coverage/unit/htmlcov:/app/htmlcov \
+		--volume ${ROOT_DIR}/cdb:/app/cdb \
+		--volume ${ROOT_DIR}/integration_tests:/app/integration_tests \
+		--volume ${ROOT_DIR}/tests:/app/tests \
+		--volume ${ROOT_DIR}/tests_data:/app/tests_data \
+		--volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/coverage_entrypoint.sh \
 			${IMAGE} tests/${TARGET}
 
@@ -81,11 +83,11 @@ test_integration_via_volume_mounts:
 		--name $@ \
 		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
-		--volume ${PWD}/cdb:/app/cdb \
-		--volume ${PWD}/integration_tests:/app/integration_tests \
-		--volume ${PWD}/tests:/app/tests \
-		--volume ${PWD}/tests_data:/app/tests_data \
-		--volume ${PWD}/tmp/coverage/integration/htmlcov:/app/htmlcov \
+		--volume ${ROOT_DIR}/cdb:/app/cdb \
+		--volume ${ROOT_DIR}/integration_tests:/app/integration_tests \
+		--volume ${ROOT_DIR}/tests:/app/tests \
+		--volume ${ROOT_DIR}/tests_data:/app/tests_data \
+		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
 		--entrypoint ./integration_tests/coverage_entrypoint.sh \
 			${IMAGE} integration_tests/${TARGET}
 
