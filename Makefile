@@ -48,7 +48,7 @@ test_unit_build: build
 	docker cp $@:/app/htmlcov/ tmp/coverage/unit; \
 	exit $$e
 
-test_unit_via_volume_mounts:
+test_unit:
 	@docker rm --force 2> /dev/null $@ || true
 	@rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
 	@docker run \
@@ -76,7 +76,7 @@ test_integration_build: build
 	docker cp $@:/app/htmlcov/ tmp/coverage/integration; \
 	exit $$e
 
-test_integration_via_volume_mounts:
+test_integration:
 	@docker rm --force $@ 2> /dev/null || true
 	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
 	@docker run \
@@ -93,7 +93,7 @@ test_integration_via_volume_mounts:
 
 test_all_build: test_unit_build test_integration_build
 
-test_all_via_volume_mounts: test_unit_via_volume_mounts test_integration_via_volume_mounts
+test_all: test_unit test_integration
 
 pytest_help:
 	@docker run \
