@@ -12,6 +12,9 @@ readonly TARGET="${1}"
 # Beware using --approvaltests-use-reporter='PythonNative'
 # See comment in tests/unit/utils/verify_approval.py
 
+# pytest-cov command line options are documented here
+# https://pytest-cov.readthedocs.io/en/latest/config.html
+
 pytest \
        --capture=no \
        --cov=. \
@@ -20,6 +23,9 @@ pytest \
        --pythonwarnings=ignore::pytest.PytestCollectionWarning \
        --verbose \
          "${TARGET}"
+
+# coverage is documented here
+# https://coverage.readthedocs.io/en/v4.5.x/index.html
 
 # Generate html results
 coverage html
