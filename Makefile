@@ -35,7 +35,7 @@ build_pipe:
 
 # Github does not support volume mounts so we need to copy the test output from the container
 # and capture the test exit value
-test_unit: build
+test_unit_build: build
 	@docker rm --force $@ 2> /dev/null || true
 	@rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
 	@docker run \
@@ -63,7 +63,7 @@ test_unit_via_volume_mounts:
 		--entrypoint ./tests/coverage_entrypoint.sh \
 			${IMAGE} tests/${TARGET}
 
-test_integration: build
+test_integration_build: build
 	@docker rm --force $@ 2> /dev/null || true
 	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
 	@docker run \
@@ -91,7 +91,7 @@ test_integration_via_volume_mounts:
 		--entrypoint ./integration_tests/coverage_entrypoint.sh \
 			${IMAGE} integration_tests/${TARGET}
 
-test_all: test_unit test_integration
+test_all_build: test_unit_build test_integration_build
 
 test_all_via_volume_mounts: test_unit_via_volume_mounts test_integration_via_volume_mounts
 

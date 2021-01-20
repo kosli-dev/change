@@ -74,7 +74,7 @@ jobs:
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
       run: |
-        make test_unit test_integration
+        make test_all_build
 
     - name: CDB Control Unit Test Results
       env:
