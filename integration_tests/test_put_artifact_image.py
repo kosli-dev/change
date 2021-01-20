@@ -1,6 +1,6 @@
-import pytest
 from cdb.put_artifact_image import put_artifact_image
 
+import pytest
 from tests.utils import AutoEnvVars, cdb_dry_run, verify_approval
 
 

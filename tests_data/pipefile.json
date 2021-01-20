@@ -1,7 +1,7 @@
 {
-    "name": "cdb-controls",
-    "description": "Pipeline Controls for ComplianceDB",
-    "owner": "compliancedb",
+    "name": "test-pipefile",
+    "description": "Pipefile used in test automation",
+    "owner": "merkely",
     "visibility": "public",
     "template": [
         "artifact",

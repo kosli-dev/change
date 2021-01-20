@@ -3,9 +3,9 @@ Ensure Project - loading /app/tests_data/pipefile.json
 Put pipeline
 Putting this payload:
 {
-    "description": "Pipeline Controls for ComplianceDB",
-    "name": "cdb-controls",
-    "owner": "compliancedb",
+    "description": "Pipefile used in test automation",
+    "name": "test-pipefile",
+    "owner": "merkely",
     "template": [
         "artifact",
         "unit_test",
@@ -14,7 +14,7 @@ Putting this payload:
     ],
     "visibility": "public"
 }
-To this url: http://test.compliancedb.com/api/v1/projects/compliancedb/
+To this url: http://test.compliancedb.com/api/v1/projects/merkely/
 Response.status=503, retrying in 0.001 seconds...
 Retry 1/5: response.status=503, retrying in 0.002 seconds...
 Retry 2/5: response.status=503, retrying in 0.004 seconds...

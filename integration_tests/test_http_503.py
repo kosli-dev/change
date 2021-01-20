@@ -10,7 +10,7 @@ from tests.utils import AutoEnvVars, verify_approval, stub_http_503, retry_backo
 @responses.activate
 def test_503_exception_for_put_pipeline_main(capsys, mocker):
     host = 'http://test.compliancedb.com'
-    url = host + '/api/v1/projects/compliancedb/'
+    url = host + '/api/v1/projects/merkely/'
     _, _, api_token = stub_http_503('PUT', 1+MAX_RETRY_COUNT, url)
     env = {
         'CDB_HOST': host,
@@ -28,7 +28,7 @@ def test_503_exception_for_put_pipeline_main(capsys, mocker):
 @responses.activate
 def test_503_exception_for_put_artifact_main(capsys, mocker):
     host = 'http://test.compliancedb.com'
-    url = host + '/api/v1/projects/compliancedb/cdb-controls/artifacts/'
+    url = host + '/api/v1/projects/merkely/test-pipefile/artifacts/'
     _, _, api_token = stub_http_503('PUT', 1+MAX_RETRY_COUNT, url)
     env = {
         'CDB_HOST': host,
