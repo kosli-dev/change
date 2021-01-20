@@ -61,12 +61,9 @@ test_unit_via_volume_mounts:
 		--volume ${PWD}/integration_tests:/app/integration_tests \
 		--volume ${PWD}/tests:/app/tests \
 		--volume ${PWD}/tests_data:/app/tests_data \
+		--volume ${PWD}/tmp/coverage/unit/htmlcov:/app/htmlcov \
 		--entrypoint ./unit_coverage_entrypoint.sh \
-		${IMAGE} \
-		tests/${TARGET} \
-	e=$$?; \
-	docker cp $@:/app/htmlcov/ tmp/coverage/unit; \
-	exit $$e
+			${IMAGE} tests/${TARGET}
 
 test_integration: build
 	@docker stop $@ || true
@@ -96,12 +93,9 @@ test_integration_via_volume_mounts:
 		--volume ${PWD}/integration_tests:/app/integration_tests \
 		--volume ${PWD}/tests:/app/tests \
 		--volume ${PWD}/tests_data:/app/tests_data \
+		--volume ${PWD}/tmp/coverage/integration/htmlcov:/app/htmlcov \
 		--entrypoint ./integration_coverage_entrypoint.sh \
-		${IMAGE} \
-		integration_tests/${TARGET} ; \
-	e=$$?; \
-	docker cp $@:/app/htmlcov/ tmp/coverage/integration; \
-	exit $$e
+			${IMAGE} integration_tests/${TARGET}
 
 test_all: test_unit test_integration
 
