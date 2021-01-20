@@ -17,6 +17,7 @@ pytest \
        --cov=. \
        --junitxml=htmlcov/junit.xml \
        -o junit_family=xunit1 \
+       --pythonwarnings=ignore::pytest.PytestCollectionWarning \
        --verbose \
          "${TARGET}"
 

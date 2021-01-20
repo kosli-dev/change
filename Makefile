@@ -58,7 +58,7 @@ test_unit_via_volume_mounts:
 		--volume ${PWD}/tests:/app/tests \
 		--volume ${PWD}/tests_data:/app/tests_data \
 		--volume ${PWD}/tmp/coverage/unit/htmlcov:/app/htmlcov \
-		--entrypoint ./unit_coverage_entrypoint.sh \
+		--entrypoint ./tests/unit_coverage_entrypoint.sh \
 			${IMAGE} tests/${TARGET}
 
 test_integration: build
@@ -86,7 +86,7 @@ test_integration_via_volume_mounts:
 		--volume ${PWD}/tests:/app/tests \
 		--volume ${PWD}/tests_data:/app/tests_data \
 		--volume ${PWD}/tmp/coverage/integration/htmlcov:/app/htmlcov \
-		--entrypoint ./integration_coverage_entrypoint.sh \
+		--entrypoint ./integration_tests/integration_coverage_entrypoint.sh \
 			${IMAGE} integration_tests/${TARGET}
 
 test_all: test_unit test_integration
