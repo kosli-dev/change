@@ -53,8 +53,6 @@ test_unit_via_volume_mounts:
 	@docker rm $@ || true
 	@rm -rf tmp/coverage/unit
 	@mkdir -p tmp/coverage/unit
-	@rm -rf tests/__pycache__
-	@rm -rf tests/utils/__pycache__
 	@docker run \
 		--name $@ \
 		--interactive `# eg pdb` \
@@ -90,8 +88,6 @@ test_integration_via_volume_mounts:
 	@docker rm $@ || true
 	@rm -rf tmp/coverage/integration
 	@mkdir -p tmp/coverage/integration
-	@rm -rf integration_tests/__pycache__
-	@rm -rf tests/utils/__pycache__
 	@docker run \
 		--name $@ \
 		--interactive `# eg pdb` \
