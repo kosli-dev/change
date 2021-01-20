@@ -39,7 +39,7 @@ test_unit: build
 	@docker run \
 		--name $@ \
 		--tty `# for colour on terminal` \
-		--entrypoint ./unit_coverage_entrypoint.sh \
+		--entrypoint ./tests/unit_coverage_entrypoint.sh \
 		${IMAGE} \
 		tests/${TARGET} ; \
 	e=$$?; \
@@ -67,7 +67,7 @@ test_integration: build
 	@docker run \
 		--name $@ \
 		--tty `# for colour on terminal` \
-		--entrypoint ./integration_coverage_entrypoint.sh \
+		--entrypoint ./integration_tests/integration_coverage_entrypoint.sh \
 		${IMAGE} \
 		integration_tests/${TARGET} ; \
 	e=$$?; \

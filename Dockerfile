@@ -20,9 +20,6 @@ COPY integration_tests/ integration_tests/
 ADD tests_data/test_source_repo.tar.gz /
 COPY tests_data/ tests_data/
 
-COPY unit_coverage_entrypoint.sh .
-COPY integration_coverage_entrypoint.sh .
-
 ENV PYTHONPATH="/app"
 ENTRYPOINT [""]
 CMD ["python", "server.py"]
