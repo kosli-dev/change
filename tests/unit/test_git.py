@@ -14,7 +14,6 @@ We have a test repo with a commit graph like this:
     * b7e6aa63087fcb1e64a5f2a99c8d255415d8cb99 2020-09-12  Initial commit (Mike Long)
     
 This repo is added in the docker image at /test_src/
-
 """
 
 

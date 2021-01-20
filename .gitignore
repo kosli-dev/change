@@ -1,5 +1,5 @@
 tmp/
 cdb/__pycache__/
 tests/integration/__pycache__/
-tests_unit/__pycache__/
-tests_unit/utils/__pycache__/
+tests/unit/__pycache__/
+tests/unit/utils/__pycache__/

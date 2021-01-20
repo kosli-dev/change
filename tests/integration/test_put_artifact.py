@@ -1,6 +1,6 @@
 from cdb.put_artifact import put_artifact
 
-from tests_unit.utils import AutoEnvVars, cdb_dry_run, verify_approval
+from tests.unit.utils import AutoEnvVars, cdb_dry_run, verify_approval
 
 
 def test_message_when_env_var_CDB_ARTIFACT_FILENAME_is_missing(capsys):

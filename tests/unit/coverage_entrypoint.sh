@@ -3,14 +3,14 @@
 set -e
 
 # ${1} is set in the Makefile.
-# Defaults to tests_unit/ (the dir name)
+# Defaults to tests/unit/ (the dir name)
 # To run an individual test file...
 # $ make test TARGET=test_create_release.py
-# which will result in ${1}==tests_unit/test_release.py
+# which will result in ${1}==tests/unit/test_release.py
 readonly TARGET="${1}"
 
 # Beware using --approvaltests-use-reporter='PythonNative'
-# See comment in tests_unit/utils/verify_approval.py
+# See comment in tests/unit/utils/verify_approval.py
 
 pytest \
        --capture=no \
@@ -35,5 +35,5 @@ coverage report -m > "${REPORT_FILENAME}"
 cat "${REPORT_FILENAME}" | grep TOTAL | awk '{print "COVERAGE=\""$4"\""}' > htmlcov/test_coverage.txt
 
 # Create a file containing the number of test cases
-TEST_CASES=`pytest --collect-only -q  --ignore=tests_integration | head -n -2 | wc -l`
+TEST_CASES=`pytest --collect-only -q  --ignore=tests/integration | head -n -2 | wc -l`
 echo TEST_CASES=$TEST_CASES > htmlcov/test_cases.txt

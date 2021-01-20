@@ -1,7 +1,7 @@
 from cdb.create_approval import create_approval
 
-from tests_unit.utils import AutoEnvVars, cdb_dry_run, verify_approval
-from tests_unit.test_git import TEST_REPO_ROOT
+from tests.unit.utils import AutoEnvVars, cdb_dry_run, verify_approval
+from tests.unit.test_git import TEST_REPO_ROOT
 
 
 # This is setting the CDB_ARTIFACT_SHA env-var
