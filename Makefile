@@ -34,10 +34,8 @@ build_pipe:
 # Github does not support volume mounts so we need to copy the test output from the container
 # and capture the test exit value
 test_unit: build
-	@docker stop $@ || true
-	@docker rm $@ || true
-	@rm -rf tmp/coverage/unit
-	@mkdir -p tmp/coverage/unit
+	@docker rm --force $@ || true
+	@rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
 	@docker run \
 		--name $@ \
 		--tty `# for colour on terminal` \
@@ -49,10 +47,8 @@ test_unit: build
 	exit $$e
 
 test_unit_via_volume_mounts:
-	@docker stop $@ || true
-	@docker rm $@ || true
-	@rm -rf tmp/coverage/unit
-	@mkdir -p tmp/coverage/unit
+	@docker rm --force $@ || true
+	@rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
 	@docker run \
 		--name $@ \
 		--interactive `# eg pdb` \
@@ -66,10 +62,8 @@ test_unit_via_volume_mounts:
 			${IMAGE} tests/${TARGET}
 
 test_integration: build
-	@docker stop $@ || true
-	@docker rm $@ || true
-	@rm -rf tmp/coverage/integration
-	@mkdir -p tmp/coverage/integration
+	@docker rm --force $@ || true
+	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
 	@docker run \
 		--name $@ \
 		--tty `# for colour on terminal` \
@@ -81,10 +75,8 @@ test_integration: build
 	exit $$e
 
 test_integration_via_volume_mounts:
-	@docker stop $@ || true
-	@docker rm $@ || true
-	@rm -rf tmp/coverage/integration
-	@mkdir -p tmp/coverage/integration
+	@docker rm --force $@ || true
+	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
 	@docker run \
 		--name $@ \
 		--interactive `# eg pdb` \
