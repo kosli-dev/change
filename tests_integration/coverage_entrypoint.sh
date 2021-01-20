@@ -10,7 +10,7 @@ set -e
 readonly TARGET="${1}"
 
 # Beware using --approvaltests-use-reporter='PythonNative'
-# See comment in tests/utils/verify_approval.py
+# See comment in tests_unit/utils/verify_approval.py
 
 pytest \
        --capture=no \

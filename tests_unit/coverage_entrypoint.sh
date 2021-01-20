@@ -3,14 +3,14 @@
 set -e
 
 # ${1} is set in the Makefile.
-# Defaults to tests/ (the dir name)
+# Defaults to tests_unit/ (the dir name)
 # To run an individual test file...
 # $ make test TARGET=test_create_release.py
-# which will result in ${1}==tests/test_release.py
+# which will result in ${1}==tests_unit/test_release.py
 readonly TARGET="${1}"
 
 # Beware using --approvaltests-use-reporter='PythonNative'
-# See comment in tests/utils/verify_approval.py
+# See comment in tests_unit/utils/verify_approval.py
 
 pytest \
        --capture=no \

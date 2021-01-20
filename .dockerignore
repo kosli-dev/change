@@ -1,4 +1,4 @@
 cdb/__pycache__/
 tests_integration/__pycache__/
-tests/__pycache__/
+tests_unit/__pycache__/
 tests/utils/__pycache__/
