@@ -55,9 +55,7 @@ test_unit:
 		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
-		--volume ${ROOT_DIR}/tests/integration:/app/tests/integration \
-		--volume ${ROOT_DIR}/tests/unit:/app/tests/unit \
-		--volume ${ROOT_DIR}/tests/data:/app/tests/data \
+		--volume ${ROOT_DIR}/tests:/app/tests \
 		--volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
@@ -82,9 +80,7 @@ test_integration:
 		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
-		--volume ${ROOT_DIR}/tests/integration:/app/tests/integration \
-		--volume ${ROOT_DIR}/tests/unit:/app/tests/unit \
-		--volume ${ROOT_DIR}/tests/data:/app/tests/data \
+		--volume ${ROOT_DIR}/tests:/app/tests \
 		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/integration/coverage_entrypoint.sh \
 			${IMAGE} tests/integration/${TARGET}
