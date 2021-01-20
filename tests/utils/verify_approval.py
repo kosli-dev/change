@@ -23,15 +23,16 @@ If you don't do this you _lose_ output, eg for a new test the
 name of the missing approval file does _not_ appear.
 """
 
-
-def verify_approval(capsys, streams=("out", "err")):
-    captured = capsys.readouterr()
+def verify_approval(capsys, streams=None):
+    out, err = capsys.readouterr()
+    if streams is None:
+        streams = ["out", "err"]
     actual = ""
     for stream in streams:
         if stream == "out":
-            actual += captured.out
+            actual += out
         if stream == "err":
-            actual += captured.err
+            actual += err
     verify(actual, PythonNativeReporter())
 
 
