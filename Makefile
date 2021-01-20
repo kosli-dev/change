@@ -56,7 +56,7 @@ test_unit:
 		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
-		--volume ${ROOT_DIR}/integration_tests:/app/integration_tests \
+		--volume ${ROOT_DIR}/tests_integration:/app/tests_integration \
 		--volume ${ROOT_DIR}/tests:/app/tests \
 		--volume ${ROOT_DIR}/tests_data:/app/tests_data \
 		--volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
@@ -69,9 +69,9 @@ test_integration_build: build
 	@docker run \
 		--name $@ \
 		--tty `# for colour on terminal` \
-		--entrypoint ./integration_tests/coverage_entrypoint.sh \
+		--entrypoint ./tests_integration/coverage_entrypoint.sh \
 		${IMAGE} \
-		integration_tests/${TARGET} ; \
+		tests_integration/${TARGET} ; \
 	e=$$?; \
 	docker cp $@:/app/htmlcov/ tmp/coverage/integration; \
 	exit $$e
@@ -84,12 +84,12 @@ test_integration:
 		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
-		--volume ${ROOT_DIR}/integration_tests:/app/integration_tests \
+		--volume ${ROOT_DIR}/tests_integration:/app/tests_integration \
 		--volume ${ROOT_DIR}/tests:/app/tests \
 		--volume ${ROOT_DIR}/tests_data:/app/tests_data \
 		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
-		--entrypoint ./integration_tests/coverage_entrypoint.sh \
-			${IMAGE} integration_tests/${TARGET}
+		--entrypoint ./tests_integration/coverage_entrypoint.sh \
+			${IMAGE} tests_integration/${TARGET}
 
 test_all_build: test_unit_build test_integration_build
 

@@ -16,6 +16,6 @@ def test_put_approval(capsys):
     }
 
     with cdb_dry_run(), AutoEnvVars():
-        create_approval("integration_tests/test-pipefile.json", env)
+        create_approval("tests_integration/test-pipefile.json", env)
 
     verify_approval(capsys, ["out", "err"])

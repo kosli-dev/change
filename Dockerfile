@@ -16,7 +16,7 @@ RUN pip3 install -r requirements.txt
 
 COPY cdb/ cdb/
 COPY tests/ tests/
-COPY integration_tests/ integration_tests/
+COPY tests_integration/ tests_integration/
 ADD tests_data/test_source_repo.tar.gz /
 COPY tests_data/ tests_data/
 
