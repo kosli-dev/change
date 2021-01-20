@@ -35,5 +35,5 @@ coverage report -m > "${REPORT_FILENAME}"
 cat "${REPORT_FILENAME}" | grep TOTAL | awk '{print "COVERAGE=\""$4"\""}' > htmlcov/test_coverage.txt
 
 # Create a file containing the number of test cases
-TEST_CASES=`pytest --collect-only -q  --ignore=integration_tests | head -n -2 | wc -l`
+TEST_CASES=`pytest --collect-only -q  --ignore=tests_integration | head -n -2 | wc -l`
 echo TEST_CASES=$TEST_CASES > htmlcov/test_cases.txt
