@@ -16,7 +16,7 @@ def test_503_exception_for_put_pipeline_main(capsys, mocker):
         'CDB_HOST': host,
         'CDB_API_TOKEN': 'random-api-token',
     }
-    mocker.patch.object(sys, 'argv', ['name', '--project', '/app/tests_data/pipefile.json'])
+    mocker.patch.object(sys, 'argv', ['name', '--project', '/app/tests/data/pipefile.json'])
 
     with retry_backoff_factor(0.001), AutoEnvVars(env):
         exit_code = main_put_pipeline()
@@ -33,9 +33,9 @@ def test_503_exception_for_put_artifact_main(capsys, mocker):
     env = {
         'CDB_HOST': host,
         'CDB_API_TOKEN': 'random-api-token',
-        'CDB_ARTIFACT_FILENAME': 'tests_data/coverage.txt'
+        'CDB_ARTIFACT_FILENAME': 'tests/data/coverage.txt'
     }
-    mocker.patch.object(sys, 'argv', ['name', '--project', '/app/tests_data/pipefile.json'])
+    mocker.patch.object(sys, 'argv', ['name', '--project', '/app/tests/data/pipefile.json'])
 
     with retry_backoff_factor(0.001), AutoEnvVars(env):
         exit_code = main_put_artifact()

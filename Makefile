@@ -58,7 +58,7 @@ test_unit:
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/tests_integration:/app/tests_integration \
 		--volume ${ROOT_DIR}/tests_unit:/app/tests_unit \
-		--volume ${ROOT_DIR}/tests_data:/app/tests_data \
+		--volume ${ROOT_DIR}/tests/data:/app/tests/data \
 		--volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
 		--entrypoint ./tests_unit/coverage_entrypoint.sh \
 			${IMAGE} tests_unit/${TARGET}
@@ -86,7 +86,7 @@ test_integration:
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/tests_integration:/app/tests_integration \
 		--volume ${ROOT_DIR}/tests_unit:/app/tests_unit \
-		--volume ${ROOT_DIR}/tests_data:/app/tests_data \
+		--volume ${ROOT_DIR}/tests/data:/app/tests/data \
 		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests_integration/coverage_entrypoint.sh \
 			${IMAGE} tests_integration/${TARGET}

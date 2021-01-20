@@ -1,5 +1,5 @@
---project: /app/tests_data/pipefile.json
-Getting SHA for artifact: tests_data/coverage.txt
+--project: /app/tests/data/pipefile.json
+Getting SHA for artifact: tests/data/coverage.txt
 Calculated digest: ccee89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc
 Publish artifact to ComplianceDB
 CDB_IS_COMPLIANT: False
@@ -8,7 +8,7 @@ Putting this payload:
     "build_url": "BUILD_URL_UNDEFINED",
     "commit_url": "GIT_URL_UNDEFINED",
     "description": "Created by build UNDEFINED",
-    "filename": "tests_data/coverage.txt",
+    "filename": "tests/data/coverage.txt",
     "git_commit": "0000000000000000000000000000000000000000",
     "is_compliant": false,
     "sha256": "ccee89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"

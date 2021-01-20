@@ -1,5 +1,5 @@
---project: /app/tests_data/pipefile.json
-Ensure Project - loading /app/tests_data/pipefile.json
+--project: /app/tests/data/pipefile.json
+Ensure Project - loading /app/tests/data/pipefile.json
 Put pipeline
 Putting this payload:
 {
