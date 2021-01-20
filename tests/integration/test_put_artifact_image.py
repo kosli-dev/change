@@ -7,4 +7,4 @@ from tests_unit.utils import AutoEnvVars, cdb_dry_run
 
 def test_message_when_no_env_vars():
     with cdb_dry_run(), AutoEnvVars(), raises(docker.errors.DockerException):
-        put_artifact_image("tests_integration/test-pipefile.json")
+        put_artifact_image("tests/integration/test-pipefile.json")

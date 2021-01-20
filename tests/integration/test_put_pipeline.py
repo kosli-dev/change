@@ -10,6 +10,6 @@ def test_put_pipeline(capsys):
     }
 
     with cdb_dry_run(), AutoEnvVars():
-        put_pipeline("tests_integration/test-pipefile.json", env)
+        put_pipeline("tests/integration/test-pipefile.json", env)
 
     verify_approval(capsys)
