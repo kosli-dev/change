@@ -95,7 +95,7 @@ def test_junit_parser_can_load_pytest_output():
 def test_junit_parser_can_validate_pytest_output():
     (control_result, message) = is_compliant_test_results('tests_unit/TEST-Pytest-pass.xml')
     assert control_result is True
-    assert message == "All tests_unit passed"
+    assert message == "All tests passed"
 
 
 def test_junit_parser_can_load_pytest_failed_output():
@@ -127,7 +127,7 @@ def test_junit_parser_can_load_owasp_output():
 def test_junit_parser_can_validate_owasp_output():
     (control_result, message) = is_compliant_test_results('tests_unit/TEST-OWASP-pass.xml')
     assert control_result is True
-    assert message == "All tests_unit passed"
+    assert message == "All tests passed"
 
 
 def test_junit_parser_can_load_owasp_failed_output():
@@ -168,7 +168,7 @@ def test_passing_surefire_testxml_results_in_compliant_evidence():
     test_xml = load_test_results('tests_unit/surefire_examples/TEST-com.compliancedb.example.Example2Test.xml')
     (control_result, message) = is_compliant_suite(test_xml)
     assert control_result is True
-    assert message == "All tests_unit passed"
+    assert message == "All tests passed"
 
 
 def test_list_test_result_files():
@@ -194,7 +194,7 @@ def test_is_compliant_tests_directory_passes_if_every_file_has_no_failures(mocke
 
     assert mocked_results.call_count == 2
     assert result
-    assert message == "All tests_unit passed in 2 test suites"
+    assert message == "All tests passed in 2 test suites"
 
 
 @mock.patch('cdb.control_junit.is_compliant_test_results')
