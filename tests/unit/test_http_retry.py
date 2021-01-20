@@ -3,7 +3,7 @@ from cdb.http_retry import HttpRetry, HttpRetryExhausted, MAX_RETRY_COUNT
 
 from pytest import raises
 import responses
-from tests.unit.utils import verify_approval, stub_http_503, retry_backoff_factor
+from tests.utils import verify_approval, stub_http_503, retry_backoff_factor
 
 
 def test_total_retry_sleep_time_is_about_30_seconds():

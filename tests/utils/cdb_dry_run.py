@@ -1,4 +1,4 @@
-from tests.unit.utils import AutoEnvVars
+from tests.utils import AutoEnvVars
 
 
 def cdb_dry_run():

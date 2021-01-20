@@ -4,7 +4,7 @@ from cdb.http_retry import MAX_RETRY_COUNT
 
 import responses
 import sys
-from tests.unit.utils import AutoEnvVars, verify_approval, stub_http_503, retry_backoff_factor
+from tests.utils import AutoEnvVars, verify_approval, stub_http_503, retry_backoff_factor
 
 
 @responses.activate

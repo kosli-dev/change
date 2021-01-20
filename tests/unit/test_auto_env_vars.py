@@ -1,6 +1,6 @@
 import os
 
-from tests.unit.utils import AutoEnvVars
+from tests.utils import AutoEnvVars
 
 
 def test_env_vars_set_before_the_with_statement_are_unaffected():

@@ -2,7 +2,7 @@ from cdb.put_artifact_image import put_artifact_image
 import docker
 
 from pytest import raises
-from tests.unit.utils import AutoEnvVars, cdb_dry_run
+from tests.utils import AutoEnvVars, cdb_dry_run
 
 
 def test_message_when_no_env_vars():
