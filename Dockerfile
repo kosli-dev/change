@@ -15,10 +15,9 @@ RUN pip3 install -r requirements.txt
 
 
 COPY cdb/ cdb/
-COPY tests/unit/ tests/unit/
-COPY tests/integration/ tests/integration/
+COPY tests/ tests/
+
 ADD tests/data/test_source_repo.tar.gz /
-COPY tests/data/ tests/data/
 
 ENV PYTHONPATH="/app"
 ENTRYPOINT [""]
