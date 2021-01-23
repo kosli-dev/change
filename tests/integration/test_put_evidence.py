@@ -6,7 +6,7 @@ from tests.utils import AutoEnvVars, cdb_dry_run, verify_approval
 
 
 def test_message_when_no_env_vars(capsys):
-    with cdb_dry_run(), AutoEnvVars(), raises(docker.errors.DockerException):
+    with cdb_dry_run(), AutoEnvVars({}), raises(docker.errors.DockerException):
         put_evidence("tests/integration/test-pipefile.json")
 
     verify_approval(capsys, ["out"])

@@ -10,5 +10,5 @@ def test_when_no_env_vars_raises_DockerException():
     This is not the desired behaviour, but until more tests are
     in place we are not refactoring.
     """
-    with cdb_dry_run(), AutoEnvVars(), raises(docker.errors.DockerException):
+    with cdb_dry_run(), AutoEnvVars({}), raises(docker.errors.DockerException):
         put_artifact_image("tests/integration/test-pipefile.json")

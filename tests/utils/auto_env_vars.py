@@ -2,8 +2,14 @@ import copy
 import os
 
 
+class UnexpectedEnvVarsError(Exception):
+    def __init__(self, expected, actual):
+        self._expected = expected
+        self._actual = actual
+
+
 class AutoEnvVars(object):
-    def __init__(self, env_vars={}):
+    def __init__(self, env_vars):
         self._true_env_vars = copy.deepcopy(os.environ)
         self._auto_env_vars = env_vars
 
@@ -13,12 +19,15 @@ class AutoEnvVars(object):
         return self
 
     def __exit__(self, _type, _value, _traceback):
-        self._new_env_vars = self._newly_set_env_vars()
+        actual = self._actual_set_env_vars()
         os.environ.clear()
         for (name, value) in self._true_env_vars.items():
             os.environ[name] = value
+        #expected = self._expected_set_env_vars
+        #if expected != actual:
+        #    raise UnexpectedEnvVarsError(expected, actual)
 
-    def _newly_set_env_vars(self):
+    def _actual_set_env_vars(self):
         result = {}
         enter_keys = self._true_env_vars.keys()
         exit_keys = os.environ.keys()
@@ -26,9 +35,3 @@ class AutoEnvVars(object):
         for new_key in new_keys:
             result[new_key] = os.getenv(new_key)
         return result
-
-    def new_env_vars(self):
-        return self._new_env_vars
-
-    def is_creating_env_var(self, name):
-        return name in self._new_env_vars.keys()
