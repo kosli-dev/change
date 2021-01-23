@@ -8,6 +8,9 @@ class UnexpectedEnvVarsError(Exception):
         self._actual = actual
 
 
+CDB_DRY_RUN = {"CDB_DRY_RUN": "TRUE"}
+
+
 class AutoEnvVars(object):
     def __init__(self, enter_vars, expected_new_vars=None):
         """
