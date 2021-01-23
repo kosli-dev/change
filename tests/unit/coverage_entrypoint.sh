@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -eu
 
 # ${1} is set in the Makefile.
 # Defaults to tests/unit/ (the dir name)
