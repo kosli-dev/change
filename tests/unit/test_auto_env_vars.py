@@ -1,5 +1,5 @@
 import os
-from tests.utils import AutoEnvVars, UnexpectedEnvVarSetOnExitError
+from tests.utils import AutoEnvVars, UnexpectedEnvVarSetOnExitError, AlreadyExistingEnvVarOnEnterError
 
 from pytest import raises
 
@@ -14,14 +14,15 @@ def test_new_env_vars_are_available_only_inside_the_with_statement():
     assert os.getenv("NEW_ENV_VAR") is None
 
 
-def X_test_a_new_env_var_that_already_exists_raises():
+def test_a_new_env_var_that_already_exists_raises():
     os.environ["EXISTING_ENV_VAR"] = "Wonderland"
 
     env = {"EXISTING_ENV_VAR": "Adventures"}
-    with raises() as exc:
+    with raises(AlreadyExistingEnvVarOnEnterError) as exc:
         with AutoEnvVars(env):
             pass
 
+    assert exc.value.vars() == {"EXISTING_ENV_VAR":"Wonderland"}
 
 def test_env_vars_that_exist_before_the_with_statement_still_exist_after_the_exit():
     os.environ["EXISTING_ENV_VAR"] = "Wonderland"
