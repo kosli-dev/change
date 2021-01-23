@@ -51,13 +51,37 @@ def test_new_env_var_set_inside_with_statement_not_specified_in_arg2_raises_exce
 
     with raises(UnexpectedEnvVarSetOnExitError) as exc:
         with AutoEnvVars({}, {"IN_ARG2": "wibble"}):
-            os.environ["ENV_VAR_NOT_IN_ARG2"] = "42"
+            os.environ["ENV_VAR_NOT_IN_ARG2"] = "XXXX"
             os.environ["IN_ARG2"] = "wibble"
 
     assert exc.value.expected() == {"IN_ARG2": "wibble"}
-    assert exc.value.actual() == {"ENV_VAR_NOT_IN_ARG2": "42", "IN_ARG2": "wibble"}
+    assert exc.value.actual() == {"ENV_VAR_NOT_IN_ARG2": "XXXX", "IN_ARG2": "wibble"}
 
     assert os.getenv("ENV_VAR_NOT_IN_ARG2") is None
     assert os.getenv("IN_ARG2") is None
 
 
+def test_new_env_var_specified_in_arg2_but_not_set_inside_with_statement_raises():
+    assert os.getenv("ENV_VAR") is None
+
+    with raises(UnexpectedEnvVarSetOnExitError) as exc:
+        with AutoEnvVars({}, {"ENV_VAR": "bye"}):
+            pass
+
+    assert exc.value.expected() == {"ENV_VAR": "bye"}
+    assert exc.value.actual() == {}
+
+    assert os.getenv("ENV_VAR") is None
+
+
+def test_new_env_var_set_inside_with_statement_to_different_value_than_specified_in_arg2_raises():
+    assert os.getenv("ENV_VAR") is None
+
+    with raises(UnexpectedEnvVarSetOnExitError) as exc:
+        with AutoEnvVars({"ENV_VAR": "XX"}, {"ENV_VAR": "bye"}):
+            os.environ["ENV_VAR"] = "hello"
+
+    assert exc.value.expected() == {"ENV_VAR": "bye"}
+    assert exc.value.actual() == {"ENV_VAR": "hello"}
+
+    assert os.getenv("ENV_VAR") is None
