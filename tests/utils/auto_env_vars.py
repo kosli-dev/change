@@ -13,15 +13,19 @@ class AutoEnvVars(object):
         return self
 
     def __exit__(self, _type, _value, _traceback):
-        was_keys = self._true_env_vars.keys()
-        now_keys = os.environ.keys()
-        self._new_env_vars = {}
-        new_keys = list(set(now_keys) - set(was_keys))
-        for new_key in new_keys:
-            self._new_env_vars[new_key] = os.getenv(new_key)
+        self._new_env_vars = self._newly_set_env_vars()
         os.environ.clear()
         for (name, value) in self._true_env_vars.items():
             os.environ[name] = value
+
+    def _newly_set_env_vars(self):
+        result = {}
+        enter_keys = self._true_env_vars.keys()
+        exit_keys = os.environ.keys()
+        new_keys = list(set(exit_keys) - set(enter_keys))
+        for new_key in new_keys:
+            result[new_key] = os.getenv(new_key)
+        return result
 
     def new_env_vars(self):
         return self._new_env_vars
