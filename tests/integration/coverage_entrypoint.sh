@@ -16,6 +16,7 @@ readonly TARGET="${1}"
 # https://pytest-cov.readthedocs.io/en/latest/config.html
 
 pytest \
+       --random-order-bucket=global \
        --capture=no \
        --cov=. \
        --junitxml=htmlcov/junit.xml \

@@ -11,6 +11,7 @@ def test_message_when_no_env_vars(capsys):
 
     verify_approval(capsys, ["out"])
 
+
 def test_message_when_CDB_TEST_RESULTS_DIR_defined(capsys):
     env = {
         "CDB_TEST_RESULTS_DIR": "tests/integration/"
