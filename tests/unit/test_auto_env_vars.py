@@ -1,6 +1,7 @@
 import os
+from tests.utils import AutoEnvVars, UnexpectedEnvVarsError
 
-from tests.utils import AutoEnvVars
+from pytest import raises
 
 
 def test_env_vars_set_before_the_with_statement_are_unaffected():
@@ -14,16 +15,26 @@ def test_env_vars_set_before_the_with_statement_are_unaffected():
     assert os.getenv("YOU_SEE") == "Nature"
 
 
-def test_new_env_vars_set_inside_with_statement_are_unavailable_after_the_with_statement():
+def test_new_env_vars_set_inside_with_statement_must_be_specified_in_the_second_init_arg_and_are_unavailable_after_the_with_statement():
     assert os.getenv("GETS_YOU") is None
     env = {
         "GETS_YOU": "Outside"
     }
-    with AutoEnvVars({}):
+    with AutoEnvVars({}, env):
         os.environ["GETS_YOU"] = "Outside"
         assert os.getenv("GETS_YOU") == "Outside"
 
     assert os.getenv("GETS_YOU") is None
+
+
+def test_new_env_var_set_inside_with_statement_not_specified_in_second_init_arg_raises_exception():
+    assert os.getenv("ALPHA") is None
+
+    with raises(UnexpectedEnvVarsError) as exc:
+        with AutoEnvVars({}, {}):
+            os.environ["ALPHA"] = "42"
+
+    assert os.getenv("ALPHA") is None
 
 
 def test_new_env_vars_passed_in_init_are_available_only_inside_the_with_statement():
@@ -36,24 +47,3 @@ def test_new_env_vars_passed_in_init_are_available_only_inside_the_with_statemen
         assert os.getenv("NICE_HOBBY") == "Fishing"
 
     assert os.getenv("NICE_HOBBY") is None
-
-
-def X_test_new_env_vars_set_inside_with_statement_can_be_interrogated_after_the_with_statement_in_context_object():
-    assert os.getenv("ALPHA") is None
-    assert os.getenv("BETA") is None
-
-    with AutoEnvVars() as context_manager:
-        os.environ["ALPHA"] = "123"
-        os.environ["BETA"] = "456"
-        assert os.getenv("ALPHA") == "123"
-        assert os.getenv("BETA") == "456"
-
-    assert os.getenv("ALPHA") is None
-    assert os.getenv("BETA") is None
-    new_env_vars = context_manager.new_env_vars()
-    assert sorted(list(new_env_vars.keys())) == ["ALPHA", "BETA"]
-    assert new_env_vars["ALPHA"] == "123"
-    assert new_env_vars["BETA"] == "456"
-    assert context_manager.is_creating_env_var("ALPHA")
-    assert context_manager.is_creating_env_var("BETA")
-    assert not context_manager.is_creating_env_var("GAMMA")
