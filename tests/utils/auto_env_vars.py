@@ -2,11 +2,19 @@ import copy
 import os
 
 
-class UnexpectedEnvVarsError(Exception):
+class AlreadyExistingEnvVarOnEnterError(Exception):
+    def __init__(self):
+        pass
+
+
+class UnexpectedEnvVarSetOnExitError(Exception):
     def __init__(self, expected, actual):
         self._expected = expected
         self._actual = actual
-
+    def expected(self):
+        return self._expected
+    def actual(self):
+        return self._actual
 
 CDB_DRY_RUN = {"CDB_DRY_RUN": "TRUE"}
 
@@ -35,7 +43,7 @@ class AutoEnvVars(object):
         self._restore_original_env_vars()
         expected = self._expected_new_vars
         if expected != actual:
-            raise UnexpectedEnvVarsError(expected, actual)
+            raise UnexpectedEnvVarSetOnExitError(expected, actual)
 
     def _restore_original_env_vars(self):
         os.environ.clear()
