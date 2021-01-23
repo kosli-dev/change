@@ -26,8 +26,6 @@ def test_arg1_env_vars_that_already_exist_RAISE():
 
 
 def test_arg1_env_vars_are_only_available_inside_the_with_statement():
-    assert os.getenv("NEW_ENV_VAR") is None
-
     new_env = {"NEW_ENV_VAR": "Fishing"}
     with AutoEnvVars(new_env):
         assert os.getenv("NEW_ENV_VAR") == "Fishing"
@@ -36,8 +34,6 @@ def test_arg1_env_vars_are_only_available_inside_the_with_statement():
 
 
 def test_arg2_must_specify_ALL_new_env_vars_set_inside_the_with_statement():
-    assert os.getenv("ENV_SET_INSIDE_WITH") is None
-
     env = {"ENV_SET_INSIDE_WITH": "Humpty"}
     with AutoEnvVars({}, env):
         os.environ["ENV_SET_INSIDE_WITH"] = "Humpty"
@@ -45,9 +41,6 @@ def test_arg2_must_specify_ALL_new_env_vars_set_inside_the_with_statement():
 
 
 def test_arg2_with_NO_entry_for_new_env_var_RAISES():
-    assert os.getenv("ENV_VAR_NOT_IN_ARG2") is None
-    assert os.getenv("IN_ARG2") is None
-
     with raises(UnexpectedEnvVar) as exc:
         with AutoEnvVars({}, {"IN_ARG2": "wibble"}):
             os.environ["ENV_VAR_NOT_IN_ARG2"] = "XXXX"
@@ -58,8 +51,6 @@ def test_arg2_with_NO_entry_for_new_env_var_RAISES():
 
 
 def test_arg2_with_entry_for_new_env_which_is_NOT_set_RAISES():
-    assert os.getenv("ENV_VAR") is None
-
     with raises(UnexpectedEnvVar) as exc:
         with AutoEnvVars({}, {"ENV_VAR": "bye"}):
             pass
@@ -69,11 +60,17 @@ def test_arg2_with_entry_for_new_env_which_is_NOT_set_RAISES():
 
 
 def test_arg2_with_entry_for_new_env_var_which_is_set_to_a_DIFFERENT_value_RAISES():
-    assert os.getenv("ENV_VAR") is None
-
     with raises(UnexpectedEnvVar) as exc:
         with AutoEnvVars({}, {"ENV_VAR": "bye"}):
             os.environ["ENV_VAR"] = "hello"
 
     assert exc.value.expected() == {"ENV_VAR": "bye"}
     assert exc.value.actual() == {"ENV_VAR": "hello"}
+
+
+def test_arg2_with_entry_whose_name_is_in_arg1_with_different_value():
+    assert os.getenv("ENV_VAR") is None
+
+    with AutoEnvVars({"ENV_VAR": "a"}, {"ENV_VAR": "b"}):
+        os.environ["ENV_VAR"] = "b"
+
