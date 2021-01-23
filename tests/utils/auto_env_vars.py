@@ -5,7 +5,7 @@ import os
 class AlreadyExistingEnvVarOnEnterError(Exception):
     def __init__(self, vars):
         self._vars = vars
-        
+
     def vars(self):
         return self._vars
 
@@ -40,8 +40,7 @@ class AutoEnvVars(object):
             self._expected_exit_new_vars = expected_exit_new_vars
 
     def __enter__(self):
-        self._verify_new_env_vars()
-        for (name, value) in self._new_enter_vars.items():
+        for (name, value) in self._checked_new_env_vars().items():
             os.environ[name] = value
         return self
 
@@ -52,13 +51,15 @@ class AutoEnvVars(object):
         if expected != actual:
             raise UnexpectedEnvVarSetOnExitError(expected, actual)
 
-    def _verify_new_env_vars(self):
+    def _checked_new_env_vars(self):
         already_exist = {}
         for name in self._new_enter_vars:
             if name in os.environ.keys():
                 already_exist[name] = os.environ[name]
         if already_exist != {}:
             raise AlreadyExistingEnvVarOnEnterError(already_exist)
+        else:
+            return self._new_enter_vars
 
     def _restore_original_env_vars(self):
         os.environ.clear()
