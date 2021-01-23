@@ -2,26 +2,6 @@ import copy
 import os
 
 
-class AlreadyExistingEnvVarOnEnterError(Exception):
-    def __init__(self, vars):
-        self._vars = vars
-
-    def vars(self):
-        return self._vars
-
-
-class UnexpectedEnvVarSetOnExitError(Exception):
-    def __init__(self, expected, actual):
-        self._expected = expected
-        self._actual = actual
-
-    def expected(self):
-        return self._expected
-
-    def actual(self):
-        return self._actual
-
-
 CDB_DRY_RUN = {"CDB_DRY_RUN": "TRUE"}
 
 
@@ -29,8 +9,8 @@ class AutoEnvVars(object):
     def __init__(self, new_enter_vars, expected_exit_new_vars=None):
         """
         Args:
-            enter_vars: A dictionary of env-vars to set on entry.
-            expected_new_vars: A dictionary of env-vars we expect to be newly set before exit.
+            new_enter_vars: A dictionary of new env-vars to set on entry and auto-unset on exit.
+            expected_exit_new_vars: A dictionary of (different) env-vars we expect to be newly set before exit.
         """
         self._original_env_vars = copy.deepcopy(os.environ)
         self._new_enter_vars = new_enter_vars
@@ -49,7 +29,7 @@ class AutoEnvVars(object):
         self._restore_original_env_vars()
         expected = self._expected_exit_new_vars
         if expected != actual:
-            raise UnexpectedEnvVarSetOnExitError(expected, actual)
+            raise UnexpectedEnvVar(expected, actual)
 
     def _checked_new_env_vars(self):
         already_exist = {}
@@ -57,7 +37,7 @@ class AutoEnvVars(object):
             if name in os.environ.keys():
                 already_exist[name] = os.environ[name]
         if already_exist != {}:
-            raise AlreadyExistingEnvVarOnEnterError(already_exist)
+            raise AlreadyExistingEnvVar(already_exist)
         else:
             return self._new_enter_vars
 
@@ -78,3 +58,23 @@ class AutoEnvVars(object):
 
     def _has_changed(self, name, value):
         return name in self._new_enter_vars.keys() and self._new_enter_vars[name] != value
+
+
+class AlreadyExistingEnvVar(Exception):
+    def __init__(self, vars):
+        self._vars = vars
+
+    def vars(self):
+        return self._vars
+
+
+class UnexpectedEnvVar(Exception):
+    def __init__(self, expected, actual):
+        self._expected = expected
+        self._actual = actual
+
+    def expected(self):
+        return self._expected
+
+    def actual(self):
+        return self._actual
