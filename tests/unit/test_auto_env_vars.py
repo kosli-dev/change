@@ -20,9 +20,11 @@ def test_arg1_env_vars_that_already_exist_RAISE():
     os.environ["EXISTING_ENV_VAR"] = "Wonderland"
 
     env = {"EXISTING_ENV_VAR": "Adventures"}
-    with raises(AlreadyExistingEnvVar):
+    with raises(AlreadyExistingEnvVar) as exc:
         with AutoEnvVars(env):
             pass
+
+    assert exc.value.vars() == {"EXISTING_ENV_VAR": "Wonderland"}
 
 
 def test_arg1_env_vars_are_only_available_inside_the_with_statement():
