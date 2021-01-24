@@ -11,6 +11,9 @@ class AutoEnvVars(object):
         Args:
             new_vars_on_enter: A dictionary of new env-vars to set on entry and auto-unset on exit.
             expected_new_vars_on_exit: A dictionary of (different) env-vars we expect to be newly set before exit.
+        Raises:
+            AlreadyExistingEnvVar: if, on enter, any new_vars_on_enter key is an already existing env-var.
+            UnexpectedEnvVar: if, on exit, the newly set env-vars do not match expected_new_vars_on_exit.
         """
         self._new_vars_on_enter = self._checked(new_vars_on_enter)
         self._expected_new_vars_on_exit = expected_new_vars_on_exit
