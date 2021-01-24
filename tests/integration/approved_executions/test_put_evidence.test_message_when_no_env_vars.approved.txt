@@ -1,2 +1,0 @@
-Publish evidence to ComplianceDB
-{'evidence_type': 'EVIDENCE_TYPE_UNDEFINED', 'contents': {'is_compliant': False, 'url': 'URL_UNDEFINED', 'description': 'UNDEFINED'}}

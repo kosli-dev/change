@@ -1,2 +1,0 @@
-Publish evidence to ComplianceDB
-{'evidence_type': 'test', 'contents': {'is_compliant': True, 'url': 'integration test', 'description': 'integration test'}}
