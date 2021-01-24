@@ -6,7 +6,8 @@ from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval
 
 
 def test_message_when_no_env_vars(capsys):
-    with AutoEnvVars(CDB_DRY_RUN), raises(docker.errors.DockerException):
+    set_env_vars = {}
+    with AutoEnvVars(CDB_DRY_RUN, set_env_vars), raises(docker.errors.DockerException):
         put_evidence("tests/integration/test-pipefile.json")
 
     verify_approval(capsys, ["out"])
@@ -19,7 +20,8 @@ def test_message_when_env_vars_defined(capsys):
         "CDB_CI_BUILD_URL": "integration test",
         "CDB_IS_COMPLIANT": "TRUE",
     }
-    with AutoEnvVars({**CDB_DRY_RUN, **env}), raises(docker.errors.DockerException):
+    set_env_vars = {}
+    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), raises(docker.errors.DockerException):
         put_evidence("tests/integration/test-pipefile.json")
 
     verify_approval(capsys, ["out"])

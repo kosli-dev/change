@@ -14,8 +14,9 @@ def test_put_approval(capsys):
         "CDB_IS_APPROVED_EXTERNALLY": "FALSE",
         "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,
     }
+    set_env_vars = {}
 
-    with AutoEnvVars(CDB_DRY_RUN):
+    with AutoEnvVars(CDB_DRY_RUN, set_env_vars):
         create_approval("tests/integration/test-pipefile.json", env)
 
     verify_approval(capsys, ["out", "err"])

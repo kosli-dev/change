@@ -37,10 +37,10 @@ def test_503_exception_for_put_artifact_main(capsys, mocker):
     }
     mocker.patch.object(sys, 'argv', ['name', '--project', '/app/tests/data/pipefile.json'])
 
-    sets_env_var = {
+    set_env_vars = {
         'CDB_ARTIFACT_SHA': 'ccee89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc'
     }
-    with retry_backoff_factor(0.001), AutoEnvVars(env, sets_env_var):
+    with retry_backoff_factor(0.001), AutoEnvVars(env, set_env_vars):
         exit_code = main_put_artifact()
 
     assert exit_code != 0

@@ -8,8 +8,9 @@ def test_put_pipeline(capsys):
         "CDB_HOST": "http://app2.compliancedb.com",
         "CDB_API_TOKEN": "SOME_RANDOM_TOKEN",
     }
+    set_env_vars = {}
 
-    with AutoEnvVars(CDB_DRY_RUN):
+    with AutoEnvVars(CDB_DRY_RUN, set_env_vars):
         put_pipeline("tests/integration/test-pipefile.json", env)
 
     verify_approval(capsys)
