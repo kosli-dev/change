@@ -1,0 +1,15 @@
+Publish evidence to ComplianceDB
+{'evidence_type': 'coverage', 'contents': {'is_compliant': True, 'url': 'https://gitlab/build/1456', 'description': 'branch coverage'}}
+Docker image digest found from environment variable
+IMAGE DIGEST: a7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef
+Putting this payload:
+{
+    "contents": {
+        "description": "branch coverage",
+        "is_compliant": true,
+        "url": "https://gitlab/build/1456"
+    },
+    "evidence_type": "coverage"
+}
+To this url: http://test.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/a7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef
+DRY RUN: Put not sent
