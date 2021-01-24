@@ -2,7 +2,7 @@ import copy
 import os
 
 
-class AlreadySetEnvVars(Exception):
+class AlreadyExistingEnvVars(Exception):
     def __init__(self, vars):
         self._vars = vars
 
@@ -11,18 +11,18 @@ class AlreadySetEnvVars(Exception):
 
 
 def inject_env_vars(env_vars):
-    def raise_if_any_already_set():
-        already_set = {key: os.environ[key] for key in env_vars.keys() & os.environ.keys()}
-        if already_set != {}:
-            raise AlreadySetEnvVars(already_set)
+    def raise_if_any_already_exist():
+        already_exist = {key: os.environ[key] for key in env_vars.keys() & os.environ.keys()}
+        if already_exist != {}:
+            raise AlreadyExistingEnvVars(already_exist)
 
-    def add_to_environ(env_vars):
-        for (name, value) in env_vars.items():
+    def add_to_environ(all):
+        for (name, value) in all.items():
             os.environ[name] = value
 
     def decorator(f):
         def wrapper(*args, **kwargs):
-            raise_if_any_already_set()
+            raise_if_any_already_exist()
             original_env_vars = copy.deepcopy(os.environ)
             add_to_environ(env_vars)
             try:

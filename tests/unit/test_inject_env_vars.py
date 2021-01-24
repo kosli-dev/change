@@ -1,4 +1,4 @@
-from tests.utils import inject_env_vars, AlreadySetEnvVars
+from tests.utils import inject_env_vars, AlreadyExistingEnvVars
 
 import os
 from pytest import raises
@@ -42,6 +42,6 @@ def test_inject_env_vars_raises_when_name_is_already_an_env_var():
         pass
     assert "PYTHONPATH" in os.environ.keys()
     paths = os.environ["PYTHONPATH"]
-    with raises(AlreadySetEnvVars) as exc:
+    with raises(AlreadyExistingEnvVars) as exc:
         set_with_inject()
     assert exc.value.already_existing() == {"PYTHONPATH": paths}
