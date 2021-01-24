@@ -15,25 +15,24 @@ class AutoEnvVars(object):
             AlreadyExistingEnvVar: if, on enter, any new_vars_on_enter key is an already existing env-var.
             UnexpectedEnvVar: if, on exit, the newly set env-vars do not match expected_new_vars_on_exit.
         """
-        self._new_vars_on_enter = self._checked(new_vars_on_enter)
+        self._new_vars_on_enter = new_vars_on_enter
         self._expected_new_vars_on_exit = expected_new_vars_on_exit
 
-    @staticmethod
-    def _checked(new_vars):
+    def __enter__(self):
+        self._original_env_vars = copy.deepcopy(os.environ)
+        for (name, value) in self._checked_new_vars_on_enter().items():
+            os.environ[name] = value
+        return self
+
+    def _checked_new_vars_on_enter(self):
         already_exist = {}
-        for name in new_vars:
+        for name in self._new_vars_on_enter:
             if name in os.environ.keys():
                 already_exist[name] = os.environ[name]
         if already_exist != {}:
             raise AlreadyExistingEnvVar(already_exist)
         else:
-            return new_vars
-
-    def __enter__(self):
-        self._original_env_vars = copy.deepcopy(os.environ)
-        for (name, value) in self._new_vars_on_enter.items():
-            os.environ[name] = value
-        return self
+            return self._new_vars_on_enter
 
     def __exit__(self, _type, _value, _traceback):
         actual = self._actual_new_vars()
