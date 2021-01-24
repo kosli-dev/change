@@ -1,5 +1,4 @@
 from cdb.control_junit import control_junit
-import os
 import docker
 from pytest import raises
 from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval
