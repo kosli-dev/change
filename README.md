@@ -98,7 +98,6 @@ docker run --rm --name comply \
         --env CDB_ARTIFACT_GIT_URL=${CDB_ARTIFACT_GIT_URL} \
         --env CDB_ARTIFACT_GIT_COMMIT=${CDB_ARTIFACT_GIT_COMMIT} \
         --env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
-        --env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
         compliancedb/cdb_controls python -m cdb.put_artifact_image -p /data/pipeline.json
 ```
 
@@ -113,7 +112,6 @@ This command expect the following environment variables:
 | CDB_ARTIFACT_GIT_URL | Required | Link to the source git commit this build was based on |
 | CDB_ARTIFACT_GIT_COMMIT | Required | The sha of the git commit that produced this build |
 | CDB_CI_BUILD_URL | Required | Link to the build in the ci system |
-| CDB_BUILD_NUMBER | Required | Build number |
 
 
 ## Publish generic evidence
