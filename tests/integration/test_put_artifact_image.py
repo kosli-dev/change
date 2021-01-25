@@ -37,6 +37,23 @@ def test_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys, mocker):
     verify_approval(capsys, ["out"])
 
 
+def test_all_env_vars(capsys):
+    # artifact sha comes direct from CDB_ARTIFACT_SHA
+    env = {
+        "CDB_HOST": "http://test.compliancedb.com",  # optional
+        "CDB_API_TOKEN": "6599831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
+        "CDB_ARTIFACT_SHA": "b7cdaef69c676c2466571d9933380d559ccc2032b258fc5e73f99a103db462ef",
+        "CDB_IS_COMPLIANT": "TRUE",
+        "CDB_ARTIFACT_GIT_URL": "http://github/me/project/commit/12037940e4e7503055d8a8eea87e177f04f14616",
+        "CDB_ARTIFACT_GIT_COMMIT": "82037940e4e7503055d8a8eea87e177f04f14616",
+        "CDB_CI_BUILD_URL": "https://gitlab/build/351",  # optional
+    }
+    set_env_vars = {}
+    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+        put_artifact_image("tests/integration/test-pipefile.json")
+    verify_approval(capsys, ["out"])
+
+
 def test_no_env_vars_raises_DockerException():
     """
     This is not the desired behaviour, but until more tests are
