@@ -1,9 +1,9 @@
-what we have done:
-    put_artifact()
-    control_junit()
-    put_artifact_image()
-    put_evidence()
-    put_pipeline
+                          REQUIRED       OPTIONAL
+put_artifact()            yes            no
+control_junit()           yes            no
+put_artifact_image()      yes            no
+put_evidence()            yes            no
+put_pipeline()            yes            no
+create_deployment()       yes            no
 
 
-create_deployment()
