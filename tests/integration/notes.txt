@@ -2,7 +2,7 @@
 put_artifact()            yes            no
 control_junit()           yes            no
 put_artifact_image()      yes            no
-put_evidence()            yes            no
+put_evidence()            yes            yes
 put_pipeline()            yes            yes
 create_deployment()       yes            yes
 
@@ -22,3 +22,10 @@ o) if CDB_ARTIFACT_FILENAME is set, CDB_ARTIFACT_DOCKER_IMAGE, if set, is ignore
 o) if CDB_ARTIFACT_DOCKER_IMAGE is set, it is used
 3) create_approval() is missing a docker-run example in README.md
 
+
+put_evidence()
+--------------
+1) CDB_ARTIFACT_DOCKER_IMAGE and CDB_ARTIFACT_SHA
+If you provide CDB_ARTIFACT_SHA, it is used.
+If you provide CDB_ARTIFACT_DOCKER_IMAGE (and not CDB_ARTIFACT_SHA) it is used.
+If both are provided, CDB_ARTIFACT_SHA is used, and CDB_ARTIFACT_DOCKER_IMAGE is ignored.
