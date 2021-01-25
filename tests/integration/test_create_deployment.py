@@ -47,15 +47,15 @@ def test_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
 
 
 def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys, mocker):
-    # required and all optional env-vars
+    # required and optional env-vars
     env = {
-        "CDB_HOST": "http://test.compliancedb.com",
+        "CDB_HOST": "http://test.compliancedb.com",  # optional
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_FILENAME": "some/artifact/file.txt",
         "CDB_ENVIRONMENT": "production",
-        "CDB_DESCRIPTION": "branch coverage",
-        "CDB_CI_BUILD_URL": "https://gitlab/build/1996",
-        "CDB_USER_DATA": "/some/file.json"
+        "CDB_DESCRIPTION": "branch coverage",  # optional
+        "CDB_CI_BUILD_URL": "https://gitlab/build/1996",  # optional
+        "CDB_USER_DATA": "/some/file.json"  # optional
     }
     sha = "cccdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
     set_env_vars = {'CDB_ARTIFACT_SHA': sha}

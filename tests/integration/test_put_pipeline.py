@@ -15,7 +15,7 @@ def test_required_env_vars(capsys):
 
 def test_all_env_vars(capsys):
     env = {
-        "CDB_HOST": "http://test.compliancedb.com",
+        "CDB_HOST": "http://test.compliancedb.com",  # optional
         "CDB_API_TOKEN": "SOME_RANDOM_TOKEN",
     }
     set_env_vars = {}
