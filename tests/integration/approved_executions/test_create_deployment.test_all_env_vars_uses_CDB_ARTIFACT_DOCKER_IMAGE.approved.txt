@@ -1,6 +1,8 @@
+Getting SHA for docker image: acme/runner:4.56
+Calculated digest: efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212
 Posting this payload:
 {
-    "artifact_sha256": "99cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
+    "artifact_sha256": "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
     "build_url": null,
     "description": "None",
     "environment": "production"
