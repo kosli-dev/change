@@ -1,16 +1,15 @@
-Docker image digest found from environment variable
-IMAGE DIGEST: a7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef
+IMAGE DIGEST: ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee
 Publish artifact to ComplianceDB
 CDB_IS_COMPLIANT: True
 Putting this payload:
 {
-    "build_url": "https://gitlab/build/5641",
+    "build_url": "BUILD_URL_UNDEFINED",
     "commit_url": "http://github/me/project/commit/12037940e4e7503055d8a8eea87e177f04f14616",
     "description": "Created by build UNDEFINED",
     "filename": "acme/widget:3.4",
     "git_commit": "12037940e4e7503055d8a8eea87e177f04f14616",
     "is_compliant": true,
-    "sha256": "a7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
+    "sha256": "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"
 }
-To this url: http://test.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/
+To this url: https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/
 DRY RUN: Put not sent
