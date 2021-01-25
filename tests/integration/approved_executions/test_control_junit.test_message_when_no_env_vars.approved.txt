@@ -1,2 +1,0 @@
-Publish evidence to ComplianceDB
-{'evidence_type': 'junit', 'contents': {'is_compliant': True, 'url': 'URL_UNDEFINED', 'description': 'JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites'}}
