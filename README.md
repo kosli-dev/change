@@ -54,7 +54,8 @@ This command creates an artifact in compliancedb based on a file.
 |------|-----|-----|
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
-| CDB_ARTIFACT_SHA or CDB_ARTIFACT_FILENAME | Required | The build artifact specification |
+| CDB_ARTIFACT_FILENAME | Required | The artifact filename |
+| CDB_ARTIFACT_SHA | Optional | The SHA256 for the artifact |
 | CDB_IS_COMPLIANT | Required | Whether this artifact is considered compliant from you build process |
 | CDB_ARTIFACT_GIT_URL | Required | Link to the source git commit this build was based on |
 | CDB_ARTIFACT_GIT_COMMIT | Required | The sha of the git commit that produced this build |

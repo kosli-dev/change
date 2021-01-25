@@ -4,6 +4,9 @@ from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval, auto_reading
 
 
 def test_all_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys):
+    # Does not provide CDB_ARTIFACT_SHA
+    # Assumption is that CDB_ARTIFACT_FILENAME names a file
+    # that is volume-mounted and the CDB_ARTIFACT_SHA is calculated.
     env = {
         "CDB_HOST": "http://test.compliancedb.com",
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
@@ -19,11 +22,11 @@ def test_all_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys):
         put_artifact("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
-# if you provide CDB_ARTIFACT_SHA but not CDB_ARTIFACT_FILENAME
-# then the command is not running
-
 
 def test_all_env_vars_uses_FILENAME_and_SHA(capsys):
+    # Provides CDB_ARTIFACT_FILENAME and CDB_ARTIFACT_SHA.
+    # Assumption is that CDB_ARTIFACT_FILENAME names a file
+    # that is not volume-mounted, so the sha cannot be calculated.
     env = {
         "CDB_HOST": "http://test.compliancedb.com",
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
