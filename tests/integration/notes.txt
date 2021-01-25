@@ -1,7 +1,7 @@
                           REQUIRED       OPTIONAL
 put_artifact()            yes            no
 control_junit()           yes            no
-put_artifact_image()      yes            no
+put_artifact_image()      yes            yes
 put_evidence()            yes            yes
 put_pipeline()            yes            yes
 create_deployment()       yes            yes
@@ -24,7 +24,14 @@ o) if CDB_ARTIFACT_DOCKER_IMAGE is set, it is used
 
 put_evidence()
 --------------
-1) CDB_ARTIFACT_DOCKER_IMAGE and CDB_ARTIFACT_SHA
+1) CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_SHA
 If you provide CDB_ARTIFACT_SHA, it is used.
 If you provide CDB_ARTIFACT_DOCKER_IMAGE (and not CDB_ARTIFACT_SHA) it is used.
 If both are provided, CDB_ARTIFACT_SHA is used, and CDB_ARTIFACT_DOCKER_IMAGE is ignored.
+
+
+put_artifact_image()
+--------------------
+1) CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_SHA, One must be provided.
+So you do not have to provide CDB_ARTIFACT_DOCKER_IMAGE
+despite the name of this command being put_artifact_image().
