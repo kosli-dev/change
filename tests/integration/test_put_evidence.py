@@ -14,7 +14,6 @@ def test_all_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
         "CDB_IS_COMPLIANT": "TRUE",
         "CDB_EVIDENCE_TYPE": "unit_test",
         "CDB_DESCRIPTION": "branch coverage",
-        "CDB_BUILD_NUMBER": "21",
         "CDB_CI_BUILD_URL": "https://gitlab/build/1956",
     }
     set_env_vars = {}
@@ -34,7 +33,6 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
         "CDB_IS_COMPLIANT": "TRUE",
         "CDB_EVIDENCE_TYPE": "coverage",
         "CDB_DESCRIPTION": "branch coverage",
-        "CDB_BUILD_NUMBER": "19",
         "CDB_CI_BUILD_URL": "https://gitlab/build/1456",
     }
     set_env_vars = {}
