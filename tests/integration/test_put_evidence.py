@@ -9,7 +9,6 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
     env = {
         "CDB_HOST": "http://test.compliancedb.com",
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        # "CDB_ARTIFACT_DOCKER_IMAGE": "acme/widget:5.6",
         "CDB_ARTIFACT_SHA": "a7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef",
         "CDB_IS_COMPLIANT": "TRUE",
         "CDB_EVIDENCE_TYPE": "coverage",
