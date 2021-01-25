@@ -1,6 +1,10 @@
 import copy
 import os
 
+# Wrote this partly to learn about decorators.
+# Idea was to simplify AutoEnvVars() but it won't play nicely
+# with test functions that automagically use a (capsys) arg
+# for reasons not worth drilling into right now...
 
 class AlreadyExistingEnvVars(Exception):
     def __init__(self, vars):
