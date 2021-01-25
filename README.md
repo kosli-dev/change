@@ -220,7 +220,7 @@ docker run --rm --name comply \
 | CDB_ENVIRONMENT | Required | The environment the artifact is being deployed to |
 | CDB_DESCRIPTION | Optional | A description for the deployment |
 | CDB_CI_BUILD_URL | Optional | A url for the deployment |
-| CDB_USER_DATA_FILE | Optional | The user data to embed in the deployment, if any (should be mounted in the container) |
+| CDB_USER_DATA | Optional | The user data filename to embed in the deployment, if any (a json file, mounted in the container) |
 
 ## Control that an artifact is latest released
 

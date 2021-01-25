@@ -4,6 +4,15 @@ control_junit()           yes            no
 put_artifact_image()      yes            no
 put_evidence()            yes            no
 put_pipeline()            yes            no
-create_deployment()       yes            no
+create_deployment()       yes            yes
 
 
+
+Misc notes
+==========
+
+create_deployment()
+-------------------
+The code uses CDB_USER_DATA but README.md originally
+contained CDB_USER_DATA_FILE. For now README.md has
+been edited to CDB_USER_DATA.
