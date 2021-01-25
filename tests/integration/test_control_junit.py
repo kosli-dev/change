@@ -24,7 +24,7 @@ def test_all_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
         "CDB_HOST": "http://test.compliancedb.com",
         "CDB_API_TOKEN": "7199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_DOCKER_IMAGE": "acme/widget:3.4",
-        "CDB_EVIDENCE_TYPE": "system_test",
+        "CDB_EVIDENCE_TYPE": "coverage",
         "CDB_CI_BUILD_URL": "https://gitlab/build/1457",
     }
     set_env_vars = {}
