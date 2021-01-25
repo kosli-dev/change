@@ -7,7 +7,6 @@ put_pipeline()            yes            yes
 create_deployment()       yes            yes
 
 
-
 Misc notes
 ==========
 
