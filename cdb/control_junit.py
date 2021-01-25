@@ -11,8 +11,8 @@ def control_junit(project_file):
     print("Publish evidence to ComplianceDB")
 
     junit_results_dir = os.getenv('CDB_TEST_RESULTS_DIR', '/data/junit/')
-
     is_compliant, message = is_compliant_tests_directory(junit_results_dir)
+
     evidence_type = os.getenv('CDB_EVIDENCE_TYPE', "junit")
     description = "JUnit results xml verified by compliancedb/cdb_controls: " + message
     build_url = os.getenv('CDB_CI_BUILD_URL', "URL_UNDEFINED")

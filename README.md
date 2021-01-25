@@ -172,7 +172,8 @@ docker run --rm --name comply \
 |------|-----|-----|
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
-| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILE | Required | The artifact sha to report this evidence against |
+| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE | Required | The artifact sha to report this evidence against |
+| CDB_TEST_RESULTS_DIR | Optional | Location of junit xml result files. Defaults to `/data/junit/` |
 | CDB_EVIDENCE_TYPE | Required | The evidence type for the results |
 | CDB_CI_BUILD_URL | Required | The URL to link to from ComplianceDB |
 
