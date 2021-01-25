@@ -3,7 +3,7 @@ put_artifact()            yes            no
 control_junit()           yes            no
 put_artifact_image()      yes            no
 put_evidence()            yes            no
-put_pipeline()            yes            no
+put_pipeline()            yes            yes
 create_deployment()       yes            yes
 
 
@@ -13,12 +13,12 @@ Misc notes
 
 create_deployment()
 -------------------
-The code uses CDB_USER_DATA but README.md originally
+1) The code uses CDB_USER_DATA but README.md originally
 contained CDB_USER_DATA_FILE. For now README.md has
 been edited to CDB_USER_DATA.
-:CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME
+2) :CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME
 o) if CDB_ARTIFACT_SHA is set it is used, and the other 2, if set, are ignored
 o) if CDB_ARTIFACT_FILENAME is set, CDB_ARTIFACT_DOCKER_IMAGE, if set, is ignored
 o) if CDB_ARTIFACT_DOCKER_IMAGE is set, it is used
-
+3) create_approval() is missing a docker-run example in README.md
 

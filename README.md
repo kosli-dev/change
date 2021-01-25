@@ -49,19 +49,6 @@ This command expects the following environment variables:
 ## Publish file-based build artifact
 
 This command creates an artifact in compliancedb based on a file.
-
-| VARIABLE | Requirement | Description |
-|------|-----|-----|
-| CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
-| CDB_API_TOKEN | Required | Your API token for ComplianceDB |
-| CDB_ARTIFACT_FILENAME | Required | The artifact filename |
-| CDB_ARTIFACT_SHA | Optional | The SHA256 for the artifact |
-| CDB_IS_COMPLIANT | Required | Whether this artifact is considered compliant from you build process |
-| CDB_ARTIFACT_GIT_URL | Required | Link to the source git commit this build was based on |
-| CDB_ARTIFACT_GIT_COMMIT | Required | The sha of the git commit that produced this build |
-| CDB_CI_BUILD_URL | Required | Link to the build in the ci system |
-| CDB_BUILD_NUMBER | Required | Build number |
-
 If you use a `CDB_ARTIFACT_FILENAME` to specify the artifact, you must mount it into the container so the openssl 
 digest can be calculated.  Alternatively, you can specify directly by setting the `CDB_ARTIFACT_SHA` variable.
 
@@ -80,6 +67,20 @@ docker run --rm --name comply \
 			--env CDB_ARTIFACT_FILENAME=/data/artifact.txt \
 	        ${IMAGE} python -m cdb.put_artifact -p /data/project.json
 ```
+
+This command expects the following environment variables:
+
+| VARIABLE | Requirement | Description |
+|------|-----|-----|
+| CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
+| CDB_API_TOKEN | Required | Your API token for ComplianceDB |
+| CDB_ARTIFACT_FILENAME | Required | The artifact filename |
+| CDB_ARTIFACT_SHA | Optional | The SHA256 for the artifact |
+| CDB_IS_COMPLIANT | Required | Whether this artifact is considered compliant from you build process |
+| CDB_ARTIFACT_GIT_URL | Required | Link to the source git commit this build was based on |
+| CDB_ARTIFACT_GIT_COMMIT | Required | The sha of the git commit that produced this build |
+| CDB_CI_BUILD_URL | Required | Link to the build in the ci system |
+| CDB_BUILD_NUMBER | Required | Build number |
 
 ## Publish docker image build artifact
 
@@ -118,6 +119,7 @@ This command expects the following environment variables:
 ## Publish generic evidence
 
 To publish a generic evidence type, you can use the `put_evidence` command:
+
 ```shell script
 docker run --rm --name comply \
         --volume ${PWD}/pipeline-master.json:/data/pipeline.json \
@@ -165,6 +167,7 @@ docker run --rm --name comply \
         ${IMAGE} python -m cdb.control_junit -p /data/pipeline.json
 ```
 
+This command expects the following environment variables:
 
 | VARIABLE | Requirement | Description |
 |------|-----|-----|
@@ -195,7 +198,6 @@ To create an approval in ComplianceDB, you can use the `create_approval` command
 
 To create a deployment in ComplianceDB, you can use the `create_deployment` command.  You can optionally provide a 
 json file with user_data if required.
-
 
 ```shell script
 echo "{'url':'https:'https://gitlab.com/compliancedb/compliancedb/-/jobs/785151532'}" > tmp/deployment_user_data.json
