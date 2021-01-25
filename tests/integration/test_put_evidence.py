@@ -31,7 +31,7 @@ def test_when_no_env_vars_raises_DockerException(capsys):
 
 
 def test_when_neither_image_nor_sha_env_var_defined_raises_DockerException(capsys):
-    env= {
+    env = {
         "CDB_EVIDENCE_TYPE": "test",
         "CDB_DESCRIPTION": "integration test",
         "CDB_CI_BUILD_URL": "integration test",
