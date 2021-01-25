@@ -133,13 +133,14 @@ docker run --rm --name comply \
         compliancedb/cdb_controls python -m cdb.put_evidence -p /data/pipeline.json
 ```
 
-This command expect the following environment variables:
+This command expects the following environment variables:
 
 | VARIABLE | Requirement | Description |
 |------|-----|-----|
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
 | CDB_ARTIFACT_DOCKER_IMAGE | Required | The docker image that evidence is provided for |
+| CDB_ARTIFACT_SHA | Optional | The SHA256 for the artifact |
 | CDB_IS_COMPLIANT | Required | Whether this artifact is considered compliant from you build process |
 | CDB_EVIDENCE_TYPE | Required | The evidence type |
 | CDB_DESCRIPTION | Required | The description for the evidence |

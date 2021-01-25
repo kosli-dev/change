@@ -1,5 +1,7 @@
 what we have done:
     put_artifact()
     control_junit()
+    put_artifact_image()
 
-put_artifact_image()
+
+put_evidence()
