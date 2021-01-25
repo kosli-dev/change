@@ -1,9 +1,0 @@
-Posting this payload:
-{
-    "artifact_sha256": "1234567890",
-    "build_url": null,
-    "description": "None",
-    "environment": "None"
-}
-To this url: https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/deployments/
-DRY RUN: Post not sent
