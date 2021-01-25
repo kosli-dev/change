@@ -7,5 +7,5 @@ Posting this payload:
     "description": "None",
     "environment": "production"
 }
-To this url: http://test.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/deployments/
+To this url: https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/deployments/
 DRY RUN: Post not sent
