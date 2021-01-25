@@ -39,7 +39,7 @@ docker run --rm --name comply \
         compliancedb/cdb_controls python -m cdb.put_pipeline -p /data/pipeline.json
 ```
 
-This command expect the following environment variables:
+This command expects the following environment variables:
 
 | VARIABLE | Requirement | Description |
 |------|-----|-----|
