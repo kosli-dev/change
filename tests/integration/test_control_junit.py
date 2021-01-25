@@ -2,7 +2,7 @@ from cdb.control_junit import control_junit
 import cdb.cdb_utils
 import docker
 from pytest import raises
-from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval
+from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval, auto_reading
 
 
 def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
@@ -35,10 +35,10 @@ def test_all_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
     verify_approval(capsys, ["out"])
 
 
-def test_no_env_vars_raises_DockerException():
+def test_no_env_vars_raises_DockerException(capsys):
     env = CDB_DRY_RUN
     set_env_vars = {}
-    with AutoEnvVars(env, set_env_vars), raises(docker.errors.DockerException):
+    with AutoEnvVars(env, set_env_vars), raises(docker.errors.DockerException), auto_reading(capsys):
         control_junit("tests/integration/test-pipefile.json")
 
 

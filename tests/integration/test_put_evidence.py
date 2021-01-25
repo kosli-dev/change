@@ -2,7 +2,7 @@ from cdb.put_evidence import put_evidence
 
 import docker
 from pytest import raises
-from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval
+from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval, auto_reading
 
 
 def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
@@ -22,13 +22,15 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
     verify_approval(capsys, ["out"])
 
 
-def test_when_no_env_vars_raises_DockerException():
+def test_when_no_env_vars_raises_DockerException(capsys):
     set_env_vars = {}
-    with AutoEnvVars(CDB_DRY_RUN, set_env_vars), raises(docker.errors.DockerException):
+    with AutoEnvVars(CDB_DRY_RUN, set_env_vars), \
+            raises(docker.errors.DockerException), \
+            auto_reading(capsys):
         put_evidence("tests/integration/test-pipefile.json")
 
 
-def test_when_neither_image_nor_sha_env_var_defined_raises_DockerException():
+def test_when_neither_image_nor_sha_env_var_defined_raises_DockerException(capsys):
     env= {
         "CDB_EVIDENCE_TYPE": "test",
         "CDB_DESCRIPTION": "integration test",
@@ -36,5 +38,7 @@ def test_when_neither_image_nor_sha_env_var_defined_raises_DockerException():
         "CDB_IS_COMPLIANT": "TRUE",
     }
     set_env_vars = {}
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), raises(docker.errors.DockerException):
+    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), \
+            raises(docker.errors.DockerException), \
+            auto_reading(capsys):
         put_evidence("tests/integration/test-pipefile.json")

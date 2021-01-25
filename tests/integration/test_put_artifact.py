@@ -1,9 +1,9 @@
 from cdb.put_artifact import put_artifact
 
-from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval
+from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval, auto_reading
 
 
-def test_all_env_vars_defined(capsys):
+def test_all_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys):
     env = {
         "CDB_HOST": "http://test.compliancedb.com",
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
@@ -22,9 +22,8 @@ def test_all_env_vars_defined(capsys):
 
 def test_CDB_ARTIFACT_FILENAME_is_missing(capsys):
     set_env_vars = {}
-    with AutoEnvVars(CDB_DRY_RUN, set_env_vars):
+    with AutoEnvVars(CDB_DRY_RUN, set_env_vars), auto_reading(capsys):
         put_artifact("tests/integration/test-pipefile.json")
-    verify_approval(capsys, ["out"])
 
 
 def test_CDB_ARTIFACT_SHA_is_UNDEFINED(capsys):
@@ -33,9 +32,8 @@ def test_CDB_ARTIFACT_SHA_is_UNDEFINED(capsys):
         "CDB_ARTIFACT_SHA": "UNDEFINED"
     }
     set_env_vars = {}
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), auto_reading(capsys):
         put_artifact("tests/integration/test-pipefile.json")
-    verify_approval(capsys, ["out"])
 
 
 def test_CDB_ARTIFACT_SHA_is_not_defined(capsys):
@@ -45,9 +43,8 @@ def test_CDB_ARTIFACT_SHA_is_not_defined(capsys):
     set_env_vars = {
         "CDB_ARTIFACT_SHA": "ccee89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     }
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), auto_reading(capsys):
         put_artifact("tests/integration/test-pipefile.json")
-    verify_approval(capsys, ["out"])
 
 
 def test_CDB_ARTIFACT_SHA_is_defined(capsys):
@@ -56,6 +53,5 @@ def test_CDB_ARTIFACT_SHA_is_defined(capsys):
         "CDB_ARTIFACT_SHA": "ccee89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     }
     set_env_vars = {}
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), auto_reading(capsys):
         put_artifact("tests/integration/test-pipefile.json")
-    verify_approval(capsys, ["out"])
