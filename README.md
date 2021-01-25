@@ -216,7 +216,7 @@ docker run --rm --name comply \
 |------|-----|-----|
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
-| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILE | Required | The artifact sha that is being deployed |
+| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME | Required | The artifact sha that is being deployed |
 | CDB_ENVIRONMENT | Required | The environment the artifact is being deployed to |
 | CDB_DESCRIPTION | Optional | A description for the deployment |
 | CDB_CI_BUILD_URL | Optional | A url for the deployment |
