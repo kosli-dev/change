@@ -5,7 +5,7 @@ from pytest import raises
 from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval
 
 
-def test_when_all_env_vars_defined_artifact_sha_comes_from_CDB_ARTIFACT_SHA(capsys):
+def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
     env = {
         "CDB_HOST": "http://test.compliancedb.com",
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
