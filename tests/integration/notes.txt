@@ -7,12 +7,14 @@ put_evidence()            yes            yes        yes
 put_pipeline()            yes            yes        yes
 create_deployment()       yes            yes        yes
 
-put_bitbucket_pr()        no             no         yes
 control_latest_release()  no             no         yes
 
 create_approval()         no             no         no
 create_release()          no             no         no  (example in Makefile)
 put_project()             no             no         no  (example in Makefile)
+
+put_bitbucket_pr()        no             no         yes (see tests/bb_integration)
+
 
 There is also put_review() but that looks unstarted.
 
