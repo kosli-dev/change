@@ -1,16 +1,21 @@
-Ensure Project - loading tests/integration/test-pipefile.json
+Command: put_pipeline
+Pipeline: tests/data/pipefile.json
+API_TOKEN: SOME_RANDOM_TOKEN
+Ensure Project - loading tests/data/pipefile.json
 Put pipeline
 Putting this payload:
 {
-    "description": "Test Pipeline Controls for ComplianceDB",
-    "name": "cdb-controls-test-pipeline",
-    "owner": "compliancedb",
+    "description": "Pipefile used in test automation",
+    "name": "test-pipefile",
+    "owner": "merkely",
     "template": [
         "artifact",
         "unit_test",
+        "integration_test",
         "coverage"
     ],
     "visibility": "public"
 }
-To this url: https://app.compliancedb.com/api/v1/projects/compliancedb/
+To this url: https://app.compliancedb.com/api/v1/projects/merkely/
 DRY RUN: Put not sent
+[32m✔ Success![0m
