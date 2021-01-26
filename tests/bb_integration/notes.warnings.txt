@@ -1,0 +1,13 @@
+
+requirements.txt has this...
+
+bitbucket-pipes-toolkit==1.6.4
+
+This pulls in cerberus.
+This causes 6 repeats of this warning:
+
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3,and in 3.9 it will stop working
+
+Upgrading to the latest bitbucket-pipes-toolkit
+(2.1.0 as the time of writing https://pypi.org/project/bitbucket-pipes-toolkit/#history)
+does not solve this.
