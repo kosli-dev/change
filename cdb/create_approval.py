@@ -19,7 +19,7 @@ def create_approval(project_config_file, env):
             response = get_artifacts_for_commit(env["host"], env["api_token"], project_data, src_commit)
             env["artifact_sha256"] = latest_artifact_for_commit(response)
             print(
-                f"Found artifact {env['artifact_sha']} as latest artifact for source commit {env['target_src_commit']}")
+                f"Found artifact {env['artifact_sha256']} as latest artifact for source commit {env['target_src_commit']}")
 
         commit_list = list_commits_between(
             repo_at(env["repo_path"]), target_commit=env["target_src_commit"], base_commit=env["base_src_commit"])
