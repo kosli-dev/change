@@ -5,8 +5,8 @@ set -eu
 # ${1} is set in the Makefile.
 # Defaults to tests/bb_integration/ (the dir name)
 # To run an individual test file...
-# $ make test_bb_integration TARGET=test_put_pipeline.py
-# which will result in ${1}==tests/bb_integration/test_put_pipeline.py
+# $ make test_bb_integration TARGET=test_bb_put_pipeline.py
+# which will result in ${1}==tests/bb_integration/test_bb_put_pipeline.py
 readonly TARGET="${1}"
 
 # Beware using --approvaltests-use-reporter='PythonNative'
