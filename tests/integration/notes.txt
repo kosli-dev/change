@@ -1,6 +1,6 @@
                           DONE           DONE
                           REQUIRED       OPTIONAL   IN-README
-put_artifact()            yes            no         yes
+put_artifact()            yes            yes        yes
 control_junit()           yes            yes        yes
 put_artifact_image()      yes            yes        yes
 put_evidence()            yes            yes        yes
@@ -29,6 +29,7 @@ been edited to CDB_USER_DATA.
 o) if CDB_ARTIFACT_SHA is set it is used, and the other 2, if set, are ignored
 o) if CDB_ARTIFACT_FILENAME is set, CDB_ARTIFACT_DOCKER_IMAGE, if set, is ignored
 o) if CDB_ARTIFACT_DOCKER_IMAGE is set, it is used
+
 3) create_approval() is missing a docker-run example in README.md
 
 
@@ -43,8 +44,8 @@ If both are provided, CDB_ARTIFACT_SHA is used, and CDB_ARTIFACT_DOCKER_IMAGE is
 create_approval()
 -----------------
 1) CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME are required ENV VARS.
-Added CDB_ARTIFACT_FILENAME to for its README.md and made these three options Required instead of Optional
-
+Added CDB_ARTIFACT_FILENAME to its README.md and made one of these three Required
+Readme says "if not given then this is retrieved from CDB" ?
 
 
 put_artifact_image()
@@ -57,7 +58,7 @@ despite the name of this command being put_artifact_image().
 control_junit()
 ---------------
 1) Using CDB_EVIDENCE_TYPE set to a dir that does not exist, eg /data/test/junit
-Dir is not checked. Results in message
+Dir is _not_ checked. Results in message
 "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites"
 
 
