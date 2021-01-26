@@ -1,4 +1,5 @@
                           REQUIRED       OPTIONAL
+create_approval()         yes
 put_artifact()            yes            no
 control_junit()           yes            no
 put_artifact_image()      yes            no
@@ -28,3 +29,9 @@ put_evidence()
 If you provide CDB_ARTIFACT_SHA, it is used.
 If you provide CDB_ARTIFACT_DOCKER_IMAGE (and not CDB_ARTIFACT_SHA) it is used.
 If both are provided, CDB_ARTIFACT_SHA is used, and CDB_ARTIFACT_DOCKER_IMAGE is ignored.
+
+
+create_approval()
+-----------------
+1) CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME are required ENV VARS.
+Added CDB_ARTIFACT_FILENAME to for its README.md and made these three options Required instead of Optional

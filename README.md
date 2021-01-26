@@ -185,7 +185,7 @@ To create an approval in ComplianceDB, you can use the `create_approval` command
 |------|-----|-----|
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
-| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE | Optional | The SHA256 for the artifact that you would like to approve, if not given then this is retrieved from CDB  |
+| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME| Required | The SHA256 for the artifact that you would like to approve, if not given then this is retrieved from CDB  |
 | CDB_BASE_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the approval |
 | CDB_TARGET_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the approval |
 | CDB_DESCRIPTION | Optional | A description for the approval |
