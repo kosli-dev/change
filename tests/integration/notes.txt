@@ -1,10 +1,21 @@
-                          REQUIRED       OPTIONAL
-put_artifact()            yes            no
-control_junit()           yes            yes
-put_artifact_image()      yes            yes
-put_evidence()            yes            yes
-put_pipeline()            yes            yes
-create_deployment()       yes            yes
+                          DONE           DONE
+                          REQUIRED       OPTIONAL   IN-README
+put_artifact()            yes            no         yes
+control_junit()           yes            yes        yes
+put_artifact_image()      yes            yes        yes
+put_evidence()            yes            yes        yes
+put_pipeline()            yes            yes        yes
+create_deployment()       yes            yes        yes
+
+put_bitbucket_pr()        no             no         yes
+control_latest_release()  no             no         yes
+
+create_release()          no             no         no
+create_approval()         no             no         no
+put_project()             no             no         no
+
+There is also put_review() but that looks unstarted.
+
 
 
 Misc notes
