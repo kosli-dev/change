@@ -230,7 +230,7 @@ To control that a given artifact is the latest release ComplianceDB, you can use
 |------|-----|-----|
 | CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
 | CDB_API_TOKEN | Required | Your API token for ComplianceDB |
-| CDB_ARTIFACT_SHA | Required | The SHA256 for the artifact  |
+| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME| Required | The SHA256 for the artifact  |
 
 This will return a non-zero exit code in case of no release found.
 
