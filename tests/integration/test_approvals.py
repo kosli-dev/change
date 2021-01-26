@@ -2,7 +2,7 @@ from cdb.create_approval import create_approval
 
 from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval
 from tests.unit.test_git import TEST_REPO_ROOT
-import os
+from os import mkdir, path
 from distutils.dir_util import copy_tree, remove_tree
 
 
@@ -19,38 +19,56 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
         create_approval("tests/integration/test-pipefile.json", env)
     verify_approval(capsys, ["out"])
 
-''' Need to be fixed: json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0).
-Maybe to use mocker.patch('cdb.cdb_utils.get_artifacts_for_commit',)
+
+#Maybe to use mocker.patch('cdb.cdb_utils.get_artifacts_for_commit',)
 def test_only_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
     # mock Docker which calculates the sha
+    mock_artifacts_for_commit ={
+        "artifacts": [
+            {
+                "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
+            }
+        ]
+    }
     env = {
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_DOCKER_IMAGE": "acme/runner:4.56",
         "CDB_BASE_SRC_COMMITISH": "production",
         "CDB_TARGET_SRC_COMMITISH": "master",
     }
-    sha = "444daef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
+    sha = "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
     set_env_vars = {'CDB_ARTIFACT_SHA': sha}
+
     with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), DirManager("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha)
+        mocker.patch('cdb.create_approval.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
         create_approval("tests/integration/test-pipefile.json", env)
     verify_approval(capsys, ["out"])
 
 
 def test_only_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
+    mock_artifacts_for_commit = {
+        "artifacts": [
+            {
+                "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
+            }
+        ]
+    }
     env = {
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_FILENAME": "some/artifact/file.txt",
         "CDB_BASE_SRC_COMMITISH": "production",
         "CDB_TARGET_SRC_COMMITISH": "master",
     }
-    sha = "444daef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
+    sha = "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
     set_env_vars = {'CDB_ARTIFACT_SHA': sha}
+
     with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), DirManager("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_file', return_value=sha)
+        mocker.patch('cdb.create_approval.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
         create_approval("tests/integration/test-pipefile.json", env)
-    verify_approval(capsys, ["out", "err"])
-'''
+    verify_approval(capsys, ["out"])
+
 
 def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
     env = {
@@ -75,8 +93,11 @@ class DirManager(object):
         self._target_dir = target_dir
 
     def __enter__(self):
-        os.mkdir(self._target_dir)
-        copy_tree(self._source_dir, self._target_dir)
+        if not path.exists(self._target_dir):
+            mkdir(self._target_dir)
+            copy_tree(self._source_dir, self._target_dir)
+        else:
+            raise Exception("FAIL. Folder '{}' already exists".format(self._target_dir))
 
     def __exit__(self, _type, _value, _traceback):
         remove_tree(self._target_dir)
