@@ -85,6 +85,22 @@ test_integration:
 		--entrypoint ./tests/integration/coverage_entrypoint.sh \
 			${IMAGE} tests/integration/${TARGET}
 
+test_bb_integration:
+	@docker rm --force $@ 2> /dev/null || true
+	@rm -rf tmp/coverage/bb_integration && mkdir -p tmp/coverage/bb_integration
+	@docker run \
+		--name $@ \
+		--interactive `# eg pdb` \
+		--tty `# for colour on terminal` \
+		--volume ${ROOT_DIR}/cdb:/app/cdb \
+		--volume ${ROOT_DIR}/bitbucket_pipe/pipe.py:/app/pipe.py \
+		--volume ${ROOT_DIR}/tests:/app/tests \
+		--volume ${ROOT_DIR}/tmp/coverage/bb_integration/htmlcov:/app/htmlcov \
+		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
+			${IMAGE_PIPE} tests/bb_integration/${TARGET}
+
+
+
 test_all_build: test_unit_build test_integration_build
 
 test_all: test_unit test_integration
