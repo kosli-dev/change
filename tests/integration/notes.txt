@@ -44,7 +44,9 @@ create_approval()
 -----------------
 1) CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME are required ENV VARS.
 Added CDB_ARTIFACT_FILENAME to for its README.md and made these three options Required instead of Optional
-=======
+
+
+
 put_artifact_image()
 --------------------
 1) CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_SHA, One must be provided.
@@ -61,4 +63,4 @@ Dir is not checked. Results in message
 
 put_artifact()
 --------------
-1)
+1) CDB_ARTIFACT_FILENAME must be defined.
