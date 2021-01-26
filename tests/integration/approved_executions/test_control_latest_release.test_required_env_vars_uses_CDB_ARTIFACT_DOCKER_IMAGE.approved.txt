@@ -1,0 +1,5 @@
+Getting SHA for docker image: acme/widget:3.4
+Calculated digest: 99cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212
+COMPLIANT: latest release 1234
+    released sha: 99cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212 
+    expected sha: 99cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212 
