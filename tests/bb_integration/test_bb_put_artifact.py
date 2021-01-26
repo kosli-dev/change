@@ -1,4 +1,3 @@
-from cdb.put_pipeline import put_pipeline
 from pipe import BitbucketPipe, schema
 
 from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval
