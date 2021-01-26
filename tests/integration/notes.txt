@@ -58,3 +58,7 @@ control_junit()
 Dir is not checked. Results in message
 "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites"
 
+
+put_artifact()
+--------------
+1)

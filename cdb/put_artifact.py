@@ -14,7 +14,7 @@ def main():
 
 
 def put_artifact(project_file):
-    # Get the SHA and Filename from string provided in CDB_ARTIFACT_DOCKER_IMAGE
+    # Get the SHA and Filename from string provided in CDB_ARTIFACT_FILENAME
     filename = os.getenv('CDB_ARTIFACT_FILENAME', "UNDEFINED")
     if filename == "UNDEFINED":
         print("Cannot find CDB_ARTIFACT_FILENAME in the environment variables")
