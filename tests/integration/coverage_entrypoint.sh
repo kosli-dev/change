@@ -5,8 +5,8 @@ set -eu
 # ${1} is set in the Makefile.
 # Defaults to tests/integration/ (the dir name)
 # To run an individual test file...
-# $ make test_integration TARGET=test_approvals.py
-# which will result in ${1}==tests/integration/test_approvals.py
+# $ make test_integration TARGET=test_create_approval.py
+# which will result in ${1}==tests/integration/test_create_approval.py
 readonly TARGET="${1}"
 
 # Beware using --approvaltests-use-reporter='PythonNative'
