@@ -34,7 +34,7 @@ def test_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
 
 
 def test_all_env_vars(capsys, mocker):
-    # Uses CDB_EVIDENCE_TYPE == /data/test/junit
+    # Uses CDB_TEST_RESULTS_DIR == /data/test/junit
     # This dir does not exist, but is not checked. Results in message
     # "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites"
     env = {

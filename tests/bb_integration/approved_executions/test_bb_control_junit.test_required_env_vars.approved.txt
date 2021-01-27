@@ -1,0 +1,19 @@
+Command: control_junit
+Pipeline: tests/data/pipefile.json
+API_TOKEN: SOME_RANDOM_TOKEN
+Publish evidence to ComplianceDB
+{'evidence_type': 'junit', 'contents': {'is_compliant': True, 'url': 'https://bitbucket.org/None/None/addon/pipelines/home#!/results/127', 'description': 'JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites'}}
+Docker image digest found from environment variable
+IMAGE DIGEST: aacdaef69c676c2466571d3211110d559ccc2032b258fc5e73f99a103db462ee
+Putting this payload:
+{
+    "contents": {
+        "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites",
+        "is_compliant": true,
+        "url": "https://bitbucket.org/None/None/addon/pipelines/home#!/results/127"
+    },
+    "evidence_type": "junit"
+}
+To this url: https://app.compliancedb.com/api/v1/projects/merkely/test-pipefile/artifacts/aacdaef69c676c2466571d3211110d559ccc2032b258fc5e73f99a103db462ee
+DRY RUN: Put not sent
+[32m✔ Success![0m
