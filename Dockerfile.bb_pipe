@@ -4,4 +4,7 @@ COPY bitbucket_pipe/pipe.py .
 COPY bitbucket_pipe/requirements.txt .
 RUN pip install -r requirements.txt
 
+ARG IMAGE_COMMIT_SHA
+ENV IMAGE_SHA=${IMAGE_COMMIT_SHA}
+
 ENTRYPOINT ["python3", "/app/pipe.py"]

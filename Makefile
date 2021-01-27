@@ -1,6 +1,7 @@
 APP    := cdb_controls
 NAME   := ${APP}
-TAG    := $$(git log -1 --pretty=%h)
+TAG    := $$(git log -1 --pretty=%h) # eg 5d72e2b
+SHA    := $$(git log -1 --pretty=%H) # eg 5d72e2b158be269390d4b3931ed5d0febd784fb5
 
 IMAGE  := compliancedb/${APP}
 IMAGE_PIPE := compliancedb/${APP}-bbpipe
@@ -25,13 +26,19 @@ list:
 
 build:
 	@echo ${IMAGE}
-	@docker build -f Dockerfile -t ${IMAGE} .
+	@docker build \
+		--build-arg IMAGE_COMMIT_SHA=${SHA} \
+		--file Dockerfile \
+		--tag ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
 
 
 build_bb:
 	@echo ${IMAGE_PIPE}
-	@docker build -f Dockerfile.bb_pipe -t ${IMAGE_PIPE} .
+	@docker build \
+		--build-arg IMAGE_COMMIT_SHA=${SHA} \
+		--file Dockerfile.bb_pipe \
+		--tag ${IMAGE_PIPE} .
 
 # Github does not support volume mounts so we need to copy the test output from the container
 # and capture the test exit value
