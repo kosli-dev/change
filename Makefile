@@ -29,7 +29,7 @@ build:
 	@docker tag ${IMAGE} ${LATEST}
 
 
-build_pipe:
+build_bb:
 	@echo ${IMAGE_PIPE}
 	@docker build -f Dockerfile.bb_pipe -t ${IMAGE_PIPE} .
 
@@ -85,6 +85,15 @@ test_integration:
 		--entrypoint ./tests/integration/coverage_entrypoint.sh \
 			${IMAGE} tests/integration/${TARGET}
 
+test_bb_integration_build: build_bb
+	@docker rm --force $@ 2> /dev/null || true
+	@rm -rf tmp/coverage/bb_integration && mkdir -p tmp/coverage/bb_integration
+	@docker run \
+		--name $@ \
+		--tty `# for colour on terminal` \
+		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
+			${IMAGE_PIPE} tests/bb_integration/${TARGET}
+
 test_bb_integration:
 	@docker rm --force $@ 2> /dev/null || true
 	@rm -rf tmp/coverage/bb_integration && mkdir -p tmp/coverage/bb_integration
@@ -101,9 +110,9 @@ test_bb_integration:
 
 
 
-test_all_build: test_unit_build test_integration_build
+test_all_build: test_unit_build test_integration_build test_bb_integration_build
 
-test_all: test_unit test_integration
+test_all: test_unit test_integration test_bb_integration
 
 pytest_help:
 	@docker run \
