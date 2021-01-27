@@ -1,0 +1,15 @@
+Publish evidence to ComplianceDB
+{'evidence_type': 'coverage', 'contents': {'is_compliant': False, 'url': 'https://gitlab/build/217', 'description': 'JUnit results xml verified by compliancedb/cdb_controls: Tests contain failures'}}
+Docker image digest found from environment variable
+IMAGE DIGEST: b7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef
+Putting this payload:
+{
+    "contents": {
+        "description": "JUnit results xml verified by compliancedb/cdb_controls: Tests contain failures",
+        "is_compliant": false,
+        "url": "https://gitlab/build/217"
+    },
+    "evidence_type": "coverage"
+}
+To this url: http://test.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/b7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef
+DRY RUN: Put not sent
