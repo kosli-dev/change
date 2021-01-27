@@ -7,9 +7,9 @@ put_evidence()            yes            yes        yes
 put_pipeline()            yes            yes        yes
 create_deployment()       yes            yes        yes
 
-control_latest_release()  no             no         yes
+control_latest_release()  yes            yes         yes
 
-create_approval()         no             no         no
+create_approval()         yes            yes        yes
 create_release()          no             no         no  (example in Makefile)
 put_project()             no             no         no  (example in Makefile)
 
