@@ -25,10 +25,9 @@ class AutoEnvVars(object):
         return self
 
     def _checked_new_vars_on_enter(self):
-        already_exist = {}
-        for name in self._new_vars_on_enter:
-            if name in os.environ.keys():
-                already_exist[name] = os.environ[name]
+        already_exist = {name: value
+                         for name, value in os.environ.items()
+                         if name in self._new_vars_on_enter.keys()}
         if already_exist != {}:
             raise AlreadyExistingEnvVar(already_exist)
         else:
