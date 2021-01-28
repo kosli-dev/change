@@ -12,8 +12,8 @@ class AutoEnvVars(object):
             new_vars_on_enter: A dictionary of new env-vars to set on entry and auto-unset on exit.
             expected_new_vars_on_exit: A dictionary of (different) env-vars we expect to be newly set before exit.
         Raises:
-            AlreadyExistingEnvVar: if, on enter, any new_vars_on_enter key is an already existing env-var.
-            UnexpectedEnvVar: if, on exit, the newly set env-vars do not match expected_new_vars_on_exit.
+            AlreadyExistingEnvVarError: if, on enter, any new_vars_on_enter key is an already existing env-var.
+            UnexpectedEnvVarError: if, on exit, the newly set env-vars do not match expected_new_vars_on_exit.
         """
         self._new_vars_on_enter = new_vars_on_enter
         self._expected_new_vars_on_exit = expected_new_vars_on_exit
@@ -29,7 +29,7 @@ class AutoEnvVars(object):
                          for name, value in os.environ.items()
                          if name in self._new_vars_on_enter.keys()}
         if already_exist != {}:
-            raise AlreadyExistingEnvVar(already_exist)
+            raise AlreadyExistingEnvVarError(already_exist)
         else:
             return self._new_vars_on_enter
 
@@ -38,7 +38,7 @@ class AutoEnvVars(object):
         self._restore_original_env_vars()
         expected = self._expected_new_vars_on_exit
         if expected != actual:
-            raise UnexpectedEnvVar(expected, actual)
+            raise UnexpectedEnvVarError(expected, actual)
 
     def _restore_original_env_vars(self):
         os.environ.clear()
@@ -57,7 +57,7 @@ class AutoEnvVars(object):
         return name in self._new_vars_on_enter.keys() and self._new_vars_on_enter[name] != value
 
 
-class AlreadyExistingEnvVar(Exception):
+class AlreadyExistingEnvVarError(Exception):
     def __init__(self, vars):
         self._vars = vars
 
@@ -65,7 +65,7 @@ class AlreadyExistingEnvVar(Exception):
         return self._vars
 
 
-class UnexpectedEnvVar(Exception):
+class UnexpectedEnvVarError(Exception):
     def __init__(self, expected, actual):
         self._expected = expected
         self._actual = actual

@@ -1,5 +1,5 @@
 import os
-from tests.utils import AutoEnvVars, UnexpectedEnvVar, AlreadyExistingEnvVar
+from tests.utils import AutoEnvVars, UnexpectedEnvVarError, AlreadyExistingEnvVarError
 
 from pytest import raises
 
@@ -20,7 +20,7 @@ def test_arg1_env_vars_that_already_exist_RAISE():
     os.environ["EXISTING_ENV_VAR"] = "Wonderland"
 
     env = {"EXISTING_ENV_VAR": "Adventures"}
-    with raises(AlreadyExistingEnvVar) as exc:
+    with raises(AlreadyExistingEnvVarError) as exc:
         with AutoEnvVars(env):
             pass
 
@@ -43,7 +43,7 @@ def test_arg2_must_specify_ALL_new_env_vars_set_inside_the_with_statement():
 
 
 def test_arg2_with_NO_entry_for_new_env_var_RAISES():
-    with raises(UnexpectedEnvVar) as exc:
+    with raises(UnexpectedEnvVarError) as exc:
         with AutoEnvVars({}, {"IN_ARG2": "wibble"}):
             os.environ["ENV_VAR_NOT_IN_ARG2"] = "XXXX"
             os.environ["IN_ARG2"] = "wibble"
@@ -53,7 +53,7 @@ def test_arg2_with_NO_entry_for_new_env_var_RAISES():
 
 
 def test_arg2_with_entry_for_new_env_which_is_NOT_set_RAISES():
-    with raises(UnexpectedEnvVar) as exc:
+    with raises(UnexpectedEnvVarError) as exc:
         with AutoEnvVars({}, {"ENV_VAR": "bye"}):
             pass
 
@@ -62,7 +62,7 @@ def test_arg2_with_entry_for_new_env_which_is_NOT_set_RAISES():
 
 
 def test_arg2_with_entry_for_new_env_var_which_is_set_to_a_DIFFERENT_value_RAISES():
-    with raises(UnexpectedEnvVar) as exc:
+    with raises(UnexpectedEnvVarError) as exc:
         with AutoEnvVars({}, {"ENV_VAR": "bye"}):
             os.environ["ENV_VAR"] = "hello"
 
