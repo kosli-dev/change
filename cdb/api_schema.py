@@ -4,6 +4,10 @@ class ApiSchema:
         return host + '/api/v1/projects/' + project_data["owner"] + "/"
 
     @staticmethod
+    def url_for_pipelines(host, merkelypipe_data):
+        return ApiSchema.url_for_owner_projects(host, merkelypipe_data)
+
+    @staticmethod
     def url_for_project(host, project_data):
         return ApiSchema.url_for_owner_projects(host, project_data) + project_data["name"]
 

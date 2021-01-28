@@ -61,8 +61,7 @@ test_unit:
 		--name $@ \
 		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
-		--volume ${ROOT_DIR}/cdb:/app/cdb \
-		--volume ${ROOT_DIR}/tests:/app/tests \
+		--volume ${ROOT_DIR}:/app \
 		--volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
