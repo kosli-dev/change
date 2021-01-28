@@ -121,7 +121,6 @@ test_all: test_unit test_integration test_bb_integration
 
 pytest_help:
 	@docker run \
-		--name pytest_help \
 		--entrypoint="" \
 		--rm \
 		${IMAGE} \
@@ -175,7 +174,7 @@ branch:
 	@echo PROJFILE is ${PROJFILE}
 
 put_project:
-	docker run --rm --name comply \
+	docker run --rm \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
@@ -189,7 +188,7 @@ merkely_declare_pipeline:
 			${IMAGE}
 
 put_artifact_image:
-	docker run --rm --name comply \
+	docker run --rm \
  			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--env CDB_HOST=${CDB_HOST} \
@@ -203,7 +202,7 @@ put_artifact_image:
 	        ${IMAGE} python -m cdb.put_artifact_image -p /data/project.json
 
 publish_test_results:
-	docker run --rm --name comply \
+	docker run --rm \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--env CDB_HOST=https://app.compliancedb.com \
@@ -218,7 +217,7 @@ publish_test_results:
 
 
 control_and_publish_junit_results:
-	docker run --rm --name comply \
+	docker run --rm \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			--volume ${CDB_TEST_RESULTS}:/data/junit/junit.xml \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
@@ -231,7 +230,7 @@ control_and_publish_junit_results:
 
 
 publish_evidence:
-	docker run --rm --name comply \
+	docker run --rm \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--env CDB_HOST=${CDB_HOST} \
@@ -250,7 +249,7 @@ publish_release:
 
 create_release:
 	# Always release from project-master.json project
-	docker run --rm --name comply \
+	docker run --rm \
 			--volume ${PWD}/project-master.json:/data/project.json \
 			--volume ${PWD}:/src \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
@@ -265,7 +264,7 @@ create_release:
 
 control_latest_release:
 	# Always release from project-master.json project
-	docker run --rm --name comply \
+	docker run --rm \
 			--volume ${PWD}/project-master.json:/data/project.json \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
@@ -274,7 +273,7 @@ control_latest_release:
 
 
 create_deployment:
-	docker run --rm --name comply \
+	docker run --rm \
 			--volume ${PWD}/project-master.json:/data/project.json \
 			--volume ${PWD}:/src \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
@@ -289,7 +288,7 @@ create_deployment:
 
 ## Test dry runs
 dry_run_put_artifact:
-	docker run --rm --name comply \
+	docker run --rm \
  			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--volume=${PWD}/Dockerfile:/data/artifact.txt \
