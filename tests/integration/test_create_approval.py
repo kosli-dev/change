@@ -14,7 +14,7 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
         "CDB_TARGET_SRC_COMMITISH": "master",
     }
     set_env_vars = {}
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), DirManager("/test_src", "/src"):
+    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), AutoDirCopier("/test_src", "/src"):
         create_approval("tests/integration/test-pipefile.json", env)
     verify_approval(capsys, ["out"])
 
@@ -32,7 +32,7 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
     }
     set_env_vars = {'CDB_ARTIFACT_SHA': sha}
 
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), DirManager("/test_src", "/src"):
+    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), AutoDirCopier("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha)
         mocker.patch('cdb.create_approval.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
         create_approval("tests/integration/test-pipefile.json", env)
@@ -52,7 +52,7 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
     }
     set_env_vars = {'CDB_ARTIFACT_SHA': sha}
 
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), DirManager("/test_src", "/src"):
+    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), AutoDirCopier("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_file', return_value=sha)
         mocker.patch('cdb.create_approval.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
         create_approval("tests/integration/test-pipefile.json", env)
@@ -76,17 +76,18 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
     verify_approval(capsys, ["out"])
 
 
-class DirManager(object):
+class AutoDirCopier(object):
     def __init__(self, source_dir, target_dir):
+        if not path.isdir(source_dir):
+            raise ValueError("source dir '{} does not exist".format(source_dir))
+        if path.exists(target_dir):
+            raise ValueError("target dir '{}' already exists".format(target_dir))
         self._source_dir = source_dir
         self._target_dir = target_dir
 
     def __enter__(self):
-        if not path.exists(self._target_dir):
-            mkdir(self._target_dir)
-            copy_tree(self._source_dir, self._target_dir)
-        else:
-            raise Exception("FAIL. Folder '{}' already exists".format(self._target_dir))
+        mkdir(self._target_dir)
+        copy_tree(self._source_dir, self._target_dir)
 
     def __exit__(self, _type, _value, _traceback):
         remove_tree(self._target_dir)
