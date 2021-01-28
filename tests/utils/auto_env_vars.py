@@ -47,11 +47,9 @@ class AutoEnvVars(object):
             os.environ[name] = value
 
     def _actual_new_vars(self):
-        result = {}
-        for (name, value) in os.environ.items():
-            if self._is_new(name) or self._has_changed(name, value):
-                result[name] = value
-        return result
+        return {name: value
+                for name, value in os.environ.items()
+                if self._is_new(name) or self._has_changed(name, value)}
 
     def _is_new(self, name):
         return not name in self._original_env_vars.keys() and not name in self._new_vars_on_enter.keys()
