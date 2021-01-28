@@ -1,6 +1,6 @@
 from cdb.create_release import create_release
 
-from tests.utils import AutoEnvVars, ScopedDirCopier, CDB_DRY_RUN, verify_approval
+from tests.utils import ScopedEnvVars, ScopedDirCopier, CDB_DRY_RUN, verify_approval
 from tests.unit.test_git import TEST_REPO_ROOT
 
 
@@ -12,7 +12,7 @@ def test_required_env_vars_and_CDB_ARTIFACT_SHA_is_none(capsys):
         "CDB_TARGET_SRC_COMMITISH": "master",
     }
     set_env_vars = {}
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), ScopedDirCopier("/test_src", "/src"):
+    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), ScopedDirCopier("/test_src", "/src"):
         create_release("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -29,7 +29,7 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
         "CDB_TARGET_SRC_COMMITISH": "master",
     }
     set_env_vars = {"CDB_ARTIFACT_SHA": sha}
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), ScopedDirCopier("/test_src", "/src"):
+    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), ScopedDirCopier("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha)
         mocker.patch('cdb.create_release.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
         create_release("tests/integration/test-pipefile.json")
@@ -48,7 +48,7 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
         "CDB_TARGET_SRC_COMMITISH": "master",
     }
     set_env_vars = {"CDB_ARTIFACT_SHA": sha}
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), ScopedDirCopier("/test_src", "/src"):
+    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), ScopedDirCopier("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_file', return_value=sha)
         mocker.patch('cdb.create_release.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
         create_release("tests/integration/test-pipefile.json")
@@ -66,6 +66,6 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
         "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,  # optional
     }
     set_env_vars = {}
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
         create_release("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])

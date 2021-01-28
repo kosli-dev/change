@@ -5,7 +5,7 @@ import os
 CDB_DRY_RUN = {"CDB_DRY_RUN": "TRUE"}
 
 
-class AutoEnvVars(object):
+class ScopedEnvVars(object):
     def __init__(self, new_vars_on_enter, expected_new_vars_on_exit={}):
         """
         Args:
