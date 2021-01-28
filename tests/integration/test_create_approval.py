@@ -1,9 +1,7 @@
 from cdb.create_approval import create_approval
 
-from tests.utils import AutoEnvVars, CDB_DRY_RUN, verify_approval
+from tests.utils import AutoEnvVars, AutoDirCopier, CDB_DRY_RUN, verify_approval
 from tests.unit.test_git import TEST_REPO_ROOT
-from os import mkdir, path
-from distutils.dir_util import copy_tree, remove_tree
 
 
 def test_only_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
@@ -74,20 +72,3 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
     with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
         create_approval("tests/integration/test-pipefile.json", env)
     verify_approval(capsys, ["out"])
-
-
-class AutoDirCopier(object):
-    def __init__(self, source_dir, target_dir):
-        if not path.isdir(source_dir):
-            raise ValueError("source dir '{} does not exist".format(source_dir))
-        if path.exists(target_dir):
-            raise ValueError("target dir '{}' already exists".format(target_dir))
-        self._source_dir = source_dir
-        self._target_dir = target_dir
-
-    def __enter__(self):
-        mkdir(self._target_dir)
-        copy_tree(self._source_dir, self._target_dir)
-
-    def __exit__(self, _type, _value, _traceback):
-        remove_tree(self._target_dir)
