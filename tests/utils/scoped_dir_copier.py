@@ -2,7 +2,7 @@ from os import mkdir, path
 from distutils.dir_util import copy_tree, remove_tree
 
 
-class AutoDirCopier(object):
+class ScopedDirCopier(object):
     def __init__(self, source_dir, target_dir):
         if not path.isdir(source_dir):
             raise ValueError("source dir '{} does not exist".format(source_dir))
