@@ -18,9 +18,11 @@ ENV IMAGE_SHA=${IMAGE_COMMIT_SHA}
 
 COPY cdb/ cdb/
 COPY tests/ tests/
+COPY main.py .
+COPY command_processor.py .
 
 ADD tests/data/test_source_repo.tar.gz /
 
 ENV PYTHONPATH="/app"
 ENTRYPOINT [""]
-CMD ["python", "server.py"]
+CMD ["python", "main.py"]

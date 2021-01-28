@@ -182,6 +182,13 @@ put_project:
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			${IMAGE} python -m cdb.put_project -p /data/project.json
 
+merkely_declare_pipeline:
+	docker run --rm \
+			--volume ${PWD}/${PROJFILE}:/Merkelypipe.json \
+			--env MERKELY_COMMAND=declare_pipeline \
+			--env MERKELY_API_TOKEN=${CDB_API_TOKEN} \
+			${IMAGE}
+
 put_artifact_image:
 	docker run --rm --name comply \
  			--volume ${PWD}/${PROJFILE}:/data/project.json \

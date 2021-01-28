@@ -57,7 +57,7 @@ jobs:
       run: |
         export SHA7=$(git log -1 --pretty=%h)
         export CDB_ARTIFACT_DOCKER_IMAGE=compliancedb/cdb_controls:sha-${SHA7}
-        make branch put_project put_artifact_image
+        make branch merkely_declare_pipeline put_artifact_image
 
     - name: Create the deployment in ComplianceDB
       env:
