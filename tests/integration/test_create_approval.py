@@ -7,7 +7,6 @@ from distutils.dir_util import copy_tree, remove_tree
 
 
 def test_only_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
-    # Mock openssl which calculates the sha
     env = {
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_SHA": "ttcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
@@ -15,20 +14,15 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
         "CDB_TARGET_SRC_COMMITISH": "master",
     }
     set_env_vars = {}
-    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), DirManager("/test_src","/src"):
+    with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), DirManager("/test_src", "/src"):
         create_approval("tests/integration/test-pipefile.json", env)
     verify_approval(capsys, ["out"])
 
 
-#Maybe to use mocker.patch('cdb.cdb_utils.get_artifacts_for_commit',)
 def test_only_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
-    # mock Docker which calculates the sha
+    sha = "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
     mock_artifacts_for_commit ={
-        "artifacts": [
-            {
-                "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
-            }
-        ]
+        "artifacts": [ {"sha256": sha} ]
     }
     env = {
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
@@ -36,7 +30,6 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
         "CDB_BASE_SRC_COMMITISH": "production",
         "CDB_TARGET_SRC_COMMITISH": "master",
     }
-    sha = "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
     set_env_vars = {'CDB_ARTIFACT_SHA': sha}
 
     with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), DirManager("/test_src", "/src"):
@@ -47,12 +40,9 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
 
 
 def test_only_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
+    sha = "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
     mock_artifacts_for_commit = {
-        "artifacts": [
-            {
-                "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
-            }
-        ]
+        "artifacts": [ {"sha256": sha} ]
     }
     env = {
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
@@ -60,7 +50,6 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
         "CDB_BASE_SRC_COMMITISH": "production",
         "CDB_TARGET_SRC_COMMITISH": "master",
     }
-    sha = "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0"
     set_env_vars = {'CDB_ARTIFACT_SHA': sha}
 
     with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), DirManager("/test_src", "/src"):
@@ -77,9 +66,9 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
         "CDB_BASE_SRC_COMMITISH": "production",
         "CDB_TARGET_SRC_COMMITISH": "master",
         "CDB_HOST": "http://test.compliancedb.com",  # optional
-        "CDB_DESCRIPTION": "Description", #optional
-        "CDB_IS_APPROVED_EXTERNALLY": "FALSE", #optional
-        "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT, #optional
+        "CDB_DESCRIPTION": "Description",  # optional
+        "CDB_IS_APPROVED_EXTERNALLY": "FALSE",  # optional
+        "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,  # optional
     }
     set_env_vars = {}
     with AutoEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
