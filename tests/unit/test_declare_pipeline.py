@@ -10,6 +10,16 @@ docker run \
         --volume ${PWD}/${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
         merkely/change
 
+
+Possible negative test cases:
+
+File not found
+File not valid json
+File has key "owner"
+File "owner" value not string
+Pipe is a directory not a file (volume mount issue)
+api token env variable not set
+api token empty
 """
 
 
