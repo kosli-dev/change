@@ -2,7 +2,7 @@ from os import path, remove
 from shutil import copyfile
 
 
-class AutoFileCopier(object):
+class ScopedFileCopier(object):
     def __init__(self, source_file, target_file):
         if not path.isfile(source_file):
             raise ValueError("source file '{} does not exist".format(source_file))

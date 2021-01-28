@@ -26,8 +26,7 @@ api token empty
 # command processor test
 
 import command_processor
-from tests.utils import verify_approval, AutoEnvVars, CDB_DRY_RUN
-from tests.utils.auto_file_copier import AutoFileCopier
+from tests.utils import verify_approval, AutoEnvVars, ScopedFileCopier, CDB_DRY_RUN
 
 """
 class Command:
@@ -50,7 +49,7 @@ def test_command_processor_declare_pipeline_green(capsys):
         "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
     }
 
-    with AutoEnvVars(CDB_DRY_RUN), AutoFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
+    with AutoEnvVars(CDB_DRY_RUN), ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
         status_code = command_processor.execute(env)
 
     assert status_code == 0
