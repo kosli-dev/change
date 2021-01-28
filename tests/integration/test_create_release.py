@@ -18,7 +18,7 @@ def test_required_env_vars_and_CDB_ARTIFACT_SHA_is_none(capsys):
 
 
 def test_only_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
-    sha = "ttcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
+    sha = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
     mock_artifacts_for_commit = {
         "artifacts": [{"sha256": sha}]
     }
@@ -37,7 +37,7 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
 
 
 def test_only_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
-    sha = "ttcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
+    sha = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
     mock_artifacts_for_commit = {
         "artifacts": [{"sha256": sha}]
     }
@@ -58,7 +58,7 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
 def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
     env = {
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "CDB_ARTIFACT_SHA": "ttcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212", # optional
+        "CDB_ARTIFACT_SHA": "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",  # optional
         "CDB_BASE_SRC_COMMITISH": "production",
         "CDB_TARGET_SRC_COMMITISH": "master",
         "CDB_HOST": "http://test.compliancedb.com",  # optional
