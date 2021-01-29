@@ -51,7 +51,6 @@ test_unit:
 	@rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
 	@docker run \
 		--name $@ \
-		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/tests:/app/tests \
@@ -64,7 +63,6 @@ test_integration:
 	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
 	@docker run \
 		--name $@ \
-		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/tests:/app/tests \
@@ -77,7 +75,6 @@ test_bb_integration:
 	@rm -rf tmp/coverage/bb_integration && mkdir -p tmp/coverage/bb_integration
 	@docker run \
 		--name $@ \
-		--interactive `# eg pdb` \
 		--tty `# for colour on terminal` \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/bitbucket_pipe/pipe.py:/app/pipe.py \
