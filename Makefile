@@ -40,19 +40,11 @@ build_bb:
 		--file Dockerfile.bb_pipe \
 		--tag ${IMAGE_PIPE} .
 
-# Github does not support volume mounts so we need to copy the test output from the container
-# and capture the test exit value
-test_unit_build: build
-	@docker rm --force $@ 2> /dev/null || true
-	@rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
-	@docker run \
-		--name $@ \
-		--tty `# for colour on terminal` \
-		--entrypoint ./tests/unit/coverage_entrypoint.sh \
-		${IMAGE} tests/unit/${TARGET} ; \
-	e=$$?; \
-	docker cp $@:/app/htmlcov/ tmp/coverage/unit; \
-	exit $$e
+test_all: test_unit test_integration test_bb_integration
+test_all_build: test_unit_build test_integration_build test_bb_integration_build
+test_unit_build: build test_unit
+test_integration_build: build test_integration
+test_bb_integration_build: build_bb test_bb_integration
 
 test_unit:
 	@docker rm --force 2> /dev/null $@ || true
@@ -67,18 +59,6 @@ test_unit:
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
 
-test_integration_build: build
-	@docker rm --force $@ 2> /dev/null || true
-	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
-	@docker run \
-		--name $@ \
-		--tty `# for colour on terminal` \
-		--entrypoint ./tests/integration/coverage_entrypoint.sh \
-		${IMAGE} tests/integration/${TARGET} ; \
-	e=$$?; \
-	docker cp $@:/app/htmlcov/ tmp/coverage/integration; \
-	exit $$e
-
 test_integration:
 	@docker rm --force $@ 2> /dev/null || true
 	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
@@ -91,15 +71,6 @@ test_integration:
 		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/integration/coverage_entrypoint.sh \
 			${IMAGE} tests/integration/${TARGET}
-
-test_bb_integration_build: build_bb
-	@docker rm --force $@ 2> /dev/null || true
-	@rm -rf tmp/coverage/bb_integration && mkdir -p tmp/coverage/bb_integration
-	@docker run \
-		--name $@ \
-		--tty `# for colour on terminal` \
-		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
-			${IMAGE_PIPE} tests/bb_integration/${TARGET}
 
 test_bb_integration:
 	@docker rm --force $@ 2> /dev/null || true
@@ -114,12 +85,6 @@ test_bb_integration:
 		--volume ${ROOT_DIR}/tmp/coverage/bb_integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
 			${IMAGE_PIPE} tests/bb_integration/${TARGET}
-
-
-
-test_all_build: test_unit_build test_integration_build test_bb_integration_build
-
-test_all: test_unit test_integration test_bb_integration
 
 pytest_help:
 	@docker run \
