@@ -22,8 +22,7 @@ class ScopedEnvVars(object):
 
     def __enter__(self):
         self._original_env_vars = copy.deepcopy(os.environ)
-        for (name, value) in self._checked_new_vars_on_enter().items():
-            os.environ[name] = value
+        os.environ.update(self._checked_new_vars_on_enter())
         return self
 
     def _checked_new_vars_on_enter(self):
@@ -44,8 +43,7 @@ class ScopedEnvVars(object):
 
     def _restore_original_env_vars(self):
         os.environ.clear()
-        for (name, value) in self._original_env_vars.items():
-            os.environ[name] = value
+        os.environ.update(self._original_env_vars)
 
     def _actual_new_vars(self):
         return {name: value
