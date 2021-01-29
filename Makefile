@@ -18,6 +18,17 @@ IMAGES := $(shell docker image ls --format '{{.Repository}}:{{.Tag}}' $(NAME) | 
 
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
+ifeq ($(shell ${CI}),true)
+	DOCKER_RUN_TTY=''
+	DOCKER_RUN_INTERACTIVE=''
+else
+	# colour on terminal needs tty
+	DOCKER_RUN_TTY=--tty
+	# pdb needs interactive
+	DOCKER_RUN_INTERACTIVE=--interactive
+endif
+
+
 # list the targets: from https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
 .PHONY: list
 list:
@@ -51,6 +62,8 @@ test_unit:
 	@rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
 	@docker run \
 		--name $@ \
+		${DOCKER_RUN_TTY} \
+		${DOCKER_RUN_INTERACTIVE} \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/tests:/app/tests \
 		--volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
@@ -62,6 +75,8 @@ test_integration:
 	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
 	@docker run \
 		--name $@ \
+		${DOCKER_RUN_TTY} \
+		${DOCKER_RUN_INTERACTIVE} \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/tests:/app/tests \
 		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
@@ -73,6 +88,8 @@ test_bb_integration:
 	@rm -rf tmp/coverage/bb_integration && mkdir -p tmp/coverage/bb_integration
 	@docker run \
 		--name $@ \
+		${DOCKER_RUN_TTY} \
+		${DOCKER_RUN_INTERACTIVE} \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/bitbucket_pipe/pipe.py:/app/pipe.py \
 		--volume ${ROOT_DIR}/tests:/app/tests \
