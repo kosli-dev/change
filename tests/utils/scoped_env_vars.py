@@ -6,7 +6,7 @@ CDB_DRY_RUN = {"CDB_DRY_RUN": "TRUE"}
 
 
 class ScopedEnvVars(object):
-    def __init__(self, new_vars_on_enter, expected_new_vars_on_exit={}):
+    def __init__(self, new_vars_on_enter, expected_new_vars_on_exit=None):
         """
         Args:
             new_vars_on_enter: A dictionary of new env-vars to set on entry and auto-unset on exit.
@@ -15,6 +15,8 @@ class ScopedEnvVars(object):
             AlreadyExistingEnvVarError: if, on enter, any new_vars_on_enter key is an already existing env-var.
             UnexpectedEnvVarError: if, on exit, the newly set env-vars do not match expected_new_vars_on_exit.
         """
+        if expected_new_vars_on_exit is None:
+            expected_new_vars_on_exit = {}
         self._new_vars_on_enter = new_vars_on_enter
         self._expected_new_vars_on_exit = expected_new_vars_on_exit
 
