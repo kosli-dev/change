@@ -18,9 +18,10 @@ IMAGES := $(shell docker image ls --format '{{.Repository}}:{{.Tag}}' $(NAME) | 
 
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-ifeq ($(shell ${CI}),true)
-	DOCKER_RUN_TTY=''
-	DOCKER_RUN_INTERACTIVE=''
+ifeq ($(CI),true)
+	# no tty on CI
+	DOCKER_RUN_TTY=
+	DOCKER_RUN_INTERACTIVE=
 else
 	# colour on terminal needs tty
 	DOCKER_RUN_TTY=--tty
