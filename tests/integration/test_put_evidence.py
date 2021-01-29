@@ -2,7 +2,7 @@ from cdb.put_evidence import put_evidence
 
 import docker
 from pytest import raises
-from tests.utils import ScopedEnvVars, CDB_DRY_RUN, verify_approval, auto_reading
+from tests.utils import ScopedEnvVars, CDB_DRY_RUN, verify_approval, silent
 
 
 def test_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
@@ -88,5 +88,5 @@ def test_neither_image_nor_sha_env_var_defined_raises_DockerException(capsys):
 
     with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), \
             raises(docker.errors.DockerException), \
-            auto_reading(capsys):
+            silent(capsys):
         put_evidence("tests/integration/test-pipefile.json")

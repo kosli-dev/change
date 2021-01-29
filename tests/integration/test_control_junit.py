@@ -2,7 +2,7 @@ from cdb.control_junit import control_junit
 import docker
 
 from pytest import raises
-from tests.utils import ScopedEnvVars, CDB_DRY_RUN, verify_approval, auto_reading
+from tests.utils import ScopedEnvVars, CDB_DRY_RUN, verify_approval, silent
 
 
 def test_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
@@ -72,7 +72,7 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR(capsys):
 def test_no_env_vars_raises_DockerException(capsys):
     env = CDB_DRY_RUN
     set_env_vars = {}
-    with ScopedEnvVars(env, set_env_vars), raises(docker.errors.DockerException), auto_reading(capsys):
+    with ScopedEnvVars(env, set_env_vars), raises(docker.errors.DockerException), silent(capsys):
         control_junit("tests/integration/test-pipefile.json")
 
 
