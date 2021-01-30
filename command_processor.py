@@ -7,9 +7,9 @@ def execute(context):
         return get_env(context, name)
     command = env("MERKELY_COMMAND")
     print("MERKELY_COMMAND={}".format(command))
-    merkleypipe_path = "/Merkelypipe.json"
-    with open(merkleypipe_path) as merkelypipe_file:
-        merkelypipe = load_merkelypipe(merkelypipe_file)
+    MERKELYPIPE_PATH = "/Merkelypipe.json"
+    with open(MERKELYPIPE_PATH) as file:
+        merkelypipe = load_merkelypipe(file)
         api_token = env('MERKELY_API_TOKEN')
         host = "https://app.compliancedb.com"
         if command == "declare_pipeline":
