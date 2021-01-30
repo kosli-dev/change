@@ -8,6 +8,7 @@ Putting this payload:
     "description": "Created by build 23",
     "filename": "/coverage.txt",
     "git_commit": "abc50c8a53f79974d615df335669b59fb56a4ed3",
+    "is_compliant": true,
     "sha256": "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
 }
 To this url: https://app.compliancedb.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/

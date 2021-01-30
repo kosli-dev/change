@@ -12,6 +12,7 @@ def test_command_processor_log_artifact_file(capsys):
         "MERKELY_CI_BUILD_NUMBER": "23",
         "MERKELY_ARTIFACT_GIT_URL": "http://github/me/project/commit/" + commit,
         "MERKELY_ARTIFACT_GIT_COMMIT": commit,
+        "MERKELY_IS_COMPLIANT": "TRUE"
     }
 
     with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
@@ -37,6 +38,7 @@ def test_command_processor_log_artifact_docker(capsys):
         "MERKELY_CI_BUILD_NUMBER": "236",
         "MERKELY_ARTIFACT_GIT_URL": "http://github/me/project/commit/" + commit,
         "MERKELY_ARTIFACT_GIT_COMMIT": commit,
+        "MERKELY_IS_COMPLIANT": "TRUE"
     }
 
     with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:

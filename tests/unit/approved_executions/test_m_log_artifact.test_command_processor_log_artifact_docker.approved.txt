@@ -8,6 +8,7 @@ Putting this payload:
     "description": "Created by build 236",
     "filename": "acme/road-runner:2.3",
     "git_commit": "ddc50c8a53f79974d615df335669b59fb56a4ed3",
+    "is_compliant": true,
     "sha256": "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
 }
 To this url: https://app.compliancedb.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/
