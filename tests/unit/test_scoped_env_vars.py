@@ -76,3 +76,8 @@ def test_arg2_with_entry_whose_name_is_in_arg1_with_different_value():
     with ScopedEnvVars({"ENV_VAR": "a"}, {"ENV_VAR": "b"}):
         os.environ["ENV_VAR"] = "b"
 
+
+def test_with_statements_as_var_is_env_with_arg1_vars_set():
+    new_env = {"THE_AS_VARIABLE": "Salmo-the-leaper"}
+    with ScopedEnvVars(new_env) as ev:
+        assert ev.get("THE_AS_VARIABLE") == "Salmo-the-leaper"

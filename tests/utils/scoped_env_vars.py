@@ -23,7 +23,7 @@ class ScopedEnvVars(object):
     def __enter__(self):
         self._original_env_vars = copy.deepcopy(os.environ)
         os.environ.update(self._checked_new_vars_on_enter())
-        return self
+        return os.environ
 
     def _checked_new_vars_on_enter(self):
         already_exist = {name: value
