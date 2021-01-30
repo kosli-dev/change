@@ -27,6 +27,12 @@ def declare_pipeline(_context, merkelypipe, api_token, host):
 def log_artifact(context, merkelypipe, api_token, host):
     env = context['env']
     fingerprint = env.get("MERKELY_FINGERPRINT", None)
+
+    context['description'] = "Created by build " + env.get('MERKELY_CI_BUILD_NUMBER', None)
+    context['git_commit'] = env.get('MERKELY_ARTIFACT_GIT_COMMIT', None)
+    context['commit_url'] = env.get('MERKELY_ARTIFACT_GIT_URL', None)
+    context['build_url'] = env.get('MERKELY_CI_BUILD_URL', None)
+
     if fingerprint.startswith("file://"):
         context['artifact_name'] = fingerprint[len("file://"):]
         log_artifact_file(context, merkelypipe, api_token, host)
@@ -41,16 +47,15 @@ def log_artifact_file(context, merkelypipe, api_token, host):
     artifact_sha = context['sha_digest_for_file'](pathed_filename)
     print("Calculated digest: " + artifact_sha)
     #print("Publish artifact to ComplianceDB")
-    env = context['env']
-    description = "Created by build " + env.get('MERKELY_CI_BUILD_NUMBER', None)
-    git_commit = env.get('MERKELY_ARTIFACT_GIT_COMMIT', None)
-    commit_url = env.get('MERKELY_ARTIFACT_GIT_URL', None)
-    build_url = env.get('MERKELY_CI_BUILD_URL', None)
+
     # is_compliant = env_is_compliant()
     # print('CDB_IS_COMPLIANT: ' + str(is_compliant))
     create_artifact(api_token, host, merkelypipe,
                     artifact_sha, pathed_filename,
-                    description, git_commit, commit_url, build_url)
+                    context['description'],
+                    context['git_commit'],
+                    context['commit_url'],
+                    context['build_url'])
 
 
 def log_artifact_docker_image(context, merkelypipe, api_token, host):
@@ -59,16 +64,15 @@ def log_artifact_docker_image(context, merkelypipe, api_token, host):
     artifact_sha = context['sha_digest_for_docker_image'](image_name)
     print("Calculated digest: " + artifact_sha)
     #print("Publish artifact to ComplianceDB")
-    env = context['env']
-    description = "Created by build " + env.get('MERKELY_CI_BUILD_NUMBER', None)
-    git_commit = env.get('MERKELY_ARTIFACT_GIT_COMMIT', None)
-    commit_url = env.get('MERKELY_ARTIFACT_GIT_URL', None)
-    build_url = env.get('MERKELY_CI_BUILD_URL', None)
+
     # is_compliant = env_is_compliant()
     # print('CDB_IS_COMPLIANT: ' + str(is_compliant))
     create_artifact(api_token, host, merkelypipe,
                     artifact_sha, image_name,
-                    description, git_commit, commit_url, build_url)
+                    context['description'],
+                    context['git_commit'],
+                    context['commit_url'],
+                    context['build_url'])
 
 
 import json
