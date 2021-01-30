@@ -2,7 +2,8 @@ from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
 
-def execute(env):
+def execute(context):
+    env = context['env']
     command = env.get("MERKELY_COMMAND", None)
     print("MERKELY_COMMAND={}".format(command))
     merkleypipe_path = "/Merkelypipe.json"

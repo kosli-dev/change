@@ -17,14 +17,15 @@ from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DR
 
 
 def test_command_processor_declare_pipeline_green(capsys):
-    env = {
+    ev = {
         "MERKELY_COMMAND": "declare_pipeline",
         "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
     }
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}) as ev:
+    with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
-            status_code = command_processor.execute(ev)
+            context = {'env': env}
+            status_code = command_processor.execute(context)
 
     assert status_code == 0
     verify_approval(capsys)
