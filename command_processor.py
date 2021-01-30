@@ -3,13 +3,14 @@ from cdb.http import http_put_payload
 
 
 def execute(context):
-    env = context['env']
-    command = env.get("MERKELY_COMMAND", None)
+    def env(name):
+        return get_env(context, name)
+    command = env("MERKELY_COMMAND")
     print("MERKELY_COMMAND={}".format(command))
     merkleypipe_path = "/Merkelypipe.json"
     with open(merkleypipe_path) as merkelypipe_file:
         merkelypipe = load_merkelypipe(merkelypipe_file)
-        api_token = env.get('MERKELY_API_TOKEN', None)
+        api_token = env('MERKELY_API_TOKEN')
         host = "https://app.compliancedb.com"
         if command == "declare_pipeline":
             declare_pipeline(context, merkelypipe, api_token, host)
@@ -25,13 +26,15 @@ def declare_pipeline(_context, merkelypipe, api_token, host):
 
 
 def log_artifact(context, merkelypipe, api_token, host):
-    env = context['env']
-    fingerprint = env.get("MERKELY_FINGERPRINT", None)
+    def env(name):
+        return get_env(context, name)
 
-    context['description'] = "Created by build " + env.get('MERKELY_CI_BUILD_NUMBER', None)
-    context['git_commit'] = env.get('MERKELY_ARTIFACT_GIT_COMMIT', None)
-    context['commit_url'] = env.get('MERKELY_ARTIFACT_GIT_URL', None)
-    context['build_url'] = env.get('MERKELY_CI_BUILD_URL', None)
+    fingerprint = env("MERKELY_FINGERPRINT")
+
+    context['description'] = "Created by build " + env('MERKELY_CI_BUILD_NUMBER')
+    context['git_commit'] = env('MERKELY_ARTIFACT_GIT_COMMIT')
+    context['commit_url'] = env('MERKELY_ARTIFACT_GIT_URL')
+    context['build_url'] = env('MERKELY_CI_BUILD_URL')
 
     if fingerprint.startswith("file://"):
         context['artifact_name'] = fingerprint[len("file://"):]
@@ -73,6 +76,10 @@ def log_artifact_docker_image(context, merkelypipe, api_token, host):
                     context['git_commit'],
                     context['commit_url'],
                     context['build_url'])
+
+
+def get_env(context, name):
+    return context['env'].get(name, None)
 
 
 import json
