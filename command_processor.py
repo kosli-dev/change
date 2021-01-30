@@ -36,11 +36,15 @@ def log_artifact(context, merkelypipe, api_token, host):
     context['commit_url'] = env('MERKELY_ARTIFACT_GIT_URL')
     context['build_url'] = env('MERKELY_CI_BUILD_URL')
 
-    if fingerprint.startswith("file://"):
-        context['artifact_name'] = fingerprint[len("file://"):]
+    FILE_PROTOCOL = "file://"
+    DOCKER_PROTOCOL = "docker://"
+
+    if fingerprint.startswith(FILE_PROTOCOL):
+        context['artifact_name'] = fingerprint[len(FILE_PROTOCOL):]
         log_artifact_file(context, merkelypipe, api_token, host)
-    if fingerprint.startswith("docker://"):
-        context['artifact_name'] = fingerprint[len("docker://"):]
+
+    if fingerprint.startswith(DOCKER_PROTOCOL):
+        context['artifact_name'] = fingerprint[len(DOCKER_PROTOCOL):]
         log_artifact_docker_image(context, merkelypipe, api_token, host)
 
 
