@@ -12,19 +12,20 @@ def execute(context):
         api_token = env.get('MERKELY_API_TOKEN', None)
         host = "https://app.compliancedb.com"
         if command == "declare_pipeline":
-            declare_pipeline(env, merkelypipe, api_token, host)
+            declare_pipeline(context, merkelypipe, api_token, host)
         if command == "log_artifact":
-            log_artifact(env, merkelypipe, api_token, host)
+            log_artifact(context, merkelypipe, api_token, host)
 
     return 0
 
 
-def declare_pipeline(env, merkelypipe, api_token, host):
+def declare_pipeline(_context, merkelypipe, api_token, host):
     pipelines_url = ApiSchema.url_for_pipelines(host, merkelypipe)
     http_put_payload(url=pipelines_url, payload=merkelypipe, api_token=api_token)
 
 
-def log_artifact(env, merkelypipe, api_token, host):
+def log_artifact(context, merkelypipe, api_token, host):
+    env = context['env']
     fingerprint = env.get("MERKELY_FINGERPRINT", None)
     protocol = fingerprint[:len("file://")]
     artifact_name = '/' + fingerprint[len("file://"):]
