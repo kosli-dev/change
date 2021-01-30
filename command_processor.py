@@ -50,7 +50,7 @@ def log_artifact(context, merkelypipe, api_token, host):
 
 def log_artifact_file(context, merkelypipe, api_token, host):
     pathed_filename = '/' + context['artifact_name']
-    print("Getting SHA for artifact: " + pathed_filename)  # print "file://" ?
+    print("Getting SHA for file:// artifact: " + pathed_filename)
     artifact_sha = context['sha_digest_for_file'](pathed_filename)
     print("Calculated digest: " + artifact_sha)
     #print("Publish artifact to ComplianceDB")
@@ -67,7 +67,7 @@ def log_artifact_file(context, merkelypipe, api_token, host):
 
 def log_artifact_docker_image(context, merkelypipe, api_token, host):
     image_name = context['artifact_name']
-    print("Getting SHA for artifact: " + image_name)  # print "docker://" ?
+    print("Getting SHA for docker:// artifact: " + image_name)
     artifact_sha = context['sha_digest_for_docker_image'](image_name)
     print("Calculated digest: " + artifact_sha)
     #print("Publish artifact to ComplianceDB")

@@ -1,5 +1,5 @@
 MERKELY_COMMAND=log_artifact
-Getting SHA for artifact: /coverage.txt
+Getting SHA for file:// artifact: /coverage.txt
 Calculated digest: ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc
 Putting this payload:
 {

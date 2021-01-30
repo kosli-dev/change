@@ -1,5 +1,5 @@
 MERKELY_COMMAND=log_artifact
-Getting SHA for artifact: acme/road-runner:2.3
+Getting SHA for docker:// artifact: acme/road-runner:2.3
 Calculated digest: ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc
 Putting this payload:
 {
