@@ -27,12 +27,18 @@ def declare_pipeline(_context, merkelypipe, api_token, host):
 def log_artifact(context, merkelypipe, api_token, host):
     env = context['env']
     fingerprint = env.get("MERKELY_FINGERPRINT", None)
-    protocol = fingerprint[:len("file://")]
-    artifact_name = '/' + fingerprint[len("file://"):]
-    print("Getting SHA for artifact: " + artifact_name)  # print "file" ?
-    artifact_sha = context['sha_digest_for_file'](artifact_name)
+    if fingerprint.startswith("file://"):
+        context['artifact_name'] = fingerprint[len("file://"):]
+        log_artifact_file(context, merkelypipe, api_token, host)
+
+
+def log_artifact_file(context, merkelypipe, api_token, host):
+    pathed_filename = '/' + context['artifact_name']
+    print("Getting SHA for artifact: " + pathed_filename)  # print "file" ?
+    artifact_sha = context['sha_digest_for_file'](pathed_filename)
     print("Calculated digest: " + artifact_sha)
     #print("Publish artifact to ComplianceDB")
+    env = context['env']
     description = "Created by build " + env.get('MERKELY_CI_BUILD_NUMBER', None)
     git_commit = env.get('MERKELY_ARTIFACT_GIT_COMMIT', None)
     commit_url = env.get('MERKELY_ARTIFACT_GIT_URL', None)
@@ -40,8 +46,11 @@ def log_artifact(context, merkelypipe, api_token, host):
     # is_compliant = env_is_compliant()
     # print('CDB_IS_COMPLIANT: ' + str(is_compliant))
     create_artifact(api_token, host, merkelypipe,
-                    artifact_sha, artifact_name,
+                    artifact_sha, pathed_filename,
                     description, git_commit, commit_url, build_url)
+
+
+
 
 
 import json
