@@ -17,7 +17,6 @@ def test_command_processor_log_artifact_file(capsys):
     with ScopedEnvVars({**CDB_DRY_RUN, **env}) as ev:
         with ScopedFileCopier("/app/tests/data/coverage.txt", "/coverage.txt"):
             with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
-                assert ev.get("MERKELY_COMMAND") == "log_artifact"
                 status_code = command_processor.execute(ev)
 
     assert status_code == 0
