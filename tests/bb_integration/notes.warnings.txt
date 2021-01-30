@@ -11,3 +11,13 @@ DeprecationWarning: Using or importing the ABCs from 'collections' instead of fr
 Upgrading to the latest bitbucket-pipes-toolkit
 (2.1.0 at the time of writing https://pypi.org/project/bitbucket-pipes-toolkit/#history)
 does not solve this.
+
+You can remove the warnings by adding this:
+
+import warnings
+warnings.filterwarnings(action="ignore",
+                        message=".*Using or importing the ABCs.*",
+                        category=DeprecationWarning)
+
+to the top of pipe.py before the line:
+from bitbucket_pipes_toolkit import Pipe, get_logger
