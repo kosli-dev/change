@@ -55,7 +55,7 @@ def log_artifact_file(context, merkelypipe, api_token, host):
     artifact_sha = context['sha_digest_for_file'](pathed_filename)
     print("Calculated digest: " + artifact_sha)
     # print("Publish artifact to ComplianceDB")
-    # print('CDB_IS_COMPLIANT: ' + str(context['is_compliant']))
+    print('MERKELY_IS_COMPLIANT: ' + str(context['is_compliant']))
     create_artifact(api_token, host, merkelypipe,
                     artifact_sha, pathed_filename,
                     context['description'],
@@ -71,7 +71,7 @@ def log_artifact_docker_image(context, merkelypipe, api_token, host):
     artifact_sha = context['sha_digest_for_docker_image'](image_name)
     print("Calculated digest: " + artifact_sha)
     # print("Publish artifact to ComplianceDB")
-    # print('CDB_IS_COMPLIANT: ' + str(context['is_compliant']))
+    print('MERKELY_IS_COMPLIANT: ' + str(context['is_compliant']))
     create_artifact(api_token, host, merkelypipe,
                     artifact_sha, image_name,
                     context['description'],
