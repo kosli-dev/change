@@ -1,5 +1,5 @@
 from os import path
-from distutils.dir_util import copy_tree, remove_tree
+from shutil import copytree, rmtree
 
 
 class ScopedDirCopier(object):
@@ -12,10 +12,10 @@ class ScopedDirCopier(object):
         self._target_dir = target_dir
 
     def __enter__(self):
-        copy_tree(self._source_dir, self._target_dir)
+        copytree(self._source_dir, self._target_dir)
 
     def __exit__(self, _type, _value, _traceback):
-        remove_tree(self._target_dir)
+        rmtree(self._target_dir)
 
     class Error(ValueError):
         pass
