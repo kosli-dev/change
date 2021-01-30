@@ -30,7 +30,7 @@ def log_artifact(context, merkelypipe, api_token, host):
     protocol = fingerprint[:len("file://")]
     artifact_name = '/' + fingerprint[len("file://"):]
     print("Getting SHA for artifact: " + artifact_name)  # print "file" ?
-    artifact_sha = sha_digest_for_file(artifact_name)
+    artifact_sha = context['sha_digest_for_file'](artifact_name)
     print("Calculated digest: " + artifact_sha)
     #print("Publish artifact to ComplianceDB")
     description = "Created by build " + env.get('MERKELY_CI_BUILD_NUMBER', None)
@@ -47,14 +47,6 @@ def log_artifact(context, merkelypipe, api_token, host):
 import json
 def load_merkelypipe(file):
     return json.load(file)
-
-
-import subprocess
-def sha_digest_for_file(artifact_path):
-    output = subprocess.check_output(["openssl", "dgst", "-sha256", artifact_path])
-    digest_in_bytes = output.split()[1]
-    artifact_sha = digest_in_bytes.decode('utf-8')
-    return artifact_sha
 
 
 def create_artifact(api_token, host, merkelypipe,
