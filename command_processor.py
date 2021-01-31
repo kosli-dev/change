@@ -8,22 +8,55 @@ def execute(context):
     def env(name):
         return get_env(context, name)
     command = env("MERKELY_COMMAND")
-    print("MERKELY_COMMAND={}".format(command))
     with open(MERKELYPIPE_PATH) as file:
         merkelypipe = load_merkelypipe(file)
         api_token = env('MERKELY_API_TOKEN')
         host = env("MERKELY_HOST")
         if command == "declare_pipeline":
-            declare_pipeline(context, merkelypipe, api_token, host)
+            #declare_pipeline(context, merkelypipe, api_token, host)
+            DeclarePipelineCommand(context).execute()
         if command == "log_artifact":
+            print("MERKELY_COMMAND={}".format(command))
             log_artifact(context, merkelypipe, api_token, host)
 
     return 0
 
 
-def declare_pipeline(_context, merkelypipe, api_token, host):
-    pipelines_url = ApiSchema.url_for_pipelines(host, merkelypipe)
-    http_put_payload(url=pipelines_url, payload=merkelypipe, api_token=api_token)
+class Command:
+    def __init__(self, context):
+        self._context = context
+
+    def execute(self):
+        print("MERKELY_COMMAND={}".format(self.command()))
+        self.concrete_execute()
+
+    def command(self):
+        return self._env("MERKELY_COMMAND")
+
+    def api_token(self):
+        return self._env("MERKELY_API_TOKEN")
+
+    def host(self):
+        return self._env("MERKELY_HOST")
+
+    def merkelypipe(self):
+        with open(MERKELYPIPE_PATH) as file:
+            return json.load(file)
+
+    def _env(self, name):
+        return self._context['env'].get(name, None)
+
+
+class DeclarePipelineCommand(Command):
+
+    def __init__(self, context):
+        super().__init__(context)
+
+    def concrete_execute(self):
+        pipelines_url = ApiSchema.url_for_pipelines(self.host(), self.merkelypipe())
+        http_put_payload(url=pipelines_url, payload=self.merkelypipe(), api_token=self.api_token())
+
+
 
 
 FILE_PROTOCOL = "file://"
