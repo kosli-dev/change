@@ -27,18 +27,22 @@ class Command:
         self._context = context
 
     def execute(self):
-        print("MERKELY_COMMAND={}".format(self.command()))
+        print("MERKELY_COMMAND={}".format(self.command))
         self.concrete_execute()
 
+    @property
     def command(self):
         return self._env("MERKELY_COMMAND")
 
+    @property
     def api_token(self):
         return self._env("MERKELY_API_TOKEN")
 
+    @property
     def host(self):
         return self._env("MERKELY_HOST")
 
+    @property
     def merkelypipe(self):
         with open(MERKELYPIPE_PATH) as file:
             return json.load(file)
@@ -53,8 +57,8 @@ class DeclarePipelineCommand(Command):
         super().__init__(context)
 
     def concrete_execute(self):
-        pipelines_url = ApiSchema.url_for_pipelines(self.host(), self.merkelypipe())
-        http_put_payload(url=pipelines_url, payload=self.merkelypipe(), api_token=self.api_token())
+        pipelines_url = ApiSchema.url_for_pipelines(self.host, self.merkelypipe)
+        http_put_payload(url=pipelines_url, payload=self.merkelypipe, api_token=self.api_token)
 
 
 
