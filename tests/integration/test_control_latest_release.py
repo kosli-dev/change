@@ -1,7 +1,7 @@
 from cdb.control_latest_release import control_latest_release
 
 from tests.utils import ScopedEnvVars, CDB_DRY_RUN, verify_approval
-
+import pytest
 
 def test_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys, mocker):
     # sha provided explicitly
@@ -22,9 +22,8 @@ def test_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys, mocker):
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_SHA": '99cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212',
     }
-    set_env_vars = {}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with ScopedEnvVars({**CDB_DRY_RUN, **env}):
         mocker.patch('cdb.control_latest_release.parse_cmd_line', return_value=mocked_project_file)
         mocker.patch('cdb.control_latest_release.http_get_json', return_value=mocked_json)
         control_latest_release()
@@ -112,10 +111,38 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys, mocker):
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_SHA": '99cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212',
     }
-    set_env_vars = {}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with ScopedEnvVars({**CDB_DRY_RUN, **env}):
         mocker.patch('cdb.control_latest_release.parse_cmd_line', return_value=mocked_project_file)
         mocker.patch('cdb.control_latest_release.http_get_json', return_value=mocked_json)
         control_latest_release()
     verify_approval(capsys, ["out"])
+
+
+def test_terget_artifact_is_not_equal_to_artifact_sha(capsys, mocker):
+    # sha provided explicitly
+    mocked_project_file = "tests/integration/test-pipefile.json"
+    mocked_json = {
+        "approvals": [],
+        "base_artifact": "99cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
+        "description": "Test release for the release project",
+        "release_number": 1234,
+        "src_commit_list": [
+            "e412ad6f7ea530ee9b83df964a0dde2b477be728",
+            "e412ad6f7ea530ee9b83df964a0dde2b477be729"
+        ],
+        "state": "UNAPPROVED",
+        "target_artifact": "99cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
+    }
+    env = {
+        "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
+        "CDB_ARTIFACT_SHA": 'aacdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46333',
+    }
+
+    with ScopedEnvVars({**CDB_DRY_RUN, **env}), pytest.raises(SystemExit) as exit_exc:
+        mocker.patch('cdb.control_latest_release.parse_cmd_line', return_value=mocked_project_file)
+        mocker.patch('cdb.control_latest_release.http_get_json', return_value=mocked_json)
+        control_latest_release()
+    verify_approval(capsys, ["out"])
+    assert exit_exc.type == SystemExit
+    assert exit_exc.value.code == 1
