@@ -21,6 +21,13 @@ For example:
 
 If you don't do this you _lose_ output, eg for a new test the
 name of the missing approval file does _not_ appear.
+
+Emily Bache says "this problem should be fixed now in the 
+0.2.0 release. note it also needs the updated approvaltests version 0.3.1"
+A [pip list] command confirms we are using approvaltests 0.3.1 
+But these two lines in requirements.txt do not yet work:
+  git+git://github.com/approvals/ApprovalTests.Python.git@master#egg=approvaltests
+  pytest-approvaltests==0.2.0 
 """
 
 def verify_approval(capsys, streams=None):
