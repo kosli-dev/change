@@ -46,6 +46,8 @@ build:
 		--tag ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
 
+pip_list:
+	@docker run --rm -it --entrypoint="" ${IMAGE} pip3 list
 
 build_bb:
 	@echo ${IMAGE_PIPE}
