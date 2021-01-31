@@ -19,10 +19,10 @@ def sha_digest_for_docker_image(docker_image_name):
 
 
 if __name__ == '__main__':
-    from command_processor import execute
+    from commands import command_processor
     context = {
         'env': os.environ,
         'sha_digest_for_file': sha_digest_for_file,
         'sha_digest_for_docker_image': sha_digest_for_docker_image
     }
-    execute(context)
+    command_processor.execute(context)

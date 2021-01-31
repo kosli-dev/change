@@ -3,8 +3,6 @@ from cdb.http import http_put_payload
 import json
 
 
-MERKELYPIPE_PATH = "/Merkelypipe.json"
-
 def execute(context):
     command = context['env'].get("MERKELY_COMMAND", None)
     if command == "declare_pipeline":
@@ -37,6 +35,7 @@ class Command:
 
     @property
     def merkelypipe(self):
+        MERKELYPIPE_PATH = "/Merkelypipe.json"
         with open(MERKELYPIPE_PATH) as file:
             return json.load(file)
 

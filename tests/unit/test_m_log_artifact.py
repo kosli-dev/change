@@ -1,4 +1,4 @@
-import command_processor
+from commands import command_processor
 from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DRY_RUN
 
 

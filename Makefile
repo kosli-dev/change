@@ -67,7 +67,7 @@ test_unit:
 		${DOCKER_RUN_INTERACTIVE} \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/tests:/app/tests \
-		--volume ${ROOT_DIR}/command_processor.py:/app/command_processor.py \
+		--volume ${ROOT_DIR}/commands:/app/commands \
 		--volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
@@ -81,7 +81,7 @@ test_integration:
 		${DOCKER_RUN_INTERACTIVE} \
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/tests:/app/tests \
-		--volume ${ROOT_DIR}/command_processor.py:/app/command_processor.py \
+		--volume ${ROOT_DIR}/commands:/app/commands \
 		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/integration/coverage_entrypoint.sh \
 			${IMAGE} tests/integration/${TARGET}
@@ -96,6 +96,7 @@ test_bb_integration:
 		--volume ${ROOT_DIR}/cdb:/app/cdb \
 		--volume ${ROOT_DIR}/bitbucket_pipe/pipe.py:/app/pipe.py \
 		--volume ${ROOT_DIR}/tests:/app/tests \
+		--volume ${ROOT_DIR}/commands:/app/commands \
 		--volume ${ROOT_DIR}/tmp/coverage/bb_integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
 			${IMAGE_PIPE} tests/bb_integration/${TARGET}
