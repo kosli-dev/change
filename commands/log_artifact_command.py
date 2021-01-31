@@ -14,7 +14,7 @@ class LogArtifactCommand(Command):
         self.is_compliant = self._env('MERKELY_IS_COMPLIANT') == "TRUE"
         self.fingerprint = self._env("MERKELY_FINGERPRINT")
 
-    def concrete_execute(self):
+    def _concrete_execute(self):
         FILE_PROTOCOL = "file://"
         DOCKER_PROTOCOL = "docker://"
         if self.fingerprint.startswith(FILE_PROTOCOL):

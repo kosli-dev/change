@@ -8,7 +8,7 @@ class Command:
 
     def execute(self):
         print("MERKELY_COMMAND={}".format(self.command))
-        self.concrete_execute()
+        self._concrete_execute()  # Template Method Pattern
 
     @property
     def command(self):
