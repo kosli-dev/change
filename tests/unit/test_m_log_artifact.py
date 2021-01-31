@@ -8,6 +8,7 @@ def test_command_processor_log_artifact_file(capsys):
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
         "MERKELY_FINGERPRINT": "file://coverage.txt",  # at root
+        "MERKELY_HOST": "https://test.merkely.com",
         "MERKELY_CI_BUILD_URL": "https://gitlab/build/1456",
         "MERKELY_CI_BUILD_NUMBER": "23",
         "MERKELY_ARTIFACT_GIT_URL": "http://github/me/project/commit/" + commit,
@@ -33,6 +34,7 @@ def test_command_processor_log_artifact_file_not_at_root(capsys):
     ev = {
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
+        "MERKELY_HOST": "https://test.merkely.com",
         "MERKELY_FINGERPRINT": "file://app/tests/data/coverage.txt",  # not at root
         "MERKELY_CI_BUILD_URL": "https://gitlab/build/1456",
         "MERKELY_CI_BUILD_NUMBER": "24",
@@ -58,6 +60,7 @@ def test_command_processor_log_artifact_docker(capsys):
     ev = {
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
+        "MERKELY_HOST": "https://test.merkely.com",
         "MERKELY_FINGERPRINT": "docker://acme/road-runner:2.3",
         "MERKELY_CI_BUILD_URL": "https://gitlab/build/1856",
         "MERKELY_CI_BUILD_NUMBER": "236",

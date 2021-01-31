@@ -11,7 +11,7 @@ def execute(context):
     with open(MERKELYPIPE_PATH) as file:
         merkelypipe = load_merkelypipe(file)
         api_token = env('MERKELY_API_TOKEN')
-        host = "https://app.compliancedb.com"
+        host = env("MERKELY_HOST")
         if command == "declare_pipeline":
             declare_pipeline(context, merkelypipe, api_token, host)
         if command == "log_artifact":

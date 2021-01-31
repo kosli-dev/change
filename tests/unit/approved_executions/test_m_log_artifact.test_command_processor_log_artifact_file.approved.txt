@@ -12,5 +12,5 @@ Putting this payload:
     "is_compliant": true,
     "sha256": "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
 }
-To this url: https://app.compliancedb.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/
+To this url: https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/
 DRY RUN: Put not sent
