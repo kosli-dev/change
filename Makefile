@@ -166,6 +166,7 @@ merkely_declare_pipeline:
 			--volume ${PWD}/${PROJFILE}:/Merkelypipe.json \
 			--env MERKELY_COMMAND=declare_pipeline \
 			--env MERKELY_API_TOKEN=${CDB_API_TOKEN} \
+			--env MERKELY_HOST=app.compliancedb.com \
 			${IMAGE}
 
 put_artifact_image:
