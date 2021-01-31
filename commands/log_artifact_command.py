@@ -13,7 +13,7 @@ class LogArtifactCommand(Command):
         self.build_url = self._env('MERKELY_CI_BUILD_URL')
         self.is_compliant = self._env('MERKELY_IS_COMPLIANT') == "TRUE"
         self.fingerprint = self._env("MERKELY_FINGERPRINT")
-    
+
     def concrete_execute(self):
         FILE_PROTOCOL = "file://"
         DOCKER_PROTOCOL = "docker://"
