@@ -41,16 +41,3 @@ Pipe is a directory not a file (volume mount issue)
 api token env variable not set
 api token empty
 """
-
-"""
-class Command:
-    pass
-
-class DeclarePipelineCommand(Command):
-
-    def execute():
-        pass
-
-    def validate_arguments(env):
-        pass
-"""
