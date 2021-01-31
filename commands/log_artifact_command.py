@@ -30,13 +30,7 @@ class LogArtifactCommand(Command):
         print("Calculated digest: " + artifact_sha)
         # print("Publish artifact to ComplianceDB")
         print('MERKELY_IS_COMPLIANT: ' + str(context['is_compliant']))
-        create_artifact(self.api_token, self.host, self.merkelypipe,
-                        artifact_sha, pathed_filename,
-                        context['description'],
-                        context['git_commit'],
-                        context['commit_url'],
-                        context['build_url'],
-                        context['is_compliant'])
+        self._create_artifact(artifact_sha, pathed_filename)
 
     def _log_artifact_docker_image(self, image_name):
         context = self._context
@@ -45,27 +39,19 @@ class LogArtifactCommand(Command):
         print("Calculated digest: " + artifact_sha)
         # print("Publish artifact to ComplianceDB")
         print('MERKELY_IS_COMPLIANT: ' + str(context['is_compliant']))
-        create_artifact(self.api_token, self.host, self.merkelypipe,
-                        artifact_sha, image_name,
-                        context['description'],
-                        context['git_commit'],
-                        context['commit_url'],
-                        context['build_url'],
-                        context['is_compliant'])
+        self._create_artifact(artifact_sha, image_name)
 
+    def _create_artifact(self, sha256, filename):
+        context = self._context
+        create_artifact_payload = {
+            "sha256": sha256,
+            "filename": filename,
+            "description": context['description'],
+            "git_commit": context['git_commit'],
+            "commit_url": context['commit_url'],
+            "build_url": context['build_url'],
+            "is_compliant": context['is_compliant']
+        }
+        url = ApiSchema.url_for_artifacts(self.host, self.merkelypipe)
+        http_put_payload(url, create_artifact_payload, self.api_token)
 
-
-def create_artifact(api_token, host, merkelypipe,
-                    sha256, filename,
-                    description, git_commit, commit_url, build_url, is_compliant):
-    create_artifact_payload = {
-        "sha256": sha256,
-        "filename": filename,
-        "description": description,
-        "git_commit": git_commit,
-        "commit_url": commit_url,
-        "build_url": build_url,
-        "is_compliant": is_compliant
-    }
-    url = ApiSchema.url_for_artifacts(host, merkelypipe)
-    http_put_payload(url, create_artifact_payload, api_token)
