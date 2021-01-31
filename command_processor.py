@@ -2,12 +2,13 @@ from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
 
+MERKELYPIPE_PATH = "/Merkelypipe.json"
+
 def execute(context):
     def env(name):
         return get_env(context, name)
     command = env("MERKELY_COMMAND")
     print("MERKELY_COMMAND={}".format(command))
-    MERKELYPIPE_PATH = "/Merkelypipe.json"
     with open(MERKELYPIPE_PATH) as file:
         merkelypipe = load_merkelypipe(file)
         api_token = env('MERKELY_API_TOKEN')
@@ -25,6 +26,9 @@ def declare_pipeline(_context, merkelypipe, api_token, host):
     http_put_payload(url=pipelines_url, payload=merkelypipe, api_token=api_token)
 
 
+FILE_PROTOCOL = "file://"
+DOCKER_PROTOCOL = "docker://"
+
 def log_artifact(context, merkelypipe, api_token, host):
     def env(name):
         return get_env(context, name)
@@ -36,9 +40,6 @@ def log_artifact(context, merkelypipe, api_token, host):
     context['commit_url'] = env('MERKELY_ARTIFACT_GIT_URL')
     context['build_url'] = env('MERKELY_CI_BUILD_URL')
     context['is_compliant'] = env('MERKELY_IS_COMPLIANT') == "TRUE"
-
-    FILE_PROTOCOL = "file://"
-    DOCKER_PROTOCOL = "docker://"
 
     if fingerprint.startswith(FILE_PROTOCOL):
         context['artifact_name'] = fingerprint[len(FILE_PROTOCOL):]
