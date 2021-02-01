@@ -1,4 +1,4 @@
-from commands import Context, command_processor, CommandError
+from commands import Context, command_processor
 
 from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DRY_RUN
 
