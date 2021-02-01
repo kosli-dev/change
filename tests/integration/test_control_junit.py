@@ -51,15 +51,51 @@ def test_uses_non_existent_CDB_TEST_RESULTS_DIR(capsys, mocker):
     verify_approval(capsys, ["out"])
 
 
-def test_uses_existing_CDB_TEST_RESULTS_DIR(capsys):
-    # Uses CDB_TEST_RESULTS_DIR == /app/tests/data/control_junit
+def test_uses_existing_CDB_TEST_RESULTS_DIR_with_failing_xml(capsys):
+    # Uses CDB_TEST_RESULTS_DIR == /app/tests/data/control_junit/xml-with-fails
     # which exists. Results in message
-    # "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites"
+    # "JUnit results xml verified by compliancedb/cdb_controls: Tests contain failures"
     env = {
         "CDB_HOST": "http://test.compliancedb.com",
         "CDB_API_TOKEN": "7100831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_SHA": "b7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef",
-        "CDB_TEST_RESULTS_DIR": "/app/tests/data/control_junit",
+        "CDB_TEST_RESULTS_DIR": "/app/tests/data/control_junit/xml-with-fails",
+        "CDB_EVIDENCE_TYPE": "coverage",
+        "CDB_CI_BUILD_URL": "https://gitlab/build/217",
+    }
+    set_env_vars = {}
+    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+        control_junit("tests/integration/test-pipefile.json")
+    verify_approval(capsys, ["out"])
+
+
+def test_uses_existing_CDB_TEST_RESULTS_DIR_with_error_xml(capsys):
+    # Uses CDB_TEST_RESULTS_DIR == /app/tests/data/control_junit/xml-with-error
+    # which exists. Results in message
+    # "JUnit results xml verified by compliancedb/cdb_controls: Tests contain errors"
+    env = {
+        "CDB_HOST": "http://test.compliancedb.com",
+        "CDB_API_TOKEN": "7100831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
+        "CDB_ARTIFACT_SHA": "b7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef",
+        "CDB_TEST_RESULTS_DIR": "/app/tests/data/control_junit/xml-with-error",
+        "CDB_EVIDENCE_TYPE": "coverage",
+        "CDB_CI_BUILD_URL": "https://gitlab/build/217",
+    }
+    set_env_vars = {}
+    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+        control_junit("tests/integration/test-pipefile.json")
+    verify_approval(capsys, ["out"])
+
+
+def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys):
+    # Uses CDB_TEST_RESULTS_DIR == /app/tests/data/control_junit/xml-with-passed-results
+    # which exists. Results in message
+    # "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites"
+    env = {
+        "CDB_HOST": "http://test.compliancedb.com",
+        "CDB_API_TOKEN": "7100831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
+        "CDB_ARTIFACT_SHA": "b7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef",
+        "CDB_TEST_RESULTS_DIR": "/app/tests/data/control_junit/xml-with-passed-results",
         "CDB_EVIDENCE_TYPE": "coverage",
         "CDB_CI_BUILD_URL": "https://gitlab/build/217",
     }

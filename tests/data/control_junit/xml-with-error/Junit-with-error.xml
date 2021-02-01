@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="1" failures="0" id="0" name="TestSuite1" tests="1" timestamp="2020-08-30T14:37:12">
+    <testcase classname="ModuleIAmTesting" name="testCreatePlugin" time="2">
+        <error message="Error while executing test testCreatePlugin()!" type="error">
+            Some random exception happened during the execution
+        </error>
+    </testcase>
+</testsuite>

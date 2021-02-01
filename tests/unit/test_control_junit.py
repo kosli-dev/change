@@ -229,13 +229,13 @@ def control_junit_data_path(filename):
     return CONTROL_JUNIT_TEST_DATA_ROOT + '/' + filename
 
 
-TEST_JUNIT_XML_FILENAME = control_junit_data_path('TEST-Junit.xml')
+TEST_JUNIT_XML_FILENAME = control_junit_data_path('xml-with-fails/TEST-Junit.xml')
 
-TEST_PYTEST_PASS_XML_FILENAME = control_junit_data_path('TEST-Pytest-pass.xml')
-TEST_PYTEST_FAIL_XML_FILENAME = control_junit_data_path('TEST-Pytest-fail.xml')
+TEST_PYTEST_PASS_XML_FILENAME = control_junit_data_path('xml-with-passed-results/TEST-Pytest-pass.xml')
+TEST_PYTEST_FAIL_XML_FILENAME = control_junit_data_path('xml-with-fails/TEST-Pytest-fail.xml')
 
-TEST_OWASP_PASS_XML_FILENAME = control_junit_data_path('TEST-OWASP-pass.xml')
-TEST_OWASP_FAIL_XML_FILENAME = control_junit_data_path('TEST-OWASP-fail.xml')
+TEST_OWASP_PASS_XML_FILENAME = control_junit_data_path('xml-with-passed-results/TEST-OWASP-pass.xml')
+TEST_OWASP_FAIL_XML_FILENAME = control_junit_data_path('xml-with-fails/TEST-OWASP-fail.xml')
 
 
 def surefire_examples_path(filename=None):
