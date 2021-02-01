@@ -17,7 +17,7 @@ def test_command_processor_log_artifact_file(capsys):
         "MERKELY_IS_COMPLIANT": "TRUE"
     }
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
+    with ScopedEnvVars({**DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/coverage.txt", "/coverage.txt"):
             with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
                 context = make_context(env)
@@ -43,7 +43,7 @@ def test_command_processor_log_artifact_file_not_at_root(capsys):
         "MERKELY_IS_COMPLIANT": "FALSE"
     }
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
+    with ScopedEnvVars({**DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
             context = make_context(env)
             context.sha_digest_for_file = lambda _filename: digest
@@ -68,7 +68,7 @@ def test_command_processor_log_artifact_docker(capsys):
         "MERKELY_IS_COMPLIANT": "TRUE"
     }
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
+    with ScopedEnvVars({**DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
             context = make_context(env)
             context.sha_digest_for_docker_image = lambda _image_name: digest

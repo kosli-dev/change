@@ -1,8 +1,8 @@
 import copy
 import os
 
-
-CDB_DRY_RUN = {"CDB_DRY_RUN": "TRUE"}
+DRY_RUN = {"CDB_DRY_RUN": "TRUE"}
+CDB_DRY_RUN = {"CDB_DRY_RUN": "TRUE"}  # legacy
 
 
 class ScopedEnvVars(object):

@@ -9,7 +9,7 @@ def test_file_not_found(capsys):
         "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
         "MERKELY_HOST": "https://test.merkely.com"
     }
-    with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
+    with ScopedEnvVars({**DRY_RUN, **ev}) as env:
         # no /Merkelypipe.json
         status_code = command_processor.execute(make_context(env))
 
@@ -24,7 +24,7 @@ def test_invalid_json(capsys):
         "MERKELY_HOST": "https://test.merkely.com"
     }
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
+    with ScopedEnvVars({**DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.bad.json", "/Merkelypipe.json"):
             status_code = command_processor.execute(make_context(env))
 
@@ -39,7 +39,7 @@ def test_is_a_dir(capsys):
         "MERKELY_HOST": "https://test.merkely.com"
     }
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
+    with ScopedEnvVars({**DRY_RUN, **ev}) as env:
         with ScopedDirCopier("/test_src", "/Merkelypipe.json"):
             status_code = command_processor.execute(make_context(env))
 
