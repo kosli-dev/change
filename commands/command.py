@@ -27,9 +27,12 @@ class Command:
 
     @property
     def merkelypipe(self):
-        MERKELYPIPE_PATH = "/Merkelypipe.json"
-        with open(MERKELYPIPE_PATH) as file:
-            return json.load(file)
+        try:
+            MERKELYPIPE_PATH = "/Merkelypipe.json"
+            with open(MERKELYPIPE_PATH) as file:
+                return json.load(file)
+        except FileNotFoundError:
+            raise self.Error(f"{MERKELYPIPE_PATH} file not found")
 
     def _required_env(self, key):
         value = self._env(key)

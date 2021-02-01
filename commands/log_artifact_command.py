@@ -43,10 +43,10 @@ class LogArtifactCommand(Command):
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
         self._create_artifact(sha256, image_name)
 
-    def _create_artifact(self, sha256, filename):
+    def _create_artifact(self, sha256, name):
         create_artifact_payload = {
             "sha256": sha256,
-            "filename": filename,
+            "filename": name,
             "description": self.description,
             "git_commit": self.git_commit,
             "commit_url": self.commit_url,

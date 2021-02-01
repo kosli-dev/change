@@ -5,8 +5,9 @@ This command is used to declare a pipeline in Merkely.  It is invoked:
 docker run \
         --env MERKELY_COMMAND=declare_pipeline \
         \
-        --rm \
         --env MERKELY_API_TOKEN=${YOUR_API_TOKEN} \
+        --env MERKELY_HOST=https://app.merkely.com \
+        --rm \
         --volume ${PWD}/${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
         merkely/change
 """
@@ -28,15 +29,3 @@ def test_green(capsys):
 
     assert status_code == 0
     verify_approval(capsys)
-
-
-"""
-Possible negative test cases:
-File not found
-File not valid json
-json has no key "owner"
-json "owner" value not string
-Pipe is a directory not a file (volume mount issue)
-api token env variable not set
-api token empty
-"""
