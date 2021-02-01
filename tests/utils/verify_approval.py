@@ -44,7 +44,7 @@ def verify_payload_and_url(capsys, streams=None):
         inside = line.startswith("Putting this payload:") or inside
         if inside:
             payload_and_url += line
-    return payload_and_url
+    verify(payload_and_url, PythonNativeReporter())
 
 
 def full_capsys(capsys, streams):

@@ -1,7 +1,3 @@
-MERKELY_COMMAND=log_artifact
-Getting SHA for file:// artifact: app/tests/data/coverage.txt
-Calculated digest: ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115
-MERKELY_IS_COMPLIANT: True
 Putting this payload:
 {
     "build_url": "https://gitlab/build/1456",

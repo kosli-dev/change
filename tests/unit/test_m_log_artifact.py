@@ -16,7 +16,7 @@ def test_file_at_root(capsys):
                 status_code = command_processor.execute(context)
 
     assert status_code == 0
-    verify_approval(capsys)
+    verify_payload_and_url(capsys)
 
 
 def test_file_not_at_root(capsys):
@@ -32,7 +32,7 @@ def test_file_not_at_root(capsys):
             status_code = command_processor.execute(context)
 
     assert status_code == 0
-    verify_approval(capsys)
+    verify_payload_and_url(capsys)
 
 
 def test_docker_image(capsys):
@@ -48,7 +48,7 @@ def test_docker_image(capsys):
             status_code = command_processor.execute(context)
 
     assert status_code == 0
-    verify_approval(capsys)
+    verify_payload_and_url(capsys)
 
 
 def X_test_sha256(capsys):
