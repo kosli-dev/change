@@ -30,7 +30,24 @@ But these two lines in requirements.txt do not yet work:
   pytest-approvaltests==0.2.0 
 """
 
+
 def verify_approval(capsys, streams=None):
+    actual = full_capsys(capsys, streams)
+    verify(actual, PythonNativeReporter())
+
+
+def verify_payload_and_url(capsys, streams=None):
+    actual = full_capsys(capsys, streams)
+    payload_and_url = ""
+    inside = False
+    for line in actual.splitlines(True):
+        inside = line.startswith("Putting this payload:") or inside
+        if inside:
+            payload_and_url += line
+    return payload_and_url
+
+
+def full_capsys(capsys, streams):
     out, err = capsys.readouterr()
     if streams is None:
         streams = ["out", "err"]
@@ -40,6 +57,4 @@ def verify_approval(capsys, streams=None):
             actual += out
         if stream == "err":
             actual += err
-    verify(actual, PythonNativeReporter())
-
-
+    return actual
