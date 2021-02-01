@@ -27,11 +27,7 @@ class LogArtifactCommand(Command):
             index = len(docker_protocol)
             name = self.fingerprint[index:]
             self._log_artifact_docker_image(docker_protocol, name)
-        #sha_protocol = "sha256://"
-        #if self.fingerprint.startswith(sha_protocol):
-        #    index = len(sha_protocol)
-        #    sha = self.fingerprint[index:]
-        #    self._log_artifact_sha(sha_protocol, sha)
+        sha_protocol = "sha256://"
 
     def _log_artifact_file(self, protocol, filename):
         print(f"Getting SHA for {protocol} artifact: {filename}")
