@@ -28,6 +28,10 @@ class LogArtifactCommand(Command):
             name = self.fingerprint[index:]
             self._log_artifact_docker_image(docker_protocol, name)
         sha_protocol = "sha256://"
+        if self.fingerprint.startswith(sha_protocol):
+            index = len(sha_protocol)
+            sha256 = self.fingerprint[index:]
+            self._log_artifact_sha(sha256)
 
     def _log_artifact_file(self, protocol, filename):
         print(f"Getting SHA for {protocol} artifact: {filename}")
@@ -44,6 +48,13 @@ class LogArtifactCommand(Command):
         # print("Publish artifact to ComplianceDB")
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
         self._create_artifact(sha256, image_name)
+
+    def _log_artifact_sha(self, sha256):
+        artifact = self._env("MERKELY_ARTIFACT")
+        index = len('file://')
+        filename = artifact[index:]
+        print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
+        self._create_artifact(sha256, filename)
 
     def _create_artifact(self, sha256, name):
         create_artifact_payload = {
