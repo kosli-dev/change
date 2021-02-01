@@ -19,9 +19,10 @@ def test_command_processor_log_artifact_file(capsys):
     with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/coverage.txt", "/coverage.txt"):
             with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
+                digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
                 context = {
                     'env': env,
-                    'sha_digest_for_file': lambda _filename: "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+                    'sha_digest_for_file': lambda _filename: digest
                 }
                 status_code = command_processor.execute(context)
 
@@ -45,9 +46,10 @@ def test_command_processor_log_artifact_file_not_at_root(capsys):
 
     with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
+            digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
             context = {
                 'env': env,
-                'sha_digest_for_file': lambda _filename: "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
+                'sha_digest_for_file': lambda _filename: digest
             }
             status_code = command_processor.execute(context)
 
@@ -71,10 +73,10 @@ def test_command_processor_log_artifact_docker(capsys):
 
     with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
+            digest = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
             context = {
                 'env': env,
-                'sha_digest_for_docker_image': lambda _image_name:
-                    "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+                'sha_digest_for_docker_image': lambda _image_name: digest
             }
             status_code = command_processor.execute(context)
 
