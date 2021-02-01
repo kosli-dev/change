@@ -15,16 +15,23 @@ class Command:
 
     @property
     def name(self):
-        command = self._env("MERKELY_COMMAND")
-        if command is None:
-            raise self.Error("MERKELY_COMMAND environment-variable not set")
-        if command == "":
-            raise self.Error("MERKELY_COMMAND environment-variable is empty string")
-        return command
+        key = "MERKELY_COMMAND"
+        value = self._env(key)
+        if value is None:
+            raise self.Error(f"{key} environment-variable not set")
+        if value == "":
+            raise self.Error(f"{key} environment-variable is empty string")
+        return value
 
     @property
     def api_token(self):
-        return self._env("MERKELY_API_TOKEN")
+        key = "MERKELY_API_TOKEN"
+        value = self._env(key)
+        if value is None:
+            raise self.Error(f"{key} environment-variable not set")
+        if value == "":
+            raise self.Error(f"{key} environment-variable is empty string")
+        return value
 
     @property
     def host(self):

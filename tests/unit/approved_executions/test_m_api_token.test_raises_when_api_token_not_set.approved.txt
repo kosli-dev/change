@@ -1,0 +1,2 @@
+MERKELY_COMMAND=declare_pipeline
+ERROR: MERKELY_API_TOKEN environment-variable not set
