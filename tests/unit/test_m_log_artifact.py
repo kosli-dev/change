@@ -87,6 +87,54 @@ def test_MERKELY_ARTIFACT_GIT_COMMIT_missing(capsys):
     verify_approval(capsys)
 
 
+def test_MERKELY_ARTIFACT_GIT_URL_missing(capsys):
+    ev = log_artifact_env(any_commit())
+    ev.pop("MERKELY_ARTIFACT_GIT_URL")
+
+    with dry_run(ev) as env, scoped_merkelypipe_json():
+        context = make_context(env)
+        status_code = command_processor.execute(context)
+
+    assert status_code != 0
+    verify_approval(capsys)
+
+
+def test_MERKELY_CI_BUILD_URL_missing(capsys):
+    ev = log_artifact_env(any_commit())
+    ev.pop("MERKELY_CI_BUILD_URL")
+
+    with dry_run(ev) as env, scoped_merkelypipe_json():
+        context = make_context(env)
+        status_code = command_processor.execute(context)
+
+    assert status_code != 0
+    verify_approval(capsys)
+
+
+def test_MERKELY_IS_COMPLIANT_missing(capsys):
+    ev = log_artifact_env(any_commit())
+    ev.pop("MERKELY_IS_COMPLIANT")
+
+    with dry_run(ev) as env, scoped_merkelypipe_json():
+        context = make_context(env)
+        status_code = command_processor.execute(context)
+
+    assert status_code != 0
+    verify_approval(capsys)
+
+
+def test_MERKELY_FINGERPRINT_missing(capsys):
+    ev = log_artifact_env(any_commit())
+    ev.pop("MERKELY_FINGERPRINT")
+
+    with dry_run(ev) as env, scoped_merkelypipe_json():
+        context = make_context(env)
+        status_code = command_processor.execute(context)
+
+    assert status_code != 0
+    verify_approval(capsys)
+
+
 def log_artifact_env(commit):
     return {
         "MERKELY_COMMAND": "log_artifact",

@@ -11,10 +11,10 @@ class LogArtifactCommand(Command):
         super().__init__(context)
         self.description = "Created by build " + self._required_env('MERKELY_CI_BUILD_NUMBER')
         self.git_commit = self._required_env('MERKELY_ARTIFACT_GIT_COMMIT')
-        self.commit_url = self._env('MERKELY_ARTIFACT_GIT_URL')
-        self.build_url = self._env('MERKELY_CI_BUILD_URL')
-        self.is_compliant = self._env('MERKELY_IS_COMPLIANT') == "TRUE"
-        self.fingerprint = self._env("MERKELY_FINGERPRINT")
+        self.commit_url = self._required_env('MERKELY_ARTIFACT_GIT_URL')
+        self.build_url = self._required_env('MERKELY_CI_BUILD_URL')
+        self.is_compliant = self._required_env('MERKELY_IS_COMPLIANT') == "TRUE"
+        self.fingerprint = self._required_env("MERKELY_FINGERPRINT")
 
     def _concrete_execute(self):
         file_protocol = "file://"
