@@ -18,7 +18,7 @@ readonly TARGET="${1}"
 pytest \
        --random-order-bucket=global \
        --capture=no \
-       --cov=. \
+       --cov=cdb/ \
        --junitxml=htmlcov/junit.xml \
        -o junit_family=xunit1 \
        --verbose \
