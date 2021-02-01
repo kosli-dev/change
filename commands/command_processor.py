@@ -13,4 +13,4 @@ def execute(context):
         return 0
     except Command.Error as exc:
         print(f"ERROR: {str(exc)}")
-        return exc.status_code
+        return 144

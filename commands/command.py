@@ -3,13 +3,8 @@ import json
 
 class Command:
     class Error(Exception):
-        def __init__(self, status_code, message):
+        def __init__(self, message):
             super().__init__(message)
-            self._status_code = status_code
-
-        @property
-        def status_code(self):
-            return self._status_code
 
     def __init__(self, context):
         self._context = context
@@ -22,9 +17,9 @@ class Command:
     def name(self):
         command = self._env("MERKELY_COMMAND")
         if command is None:
-            raise self.Error(23, "MERKELY_COMMAND environment-variable not set")
+            raise self.Error("MERKELY_COMMAND environment-variable not set")
         if command == "":
-            raise self.Error(24, "MERKELY_COMMAND environment-variable is empty string")
+            raise self.Error("MERKELY_COMMAND environment-variable is empty string")
         return command
 
     @property
