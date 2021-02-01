@@ -9,8 +9,8 @@ class LogArtifactCommand(Command):
     """
     def __init__(self, context):
         super().__init__(context)
-        self.description = "Created by build " + self._env('MERKELY_CI_BUILD_NUMBER')
-        self.git_commit = self._env('MERKELY_ARTIFACT_GIT_COMMIT')
+        self.description = "Created by build " + self._required_env('MERKELY_CI_BUILD_NUMBER')
+        self.git_commit = self._required_env('MERKELY_ARTIFACT_GIT_COMMIT')
         self.commit_url = self._env('MERKELY_ARTIFACT_GIT_URL')
         self.build_url = self._env('MERKELY_CI_BUILD_URL')
         self.is_compliant = self._env('MERKELY_IS_COMPLIANT') == "TRUE"
