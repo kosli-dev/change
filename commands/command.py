@@ -35,6 +35,8 @@ class Command:
             raise self.Error(f"{merkelypipe_path} file not found")
         except json.decoder.JSONDecodeError as exc:
             raise self.Error(f"{merkelypipe_path} invalid json - {str(exc)}")
+        except IsADirectoryError:
+            raise self.Error(f"{merkelypipe_path} is a directory")
 
     def _required_env(self, key):
         value = self._env(key)
