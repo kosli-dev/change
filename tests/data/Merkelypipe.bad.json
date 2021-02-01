@@ -1,0 +1,8 @@
+{
+    "description": "Test Pipeline for merkely/change",
+    "name": "merkely-change-test-pipeline",
+    "owner": "merkely-test",
+    "template": [
+        "artifact",
+        "unit_test",
+
