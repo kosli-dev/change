@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<testsuite errors="1" failures="0" id="0" name="TestSuite1" tests="1" timestamp="2020-08-30T14:37:12">
+<testsuites errors="1" failures="0" id="0" name="TestSuite1" tests="1" timestamp="2020-08-30T14:37:12">
+    <testsuite errors="1" failures="0" id="0" name="/Users/arstan/.m2/repository/org/webjars/npm/angular__http/2.4.10/angular__http-2.4.10.jar" package="angular__http-2.4.10.jar" skipped="0" tests="1" timestamp="2020-08-28T16:27:13.667999">
     <testcase classname="ModuleIAmTesting" name="testCreatePlugin" time="2">
         <error message="Error while executing test testCreatePlugin()!" type="error">
             Some random exception happened during the execution
         </error>
     </testcase>
-</testsuite>
+    </testsuite>
+</testsuites>

@@ -63,6 +63,9 @@ control_junit()
 Dir is _not_ checked. Results in message
 "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites"
 
+2) Statement on line 73 control_junit.py -when test suite(s) not found in Junit xml - cannot be tested
+because if such condition is met then statement load_test_results() on line 63 will throw error:
+"junitparser.junitparser.JUnitXmlError: Invalid format." Line 73 seems to be a dead code.
 
 put_artifact()
 --------------
