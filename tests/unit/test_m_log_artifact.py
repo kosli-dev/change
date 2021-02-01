@@ -4,6 +4,7 @@ from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DR
 
 def test_command_processor_log_artifact_file(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
+    digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     ev = {
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
@@ -19,11 +20,8 @@ def test_command_processor_log_artifact_file(capsys):
     with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/coverage.txt", "/coverage.txt"):
             with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
-                digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
-                context = {
-                    'env': env,
-                    'sha_digest_for_file': lambda _filename: digest
-                }
+                context = make_context(env)
+                context.sha_digest_for_file = lambda _filename: digest
                 status_code = command_processor.execute(context)
 
     assert status_code == 0
@@ -32,6 +30,7 @@ def test_command_processor_log_artifact_file(capsys):
 
 def test_command_processor_log_artifact_file_not_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
+    digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
     ev = {
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
@@ -46,11 +45,8 @@ def test_command_processor_log_artifact_file_not_at_root(capsys):
 
     with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
-            digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
-            context = {
-                'env': env,
-                'sha_digest_for_file': lambda _filename: digest
-            }
+            context = make_context(env)
+            context.sha_digest_for_file = lambda _filename: digest
             status_code = command_processor.execute(context)
 
     assert status_code == 0
@@ -59,6 +55,7 @@ def test_command_processor_log_artifact_file_not_at_root(capsys):
 
 def test_command_processor_log_artifact_docker(capsys):
     commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
+    digest = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     ev = {
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
@@ -73,12 +70,15 @@ def test_command_processor_log_artifact_docker(capsys):
 
     with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
-            digest = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
-            context = {
-                'env': env,
-                'sha_digest_for_docker_image': lambda _image_name: digest
-            }
+            context = make_context(env)
+            context.sha_digest_for_docker_image = lambda _image_name: digest
             status_code = command_processor.execute(context)
 
     assert status_code == 0
     verify_approval(capsys)
+
+
+def make_context(env):
+    context = type('context', (), {})()
+    context.env = env
+    return context

@@ -29,7 +29,7 @@ class LogArtifactCommand(Command):
     def _log_artifact_file(self, protocol, filename):
         pathed_filename = '/' + filename
         print(f"Getting SHA for {protocol} artifact: {pathed_filename}")
-        sha256 = self._context['sha_digest_for_file'](pathed_filename)
+        sha256 = self._context.sha_digest_for_file(pathed_filename)
         print(f"Calculated digest: {sha256}")
         # print("Publish artifact to ComplianceDB")
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
@@ -37,7 +37,7 @@ class LogArtifactCommand(Command):
 
     def _log_artifact_docker_image(self, protocol, image_name):
         print(f"Getting SHA for {protocol} artifact: {image_name}")
-        sha256 = self._context['sha_digest_for_docker_image'](image_name)
+        sha256 = self._context.sha_digest_for_docker_image(image_name)
         print(f"Calculated digest: {sha256}")
         # print("Publish artifact to ComplianceDB")
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")

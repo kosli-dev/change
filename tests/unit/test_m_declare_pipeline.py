@@ -11,7 +11,7 @@ docker run \
         merkely/change
 """
 
-from commands import command_processor
+from commands import command_processor, Context
 from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DRY_RUN
 
 
@@ -24,8 +24,7 @@ def test_command_processor_declare_pipeline_green(capsys):
 
     with ScopedEnvVars({**CDB_DRY_RUN, **ev}) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json"):
-            context = {'env': env}
-            status_code = command_processor.execute(context)
+            status_code = command_processor.execute(Context())
 
     assert status_code == 0
     verify_approval(capsys)

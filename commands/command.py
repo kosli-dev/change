@@ -29,4 +29,4 @@ class Command:
             return json.load(file)
 
     def _env(self, name):
-        return self._context['env'].get(name, None)
+        return self._context.env.get(name, None)

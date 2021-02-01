@@ -3,7 +3,7 @@ from commands import LogArtifactCommand
 
 
 def execute(context):
-    command = context['env'].get("MERKELY_COMMAND", None)
+    command = context.env.get("MERKELY_COMMAND", None)
     if command == "declare_pipeline":
         DeclarePipelineCommand(context).execute()
     if command == "log_artifact":
