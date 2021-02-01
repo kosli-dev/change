@@ -1,6 +1,6 @@
 from cdb.http import http_put_payload, http_post_payload
 
-from tests.utils import silent, ScopedEnvVars, CDB_DRY_RUN
+from tests.utils import *
 
 
 def test_put_dry_run_doesnt_call(mocker, capsys):
