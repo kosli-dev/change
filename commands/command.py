@@ -23,7 +23,7 @@ class Command:
 
     @property
     def host(self):
-        return self._env("MERKELY_HOST")
+        return self._required_env("MERKELY_HOST")
 
     @property
     def merkelypipe(self):

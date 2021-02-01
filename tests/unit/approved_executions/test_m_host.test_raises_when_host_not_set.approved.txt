@@ -1,0 +1,2 @@
+MERKELY_COMMAND=declare_pipeline
+ERROR: MERKELY_HOST environment-variable not set
