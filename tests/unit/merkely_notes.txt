@@ -1,0 +1,9 @@
+The tests in files named test_m_* are for /commands/* code
+which uses the new MERKELY_XXXXX env-vars.
+
+log_artifact()
+--------------
+Original printed this line
+  Getting SHA for artifact: src/data/robocop.xml
+This version prints
+  Getting SHA for file:// artifact: src/data/robocop.xml
