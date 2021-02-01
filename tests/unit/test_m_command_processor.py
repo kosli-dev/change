@@ -1,6 +1,6 @@
 from commands import Context, command_processor
 
-from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DRY_RUN
+from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DRY_RUN, make_context
 
 
 def test_raises_when_merkely_command_not_set(capsys):
@@ -29,11 +29,5 @@ def test_raises_when_merkely_command_is_empty_string(capsys):
 
     assert status_code != 0
     verify_approval(capsys)
-
-
-def make_context(env):
-    context = type('context', (), {})()
-    context.env = env
-    return context
 
 

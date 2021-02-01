@@ -1,5 +1,5 @@
 from commands import command_processor
-from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DRY_RUN
+from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DRY_RUN, make_context
 
 
 def test_command_processor_log_artifact_file(capsys):
@@ -76,9 +76,3 @@ def test_command_processor_log_artifact_docker(capsys):
 
     assert status_code == 0
     verify_approval(capsys)
-
-
-def make_context(env):
-    context = type('context', (), {})()
-    context.env = env
-    return context

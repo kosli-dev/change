@@ -12,7 +12,7 @@ docker run \
 """
 
 from commands import command_processor, Context
-from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DRY_RUN
+from tests.utils import verify_approval, ScopedEnvVars, ScopedFileCopier, CDB_DRY_RUN, make_context
 
 
 def test_green(capsys):
@@ -28,12 +28,6 @@ def test_green(capsys):
 
     assert status_code == 0
     verify_approval(capsys)
-
-
-def make_context(env):
-    context = type('context', (), {})()
-    context.env = env
-    return context
 
 
 """
