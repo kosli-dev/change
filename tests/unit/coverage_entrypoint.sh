@@ -18,9 +18,7 @@ readonly TARGET="${1}"
 pytest \
        --random-order-bucket=global \
        --capture=no \
-       --cov=cdb/ \
-       --cov=tests/utils/ \
-       --cov=commands/ \
+       --cov=. \
        --junitxml=htmlcov/junit.xml \
        -o junit_family=xunit1 \
        --pythonwarnings=ignore::pytest.PytestCollectionWarning \
