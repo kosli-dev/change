@@ -104,6 +104,3 @@ def log_artifact_env(commit):
 def any_commit():
     return "abc50c8a53f79974d615df335669b59fb56a4ed3"
 
-
-def scoped_merkelypipe_json():
-    return ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json")

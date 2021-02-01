@@ -2,6 +2,10 @@ from os import path, remove
 from shutil import copyfile
 
 
+def scoped_merkelypipe_json():
+    return ScopedFileCopier("/app/tests/data/Merkelypipe.json", "/Merkelypipe.json")
+
+
 class ScopedFileCopier(object):
     class Error(ValueError):
         pass
