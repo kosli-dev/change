@@ -15,23 +15,11 @@ class Command:
 
     @property
     def name(self):
-        key = "MERKELY_COMMAND"
-        value = self._env(key)
-        if value is None:
-            raise self.Error(f"{key} environment-variable not set")
-        if value == "":
-            raise self.Error(f"{key} environment-variable is empty string")
-        return value
+        return self._required_env("MERKELY_COMMAND")
 
     @property
     def api_token(self):
-        key = "MERKELY_API_TOKEN"
-        value = self._env(key)
-        if value is None:
-            raise self.Error(f"{key} environment-variable not set")
-        if value == "":
-            raise self.Error(f"{key} environment-variable is empty string")
-        return value
+        return self._required_env("MERKELY_API_TOKEN")
 
     @property
     def host(self):
@@ -42,6 +30,14 @@ class Command:
         MERKELYPIPE_PATH = "/Merkelypipe.json"
         with open(MERKELYPIPE_PATH) as file:
             return json.load(file)
+
+    def _required_env(self, key):
+        value = self._env(key)
+        if value is None:
+            raise self.Error(f"{key} environment-variable not set")
+        if value == "":
+            raise self.Error(f"{key} environment-variable is empty string")
+        return value
 
     def _env(self, key):
         return self._context.env.get(key, None)
