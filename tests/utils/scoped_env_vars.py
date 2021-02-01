@@ -1,8 +1,11 @@
 import copy
 import os
 
-DRY_RUN = {"CDB_DRY_RUN": "TRUE"}
-CDB_DRY_RUN = {"CDB_DRY_RUN": "TRUE"}  # legacy
+CDB_DRY_RUN = {"CDB_DRY_RUN": "TRUE"}
+
+
+def dry_run(ev):
+    return ScopedEnvVars({**CDB_DRY_RUN, **ev})
 
 
 class ScopedEnvVars(object):

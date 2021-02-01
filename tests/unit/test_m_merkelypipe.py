@@ -1,10 +1,9 @@
-
 from commands import command_processor, Context
 from tests.utils import *
 
 
 def test_file_not_found(capsys):
-    with ScopedEnvVars({**DRY_RUN, **declare_pipeline_env()}) as env:
+    with dry_run(declare_pipeline_env()) as env:
         # no /Merkelypipe.json
         status_code = command_processor.execute(make_context(env))
 
@@ -13,7 +12,7 @@ def test_file_not_found(capsys):
 
 
 def test_invalid_json(capsys):
-    with ScopedEnvVars({**DRY_RUN, **declare_pipeline_env()}) as env:
+    with dry_run(declare_pipeline_env()) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.bad.json", "/Merkelypipe.json"):
             status_code = command_processor.execute(make_context(env))
 
@@ -22,7 +21,7 @@ def test_invalid_json(capsys):
 
 
 def test_is_a_dir(capsys):
-    with ScopedEnvVars({**DRY_RUN, **declare_pipeline_env()}) as env:
+    with dry_run(declare_pipeline_env()) as env:
         with ScopedDirCopier("/test_src", "/Merkelypipe.json"):
             status_code = command_processor.execute(make_context(env))
 

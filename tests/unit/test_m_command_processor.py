@@ -9,7 +9,7 @@ def test_raises_when_merkely_command_not_set(capsys):
         "MERKELY_HOST": "https://test.merkely.com"
     }
 
-    with ScopedEnvVars({**DRY_RUN, **ev}) as env:
+    with dry_run(ev) as env:
         status_code = command_processor.execute(make_context(env))
 
     assert status_code != 0
@@ -23,7 +23,7 @@ def test_raises_when_merkely_command_is_empty_string(capsys):
         "MERKELY_HOST": "https://test.merkely.com"
     }
 
-    with ScopedEnvVars({**DRY_RUN, **ev}) as env:
+    with dry_run(ev) as env:
         status_code = command_processor.execute(make_context(env))
 
     assert status_code != 0

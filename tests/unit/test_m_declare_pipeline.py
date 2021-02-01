@@ -23,7 +23,7 @@ def test_green(capsys):
         "MERKELY_HOST": "https://test.merkely.com"
     }
 
-    with ScopedEnvVars({**DRY_RUN, **ev}) as env, scoped_merkelypipe_json():
+    with dry_run(ev) as env, scoped_merkelypipe_json():
         status_code = command_processor.execute(make_context(env))
 
     assert status_code == 0

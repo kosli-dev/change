@@ -8,7 +8,7 @@ def test_file_at_root(capsys):
     ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = "file://coverage.txt"
 
-    with ScopedEnvVars({**DRY_RUN, **ev}) as env, scoped_merkelypipe_json():
+    with dry_run(ev) as env, scoped_merkelypipe_json():
         with ScopedFileCopier("/app/tests/data/coverage.txt", "/coverage.txt"):
             context = make_context(env)
             context.sha_digest_for_file = lambda _filename: digest
@@ -24,7 +24,7 @@ def test_file_not_at_root(capsys):
     ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = "file://app/tests/data/coverage.txt"
 
-    with ScopedEnvVars({**DRY_RUN, **ev}) as env, scoped_merkelypipe_json():
+    with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
         context.sha_digest_for_file = lambda _filename: digest
         status_code = command_processor.execute(context)
@@ -39,7 +39,7 @@ def test_docker_image(capsys):
     ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = "docker://acme/road-runner:6.8"
 
-    with ScopedEnvVars({**DRY_RUN, **ev}) as env, scoped_merkelypipe_json():
+    with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
         context.sha_digest_for_docker_image = lambda _image_name: digest
         status_code = command_processor.execute(context)
@@ -55,7 +55,7 @@ def test_sha256_file(capsys):
     ev["MERKELY_FINGERPRINT"] = f"sha256://{digest}"
     ev["MERKELY_ARTIFACT"] = "file://app/tests/data/coverage.txt"
 
-    with ScopedEnvVars({**DRY_RUN, **ev}) as env, scoped_merkelypipe_json():
+    with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
         status_code = command_processor.execute(context)
 
@@ -67,7 +67,7 @@ def test_MERKELY_CI_BUILD_NUMBER_missing(capsys):
     ev = log_artifact_env(any_commit())
     ev.pop("MERKELY_CI_BUILD_NUMBER")
 
-    with ScopedEnvVars({**DRY_RUN, **ev}) as env, scoped_merkelypipe_json():
+    with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
         status_code = command_processor.execute(context)
 
@@ -79,7 +79,7 @@ def test_MERKELY_ARTIFACT_GIT_COMMIT_missing(capsys):
     ev = log_artifact_env(any_commit())
     ev.pop("MERKELY_ARTIFACT_GIT_COMMIT")
 
-    with ScopedEnvVars({**DRY_RUN, **ev}) as env, scoped_merkelypipe_json():
+    with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
         status_code = command_processor.execute(context)
 
