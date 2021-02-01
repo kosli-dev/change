@@ -4,7 +4,9 @@ from cdb.http import http_put_payload
 
 
 class LogArtifactCommand(Command):
-
+    """
+    Command subclass for handling MERKELY_COMMAND=log_artifact
+    """
     def __init__(self, context):
         super().__init__(context)
         self.description = "Created by build " + self._env('MERKELY_CI_BUILD_NUMBER')

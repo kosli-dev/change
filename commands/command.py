@@ -2,6 +2,9 @@ import json
 
 
 class Command:
+    """
+    Abstract Base Class for all commands.
+    """
     class Error(Exception):
         pass
 
@@ -32,10 +35,10 @@ class Command:
                 return json.load(file)
         except FileNotFoundError:
             raise self.Error(f"{merkelypipe_path} file not found")
-        except json.decoder.JSONDecodeError as exc:
-            raise self.Error(f"{merkelypipe_path} invalid json - {str(exc)}")
         except IsADirectoryError:
             raise self.Error(f"{merkelypipe_path} is a directory")
+        except json.decoder.JSONDecodeError as exc:
+            raise self.Error(f"{merkelypipe_path} invalid json - {str(exc)}")
 
     def _required_env(self, key):
         value = self._env(key)
