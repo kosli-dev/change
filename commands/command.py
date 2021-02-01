@@ -2,7 +2,6 @@ import json
 
 
 class Command:
-
     def __init__(self, context):
         self._context = context
 
