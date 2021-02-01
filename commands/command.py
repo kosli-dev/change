@@ -3,8 +3,7 @@ import json
 
 class Command:
     class Error(Exception):
-        def __init__(self, message):
-            super().__init__(message)
+        pass
 
     def __init__(self, context):
         self._context = context

@@ -3,6 +3,9 @@ from shutil import copyfile
 
 
 class ScopedFileCopier(object):
+    class Error(ValueError):
+        pass
+
     def __init__(self, source_file, target_file):
         if not path.isfile(source_file):
             raise self.Error("source file '{} does not exist".format(source_file))
@@ -16,6 +19,3 @@ class ScopedFileCopier(object):
 
     def __exit__(self, _type, _value, _traceback):
         remove(self._target_file)
-
-    class Error(ValueError):
-        pass

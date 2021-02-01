@@ -53,5 +53,4 @@ Possible negative test cases:
 
 json has no key "owner"
 json "owner" value not string
-Pipe is a directory not a file (volume mount issue)
 """

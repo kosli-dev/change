@@ -3,6 +3,9 @@ from shutil import copytree, rmtree
 
 
 class ScopedDirCopier(object):
+    class Error(ValueError):
+        pass
+
     def __init__(self, source_dir, target_dir):
         if not path.isdir(source_dir):
             raise self.Error("source dir '{} does not exist".format(source_dir))
@@ -17,5 +20,3 @@ class ScopedDirCopier(object):
     def __exit__(self, _type, _value, _traceback):
         rmtree(self._target_dir)
 
-    class Error(ValueError):
-        pass
