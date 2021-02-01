@@ -15,24 +15,28 @@ class LogArtifactCommand(Command):
         self.fingerprint = self._env("MERKELY_FINGERPRINT")
 
     def _concrete_execute(self):
-        FILE_PROTOCOL = "file://"
-        DOCKER_PROTOCOL = "docker://"
-        if self.fingerprint.startswith(FILE_PROTOCOL):
-            self._log_artifact_file(self.fingerprint[len(FILE_PROTOCOL):])
-        if self.fingerprint.startswith(DOCKER_PROTOCOL):
-            self._log_artifact_docker_image(self.fingerprint[len(DOCKER_PROTOCOL):])
+        file_protocol = "file://"
+        if self.fingerprint.startswith(file_protocol):
+            index = len(file_protocol)
+            name = self.fingerprint[index:]
+            self._log_artifact_file(file_protocol, name)
+        docker_protocol = "docker://"
+        if self.fingerprint.startswith(docker_protocol):
+            index = len(docker_protocol)
+            name = self.fingerprint[index:]
+            self._log_artifact_docker_image(docker_protocol, name)
 
-    def _log_artifact_file(self, filename):
+    def _log_artifact_file(self, protocol, filename):
         pathed_filename = '/' + filename
-        print(f"Getting SHA for file:// artifact: {pathed_filename}")
+        print(f"Getting SHA for {protocol} artifact: {pathed_filename}")
         sha256 = self._context['sha_digest_for_file'](pathed_filename)
         print(f"Calculated digest: {sha256}")
         # print("Publish artifact to ComplianceDB")
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
         self._create_artifact(sha256, pathed_filename)
 
-    def _log_artifact_docker_image(self, image_name):
-        print(f"Getting SHA for docker:// artifact: {image_name}")
+    def _log_artifact_docker_image(self, protocol, image_name):
+        print(f"Getting SHA for {protocol} artifact: {image_name}")
         sha256 = self._context['sha_digest_for_docker_image'](image_name)
         print(f"Calculated digest: {sha256}")
         # print("Publish artifact to ComplianceDB")
