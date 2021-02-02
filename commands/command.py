@@ -13,15 +13,15 @@ class Command:
 
     def execute(self):
         print("MERKELY_COMMAND={}".format(self.name))
-        self._required_env("MERKELY_COMMAND")
-        self._required_env("MERKELY_API_TOKEN")
-        self._required_env("MERKELY_HOST")
+        self._merkely_env("COMMAND")
+        self._merkely_env("API_TOKEN")
+        self._merkely_env("HOST")
         self._verify_args()  # Template Method Pattern
         self._concrete_execute()  # Template Method Pattern
 
     @property
     def name(self):
-        return self._required_env("MERKELY_COMMAND")
+        return self._merkely_env("COMMAND")
 
     @property
     def api_token(self):
@@ -43,6 +43,9 @@ class Command:
             raise self.Error(f"{merkelypipe_path} is a directory")
         except json.decoder.JSONDecodeError as exc:
             raise self.Error(f"{merkelypipe_path} invalid json - {str(exc)}")
+
+    def _merkely_env(self, key):
+        return self._required_env(f"MERKELY_{key}")
 
     def _required_env(self, key):
         value = self._env(key)

@@ -17,27 +17,27 @@ class LogArtifactCommand(Command):
 
     @property
     def git_commit(self):
-        return self._required_env('MERKELY_ARTIFACT_GIT_COMMIT')
+        return self._merkely_env('ARTIFACT_GIT_COMMIT')
 
     @property
     def commit_url(self):
-        return self._required_env('MERKELY_ARTIFACT_GIT_URL')
+        return self._merkely_env('ARTIFACT_GIT_URL')
 
     @property
     def build_number(self):
-        return self._required_env('MERKELY_CI_BUILD_NUMBER')
+        return self._merkely_env('CI_BUILD_NUMBER')
 
     @property
     def build_url(self):
-        return self._required_env('MERKELY_CI_BUILD_URL')
+        return self._merkely_env('CI_BUILD_URL')
 
     @property
     def is_compliant(self):
-        return self._required_env('MERKELY_IS_COMPLIANT') == "TRUE"
+        return self._merkely_env('IS_COMPLIANT') == "TRUE"
 
     @property
     def fingerprint(self):
-        return self._required_env("MERKELY_FINGERPRINT")
+        return self._merkely_env("FINGERPRINT")
 
     def _concrete_execute(self):
         file_protocol = "file://"
@@ -73,7 +73,7 @@ class LogArtifactCommand(Command):
         self._create_artifact(sha256, image_name)
 
     def _log_artifact_sha(self, sha256):
-        artifact = self._env("MERKELY_ARTIFACT")
+        artifact = self._merkely_env("ARTIFACT")
         index = len('file://')
         filename = artifact[index:]
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
