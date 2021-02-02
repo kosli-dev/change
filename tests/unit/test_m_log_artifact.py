@@ -10,7 +10,7 @@ def test_file_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
     digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = "file://coverage.txt"
+    ev["MERKELY_FINGERPRINT"] = "file://jam.jar"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         with ScopedFileCopier("/app/tests/data/coverage.txt", "/jam.jar"):
