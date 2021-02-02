@@ -1,4 +1,4 @@
-# ComplianceDB Pipeline Controls
+# Merkely Pipeline Controls
 
 ![Continuous Integration Status](https://github.com/compliancedb/cdb_controls/workflows/CI/badge.svg)
 
