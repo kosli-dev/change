@@ -3,7 +3,7 @@ NAME   := ${APP}
 TAG    := $$(git log -1 --pretty=%h) # eg 5d72e2b
 SHA    := $$(git log -1 --pretty=%H) # eg 5d72e2b158be269390d4b3931ed5d0febd784fb5
 
-IMAGE  := merkely/${APP}
+IMAGE  := merkely/${APP}:master
 IMAGE_PIPE := merkely/${APP}-bbpipe
 
 LATEST := ${NAME}:latest
