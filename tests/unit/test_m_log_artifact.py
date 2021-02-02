@@ -13,7 +13,7 @@ def test_file_at_root(capsys):
     ev["MERKELY_FINGERPRINT"] = "file://coverage.txt"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
-        with ScopedFileCopier("/app/tests/data/coverage.txt", "/coverage.txt"):
+        with ScopedFileCopier("/app/tests/data/coverage.txt", "/jam.jar"):
             context = make_context(env)
             context.sha_digest_for_file = lambda _filename: digest
             status_code = command_processor.execute(context)
@@ -26,7 +26,7 @@ def test_file_not_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
     digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
     ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = "file://app/tests/data/coverage.txt"
+    ev["MERKELY_FINGERPRINT"] = "file://app/tests/data/jam.jar"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
@@ -57,7 +57,7 @@ def test_sha256_file(capsys):
     digest = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"sha256://{digest}"
-    ev["MERKELY_DISPLAY_NAME"] = "myjar.jar"
+    ev["MERKELY_DISPLAY_NAME"] = "myjam.jar"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)

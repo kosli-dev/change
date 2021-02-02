@@ -1,0 +1,12 @@
+Putting this payload:
+{
+    "build_url": "https://gitlab/build/1456",
+    "commit_url": "http://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4444",
+    "description": "Created by build 23",
+    "filename": "app/tests/data/jam.jar",
+    "git_commit": "abc50c8a53f79974d615df335669b59fb56a4444",
+    "is_compliant": true,
+    "sha256": "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
+}
+To this url: https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/
+DRY RUN: Put not sent
