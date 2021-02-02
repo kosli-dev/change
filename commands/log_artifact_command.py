@@ -1,3 +1,4 @@
+import os
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
@@ -66,7 +67,7 @@ class LogArtifactCommand(Command):
         print(f"Calculated digest: {sha256}")
         # print("Publish artifact to ComplianceDB")
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
-        self._create_artifact(sha256, filename)
+        self._create_artifact(sha256, os.path.basename(filename))
 
     def _log_artifact_docker_image(self, protocol, image_name):
         print(f"Getting SHA for {protocol} artifact: {image_name}")

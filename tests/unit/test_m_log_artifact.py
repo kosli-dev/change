@@ -1,7 +1,6 @@
 from commands import command_processor
 from tests.utils import *
 
-# TODO: FINGERPRINT="file://a/b/c/jam/jar" ==> filename="jam.jar"
 # TODO: Test when docker socket not volume-mounted
 # TODO: Test when sha256://SHA and SHA does not look like a SHA
 
@@ -10,7 +9,7 @@ def test_file_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
     digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = "file://jam.jar"
+    ev["MERKELY_FINGERPRINT"] = "file://jam.jar"  # In payload, "filename": "jam.jar"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         with ScopedFileCopier("/app/tests/data/coverage.txt", "/jam.jar"):
@@ -26,7 +25,7 @@ def test_file_not_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
     digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
     ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = "file://app/tests/data/jam.jar"
+    ev["MERKELY_FINGERPRINT"] = "file://app/tests/data/jam.jar"  # In payload, "filename": "jam.jar"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
