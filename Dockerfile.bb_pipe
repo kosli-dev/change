@@ -1,4 +1,4 @@
-FROM compliancedb/cdb_controls:latest
+FROM merkely/change:latest
 
 COPY bitbucket_pipe/pipe.py .
 COPY bitbucket_pipe/requirements.txt .
