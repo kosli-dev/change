@@ -136,17 +136,15 @@ def test_MERKELY_FINGERPRINT_missing(capsys):
 
 
 def log_artifact_env(commit):
-    return {
-        "MERKELY_COMMAND": "log_artifact",
-        "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
+    ev = {
         "MERKELY_FINGERPRINT": "file://coverage.txt",  # at root
-        "MERKELY_HOST": "https://test.merkely.com",
         "MERKELY_CI_BUILD_URL": "https://gitlab/build/1456",
         "MERKELY_CI_BUILD_NUMBER": "23",
         "MERKELY_ARTIFACT_GIT_URL": "http://github/me/project/commit/" + commit,
         "MERKELY_ARTIFACT_GIT_COMMIT": commit,
         "MERKELY_IS_COMPLIANT": "TRUE"
     }
+    return {**core_env_vars("log_artifact"), **ev}
 
 
 def any_commit():
