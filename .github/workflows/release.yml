@@ -18,17 +18,17 @@ jobs:
 
       - name: Create approval in compliancedb, update latest docker image and git branch
         env:
-          CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
-          CDB_ARTIFACT_DOCKER_IMAGE: compliancedb/cdb_controls:latest
+          CDB_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
+          CDB_ARTIFACT_DOCKER_IMAGE: merkely/change:latest
           CDB_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
           CDB_BASE_SRC_COMMITISH: "origin/latest"
           CDB_RELEASE_DESCRIPTION: "Release created in github actions on git tag ${GITHUB_REF}"
         run: |
           export DOCKER_TAG=sha-$(git rev-parse --short=7 HEAD)
-          docker pull compliancedb/cdb_controls:$DOCKER_TAG
-          docker tag compliancedb/cdb_controls:$DOCKER_TAG $CDB_ARTIFACT_DOCKER_IMAGE
+          docker pull merkely/change:$DOCKER_TAG
+          docker tag merkely/change:$DOCKER_TAG $CDB_ARTIFACT_DOCKER_IMAGE
           docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
-          docker push compliancedb/cdb_controls:latest
+          docker push $CDB_ARTIFACT_DOCKER_IMAGE
           git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
           make create_release
           # Merge latest -> master
@@ -40,9 +40,9 @@ jobs:
         env:
           CDB_HOST: https://app.compliancedb.com
           CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
-          CDB_ARTIFACT_DOCKER_IMAGE: compliancedb/cdb_controls:latest
-          CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
+          CDB_ARTIFACT_DOCKER_IMAGE: merkely/change:latest
+          CDB_CI_BUILD_URL: https://github.com/merkely/change/actions/runs/${GITHUB_RUN_ID}
           CDB_ENVIRONMENT: "docker_hub"
-          CDB_DESCRIPTION: "Deployment of compliancedb/cdb_controls:latest to docker hub"
+          CDB_DESCRIPTION: "Deployment of merkely/change:latest to docker hub"
         run: |
           make create_deployment

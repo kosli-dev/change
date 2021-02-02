@@ -1,15 +1,13 @@
-APP    := cdb_controls
+APP    := change
 NAME   := ${APP}
 TAG    := $$(git log -1 --pretty=%h) # eg 5d72e2b
 SHA    := $$(git log -1 --pretty=%H) # eg 5d72e2b158be269390d4b3931ed5d0febd784fb5
 
-IMAGE  := compliancedb/${APP}
-IMAGE_PIPE := compliancedb/${APP}-bbpipe
+IMAGE  := merkely/${APP}
+IMAGE_PIPE := merkely/${APP}-bbpipe
 
 LATEST := ${NAME}:latest
-CONTAINER := cdb_controls
-REPOSITORY   := registry.gitlab.com/compliancedb/compliancedb/${APP}
-SERVER_PORT := 8001
+CONTAINER := change
 
 CDB_HOST=https://app.compliancedb.com
 
@@ -128,7 +126,7 @@ follow:
 
 # Start a container with shell
 shell:
-	@docker run -it --rm -p ${SERVER_PORT}:${SERVER_PORT} --name ${CONTAINER} ${IMAGE} sh
+	@docker run -it --rm --name ${CONTAINER} ${IMAGE} sh
 
 # Delete all the non-latest images
 prune:

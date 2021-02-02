@@ -22,9 +22,6 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    # Runs a single command using the runners shell
-    - name: Run a one-line script
-      run: echo Hello, world!
         
     - name: Build and push Docker images
       uses: docker/build-push-action@v1.1.0
@@ -36,7 +33,7 @@ jobs:
         # Password or personal access token used to log in to a Docker registry. If not set then no login will occur
         password: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
         # Docker repository to tag the image with
-        repository: compliancedb/cdb_controls
+        repository: merkely/change
         # Automatically tags the built image with the git reference as per the readme
         tag_with_ref: TRUE
         # Automatically tags the built image with the git short SHA as per the readme
@@ -56,7 +53,7 @@ jobs:
         MERKELY_CI_BUILD_NUMBER: ${GITHUB_RUN_ID}
       run: |
         export SHA7=$(git log -1 --pretty=%h)
-        export MERKELY_DOCKER_IMAGE=compliancedb/cdb_controls:sha-${SHA7}
+        export MERKELY_DOCKER_IMAGE=merkely/change:sha-${SHA7}
         make branch merkely_declare_pipeline merkely_log_artifact
 
     - name: Create the deployment in ComplianceDB
