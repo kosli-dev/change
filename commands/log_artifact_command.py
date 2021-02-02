@@ -39,6 +39,10 @@ class LogArtifactCommand(Command):
     def fingerprint(self):
         return self._merkely_env("FINGERPRINT")
 
+    @property
+    def display_name(self):
+        return self._env("MERKELY_DISPLAY_NAME")
+
     def _concrete_execute(self):
         file_protocol = "file://"
         if self.fingerprint.startswith(file_protocol):
@@ -73,15 +77,14 @@ class LogArtifactCommand(Command):
         self._create_artifact(sha256, image_name)
 
     def _log_artifact_sha(self, sha256):
-        display_name = self._merkely_env("DISPLAY_NAME")
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
-        self._create_artifact(sha256, display_name)
+        self._create_artifact(sha256, self.display_name)
 
-    def _create_artifact(self, sha256, name):
+    def _create_artifact(self, sha256, display_name):
         description = "Created by build " + self.build_number
         create_artifact_payload = {
             "sha256": sha256,
-            "filename": name,
+            "filename": display_name,
             "description": description,
             "git_commit": self.git_commit,
             "commit_url": self.commit_url,
