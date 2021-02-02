@@ -53,7 +53,7 @@ def test_sha256_file(capsys):
     digest = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"sha256://{digest}"
-    ev["MERKELY_ARTIFACT"] = "file://app/tests/data/coverage.txt"
+    ev["MERKELY_DISPLAY_NAME"] = "myjar.jar"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)

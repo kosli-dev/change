@@ -73,11 +73,9 @@ class LogArtifactCommand(Command):
         self._create_artifact(sha256, image_name)
 
     def _log_artifact_sha(self, sha256):
-        artifact = self._merkely_env("ARTIFACT")
-        index = len('file://')
-        filename = artifact[index:]
+        display_name = self._merkely_env("DISPLAY_NAME")
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
-        self._create_artifact(sha256, filename)
+        self._create_artifact(sha256, display_name)
 
     def _create_artifact(self, sha256, name):
         description = "Created by build " + self.build_number
