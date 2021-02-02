@@ -168,11 +168,28 @@ put_project:
 
 merkely_declare_pipeline:
 	docker run --rm \
-			--volume ${PWD}/${PROJFILE}:/Merkelypipe.json \
 			--env MERKELY_COMMAND=declare_pipeline \
 			--env MERKELY_API_TOKEN=${CDB_API_TOKEN} \
 			--env MERKELY_HOST=https://app.compliancedb.com \
+			--volume ${PWD}/${PROJFILE}:/Merkelypipe.json \
 			${IMAGE}
+
+merkely_log_artifact:
+	docker run --rm \
+			--env MERKELY_COMMAND=log_artifact \
+			--env MERKELY_FINGERPRINT="docker://${MERKELY_DOCKER_IMAGE}" \
+			--env MERKELY_DISPLAY_NAME=${MERKELY_DOCKER_IMAGE} \
+			--env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
+			--env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
+			--env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
+			--env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
+			--env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
+			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+			--env MERKELY_HOST=https://app.compliancedb.com \
+			--volume ${PWD}/${PROJFILE}:/Merkelypipe.json \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			${IMAGE}
+
 
 put_artifact_image:
 	docker run --rm \
