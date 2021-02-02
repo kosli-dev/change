@@ -22,7 +22,7 @@ jobs:
           CDB_ARTIFACT_DOCKER_IMAGE: merkely/change:latest
           CDB_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
           CDB_BASE_SRC_COMMITISH: "origin/latest"
-          CDB_RELEASE_DESCRIPTION: "Release created in github actions on git tag ${GITHUB_REF}"
+          CDB_RELEASE_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
         run: |
           export DOCKER_TAG=sha-$(git rev-parse --short=7 HEAD)
           docker pull merkely/change:$DOCKER_TAG
