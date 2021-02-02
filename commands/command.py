@@ -13,6 +13,10 @@ class Command:
 
     def execute(self):
         print("MERKELY_COMMAND={}".format(self.name))
+        self._required_env("MERKELY_COMMAND")
+        self._required_env("MERKELY_API_TOKEN")
+        self._required_env("MERKELY_HOST")
+        self._verify_args()  # Template Method Pattern
         self._concrete_execute()  # Template Method Pattern
 
     @property
@@ -21,11 +25,11 @@ class Command:
 
     @property
     def api_token(self):
-        return self._required_env("MERKELY_API_TOKEN")
+        return self._env("MERKELY_API_TOKEN")
 
     @property
     def host(self):
-        return self._required_env("MERKELY_HOST")
+        return self._env("MERKELY_HOST")
 
     @property
     def merkelypipe(self):

@@ -6,6 +6,7 @@ import os
 # with test functions that automagically use a (capsys) arg
 # for reasons not worth drilling into right now...
 
+
 class AlreadyExistingEnvVars(Exception):
     def __init__(self, vars):
         self._vars = vars

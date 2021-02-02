@@ -1,1 +1,2 @@
+MERKELY_COMMAND=log_artifact
 ERROR: MERKELY_ARTIFACT_GIT_COMMIT environment-variable not set

@@ -9,12 +9,42 @@ class LogArtifactCommand(Command):
     """
     def __init__(self, context):
         super().__init__(context)
-        self.description = "Created by build " + self._required_env('MERKELY_CI_BUILD_NUMBER')
-        self.git_commit = self._required_env('MERKELY_ARTIFACT_GIT_COMMIT')
-        self.commit_url = self._required_env('MERKELY_ARTIFACT_GIT_URL')
-        self.build_url = self._required_env('MERKELY_CI_BUILD_URL')
-        self.is_compliant = self._required_env('MERKELY_IS_COMPLIANT') == "TRUE"
-        self.fingerprint = self._required_env("MERKELY_FINGERPRINT")
+
+    @property
+    def git_commit(self):
+        return self._required_env('MERKELY_ARTIFACT_GIT_COMMIT')
+
+    @property
+    def commit_url(self):
+        return self._required_env('MERKELY_ARTIFACT_GIT_URL')
+
+    @property
+    def build_number(self):
+        return self._required_env('MERKELY_CI_BUILD_NUMBER')
+
+    @property
+    def build_url(self):
+        return self._required_env('MERKELY_CI_BUILD_URL')
+
+    @property
+    def is_compliant(self):
+        return self._required_env('MERKELY_IS_COMPLIANT') == "TRUE"
+
+    @property
+    def fingerprint(self):
+        return self._required_env("MERKELY_FINGERPRINT")
+
+    @property
+    def description(self):
+        return "Created by build " + self.build_number
+
+    def _verify_args(self):
+        self.git_commit
+        self.commit_url
+        self.build_number
+        self.build_url
+        self.is_compliant
+        self.fingerprint
 
     def _concrete_execute(self):
         file_protocol = "file://"
