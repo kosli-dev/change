@@ -7,9 +7,6 @@ class LogArtifactCommand(Command):
     """
     Command subclass for handling MERKELY_COMMAND=log_artifact
     """
-    def __init__(self, context):
-        super().__init__(context)
-
     def _verify_args(self):
         self.build_number
         self.build_url
