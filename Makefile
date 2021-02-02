@@ -167,7 +167,7 @@ put_project:
 merkely_declare_pipeline:
 	docker run --rm \
 			--env MERKELY_COMMAND=declare_pipeline \
-			--env MERKELY_API_TOKEN=${CDB_API_TOKEN} \
+			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 			--env MERKELY_HOST=https://app.compliancedb.com \
 			--volume ${PWD}/${PROJFILE}:/Merkelypipe.json \
 			${IMAGE}
