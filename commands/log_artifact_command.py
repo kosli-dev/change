@@ -10,6 +10,14 @@ class LogArtifactCommand(Command):
     def __init__(self, context):
         super().__init__(context)
 
+    def _verify_args(self):
+        self.build_number
+        self.build_url
+        self.commit_url
+        self.fingerprint
+        self.git_commit
+        self.is_compliant
+
     @property
     def git_commit(self):
         return self._required_env('MERKELY_ARTIFACT_GIT_COMMIT')
@@ -33,18 +41,6 @@ class LogArtifactCommand(Command):
     @property
     def fingerprint(self):
         return self._required_env("MERKELY_FINGERPRINT")
-
-    @property
-    def description(self):
-        return "Created by build " + self.build_number
-
-    def _verify_args(self):
-        self.git_commit
-        self.commit_url
-        self.build_number
-        self.build_url
-        self.is_compliant
-        self.fingerprint
 
     def _concrete_execute(self):
         file_protocol = "file://"
@@ -87,10 +83,11 @@ class LogArtifactCommand(Command):
         self._create_artifact(sha256, filename)
 
     def _create_artifact(self, sha256, name):
+        description = "Created by build " + self.build_number
         create_artifact_payload = {
             "sha256": sha256,
             "filename": name,
-            "description": self.description,
+            "description": description,
             "git_commit": self.git_commit,
             "commit_url": self.commit_url,
             "build_url": self.build_url,
