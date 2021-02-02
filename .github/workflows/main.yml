@@ -62,7 +62,7 @@ jobs:
         CDB_ENVIRONMENT: "docker_hub"
       run: |
         export SHA7=$(git log -1 --pretty=%h)
-        export CDB_ARTIFACT_DOCKER_IMAGE=compliancedb/cdb_controls:sha-${SHA7}
+        export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
         export CDB_DESCRIPTION="Deployment of ${CDB_ARTIFACT_DOCKER_IMAGE} to docker hub"
         make create_deployment
 
@@ -79,7 +79,7 @@ jobs:
         CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
       run: |
         export SHA7=$(git log -1 --pretty=%h)
-        export CDB_ARTIFACT_DOCKER_IMAGE=compliancedb/cdb_controls:sha-${SHA7}
+        export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
 
         export CDB_TEST_RESULTS=${PWD}/tmp/coverage/unit/htmlcov/junit.xml
         export CDB_EVIDENCE_TYPE="unit_test"
@@ -97,7 +97,7 @@ jobs:
         CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
       run: |
         export SHA7=$(git log -1 --pretty=%h)
-        export CDB_ARTIFACT_DOCKER_IMAGE=compliancedb/cdb_controls:sha-${SHA7}
+        export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
         make control_and_publish_junit_results
 
 
@@ -117,7 +117,7 @@ jobs:
         CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
       run: |
         export SHA7=$(git log -1 --pretty=%h)
-        export CDB_ARTIFACT_DOCKER_IMAGE=compliancedb/cdb_controls:sha-${SHA7}
+        export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
         source tmp/coverage/unit/htmlcov/test_coverage.txt
         source tmp/coverage/unit/htmlcov/test_cases.txt
         export CDB_DESCRIPTION="$TEST_CASES tests passed with $COVERAGE coverage"
