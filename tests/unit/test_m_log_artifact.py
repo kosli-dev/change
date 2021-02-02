@@ -1,6 +1,10 @@
 from commands import command_processor
 from tests.utils import *
 
+# TODO: FINGERPRINT="file://a/b/c/jam/jar" ==> filename="jam.jar"
+# TODO: Test when docker socket not volume-mounted
+# TODO: Test when sha256://SHA and SHA does not look like a SHA
+
 
 def test_file_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
