@@ -84,6 +84,9 @@ def test_sha256_docker_image(capsys):
 
 
 def test_all_non_zero_status_cases(capsys):
+    #env = log_artifact_env(any_commit())
+    #args = make_context(env)
+    #for arg in make_context(env).args():
     assert case_MERKELY_CI_BUILD_NUMBER_missing(capsys) != 0
     assert case_MERKELY_ARTIFACT_GIT_COMMIT_missing(capsys) != 0
     assert case_MERKELY_ARTIFACT_GIT_URL_missing(capsys) != 0
