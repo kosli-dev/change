@@ -6,14 +6,8 @@ class Command:
     """
     Abstract Base Class for all commands.
     """
-    class Error(Exception):
-        pass
-
     def __init__(self, context):
         self._context = context
-
-    def execute(self):
-        self._concrete_execute()  # Template Method Pattern
 
     @property
     def name(self):

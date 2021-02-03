@@ -33,6 +33,6 @@ class DeclarePipelineCommand(Command):
     def host(self):
         return self._required_env_var("HOST")
 
-    def _concrete_execute(self):
+    def execute(self):
         pipelines_url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
         http_put_payload(url=pipelines_url, payload=self.merkelypipe, api_token=self.api_token.value)

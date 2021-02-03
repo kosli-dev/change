@@ -60,7 +60,7 @@ class LogArtifactCommand(Command):
     def display_name(self):
         return self._optional_env_var("DISPLAY_NAME")
 
-    def _concrete_execute(self):
+    def execute(self):
         fp = self.fingerprint.value
         file_protocol = "file://"
         if fp.startswith(file_protocol):
