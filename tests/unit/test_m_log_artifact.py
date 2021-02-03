@@ -3,6 +3,8 @@ from tests.utils import *
 
 # TODO: Test when docker socket not volume-mounted
 # TODO: Test when sha256://SHA and SHA does not look like a SHA
+# TODO: test_sha256_file() when DISPLAY_NAME is missing
+# TODO: test_sha256_file() when supplied DISPLAY_NAME has full path...
 
 
 def test_file_at_root(capsys):

@@ -4,36 +4,45 @@ from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
 
+class RequiredEnvVar:
+    def __init__(self, name, env):
+        self._name = name
+        self._env = env
+
+    @property
+    def name(self):
+        return f"MERKELY_{self._name}"
+
+    @property
+    def value(self):
+        value = self._env.get(self.name, None)
+        if value is None:
+            raise Command.Error(f"{self.name} environment-variable not set")
+        if value == "":
+            raise Command.Error(f"{self.name} environment-variable is empty string")
+        return value
+
+
 class LogArtifactCommand(Command):
     """
     Command subclass for handling MERKELY_COMMAND=log_artifact
     """
 
-    # ARGS = ( Arg(''), Args('') )
-
-    def _verify_args(self):
-        self.artifact_git_commit
-        self.artifact_git_url
-        self.ci_build_number
-        self.ci_build_url
-        self.fingerprint
-        self.is_compliant
-
     @property
     def artifact_git_commit(self):
-        return self._merkely_env('ARTIFACT_GIT_COMMIT')
+        return self._required_env_var('ARTIFACT_GIT_COMMIT')
 
     @property
     def artifact_git_url(self):
-        return self._merkely_env('ARTIFACT_GIT_URL')
+        return self._required_env_var('ARTIFACT_GIT_URL')
 
     @property
     def ci_build_number(self):
-        return self._merkely_env('CI_BUILD_NUMBER')
+        return self._required_env_var('CI_BUILD_NUMBER')
 
     @property
     def ci_build_url(self):
-        return self._merkely_env('CI_BUILD_URL')
+        return self._required_env_var('CI_BUILD_URL')
 
     @property
     def is_compliant(self):
@@ -46,6 +55,17 @@ class LogArtifactCommand(Command):
     @property
     def display_name(self):
         return self._env("MERKELY_DISPLAY_NAME")
+
+    def _required_env_var(self, name):
+        return RequiredEnvVar(name, self._context.env)
+
+    def _verify_args(self):
+        self.artifact_git_commit.value
+        self.artifact_git_url.value
+        self.ci_build_number.value
+        self.ci_build_url.value
+        self.fingerprint
+        self.is_compliant
 
     def _concrete_execute(self):
         file_protocol = "file://"
@@ -85,14 +105,14 @@ class LogArtifactCommand(Command):
         self._create_artifact(sha256, self.display_name)
 
     def _create_artifact(self, sha256, display_name):
-        description = "Created by build " + self.ci_build_number
+        description = f"Created by build {self.ci_build_number.value}"
         create_artifact_payload = {
             "sha256": sha256,
             "filename": display_name,
             "description": description,
-            "git_commit": self.artifact_git_commit,
-            "commit_url": self.artifact_git_url,
-            "build_url": self.ci_build_url,
+            "git_commit": self.artifact_git_commit.value,
+            "commit_url": self.artifact_git_url.value,
+            "build_url": self.ci_build_url.value,
             "is_compliant": self.is_compliant
         }
         url = ApiSchema.url_for_artifacts(self.host, self.merkelypipe)
