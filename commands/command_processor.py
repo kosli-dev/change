@@ -1,4 +1,4 @@
-from commands import Command, CommandError, DeclarePipelineCommand, LogArtifactCommand
+from commands import *
 
 
 def execute(context):
@@ -9,6 +9,8 @@ def execute(context):
             cls = DeclarePipelineCommand
         if name == "log_artifact":
             cls = LogArtifactCommand
+        if name == "log_deployment":
+            cls = LogDeploymentCommand
 
         if cls is not None:
             print(f"MERKELY_COMMAND={name}")

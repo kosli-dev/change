@@ -83,7 +83,7 @@ class LogArtifactCommand(Command):
 
     def _create_artifact(self, sha256, display_name):
         description = f"Created by build {self.ci_build_number.value}"
-        create_artifact_payload = {
+        payload = {
             "sha256": sha256,
             "filename": display_name,
             "description": description,
@@ -93,7 +93,7 @@ class LogArtifactCommand(Command):
             "is_compliant": self.is_compliant.value == 'TRUE'
         }
         url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)
-        http_put_payload(url, create_artifact_payload, self.api_token.value)
+        http_put_payload(url, payload, self.api_token.value)
 
     def _print_compliance(self):
         env_var = self.is_compliant

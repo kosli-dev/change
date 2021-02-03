@@ -42,6 +42,7 @@ def verify_payload_and_url(capsys, streams=None):
     inside = False
     for line in actual.splitlines(True):
         inside = line.startswith("Putting this payload:") or inside
+        inside = line.startswith("Posting this payload:") or inside
         if inside:
             payload_and_url += line
     verify(payload_and_url, PythonNativeReporter())
