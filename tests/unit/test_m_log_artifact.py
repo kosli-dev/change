@@ -1,4 +1,4 @@
-from commands import command_processor
+from commands import command_processor, make_command, RequiredEnvVar
 from tests.utils import *
 
 # TODO: Test when docker socket not volume-mounted
@@ -83,65 +83,22 @@ def test_sha256_docker_image(capsys):
     verify_payload_and_url(capsys)
 
 
-def test_all_non_zero_status_cases(capsys):
-    #env = log_artifact_env(any_commit())
-    #args = make_context(env)
-    #for arg in make_context(env).args():
-    assert case_MERKELY_CI_BUILD_NUMBER_missing(capsys) != 0
-    assert case_MERKELY_ARTIFACT_GIT_COMMIT_missing(capsys) != 0
-    assert case_MERKELY_ARTIFACT_GIT_URL_missing(capsys) != 0
-    assert case_MERKELY_CI_BUILD_URL_missing(capsys) != 0
-    assert case_MERKELY_IS_COMPLIANT_missing(capsys) != 0
-    assert case_MERKELY_FINGERPRINT_missing(capsys) != 0
+def test_each_required_env_var_missing(capsys):
+    for arg in make_command_args():
+        if isinstance(arg, RequiredEnvVar):
+            ev = log_artifact_env(any_commit())
+            ev.pop(arg.name)
+            with dry_run(ev) as env, scoped_merkelypipe_json():
+                context = make_context(env)
+                status_code = command_processor.execute(context)
+                assert status_code != 0
     verify_approval(capsys)
 
 
-def case_MERKELY_CI_BUILD_NUMBER_missing(capsys):
-    ev = log_artifact_env(any_commit())
-    ev.pop("MERKELY_CI_BUILD_NUMBER")
-    with dry_run(ev) as env, scoped_merkelypipe_json():
-        context = make_context(env)
-        return command_processor.execute(context)
-
-
-def case_MERKELY_ARTIFACT_GIT_COMMIT_missing(capsys):
-    ev = log_artifact_env(any_commit())
-    ev.pop("MERKELY_ARTIFACT_GIT_COMMIT")
-    with dry_run(ev) as env, scoped_merkelypipe_json():
-        context = make_context(env)
-        return command_processor.execute(context)
-
-
-def case_MERKELY_ARTIFACT_GIT_URL_missing(capsys):
-    ev = log_artifact_env(any_commit())
-    ev.pop("MERKELY_ARTIFACT_GIT_URL")
-    with dry_run(ev) as env, scoped_merkelypipe_json():
-        context = make_context(env)
-        return command_processor.execute(context)
-
-
-def case_MERKELY_CI_BUILD_URL_missing(capsys):
-    ev = log_artifact_env(any_commit())
-    ev.pop("MERKELY_CI_BUILD_URL")
-    with dry_run(ev) as env, scoped_merkelypipe_json():
-        context = make_context(env)
-        return command_processor.execute(context)
-
-
-def case_MERKELY_IS_COMPLIANT_missing(capsys):
-    ev = log_artifact_env(any_commit())
-    ev.pop("MERKELY_IS_COMPLIANT")
-    with dry_run(ev) as env, scoped_merkelypipe_json():
-        context = make_context(env)
-        return command_processor.execute(context)
-
-
-def case_MERKELY_FINGERPRINT_missing(capsys):
-    ev = log_artifact_env(any_commit())
-    ev.pop("MERKELY_FINGERPRINT")
-    with dry_run(ev) as env, scoped_merkelypipe_json():
-        context = make_context(env)
-        return command_processor.execute(context)
+def make_command_args():
+    env = log_artifact_env(any_commit())
+    context = make_context(env)
+    return make_command(context).args
 
 
 def log_artifact_env(commit):
