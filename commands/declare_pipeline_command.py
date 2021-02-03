@@ -17,6 +17,11 @@ class DeclarePipelineCommand(Command):
             --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
             merkely/change
     """
+    @property
+    def args(self):
+        return (self.api_token,
+                self.host)
+
     def _verify_args(self):
         pass
 

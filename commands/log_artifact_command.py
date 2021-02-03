@@ -21,6 +21,10 @@ class LogArtifactCommand(Command):
                 self.fingerprint,
                 self.host)
 
+    def _verify_args(self):
+        for arg in self.args:
+            arg.verify()
+
     @property
     def api_token(self):
         return self._required_env_var("API_TOKEN")
@@ -56,10 +60,6 @@ class LogArtifactCommand(Command):
     @property
     def display_name(self):
         return self._optional_env_var("DISPLAY_NAME")
-
-    def _verify_args(self):
-        for arg in self.args:
-            arg.verify()
 
     def _concrete_execute(self):
         fp = self.fingerprint.value
