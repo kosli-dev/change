@@ -2,7 +2,6 @@ import os
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
-from commands import OptionalEnvVar, RequiredEnvVar
 
 
 class LogArtifactCommand(Command):
@@ -111,9 +110,3 @@ class LogArtifactCommand(Command):
     def _print_compliance(self):
         env_var = self.is_compliant
         print(f"{env_var.name}: {env_var.value == 'TRUE'}")
-
-    def _required_env_var(self, name):
-        return RequiredEnvVar(name, self._context.env)
-
-    def _optional_env_var(self, name):
-        return OptionalEnvVar(name, self._context.env)

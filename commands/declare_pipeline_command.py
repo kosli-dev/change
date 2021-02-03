@@ -1,4 +1,4 @@
-from commands import Command, RequiredEnvVar
+from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
@@ -32,9 +32,6 @@ class DeclarePipelineCommand(Command):
     @property
     def host(self):
         return self._required_env_var("HOST")
-
-    def _required_env_var(self, name):
-        return RequiredEnvVar(name, self._context.env)
 
     def _concrete_execute(self):
         pipelines_url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
