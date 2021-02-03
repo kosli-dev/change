@@ -13,9 +13,6 @@ class Command:
 
     def execute(self):
         print("MERKELY_COMMAND={}".format(self.name))
-        self._merkely_env("COMMAND")
-        self._merkely_env("API_TOKEN")
-        self._merkely_env("HOST")
         self._verify_args()  # Template Method Pattern
         self._concrete_execute()  # Template Method Pattern
 

@@ -23,16 +23,20 @@ class DeclarePipelineCommand(Command):
                 self.host)
 
     def _verify_args(self):
-        pass
+        for arg in self.args:
+            arg.verify()
 
     @property
     def api_token(self):
-        return self._env("MERKELY_API_TOKEN")
+        return self._required_env_var("API_TOKEN")
 
     @property
     def host(self):
-        return self._env("MERKELY_HOST")
+        return self._required_env_var("HOST")
+
+    def _required_env_var(self, name):
+        return RequiredEnvVar(name, self._context.env)
 
     def _concrete_execute(self):
-        pipelines_url = ApiSchema.url_for_pipelines(self.host, self.merkelypipe)
-        http_put_payload(url=pipelines_url, payload=self.merkelypipe, api_token=self.api_token)
+        pipelines_url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
+        http_put_payload(url=pipelines_url, payload=self.merkelypipe, api_token=self.api_token.value)
