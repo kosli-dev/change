@@ -99,7 +99,8 @@ class LogArtifactCommand(Command):
         http_put_payload(url, create_artifact_payload, self.api_token)
 
     def _print_compliance(self):
-        print(f"MERKELY_IS_COMPLIANT: {self.is_compliant.value == 'TRUE'}")
+        env_var = self.is_compliant
+        print(f"{env_var.name}: {env_var.value == 'TRUE'}")
 
     def _required_env_var(self, name):
         return RequiredEnvVar(name, self._context.env)
