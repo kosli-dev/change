@@ -8,7 +8,7 @@ class RequiredEnvVar:
 
     @property
     def name(self):
-        return f"MERKELY_{self._name}"
+        return self._name
 
     @property
     def value(self):

@@ -2,6 +2,7 @@ from .context import Context
 
 from .command_error import CommandError
 
+from .defaulted_env_var import DefaultedEnvVar
 from .required_env_var import RequiredEnvVar
 from .optional_env_var import OptionalEnvVar
 

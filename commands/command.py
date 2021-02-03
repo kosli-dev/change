@@ -27,7 +27,7 @@ class Command:
             raise CommandError(f"{merkelypipe_path} invalid json - {str(exc)}")
 
     def _required_env_var(self, name):
-        return RequiredEnvVar(name, self._context.env)
+        return RequiredEnvVar(f"MERKELY_{name}", self._context.env)
 
     def _optional_env_var(self, name):
-        return OptionalEnvVar(name, self._context.env)
+        return OptionalEnvVar(f"MERKELY_{name}", self._context.env)
