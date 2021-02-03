@@ -1,2 +1,0 @@
-MERKELY_COMMAND=log_artifact
-ERROR: MERKELY_FINGERPRINT environment-variable not set

@@ -1,2 +1,0 @@
-MERKELY_COMMAND=log_artifact
-ERROR: MERKELY_CI_BUILD_NUMBER environment-variable not set

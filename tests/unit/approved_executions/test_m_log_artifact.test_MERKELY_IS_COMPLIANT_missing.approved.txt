@@ -1,2 +1,0 @@
-MERKELY_COMMAND=log_artifact
-ERROR: MERKELY_IS_COMPLIANT environment-variable not set
