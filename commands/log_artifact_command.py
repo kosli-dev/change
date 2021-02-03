@@ -2,7 +2,7 @@ import os
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
-from commands import RequiredEnvVar
+from commands import OptionalEnvVar, RequiredEnvVar
 
 
 class LogArtifactCommand(Command):
@@ -15,6 +15,7 @@ class LogArtifactCommand(Command):
                 self.artifact_git_url,
                 self.ci_build_number,
                 self.ci_build_url,
+                self.display_name,
                 self.is_compliant,
                 self.fingerprint)
 
@@ -44,10 +45,7 @@ class LogArtifactCommand(Command):
 
     @property
     def display_name(self):
-        return self._env("MERKELY_DISPLAY_NAME")
-
-    def _required_env_var(self, name):
-        return RequiredEnvVar(name, self._context.env)
+        return self._optional_env_var("DISPLAY_NAME")
 
     def _verify_args(self):
         for arg in self.args:
@@ -84,7 +82,7 @@ class LogArtifactCommand(Command):
 
     def _log_artifact_sha(self, sha256):
         self._print_compliance()
-        self._create_artifact(sha256, self.display_name)
+        self._create_artifact(sha256, self.display_name.value)
 
     def _create_artifact(self, sha256, display_name):
         description = f"Created by build {self.ci_build_number.value}"
@@ -102,3 +100,9 @@ class LogArtifactCommand(Command):
 
     def _print_compliance(self):
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant.value == 'TRUE'}")
+
+    def _required_env_var(self, name):
+        return RequiredEnvVar(name, self._context.env)
+
+    def _optional_env_var(self, name):
+        return OptionalEnvVar(name, self._context.env)
