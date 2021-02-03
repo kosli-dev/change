@@ -11,13 +11,23 @@ class LogArtifactCommand(Command):
     """
     @property
     def args(self):
-        return (self.artifact_git_commit,
+        return (self.api_token,
+                self.artifact_git_commit,
                 self.artifact_git_url,
                 self.ci_build_number,
                 self.ci_build_url,
                 self.display_name,
                 self.is_compliant,
-                self.fingerprint)
+                self.fingerprint,
+                self.host)
+
+    @property
+    def host(self):
+        return self._required_env_var("HOST")
+
+    @property
+    def api_token(self):
+        return self._required_env_var("API_TOKEN")
 
     @property
     def artifact_git_commit(self):
@@ -95,8 +105,8 @@ class LogArtifactCommand(Command):
             "build_url": self.ci_build_url.value,
             "is_compliant": self.is_compliant.value == 'TRUE'
         }
-        url = ApiSchema.url_for_artifacts(self.host, self.merkelypipe)
-        http_put_payload(url, create_artifact_payload, self.api_token)
+        url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)
+        http_put_payload(url, create_artifact_payload, self.api_token.value)
 
     def _print_compliance(self):
         env_var = self.is_compliant
