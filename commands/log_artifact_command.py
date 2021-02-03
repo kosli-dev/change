@@ -22,10 +22,6 @@ class LogArtifactCommand(Command):
                 self.host)
 
     @property
-    def host(self):
-        return self._required_env_var("HOST")
-
-    @property
     def api_token(self):
         return self._required_env_var("API_TOKEN")
 
@@ -44,6 +40,10 @@ class LogArtifactCommand(Command):
     @property
     def ci_build_url(self):
         return self._required_env_var('CI_BUILD_URL')
+
+    @property
+    def host(self):
+        return self._required_env_var("HOST")
 
     @property
     def is_compliant(self):

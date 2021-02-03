@@ -24,14 +24,6 @@ class Command:
         return self._merkely_env("COMMAND")
 
     @property
-    def api_token(self):
-        return self._env("MERKELY_API_TOKEN")
-
-    @property
-    def host(self):
-        return self._env("MERKELY_HOST")
-
-    @property
     def merkelypipe(self):
         try:
             merkelypipe_path = "/Merkelypipe.json"
