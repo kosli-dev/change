@@ -66,6 +66,21 @@ def test_sha256_file(capsys):
     verify_payload_and_url(capsys)
 
 
+def test_sha256_docker_image(capsys):
+    commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
+    digest = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    ev = log_artifact_env(commit)
+    ev["MERKELY_FINGERPRINT"] = f"sha256://{digest}"
+    ev["MERKELY_DISPLAY_NAME"] = "acme/road-runner:4.8"
+
+    with dry_run(ev) as env, scoped_merkelypipe_json():
+        context = make_context(env)
+        status_code = command_processor.execute(context)
+
+    assert status_code == 0
+    verify_payload_and_url(capsys)
+
+
 def test_MERKELY_CI_BUILD_NUMBER_missing(capsys):
     ev = log_artifact_env(any_commit())
     ev.pop("MERKELY_CI_BUILD_NUMBER")
