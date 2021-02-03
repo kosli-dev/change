@@ -13,6 +13,10 @@ class Command:
     def name(self):
         return self._required_env_var("COMMAND").verify().value
 
+    def verify_args(self):
+        for arg in self.args:
+            arg.verify()
+
     @property
     def merkelypipe(self):
         try:
