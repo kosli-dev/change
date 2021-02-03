@@ -1,6 +1,4 @@
-from commands import Command
-from commands import DeclarePipelineCommand
-from commands import LogArtifactCommand
+from commands import Command, CommandError, DeclarePipelineCommand, LogArtifactCommand
 
 
 def execute(context):
@@ -15,6 +13,6 @@ def execute(context):
         if command is not None:
             command(context).execute()
         return 0
-    except Command.Error as exc:
+    except CommandError as exc:
         print(f"ERROR: {str(exc)}")
         return 144

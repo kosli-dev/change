@@ -1,4 +1,5 @@
 import json
+from commands import CommandError
 
 
 class Command:
@@ -27,11 +28,11 @@ class Command:
             with open(merkelypipe_path) as file:
                 return json.load(file)
         except FileNotFoundError:
-            raise self.Error(f"{merkelypipe_path} file not found")
+            raise CommandError(f"{merkelypipe_path} file not found")
         except IsADirectoryError:
-            raise self.Error(f"{merkelypipe_path} is a directory")
+            raise CommandError(f"{merkelypipe_path} is a directory")
         except json.decoder.JSONDecodeError as exc:
-            raise self.Error(f"{merkelypipe_path} invalid json - {str(exc)}")
+            raise CommandError(f"{merkelypipe_path} invalid json - {str(exc)}")
 
     def _merkely_env(self, key):
         return self._required_env(f"MERKELY_{key}")
@@ -39,9 +40,9 @@ class Command:
     def _required_env(self, key):
         value = self._env(key)
         if value is None:
-            raise self.Error(f"{key} environment-variable not set")
+            raise CommandError(f"{key} environment-variable not set")
         if value == "":
-            raise self.Error(f"{key} environment-variable is empty string")
+            raise CommandError(f"{key} environment-variable is empty string")
         return value
 
     def _env(self, key):

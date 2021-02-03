@@ -1,7 +1,6 @@
-from commands import Command
+from commands import Command, RequiredEnvVar
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
-from commands import OptionalEnvVar, RequiredEnvVar
 
 
 class DeclarePipelineCommand(Command):

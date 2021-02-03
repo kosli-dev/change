@@ -1,4 +1,6 @@
 from .context import Context
+
+from .command_error import CommandError
 from .command import Command
 
 from .required_env_var import RequiredEnvVar

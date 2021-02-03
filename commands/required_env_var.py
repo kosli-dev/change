@@ -1,4 +1,4 @@
-from .command import Command
+from commands import CommandError
 
 
 class RequiredEnvVar:
@@ -17,7 +17,7 @@ class RequiredEnvVar:
     def value(self):
         result = self._env.get(self.name, None)
         if result is None:
-            raise Command.Error(f"{self.name} environment-variable not set")
+            raise CommandError(f"{self.name} environment-variable not set")
         if result == "":
-            raise Command.Error(f"{self.name} environment-variable is empty string")
+            raise CommandError(f"{self.name} environment-variable is empty string")
         return result
