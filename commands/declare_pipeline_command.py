@@ -27,7 +27,7 @@ class DeclarePipelineCommand(Command):
 
     @property
     def host(self):
-        return self._required_env_var("HOST")
+        return self._defaulted_env_var("HOST", "https://app.compliancedb.com")
 
     def execute(self):
         pipelines_url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)

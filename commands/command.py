@@ -1,5 +1,5 @@
 import json
-from commands import CommandError, RequiredEnvVar, OptionalEnvVar
+from commands import CommandError, DefaultedEnvVar, OptionalEnvVar, RequiredEnvVar
 
 
 class Command:
@@ -26,8 +26,12 @@ class Command:
         except json.decoder.JSONDecodeError as exc:
             raise CommandError(f"{merkelypipe_path} invalid json - {str(exc)}")
 
-    def _required_env_var(self, name):
-        return RequiredEnvVar(f"MERKELY_{name}", self._context.env)
+    def _defaulted_env_var(self, name, default):
+        return DefaultedEnvVar(f"MERKELY_{name}", self._context.env, default)
 
     def _optional_env_var(self, name):
         return OptionalEnvVar(f"MERKELY_{name}", self._context.env)
+
+    def _required_env_var(self, name):
+        return RequiredEnvVar(f"MERKELY_{name}", self._context.env)
+

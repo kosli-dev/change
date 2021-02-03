@@ -42,7 +42,7 @@ class LogArtifactCommand(Command):
 
     @property
     def host(self):
-        return self._required_env_var("HOST")
+        return self._defaulted_env_var("HOST", "https://app.compliancedb.com")
 
     @property
     def is_compliant(self):
