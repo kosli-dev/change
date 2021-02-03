@@ -35,7 +35,8 @@ class LogArtifactCommand(Command):
         return (self.artifact_git_commit,
                 self.artifact_git_url,
                 self.ci_build_number,
-                self.ci_build_url)
+                self.ci_build_url,
+                self.is_compliant)
 
     @property
     def artifact_git_commit(self):
@@ -55,7 +56,7 @@ class LogArtifactCommand(Command):
 
     @property
     def is_compliant(self):
-        return self._merkely_env('IS_COMPLIANT') == "TRUE"
+        return self._required_env_var('IS_COMPLIANT')
 
     @property
     def fingerprint(self):
@@ -72,7 +73,6 @@ class LogArtifactCommand(Command):
         for arg in self.args:
             arg.verify()
         self.fingerprint
-        self.is_compliant
 
     def _concrete_execute(self):
         file_protocol = "file://"
@@ -95,20 +95,18 @@ class LogArtifactCommand(Command):
         print(f"Getting SHA for {protocol} artifact: {filename}")
         sha256 = self._context.sha_digest_for_file('/'+filename)
         print(f"Calculated digest: {sha256}")
-        # print("Publish artifact to ComplianceDB")
-        print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
+        self._print_compliance()
         self._create_artifact(sha256, os.path.basename(filename))
 
     def _log_artifact_docker_image(self, protocol, image_name):
         print(f"Getting SHA for {protocol} artifact: {image_name}")
         sha256 = self._context.sha_digest_for_docker_image(image_name)
         print(f"Calculated digest: {sha256}")
-        # print("Publish artifact to ComplianceDB")
-        print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
+        self._print_compliance()
         self._create_artifact(sha256, image_name)
 
     def _log_artifact_sha(self, sha256):
-        print(f"MERKELY_IS_COMPLIANT: {self.is_compliant}")
+        self._print_compliance()
         self._create_artifact(sha256, self.display_name)
 
     def _create_artifact(self, sha256, display_name):
@@ -120,8 +118,11 @@ class LogArtifactCommand(Command):
             "git_commit": self.artifact_git_commit.value,
             "commit_url": self.artifact_git_url.value,
             "build_url": self.ci_build_url.value,
-            "is_compliant": self.is_compliant
+            "is_compliant": self.is_compliant.value == 'TRUE'
         }
         url = ApiSchema.url_for_artifacts(self.host, self.merkelypipe)
         http_put_payload(url, create_artifact_payload, self.api_token)
+
+    def _print_compliance(self):
+        print(f"MERKELY_IS_COMPLIANT: {self.is_compliant.value == 'TRUE'}")
 
