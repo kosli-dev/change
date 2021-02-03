@@ -36,7 +36,8 @@ class LogArtifactCommand(Command):
                 self.artifact_git_url,
                 self.ci_build_number,
                 self.ci_build_url,
-                self.is_compliant)
+                self.is_compliant,
+                self.fingerprint)
 
     @property
     def artifact_git_commit(self):
@@ -60,7 +61,7 @@ class LogArtifactCommand(Command):
 
     @property
     def fingerprint(self):
-        return self._merkely_env("FINGERPRINT")
+        return self._required_env_var("FINGERPRINT")
 
     @property
     def display_name(self):
@@ -72,23 +73,20 @@ class LogArtifactCommand(Command):
     def _verify_args(self):
         for arg in self.args:
             arg.verify()
-        self.fingerprint
 
     def _concrete_execute(self):
+        fp = self.fingerprint.value
         file_protocol = "file://"
-        if self.fingerprint.startswith(file_protocol):
-            index = len(file_protocol)
-            name = self.fingerprint[index:]
+        if fp.startswith(file_protocol):
+            name = fp[len(file_protocol):]
             self._log_artifact_file(file_protocol, name)
         docker_protocol = "docker://"
-        if self.fingerprint.startswith(docker_protocol):
-            index = len(docker_protocol)
-            name = self.fingerprint[index:]
+        if fp.startswith(docker_protocol):
+            name = fp[len(docker_protocol):]
             self._log_artifact_docker_image(docker_protocol, name)
         sha_protocol = "sha256://"
-        if self.fingerprint.startswith(sha_protocol):
-            index = len(sha_protocol)
-            sha256 = self.fingerprint[index:]
+        if fp.startswith(sha_protocol):
+            sha256 = fp[len(sha_protocol):]
             self._log_artifact_sha(sha256)
 
     def _log_artifact_file(self, protocol, filename):
@@ -125,4 +123,3 @@ class LogArtifactCommand(Command):
 
     def _print_compliance(self):
         print(f"MERKELY_IS_COMPLIANT: {self.is_compliant.value == 'TRUE'}")
-
