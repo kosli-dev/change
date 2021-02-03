@@ -2,28 +2,7 @@ import os
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
-
-
-class RequiredEnvVar:
-    def __init__(self, name, env):
-        self._name = name
-        self._env = env
-
-    @property
-    def name(self):
-        return f"MERKELY_{self._name}"
-
-    def verify(self):
-        self.value
-
-    @property
-    def value(self):
-        value = self._env.get(self.name, None)
-        if value is None:
-            raise Command.Error(f"{self.name} environment-variable not set")
-        if value == "":
-            raise Command.Error(f"{self.name} environment-variable is empty string")
-        return value
+from commands import RequiredEnvVar
 
 
 class LogArtifactCommand(Command):
