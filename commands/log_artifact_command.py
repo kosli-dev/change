@@ -21,10 +21,6 @@ class LogArtifactCommand(Command):
                 self.host)
 
     @property
-    def api_token(self):
-        return self._required_env_var("API_TOKEN")
-
-    @property
     def artifact_git_commit(self):
         return self._required_env_var('ARTIFACT_GIT_COMMIT')
 
@@ -39,10 +35,6 @@ class LogArtifactCommand(Command):
     @property
     def ci_build_url(self):
         return self._required_env_var('CI_BUILD_URL')
-
-    @property
-    def host(self):
-        return self._defaulted_env_var("HOST", "https://app.compliancedb.com")
 
     @property
     def is_compliant(self):

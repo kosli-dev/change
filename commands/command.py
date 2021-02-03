@@ -26,6 +26,14 @@ class Command:
         except json.decoder.JSONDecodeError as exc:
             raise CommandError(f"{merkelypipe_path} invalid json - {str(exc)}")
 
+    @property
+    def api_token(self):
+        return self._required_env_var("API_TOKEN")
+
+    @property
+    def host(self):
+        return self._defaulted_env_var("HOST", "https://app.compliancedb.com")
+
     def _defaulted_env_var(self, name, default):
         return DefaultedEnvVar(f"MERKELY_{name}", self._context.env, default)
 
