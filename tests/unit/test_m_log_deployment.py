@@ -11,7 +11,7 @@ def test_file_at_root(capsys):
     ev["MERKELY_FINGERPRINT"] = "file://jam.jar"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
-        with ScopedFileCopier("/app/tests/data/coverage.txt", "/jam.jar"):
+        with ScopedFileCopier("/app/tests/data/jam.jar", "/jam.jar"):
             context = make_context(env)
             context.sha_digest_for_file = lambda _filename: digest
             status_code = command_processor.execute(context)
