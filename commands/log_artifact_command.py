@@ -8,28 +8,31 @@ class LogArtifactCommand(Command):
     """
     Command subclass for handling MERKELY_COMMAND=log_artifact
     """
+
+    # ARGS = ( Arg(''), Args('') )
+
     def _verify_args(self):
-        self.build_number
-        self.build_url
-        self.commit_url
+        self.artifact_git_commit
+        self.artifact_git_url
+        self.ci_build_number
+        self.ci_build_url
         self.fingerprint
-        self.git_commit
         self.is_compliant
 
     @property
-    def git_commit(self):
+    def artifact_git_commit(self):
         return self._merkely_env('ARTIFACT_GIT_COMMIT')
 
     @property
-    def commit_url(self):
+    def artifact_git_url(self):
         return self._merkely_env('ARTIFACT_GIT_URL')
 
     @property
-    def build_number(self):
+    def ci_build_number(self):
         return self._merkely_env('CI_BUILD_NUMBER')
 
     @property
-    def build_url(self):
+    def ci_build_url(self):
         return self._merkely_env('CI_BUILD_URL')
 
     @property
@@ -82,14 +85,14 @@ class LogArtifactCommand(Command):
         self._create_artifact(sha256, self.display_name)
 
     def _create_artifact(self, sha256, display_name):
-        description = "Created by build " + self.build_number
+        description = "Created by build " + self.ci_build_number
         create_artifact_payload = {
             "sha256": sha256,
             "filename": display_name,
             "description": description,
-            "git_commit": self.git_commit,
-            "commit_url": self.commit_url,
-            "build_url": self.build_url,
+            "git_commit": self.artifact_git_commit,
+            "commit_url": self.artifact_git_url,
+            "build_url": self.ci_build_url,
             "is_compliant": self.is_compliant
         }
         url = ApiSchema.url_for_artifacts(self.host, self.merkelypipe)
