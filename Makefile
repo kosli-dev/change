@@ -145,9 +145,11 @@ BRANCH_NAME := $(shell git rev-parse --abbrev-ref HEAD)
 ifeq ($(shell git rev-parse --abbrev-ref HEAD),master)
 	IS_MASTER=TRUE
 	PROJFILE=project-master.json
+	MERKELYPIPE=project-master.json
 else
 	IS_MASTER=FALSE
 	PROJFILE=project-pull-requests.json
+	MERKELYPIPE=project-pull-requests.json
 endif
 
 
@@ -161,7 +163,7 @@ merkely_declare_pipeline:
 			--env MERKELY_COMMAND=declare_pipeline \
 			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 			--env MERKELY_HOST=https://app.compliancedb.com \
-			--volume ${PWD}/${PROJFILE}:/Merkelypipe.json \
+			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 			${IMAGE}
 
 merkely_log_artifact:
@@ -176,7 +178,7 @@ merkely_log_artifact:
 			--env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
 			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 			--env MERKELY_HOST=https://app.compliancedb.com \
-			--volume ${PWD}/${PROJFILE}:/Merkelypipe.json \
+			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			${IMAGE}
 
