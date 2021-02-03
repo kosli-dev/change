@@ -12,6 +12,7 @@ class RequiredEnvVar:
 
     def verify(self):
         self.value
+        return self
 
     @property
     def value(self):

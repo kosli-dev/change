@@ -1,5 +1,5 @@
 import json
-from commands import CommandError
+from commands import CommandError, RequiredEnvVar
 
 
 class Command:
@@ -19,7 +19,7 @@ class Command:
 
     @property
     def name(self):
-        return self._merkely_env("COMMAND")
+        return RequiredEnvVar("COMMAND", self._context.env).verify().value
 
     @property
     def merkelypipe(self):
@@ -33,17 +33,6 @@ class Command:
             raise CommandError(f"{merkelypipe_path} is a directory")
         except json.decoder.JSONDecodeError as exc:
             raise CommandError(f"{merkelypipe_path} invalid json - {str(exc)}")
-
-    def _merkely_env(self, key):
-        return self._required_env(f"MERKELY_{key}")
-
-    def _required_env(self, key):
-        value = self._env(key)
-        if value is None:
-            raise CommandError(f"{key} environment-variable not set")
-        if value == "":
-            raise CommandError(f"{key} environment-variable is empty string")
-        return value
 
     def _env(self, key):
         return self._context.env.get(key, None)

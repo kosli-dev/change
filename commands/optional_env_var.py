@@ -1,5 +1,3 @@
-from .command import Command
-
 
 class OptionalEnvVar:
     def __init__(self, name, env):
