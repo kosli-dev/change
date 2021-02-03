@@ -13,6 +13,9 @@ class RequiredEnvVar:
     def name(self):
         return f"MERKELY_{self._name}"
 
+    def verify(self):
+        self.value
+
     @property
     def value(self):
         value = self._env.get(self.name, None)
@@ -27,6 +30,12 @@ class LogArtifactCommand(Command):
     """
     Command subclass for handling MERKELY_COMMAND=log_artifact
     """
+    @property
+    def args(self):
+        return (self.artifact_git_commit,
+                self.artifact_git_url,
+                self.ci_build_number,
+                self.ci_build_url)
 
     @property
     def artifact_git_commit(self):
@@ -60,10 +69,8 @@ class LogArtifactCommand(Command):
         return RequiredEnvVar(name, self._context.env)
 
     def _verify_args(self):
-        self.artifact_git_commit.value
-        self.artifact_git_url.value
-        self.ci_build_number.value
-        self.ci_build_url.value
+        for arg in self.args:
+            arg.verify()
         self.fingerprint
         self.is_compliant
 
