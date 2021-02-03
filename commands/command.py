@@ -13,8 +13,6 @@ class Command:
         self._context = context
 
     def execute(self):
-        print("MERKELY_COMMAND={}".format(self.name))
-        self._verify_args()  # Template Method Pattern
         self._concrete_execute()  # Template Method Pattern
 
     @property
@@ -39,6 +37,3 @@ class Command:
 
     def _optional_env_var(self, name):
         return OptionalEnvVar(name, self._context.env)
-
-    def _env(self, key):
-        return self._context.env.get(key, None)

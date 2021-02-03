@@ -11,7 +11,10 @@ def execute(context):
             cls = LogArtifactCommand
 
         if cls is not None:
+            print(f"MERKELY_COMMAND={name}")
             command = cls(context)
+            for arg in command.args:
+                arg.verify()
             command.execute()
         return 0
     except CommandError as exc:
