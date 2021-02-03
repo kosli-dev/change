@@ -33,6 +33,8 @@ endif
 list:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
 
+pip_list:
+	@docker run --rm -it --entrypoint="" ${IMAGE} pip3 list
 
 # Use BUILD_OPTION=--no-cache to force a clean build
 build:
@@ -43,9 +45,6 @@ build:
 		${BUILD_OPTION} \
 		--tag ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
-
-pip_list:
-	@docker run --rm -it --entrypoint="" ${IMAGE} pip3 list
 
 build_bb:
 	@echo ${IMAGE_PIPE}
@@ -157,13 +156,6 @@ branch:
 	@echo IS_MASTER is ${IS_MASTER}
 	@echo PROJFILE is ${PROJFILE}
 
-put_project:
-	docker run --rm \
-			--volume ${PWD}/${PROJFILE}:/data/project.json \
-			--env CDB_HOST=${CDB_HOST} \
-			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
-			${IMAGE} python -m cdb.put_project -p /data/project.json
-
 merkely_declare_pipeline:
 	docker run --rm \
 			--env MERKELY_COMMAND=declare_pipeline \
@@ -188,6 +180,12 @@ merkely_log_artifact:
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			${IMAGE}
 
+put_project:
+	docker run --rm \
+			--volume ${PWD}/${PROJFILE}:/data/project.json \
+			--env CDB_HOST=${CDB_HOST} \
+			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
+			${IMAGE} python -m cdb.put_project -p /data/project.json
 
 put_artifact_image:
 	docker run --rm \
@@ -217,7 +215,6 @@ publish_test_results:
 			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
 			${IMAGE} python -m cdb.put_evidence -p /data/project.json
 
-
 control_and_publish_junit_results:
 	docker run --rm \
 			--volume ${PWD}/${PROJFILE}:/data/project.json \
@@ -229,7 +226,6 @@ control_and_publish_junit_results:
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
 			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
 			${IMAGE} python -m cdb.control_junit -p /data/project.json
-
 
 publish_evidence:
 	docker run --rm \
@@ -248,7 +244,6 @@ publish_evidence:
 publish_release:
 	IMAGE=${IMAGE} ./server/cdb/release.sh
 
-
 create_release:
 	# Always release from project-master.json project
 	docker run --rm \
@@ -263,7 +258,6 @@ create_release:
 			--env CDB_RELEASE_DESCRIPTION="${CDB_RELEASE_DESCRIPTION}" \
 			${IMAGE} python -m cdb.create_release -p /data/project.json
 
-
 control_latest_release:
 	# Always release from project-master.json project
 	docker run --rm \
@@ -272,7 +266,6 @@ control_latest_release:
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_ARTIFACT_SHA=${CDB_ARTIFACT_SHA} \
 			${IMAGE} python -m cdb.control_latest_release -p /data/project.json
-
 
 create_deployment:
 	docker run --rm \
@@ -286,7 +279,6 @@ create_deployment:
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
 			--env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
 			${IMAGE} python -m cdb.create_deployment -p /data/project.json
-
 
 ## Test dry runs
 dry_run_put_artifact:
