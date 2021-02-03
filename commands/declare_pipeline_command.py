@@ -21,10 +21,6 @@ class DeclarePipelineCommand(Command):
         return (self.api_token,
                 self.host)
 
-    def _verify_args(self):
-        for arg in self.args:
-            arg.verify()
-
     @property
     def api_token(self):
         return self._required_env_var("API_TOKEN")

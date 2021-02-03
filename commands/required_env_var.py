@@ -10,10 +10,6 @@ class RequiredEnvVar:
     def name(self):
         return f"MERKELY_{self._name}"
 
-    def verify(self):
-        self.value
-        return self
-
     @property
     def value(self):
         result = self._env.get(self.name, None)
@@ -22,3 +18,7 @@ class RequiredEnvVar:
         if result == "":
             raise CommandError(f"{self.name} environment-variable is empty string")
         return result
+
+    def verify(self):
+        self.value
+        return self

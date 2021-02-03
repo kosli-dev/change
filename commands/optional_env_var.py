@@ -8,9 +8,10 @@ class OptionalEnvVar:
     def name(self):
         return f"MERKELY_{self._name}"
 
-    def verify(self):
-        self.value
-
     @property
     def value(self):
         return self._env.get(self.name, None)
+
+    def verify(self):
+        return self
+

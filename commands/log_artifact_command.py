@@ -20,10 +20,6 @@ class LogArtifactCommand(Command):
                 self.fingerprint,
                 self.host)
 
-    def _verify_args(self):
-        for arg in self.args:
-            arg.verify()
-
     @property
     def api_token(self):
         return self._required_env_var("API_TOKEN")
@@ -64,12 +60,12 @@ class LogArtifactCommand(Command):
         fp = self.fingerprint.value
         file_protocol = "file://"
         if fp.startswith(file_protocol):
-            name = fp[len(file_protocol):]
-            self._log_artifact_file(file_protocol, name)
+            artifact_name = fp[len(file_protocol):]
+            self._log_artifact_file(file_protocol, artifact_name)
         docker_protocol = "docker://"
         if fp.startswith(docker_protocol):
-            name = fp[len(docker_protocol):]
-            self._log_artifact_docker_image(docker_protocol, name)
+            artifact_name = fp[len(docker_protocol):]
+            self._log_artifact_docker_image(docker_protocol, artifact_name)
         sha_protocol = "sha256://"
         if fp.startswith(sha_protocol):
             sha256 = fp[len(sha_protocol):]
