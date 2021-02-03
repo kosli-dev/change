@@ -3,15 +3,16 @@ from commands import Command, CommandError, DeclarePipelineCommand, LogArtifactC
 
 def execute(context):
     try:
-        command = None
+        cls = None
         name = Command(context).name
         if name == "declare_pipeline":
-            command = DeclarePipelineCommand
+            cls = DeclarePipelineCommand
         if name == "log_artifact":
-            command = LogArtifactCommand
+            cls = LogArtifactCommand
 
-        if command is not None:
-            command(context).execute()
+        if cls is not None:
+            command = cls(context)
+            command.execute()
         return 0
     except CommandError as exc:
         print(f"ERROR: {str(exc)}")
