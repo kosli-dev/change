@@ -17,8 +17,8 @@ def test_file_at_root(capsys):
     protocol = "file://"
     directory = ""
     filename = "jam.jar"
-    sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
-    ev = log_artifact_env(commit)
+    sha256 = "ddcdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
+    ev = log_artifact_env(commit, '1456', '349')
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}{filename}"
 
     merkelypipe = "Merkelypipe.compliancedb.json"
@@ -35,7 +35,7 @@ def test_file_at_root(capsys):
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
-        'description': 'Created by build 23',
+        'description': 'Created by build 349',
         'filename': filename,
         'git_commit': commit,
         'is_compliant': True,
@@ -57,6 +57,7 @@ def test_file_at_root(capsys):
     _old_blurb, old_method, old_payload, old_url = blurb_method_payload_url(old_approval)
     assert old_method == method
     assert old_url == url
+    assert old_payload == payload
 
 
 def test_file_not_at_root(capsys):
@@ -163,6 +164,16 @@ def test_sha256_file(capsys):
         #f"Calculated digest: {sha256}",
         'MERKELY_IS_COMPLIANT: True'
     ]
+    old_dir = "tests/integration/approved_executions"
+    old_file = "test_put_artifact"
+    old_test = "test_all_env_vars_uses_FILENAME_and_SHA"
+    approved = f"{old_dir}/{old_file}.{old_test}.approved.txt"
+    with open(approved) as file:
+        old_approval = file.read()
+    _old_blurb, old_method, old_payload, old_url = blurb_method_payload_url(old_approval)
+    #assert old_method == method
+    #assert old_url == url
+
 
 
 def test_sha256_docker_image(capsys):
@@ -218,11 +229,15 @@ def make_command_args():
     return make_command(context).args
 
 
-def log_artifact_env(commit):
+def log_artifact_env(commit, build_url_number=None, build_number=None):
+    if build_url_number is None:
+        build_url_number = '1456'
+    if build_number is None:
+        build_number = '23'
     ev = {
         "MERKELY_FINGERPRINT": "file://jam.jar",
-        "MERKELY_CI_BUILD_URL": "https://gitlab/build/1456",
-        "MERKELY_CI_BUILD_NUMBER": "23",
+        "MERKELY_CI_BUILD_URL": f"https://gitlab/build/{build_url_number}",
+        "MERKELY_CI_BUILD_NUMBER": build_number,
         "MERKELY_ARTIFACT_GIT_URL": "http://github/me/project/commit/" + commit,
         "MERKELY_ARTIFACT_GIT_COMMIT": commit,
         "MERKELY_IS_COMPLIANT": "TRUE"
@@ -232,4 +247,3 @@ def log_artifact_env(commit):
 
 def any_commit():
     return "abc50c8a53f79974d615df335669b59fb56a4ed3"
-

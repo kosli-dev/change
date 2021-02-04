@@ -9,7 +9,7 @@ def test_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
     # that is volume-mounted and the CDB_ARTIFACT_SHA is calculated.
     env = {
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "CDB_ARTIFACT_FILENAME": "src/data/robocop.xml",
+        "CDB_ARTIFACT_FILENAME": "jam.jar",
         "CDB_IS_COMPLIANT": "TRUE",
         "CDB_ARTIFACT_GIT_URL": "http://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed3",
         "CDB_ARTIFACT_GIT_COMMIT": "abc50c8a53f79974d615df335669b59fb56a4ed3",
