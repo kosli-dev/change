@@ -14,9 +14,8 @@ def test_file_at_root(capsys):
         with ScopedFileCopier("/app/tests/data/jam.jar", "/jam.jar"):
             context = make_context(env)
             context.sha_digest_for_file = lambda _filename: digest
-            status_code = command_processor.execute(context)
+            command_processor.execute(context)
 
-    assert status_code == 0
     verify_approval(capsys)
     #verify_payload_and_url(capsys)
 
@@ -31,9 +30,8 @@ def test_docker_image(capsys):
         with ScopedFileCopier("/app/tests/data/coverage.txt", "/jam.jar"):
             context = make_context(env)
             context.sha_digest_for_docker_image = lambda _filename: digest
-            status_code = command_processor.execute(context)
+            command_processor.execute(context)
 
-    assert status_code == 0
     verify_approval(capsys)
     #verify_payload_and_url(capsys)
 

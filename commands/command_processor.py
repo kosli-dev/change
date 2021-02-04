@@ -7,8 +7,7 @@ def execute(context):
         if cmd is not None:
             print(f"MERKELY_COMMAND={cmd.name.value}")
             cmd.verify_args()
-            cmd.execute()
-        return 0
+            return cmd.execute()
     except CommandError as exc:
         print(f"ERROR: {str(exc)}")
         return 144

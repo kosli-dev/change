@@ -48,30 +48,30 @@ class LogDeploymentCommand(Command):
         file_protocol = "file://"
         if fp.startswith(file_protocol):
             artifact_name = fp[len(file_protocol):]
-            self._log_deployment_file(file_protocol, artifact_name)
+            return self._log_deployment_file(file_protocol, artifact_name)
         docker_protocol = "docker://"
         if fp.startswith(docker_protocol):
             artifact_name = fp[len(docker_protocol):]
-            self._log_deployment_docker_image(docker_protocol, artifact_name)
+            return self._log_deployment_docker_image(docker_protocol, artifact_name)
         sha_protocol = "sha256://"
         if fp.startswith(sha_protocol):
             sha256 = fp[len(sha_protocol):]
-            self._log_deployment_sha(sha256)
+            return self._log_deployment_sha(sha256)
 
     def _log_deployment_file(self, protocol, filename):
         print(f"Getting SHA for {protocol} artifact: {filename}")
         sha256 = self._context.sha_digest_for_file('/'+filename)
         print(f"Calculated digest: {sha256}")
-        self._create_deployment(sha256, os.path.basename(filename))
+        return self._create_deployment(sha256, os.path.basename(filename))
 
     def _log_deployment_docker_image(self, protocol, image_name):
         print(f"Getting SHA for {protocol} artifact: {image_name}")
         sha256 = self._context.sha_digest_for_docker_image(image_name)
         print(f"Calculated digest: {sha256}")
-        self._create_deployment(sha256, image_name)
+        return self._create_deployment(sha256, image_name)
 
     def _log_deployment_sha(self, sha256):
-        self._create_deployment(sha256, self.display_name.value)
+        return self._create_deployment(sha256, self.display_name.value)
 
     def _create_deployment(self, sha256, display_name):
         payload = {
@@ -82,3 +82,4 @@ class LogDeploymentCommand(Command):
         }
         url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
         http_post_payload(url, payload, self.api_token.value)
+        return 'Posting', url, payload

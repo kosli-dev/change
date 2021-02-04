@@ -25,4 +25,7 @@ class DeclarePipelineCommand(Command):
 
     def execute(self):
         pipelines_url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
-        http_put_payload(url=pipelines_url, payload=self.merkelypipe, api_token=self.api_token.value)
+        url = pipelines_url
+        payload = self.merkelypipe
+        http_put_payload(url, payload, api_token=self.api_token.value)
+        return 'Putting', url, payload

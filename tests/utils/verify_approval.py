@@ -61,6 +61,11 @@ def full_capsys(capsys, streams=None):
     return actual
 
 
+def blurb(output):
+    blurb,_,_,_ = blurb_method_payload_url(output)
+    return blurb
+
+
 def blurb_method_payload_url(output):
     """
     Splits capsys output so each part can be asserted individually.

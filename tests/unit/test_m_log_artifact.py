@@ -34,10 +34,8 @@ def test_file_at_root(capsys):
         with ScopedFileCopier("/app/tests/data/jam.jar", "/"+filename):
             context = make_context(env)
             context.sha_digest_for_file = lambda _filename: sha256
-            status_code = command_processor.execute(context)
+            method, url, payload = command_processor.execute(context)
 
-    blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
-    assert status_code == 0
     assert method == "Putting"
     assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     assert payload == {
@@ -49,7 +47,7 @@ def test_file_at_root(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb == [
+    assert blurb(full_capsys(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {filename}',
         f"Calculated digest: {sha256}",
@@ -84,10 +82,8 @@ def test_file_not_at_root(capsys):
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = make_context(env)
         context.sha_digest_for_file = lambda _filename: sha256
-        status_code = command_processor.execute(context)
+        method, url, payload = command_processor.execute(context)
 
-    blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
-    assert status_code == 0
     assert method == "Putting"
     assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     assert payload == {
@@ -99,7 +95,7 @@ def test_file_not_at_root(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb == [
+    assert blurb(full_capsys(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {directory}/{filename}',
         f"Calculated digest: {sha256}",
@@ -122,10 +118,8 @@ def test_docker_image(capsys):
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = make_context(env)
         context.sha_digest_for_docker_image = lambda _image_name: sha256
-        status_code = command_processor.execute(context)
+        method, url, payload = command_processor.execute(context)
 
-    blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
-    assert status_code == 0
     assert method == "Putting"
     assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     assert payload == {
@@ -137,7 +131,7 @@ def test_docker_image(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb == [
+    assert blurb(full_capsys(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {image_name}',
         f"Calculated digest: {sha256}",
@@ -162,10 +156,8 @@ def test_sha256_file(capsys):
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = make_context(env)
-        status_code = command_processor.execute(context)
+        method, url, payload = command_processor.execute(context)
 
-    blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
-    assert status_code == 0
     assert method == "Putting"
     assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     assert payload == {
@@ -177,10 +169,8 @@ def test_sha256_file(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb == [
+    assert blurb(full_capsys(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
-        #f'Getting SHA for {protocol} artifact: {filename}',
-        #f"Calculated digest: {sha256}",
         'MERKELY_IS_COMPLIANT: True'
     ]
     old_dir = "tests/integration/approved_executions"
@@ -210,10 +200,8 @@ def test_sha256_docker_image(capsys):
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = make_context(env)
-        status_code = command_processor.execute(context)
+        method, url, payload = command_processor.execute(context)
 
-    blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
-    assert status_code == 0
     assert method == "Putting"
     assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     assert payload == {
@@ -225,10 +213,8 @@ def test_sha256_docker_image(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb == [
+    assert blurb(full_capsys(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
-        #f'Getting SHA for {protocol} artifact: {filename}',
-        #f"Calculated digest: {sha256}",
         'MERKELY_IS_COMPLIANT: True'
     ]
 
@@ -240,8 +226,7 @@ def test_each_required_env_var_missing(capsys):
             ev.pop(arg.name)
             with dry_run(ev) as env, scoped_merkelypipe_json():
                 context = make_context(env)
-                status_code = command_processor.execute(context)
-                assert status_code != 0
+                command_processor.execute(context)
     verify_approval(capsys)
 
 
