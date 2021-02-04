@@ -2,7 +2,7 @@ from commands import EnvVar, CommandError
 
 
 class RequiredEnvVar(EnvVar):
-    def __init__(self, name, env, description=None):
+    def __init__(self, name, env, description):
         super().__init__(name, env, description)
 
     @property

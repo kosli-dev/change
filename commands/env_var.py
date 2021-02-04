@@ -10,6 +10,10 @@ class EnvVar:
         return self._name
 
     @property
+    def value(self):
+        raise NotImplementedError()
+
+    @property
     def description(self):
         return self._description
 
