@@ -5,6 +5,7 @@ from tests.utils import *
 # TODO: Test when sha256://SHA and SHA does not look like a SHA
 # TODO: test_sha256_file() when DISPLAY_NAME is missing
 # TODO: test_sha256_file() when supplied DISPLAY_NAME has full path...
+# TODO: test when FINGERPRINT protocol is unknown
 
 
 def test_file_at_root(capsys):
@@ -22,8 +23,8 @@ def test_file_at_root(capsys):
             context.sha_digest_for_file = lambda _filename: sha256
             status_code = command_processor.execute(context)
 
-    assert status_code == 0
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
+    assert status_code == 0
     assert method == "Putting"
     assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
     assert payload == {
@@ -57,16 +58,15 @@ def test_file_not_at_root(capsys):
         context.sha_digest_for_file = lambda _filename: sha256
         status_code = command_processor.execute(context)
 
-    assert status_code == 0
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
+    assert status_code == 0
     assert method == "Putting"
     assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
-
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
         'description': 'Created by build 23',
-        'filename': filename,
+        'filename': filename, # <<<<<< does not contain directory
         'git_commit': commit,
         'is_compliant': True,
         'sha256': sha256,
@@ -81,47 +81,104 @@ def test_file_not_at_root(capsys):
 
 def test_docker_image(capsys):
     commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
-    digest = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    sha256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    protocol = "docker://"
+    image_name = "acme/road-runner:6.8"
     ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = "docker://acme/road-runner:6.8"
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
-        context.sha_digest_for_docker_image = lambda _image_name: digest
+        context.sha_digest_for_docker_image = lambda _image_name: sha256
         status_code = command_processor.execute(context)
 
+    blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
-    verify_payload_and_url(capsys)
+    assert method == "Putting"
+    assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert payload == {
+        'build_url': 'https://gitlab/build/1456',
+        'commit_url': f'http://github/me/project/commit/{commit}',
+        'description': 'Created by build 23',
+        'filename': image_name,
+        'git_commit': commit,
+        'is_compliant': True,
+        'sha256': sha256,
+    }
+    assert blurb == [
+        'MERKELY_COMMAND=log_artifact',
+        f'Getting SHA for {protocol} artifact: {image_name}',
+        f"Calculated digest: {sha256}",
+        'MERKELY_IS_COMPLIANT: True'
+    ]
 
 
 def test_sha256_file(capsys):
     commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
-    digest = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    sha256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    protocol = "sha256://"
+    filename = "door-is-a.jar"
     ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = f"sha256://{digest}"
-    ev["MERKELY_DISPLAY_NAME"] = "myjam.jar"
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
+    ev["MERKELY_DISPLAY_NAME"] = filename
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
         status_code = command_processor.execute(context)
 
+    blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
-    verify_payload_and_url(capsys)
+    assert method == "Putting"
+    assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert payload == {
+        'build_url': 'https://gitlab/build/1456',
+        'commit_url': f'http://github/me/project/commit/{commit}',
+        'description': 'Created by build 23',
+        'filename': filename,
+        'git_commit': commit,
+        'is_compliant': True,
+        'sha256': sha256,
+    }
+    assert blurb == [
+        'MERKELY_COMMAND=log_artifact',
+        #f'Getting SHA for {protocol} artifact: {filename}',
+        #f"Calculated digest: {sha256}",
+        'MERKELY_IS_COMPLIANT: True'
+    ]
 
 
 def test_sha256_docker_image(capsys):
     commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
-    digest = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    sha256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    protocol = "sha256://"
+    image_name = "acme/road-runner:4.8"
     ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = f"sha256://{digest}"
-    ev["MERKELY_DISPLAY_NAME"] = "acme/road-runner:4.8"
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
+    ev["MERKELY_DISPLAY_NAME"] = image_name
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
         status_code = command_processor.execute(context)
 
+    blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
-    verify_payload_and_url(capsys)
+    assert method == "Putting"
+    assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert payload == {
+        'build_url': 'https://gitlab/build/1456',
+        'commit_url': f'http://github/me/project/commit/{commit}',
+        'description': 'Created by build 23',
+        'filename': image_name,
+        'git_commit': commit,
+        'is_compliant': True,
+        'sha256': sha256,
+    }
+    assert blurb == [
+        'MERKELY_COMMAND=log_artifact',
+        #f'Getting SHA for {protocol} artifact: {filename}',
+        #f"Calculated digest: {sha256}",
+        'MERKELY_IS_COMPLIANT: True'
+    ]
 
 
 def test_each_required_env_var_missing(capsys):
