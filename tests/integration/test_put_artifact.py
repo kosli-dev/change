@@ -36,7 +36,7 @@ def test_all_env_vars_uses_FILENAME_and_SHA(capsys):
         "CDB_ARTIFACT_FILENAME": "door-is-a.jar",
         "CDB_ARTIFACT_SHA": "444daef69c676c2466571d3211180d559ccc2032b258fc5e73f99a103db462ef",
         "CDB_IS_COMPLIANT": "TRUE",
-        "CDB_ARTIFACT_GIT_URL": "http://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed3",
+        "CDB_ARTIFACT_GIT_URL": "http://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed4",
         "CDB_ARTIFACT_GIT_COMMIT": "abc50c8a53f79974d615df335669b59fb56a4ed4",
         "CDB_CI_BUILD_URL": "https://gitlab/build/2156",
         "CDB_BUILD_NUMBER": "751"

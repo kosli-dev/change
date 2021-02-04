@@ -146,7 +146,7 @@ def test_docker_image(capsys):
 
 
 def test_sha256_file(capsys):
-    commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
+    commit = "abc50c8a53f79974d615df335669b59fb56a4ed4"
     sha256 = "444daef69c676c2466571d3211180d559ccc2032b258fc5e73f99a103db462ef"
     protocol = "sha256://"
     filename = "door-is-a.jar"
