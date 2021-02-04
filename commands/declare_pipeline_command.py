@@ -17,9 +17,11 @@ class DeclarePipelineCommand(Command):
             merkely/change
     """
     @property
-    def args(self):
-        return (self.api_token,
-                self.host)
+    def args_list(self):
+        return [
+            self.api_token,
+            self.host
+        ]
 
     def execute(self):
         pipelines_url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)

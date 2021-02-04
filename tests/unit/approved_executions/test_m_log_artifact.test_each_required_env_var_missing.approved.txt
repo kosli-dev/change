@@ -9,6 +9,6 @@ ERROR: MERKELY_CI_BUILD_NUMBER environment-variable not set
 MERKELY_COMMAND=log_artifact
 ERROR: MERKELY_CI_BUILD_URL environment-variable not set
 MERKELY_COMMAND=log_artifact
-ERROR: MERKELY_IS_COMPLIANT environment-variable not set
-MERKELY_COMMAND=log_artifact
 ERROR: MERKELY_FINGERPRINT environment-variable not set
+MERKELY_COMMAND=log_artifact
+ERROR: MERKELY_IS_COMPLIANT environment-variable not set

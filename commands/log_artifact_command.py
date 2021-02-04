@@ -9,16 +9,18 @@ class LogArtifactCommand(Command):
     Command subclass for handling MERKELY_COMMAND=log_artifact
     """
     @property
-    def args(self):
-        return (self.api_token,
-                self.artifact_git_commit,
-                self.artifact_git_url,
-                self.ci_build_number,
-                self.ci_build_url,
-                self.display_name,
-                self.is_compliant,
-                self.fingerprint,
-                self.host)
+    def args_list(self):
+        return [
+            self.api_token,
+            self.artifact_git_commit,
+            self.artifact_git_url,
+            self.ci_build_number,
+            self.ci_build_url,
+            self.display_name,
+            self.is_compliant,
+            self.fingerprint,
+            self.host
+        ]
 
     @property
     def artifact_git_commit(self):

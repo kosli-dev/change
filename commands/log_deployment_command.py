@@ -9,14 +9,16 @@ class LogDeploymentCommand(Command):
     Command subclass for handling MERKELY_COMMAND=log_deployment
     """
     @property
-    def args(self):
-        return (self.api_token,
-                self.ci_build_url,
-                self.display_name,
-                self.description,
-                self.environment,
-                self.fingerprint,
-                self.host)
+    def args_list(self):
+        return [
+            self.api_token,
+            self.ci_build_url,
+            self.display_name,
+            self.description,
+            self.environment,
+            self.fingerprint,
+            self.host
+        ]
 
     @property
     def ci_build_url(self):

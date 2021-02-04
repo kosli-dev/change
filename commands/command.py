@@ -13,6 +13,10 @@ class Command:
     def name(self):
         return self._required_env_var("COMMAND").verify().value
 
+    @property
+    def args(self):
+        return sorted(self.args_list, key=lambda arg: arg.name)
+
     def verify_args(self):
         for arg in self.args:
             arg.verify()
