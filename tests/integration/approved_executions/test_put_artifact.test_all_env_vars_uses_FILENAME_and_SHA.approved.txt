@@ -5,10 +5,10 @@ Putting this payload:
     "build_url": "https://gitlab/build/2156",
     "commit_url": "http://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed3",
     "description": "Created by build 751",
-    "filename": "src/data/widget.hpp",
-    "git_commit": "abc50c8a53f79974d615df335669b59fb56a4ed4",
+    "filename": "door-is-a.jar",
+    "git_commit": "abc50c8a53f79974d615df335669b59fb56a4ed3",
     "is_compliant": true,
     "sha256": "444daef69c676c2466571d3211180d559ccc2032b258fc5e73f99a103db462ef"
 }
-To this url: http://test.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/
+To this url: https://test.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/
 DRY RUN: Put not sent

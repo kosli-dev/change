@@ -31,9 +31,9 @@ def test_all_env_vars_uses_FILENAME_and_SHA(capsys):
     # that is not volume-mounted, so the sha cannot be calculated
     # from the file, so SHA is passed too.
     env = {
-        "CDB_HOST": "http://test.compliancedb.com",
+        "CDB_HOST": "https://test.compliancedb.com",
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "CDB_ARTIFACT_FILENAME": "src/data/widget.hpp",
+        "CDB_ARTIFACT_FILENAME": "door-is-a.jar",
         "CDB_ARTIFACT_SHA": "444daef69c676c2466571d3211180d559ccc2032b258fc5e73f99a103db462ef",
         "CDB_IS_COMPLIANT": "TRUE",
         "CDB_ARTIFACT_GIT_URL": "http://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed3",
