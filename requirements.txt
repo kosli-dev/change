@@ -4,7 +4,7 @@ docker
 pytest
 pytest-cov
 junitparser
-pygit2==1.2.1
+pygit2==1.5.0
 pytest-mock
 pyfakefs
 git+git://github.com/approvals/ApprovalTests.Python.git@master#egg=approvaltests
