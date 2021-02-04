@@ -12,7 +12,7 @@ class Command:
     @property
     def name(self):
         description = "The Merkely command to execute"
-        return self._required_env_var("COMMAND", description).verify().value
+        return self._required_env_var("COMMAND", description)
 
     @property
     def args(self):

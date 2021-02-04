@@ -5,7 +5,7 @@ def execute(context):
     try:
         cmd = make_command(context)
         if cmd is not None:
-            print(f"MERKELY_COMMAND={cmd.name}")
+            print(f"MERKELY_COMMAND={cmd.name.value}")
             cmd.verify_args()
             cmd.execute()
         return 0
@@ -15,7 +15,7 @@ def execute(context):
 
 
 def make_command(context):
-    name = Command(context).name
+    name = Command(context).name.verify().value
     if name == "declare_pipeline":
         return DeclarePipelineCommand(context)
     if name == "log_artifact":
