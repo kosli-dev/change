@@ -8,8 +8,9 @@ from tests.utils import *
 # TODO: test when FINGERPRINT protocol is unknown
 
 DOMAIN = "app.compliancedb.com"
-OWNER = "merkely-test"
-NAME = "merkely-change-test-pipeline"
+OWNER = "compliancedb"
+NAME = "cdb-controls-test-pipeline"
+
 
 def test_file_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
@@ -20,7 +21,8 @@ def test_file_at_root(capsys):
     ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}{filename}"
 
-    with dry_run(ev) as env, scoped_merkelypipe_json():
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         with ScopedFileCopier("/app/tests/data/jam.jar", "/"+filename):
             context = make_context(env)
             context.sha_digest_for_file = lambda _filename: sha256
@@ -54,10 +56,7 @@ def test_file_at_root(capsys):
         old_approval = file.read()
     _old_blurb, old_method, old_payload, old_url = blurb_method_payload_url(old_approval)
     assert old_method == method
-    #assert old_url == url
-
-
-
+    assert old_url == url
 
 
 def test_file_not_at_root(capsys):
@@ -69,7 +68,8 @@ def test_file_not_at_root(capsys):
     ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}/{filename}"
 
-    with dry_run(ev) as env, scoped_merkelypipe_json():
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = make_context(env)
         context.sha_digest_for_file = lambda _filename: sha256
         status_code = command_processor.execute(context)
@@ -82,7 +82,7 @@ def test_file_not_at_root(capsys):
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
         'description': 'Created by build 23',
-        'filename': filename, # <<<<<< does not contain directory
+        'filename': filename, # <<<<<< does _not_ contain directory
         'git_commit': commit,
         'is_compliant': True,
         'sha256': sha256,
@@ -103,7 +103,8 @@ def test_docker_image(capsys):
     ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
 
-    with dry_run(ev) as env, scoped_merkelypipe_json():
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = make_context(env)
         context.sha_digest_for_docker_image = lambda _image_name: sha256
         status_code = command_processor.execute(context)
@@ -138,7 +139,8 @@ def test_sha256_file(capsys):
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
     ev["MERKELY_DISPLAY_NAME"] = filename
 
-    with dry_run(ev) as env, scoped_merkelypipe_json():
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = make_context(env)
         status_code = command_processor.execute(context)
 
@@ -172,7 +174,8 @@ def test_sha256_docker_image(capsys):
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
     ev["MERKELY_DISPLAY_NAME"] = image_name
 
-    with dry_run(ev) as env, scoped_merkelypipe_json():
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = make_context(env)
         status_code = command_processor.execute(context)
 
