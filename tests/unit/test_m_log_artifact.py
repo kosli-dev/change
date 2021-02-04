@@ -7,20 +7,39 @@ from tests.utils import *
 # TODO: test_sha256_file() when supplied DISPLAY_NAME has full path...
 
 
-def test_file_at_root(capsys):
+def test_log_file_artifact(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
-    digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    protocol = "file://"
+    filename = "jam.jar"
     ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = "file://jam.jar"  # In payload, "filename": "jam.jar"
+    ev["MERKELY_FINGERPRINT"] = protocol + filename
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
-        with ScopedFileCopier("/app/tests/data/jam.jar", "/jam.jar"):
+        with ScopedFileCopier("/app/tests/data/jam.jar", "/"+filename):
             context = make_context(env)
-            context.sha_digest_for_file = lambda _filename: digest
+            context.sha_digest_for_file = lambda _filename: sha256
             status_code = command_processor.execute(context)
 
     assert status_code == 0
-    verify_payload_and_url(capsys)
+    blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
+    assert method == "Putting"
+    assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert payload == {
+        'build_url': 'https://gitlab/build/1456',
+        'commit_url': f'http://github/me/project/commit/{commit}',
+        'description': 'Created by build 23',
+        'filename': filename,
+        'git_commit': commit,
+        'is_compliant': True,
+        'sha256': sha256,
+    }
+    assert blurb == [
+        'MERKELY_COMMAND=log_artifact',
+        f'Getting SHA for {protocol} artifact: {filename}',
+        f"Calculated digest: {sha256}",
+        'MERKELY_IS_COMPLIANT: True'
+    ]
 
 
 def test_file_not_at_root(capsys):
@@ -103,7 +122,7 @@ def make_command_args():
 
 def log_artifact_env(commit):
     ev = {
-        "MERKELY_FINGERPRINT": "file://coverage.txt",  # at root
+        "MERKELY_FINGERPRINT": "file://jam.jar",
         "MERKELY_CI_BUILD_URL": "https://gitlab/build/1456",
         "MERKELY_CI_BUILD_NUMBER": "23",
         "MERKELY_ARTIFACT_GIT_URL": "http://github/me/project/commit/" + commit,
