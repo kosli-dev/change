@@ -7,13 +7,14 @@ from tests.utils import *
 # TODO: test_sha256_file() when supplied DISPLAY_NAME has full path...
 
 
-def test_log_file_artifact(capsys):
+def test_file_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
-    sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     protocol = "file://"
+    directory = ""
     filename = "jam.jar"
+    sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = protocol + filename
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}{filename}"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         with ScopedFileCopier("/app/tests/data/jam.jar", "/"+filename):
@@ -44,17 +45,38 @@ def test_log_file_artifact(capsys):
 
 def test_file_not_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
-    digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
+    protocol = "file://"
+    directory = "app/tests/data"
+    filename = "jam.jar"
+    sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
     ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = "file://app/tests/data/jam.jar"  # In payload, "filename": "jam.jar"
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}/{filename}"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         context = make_context(env)
-        context.sha_digest_for_file = lambda _filename: digest
+        context.sha_digest_for_file = lambda _filename: sha256
         status_code = command_processor.execute(context)
 
     assert status_code == 0
-    verify_payload_and_url(capsys)
+    blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
+    assert method == "Putting"
+    assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+
+    assert payload == {
+        'build_url': 'https://gitlab/build/1456',
+        'commit_url': f'http://github/me/project/commit/{commit}',
+        'description': 'Created by build 23',
+        'filename': filename,
+        'git_commit': commit,
+        'is_compliant': True,
+        'sha256': sha256,
+    }
+    assert blurb == [
+        'MERKELY_COMMAND=log_artifact',
+        f'Getting SHA for {protocol} artifact: {directory}/{filename}',
+        f"Calculated digest: {sha256}",
+        'MERKELY_IS_COMPLIANT: True'
+    ]
 
 
 def test_docker_image(capsys):
