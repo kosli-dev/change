@@ -8,6 +8,8 @@ from tests.utils import *
 # TODO: test when FINGERPRINT protocol is unknown
 
 DOMAIN = "app.compliancedb.com"
+OWNER = "merkely-test"
+NAME = "merkely-change-test-pipeline"
 
 def test_file_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
@@ -27,7 +29,7 @@ def test_file_at_root(capsys):
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
     assert method == "Putting"
-    assert url == f"https://{DOMAIN}/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert url == f"https://{DOMAIN}/api/v1/projects/{OWNER}/{NAME}/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
@@ -75,7 +77,7 @@ def test_file_not_at_root(capsys):
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
     assert method == "Putting"
-    assert url == f"https://{DOMAIN}/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert url == f"https://{DOMAIN}/api/v1/projects/{OWNER}/{NAME}/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
@@ -109,7 +111,7 @@ def test_docker_image(capsys):
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
     assert method == "Putting"
-    assert url == f"https://{DOMAIN}/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert url == f"https://{DOMAIN}/api/v1/projects/{OWNER}/{NAME}/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
@@ -143,7 +145,7 @@ def test_sha256_file(capsys):
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
     assert method == "Putting"
-    assert url == f"https://{DOMAIN}/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert url == f"https://{DOMAIN}/api/v1/projects/{OWNER}/{NAME}/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
@@ -177,7 +179,7 @@ def test_sha256_docker_image(capsys):
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
     assert method == "Putting"
-    assert url == f"https://{DOMAIN}/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert url == f"https://{DOMAIN}/api/v1/projects/{OWNER}/{NAME}/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
