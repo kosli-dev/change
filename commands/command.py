@@ -11,7 +11,8 @@ class Command:
 
     @property
     def name(self):
-        return self._required_env_var("COMMAND").verify().value
+        description = "The Merkely command to execute"
+        return self._required_env_var("COMMAND", description).verify().value
 
     @property
     def args(self):
@@ -36,18 +37,21 @@ class Command:
 
     @property
     def api_token(self):
-        return self._required_env_var("API_TOKEN")
+        description = "Your API token for Merkely"
+        return self._required_env_var("API_TOKEN", description)
 
     @property
     def host(self):
-        return self._defaulted_env_var("HOST", "https://app.compliancedb.com")
+        description = "The host name for Merkely"
+        host = "https://app.compliancedb.com"
+        return self._defaulted_env_var("HOST", host, description)
 
-    def _defaulted_env_var(self, name, default):
-        return DefaultedEnvVar(f"MERKELY_{name}", self._context.env, default)
+    def _defaulted_env_var(self, name, default, description=None):
+        return DefaultedEnvVar(f"MERKELY_{name}", self._context.env, default, description)
 
-    def _optional_env_var(self, name):
-        return OptionalEnvVar(f"MERKELY_{name}", self._context.env)
+    def _optional_env_var(self, name, description=None):
+        return OptionalEnvVar(f"MERKELY_{name}", self._context.env, description)
 
-    def _required_env_var(self, name):
-        return RequiredEnvVar(f"MERKELY_{name}", self._context.env)
+    def _required_env_var(self, name, description=None):
+        return RequiredEnvVar(f"MERKELY_{name}", self._context.env, description)
 

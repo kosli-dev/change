@@ -24,23 +24,28 @@ class LogArtifactCommand(Command):
 
     @property
     def artifact_git_commit(self):
-        return self._required_env_var('ARTIFACT_GIT_COMMIT')
+        description = "The sha of the git commit that produced this build"
+        return self._required_env_var('ARTIFACT_GIT_COMMIT', description)
 
     @property
     def artifact_git_url(self):
-        return self._required_env_var('ARTIFACT_GIT_URL')
+        description = "Link to the source git commit this build was based on"
+        return self._required_env_var('ARTIFACT_GIT_URL', description)
 
     @property
     def ci_build_number(self):
-        return self._required_env_var('CI_BUILD_NUMBER')
+        description = "The ci build number"
+        return self._required_env_var('CI_BUILD_NUMBER', description)
 
     @property
     def ci_build_url(self):
-        return self._required_env_var('CI_BUILD_URL')
+        description = "Link to the build in the ci system"
+        return self._required_env_var('CI_BUILD_URL', description)
 
     @property
     def is_compliant(self):
-        return self._required_env_var('IS_COMPLIANT')
+        description = "Whether this artifact is considered compliant from you build process"
+        return self._required_env_var('IS_COMPLIANT', description)
 
     @property
     def fingerprint(self):

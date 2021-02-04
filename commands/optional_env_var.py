@@ -1,17 +1,10 @@
+from commands import EnvVar
 
-class OptionalEnvVar:
-    def __init__(self, name, env):
-        self._name = name
-        self._env = env
 
-    @property
-    def name(self):
-        return self._name
+class OptionalEnvVar(EnvVar):
+    def __init__(self, name, env, description=None):
+        super().__init__(name, env, description)
 
     @property
     def value(self):
         return self._env.get(self.name, None)
-
-    def verify(self):
-        return self
-

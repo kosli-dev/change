@@ -1,18 +1,15 @@
+from .env_var import EnvVar
 
-class DefaultedEnvVar:
-    def __init__(self, name, env, default):
-        self._name = name
-        self._env = env
+
+class DefaultedEnvVar(EnvVar):
+    def __init__(self, name, env, default, description=None):
+        super().__init__(name, env, description)
         self._default = default
 
     @property
-    def name(self):
-        return self._name
+    def default(self):
+        return self._default
 
     @property
     def value(self):
         return self._env.get(self.name, self._default)
-
-    def verify(self):
-        return self
-

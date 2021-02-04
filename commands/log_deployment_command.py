@@ -22,15 +22,18 @@ class LogDeploymentCommand(Command):
 
     @property
     def ci_build_url(self):
-        return self._required_env_var('CI_BUILD_URL')
+        description = "A url for the deployment"
+        return self._required_env_var('CI_BUILD_URL', description)
 
     @property
     def description(self):
-        return self._required_env_var('DESCRIPTION')
+        description = "A description for the deployment"
+        return self._required_env_var('DESCRIPTION', description)
 
     @property
     def environment(self):
-        return self._required_env_var('ENVIRONMENT')
+        description = "The environment the artifact is being deployed to"
+        return self._required_env_var('ENVIRONMENT', description)
 
     @property
     def fingerprint(self):
