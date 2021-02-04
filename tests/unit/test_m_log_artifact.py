@@ -7,6 +7,7 @@ from tests.utils import *
 # TODO: test_sha256_file() when supplied DISPLAY_NAME has full path...
 # TODO: test when FINGERPRINT protocol is unknown
 
+DOMAIN = "app.compliancedb.com"
 
 def test_file_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
@@ -26,7 +27,7 @@ def test_file_at_root(capsys):
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
     assert method == "Putting"
-    assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert url == f"https://{DOMAIN}/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
@@ -42,6 +43,19 @@ def test_file_at_root(capsys):
         f"Calculated digest: {sha256}",
         'MERKELY_IS_COMPLIANT: True'
     ]
+
+    old_dir = "tests/integration/approved_executions"
+    old_file = "test_put_artifact"
+    old_test = "test_required_env_vars_uses_CDB_ARTIFACT_FILENAME"
+    approved = f"{old_dir}/{old_file}.{old_test}.approved.txt"
+    with open(approved) as file:
+        old_approval = file.read()
+    _old_blurb, old_method, old_payload, old_url = blurb_method_payload_url(old_approval)
+    assert old_method == method
+    #assert old_url == url
+
+
+
 
 
 def test_file_not_at_root(capsys):
@@ -61,7 +75,7 @@ def test_file_not_at_root(capsys):
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
     assert method == "Putting"
-    assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert url == f"https://{DOMAIN}/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
@@ -95,7 +109,7 @@ def test_docker_image(capsys):
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
     assert method == "Putting"
-    assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert url == f"https://{DOMAIN}/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
@@ -129,7 +143,7 @@ def test_sha256_file(capsys):
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
     assert method == "Putting"
-    assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert url == f"https://{DOMAIN}/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',
@@ -163,7 +177,7 @@ def test_sha256_docker_image(capsys):
     blurb, method, payload, url = blurb_method_payload_url(full_capsys(capsys))
     assert status_code == 0
     assert method == "Putting"
-    assert url == "https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
+    assert url == f"https://{DOMAIN}/api/v1/projects/merkely-test/merkely-change-test-pipeline/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'http://github/me/project/commit/{commit}',

@@ -8,5 +8,5 @@ Posting this payload:
     "description": "some description",
     "environment": "production"
 }
-To this url: https://test.merkely.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/deployments/
+To this url: https://app.compliancedb.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/deployments/
 DRY RUN: Post not sent

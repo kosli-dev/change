@@ -11,5 +11,5 @@ Putting this payload:
     ],
     "visibility": "public"
 }
-To this url: https://test.merkely.com/api/v1/projects/merkely-test/
+To this url: https://app.compliancedb.com/api/v1/projects/merkely-test/
 DRY RUN: Put not sent
