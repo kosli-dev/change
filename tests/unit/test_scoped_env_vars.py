@@ -24,7 +24,7 @@ def test_arg1_env_vars_that_already_exist_RAISE():
         with ScopedEnvVars(env):
             pass
 
-    assert exc.value.vars() == {"EXISTING_ENV_VAR": "Wonderland"}
+    assert exc.value.env_vars() == {"EXISTING_ENV_VAR": "Wonderland"}
 
 
 def test_arg1_env_vars_are_only_available_inside_the_with_statement():

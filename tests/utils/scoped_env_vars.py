@@ -54,15 +54,15 @@ class ScopedEnvVars(object):
         return name in self._new_vars_on_enter.keys() and self._new_vars_on_enter[name] != value
 
 
-class AlreadyExistingEnvVarError(Exception):
-    def __init__(self, vars):
-        self._vars = vars
+class AlreadyExistingEnvVarError(RuntimeError):
+    def __init__(self, env_vars):
+        self._env_vars = env_vars
 
-    def vars(self):
-        return self._vars
+    def env_vars(self):
+        return self._env_vars
 
 
-class UnexpectedEnvVarError(Exception):
+class UnexpectedEnvVarError(RuntimeError):
     def __init__(self, expected, actual):
         self._expected = expected
         self._actual = actual
