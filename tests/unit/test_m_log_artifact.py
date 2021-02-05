@@ -18,6 +18,11 @@ API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
 def test_file_protocol_at_root(capsys, mocker):
+    """
+    Tests putting a file artifact via the env-var
+    MERKELY_FINGERPRINT="file://${FILE_PATH}"
+    when FILE_PATH _is_ in the root dir
+    """
     # input data
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
     protocol = "file://"
@@ -94,6 +99,11 @@ def test_file_protocol_at_root(capsys, mocker):
 
 
 def test_file_protocol_not_at_root(capsys):
+    """
+    Tests putting a file artifact via the env-var
+    MERKELY_FINGERPRINT="file://${FILE_PATH}"
+    when FILE_PATH is _not_ in the root dir
+    """
     # input data
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
     sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
@@ -141,6 +151,10 @@ def test_file_protocol_not_at_root(capsys):
 
 
 def test_docker_protocol_image(capsys, mocker):
+    """
+    Tests putting a docker image artifact via the env-var
+    MERKELY_FINGERPRINT="docker://${IMAGE_NAME}"
+    """
     # input data
     sha256 = "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"
     commit = "12037940e4e7503055d8a8eea87e177f04f14616"
@@ -217,6 +231,11 @@ def test_docker_protocol_image(capsys, mocker):
 
 
 def test_sha256_protocol_file(capsys):
+    """
+    Tests putting a file artifact via the env-vars
+    MERKELY_FINGERPRINT="sha256://${SHA256}"
+    MERKELY_DISPLAY_NAME="${FILE_PATH}"
+    """
     # input data
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed4"
     sha256 = "444daef69c676c2466571d3211180d559ccc2032b258fc5e73f99a103db462ef"
@@ -278,6 +297,11 @@ def test_sha256_protocol_file(capsys):
 
 
 def test_sha256_protocol_docker_image(capsys):
+    """
+    Tests putting a docker image artifact via the env-vars
+    MERKELY_FINGERPRINT="sha256://${SHA256}"
+    MERKELY_DISPLAY_NAME="${IMAGE_NAME_AND_TAG}"
+    """
     # input data
     commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
     sha256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
@@ -318,6 +342,7 @@ def test_sha256_protocol_docker_image(capsys):
     #old_test = "test_required_env_vars_uses_CDB_ARTIFACT_SHA"
 
 
+# TODO: test when all optional env-var are not supplied
 # TODO: Test when docker image not found (decent error message)
 # TODO: Test when image not pushed (eg to dockerhub) so cannot get digest (decent error message)
 # TODO: Test when docker socket not volume-mounted
@@ -330,7 +355,7 @@ def test_sha256_protocol_docker_image(capsys):
 def test_each_required_env_var_missing(capsys):
     for arg in make_command_args():
         if isinstance(arg, RequiredEnvVar):
-            ev = new_log_artifact_env(any_commit())
+            ev = new_log_artifact_env()
             ev.pop(arg.name)
             with dry_run(ev) as env, scoped_merkelypipe_json():
                 context = make_context(env)
@@ -339,7 +364,7 @@ def test_each_required_env_var_missing(capsys):
 
 
 def make_command_args():
-    env = new_log_artifact_env(any_commit())
+    env = new_log_artifact_env()
     context = make_context(env)
     return make_command(context).args
 
@@ -357,10 +382,12 @@ def old_put_artifact_env(commit, *,
     }
 
 
-def new_log_artifact_env(commit, *,
+def new_log_artifact_env(commit=None, *,
                          domain=None,
                          build_url=None,
                          build_number=None):
+    if commit is None:
+        commit = any_commit()
     if domain is None:
         domain = "app.compliancedb.com"
     if build_url is None:
