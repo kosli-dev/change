@@ -19,14 +19,14 @@ API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 def test_file_protocol_at_root(capsys, mocker):
     """
-    Tests putting a file artifact via the env-var
+    Tests logging a file artifact via the env-var
     MERKELY_FINGERPRINT="file://${FILE_PATH}"
     when FILE_PATH _is_ in the root dir
     """
     # input data
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
     protocol = "file://"
-    directory = ""
+    directory = ""  # <<<<<
     filename = "jam.jar"
     sha256 = "ddcdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
     domain = CDB_DOMAIN
@@ -61,7 +61,7 @@ def test_file_protocol_at_root(capsys, mocker):
         'build_url': build_url,
         'commit_url': f'https://github/me/project/commit/{commit}',
         'description': f'Created by build {build_number}',
-        'filename': filename,
+        'filename': filename,  # <<<<<
         'git_commit': commit,
         'is_compliant': True,
         'sha256': sha256,
@@ -98,9 +98,9 @@ def test_file_protocol_at_root(capsys, mocker):
     ]
 
 
-def test_file_protocol_not_at_root(capsys):
+def test_file_protocol_not_at_root(capsys, mocker):
     """
-    Tests putting a file artifact via the env-var
+    Tests logging a file artifact via the env-var
     MERKELY_FINGERPRINT="file://${FILE_PATH}"
     when FILE_PATH is _not_ in the root dir
     """
@@ -108,12 +108,51 @@ def test_file_protocol_not_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
     sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
     protocol = "file://"
-    directory = "app/tests/data"
+    directory = "app/tests/data"  # <<<<<<
     filename = "jam.jar"
+    build_url = "https://gitlab/build/1456"
+    build_number = '23'
 
     domain = CDB_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
+
+    # make cdb call
+    old_env = old_put_artifact_env(commit,
+                                   build_url=build_url,
+                                   build_number=build_number)
+    old_env["CDB_ARTIFACT_FILENAME"] = f"{directory}/{filename}"
+    set_env_vars = {'CDB_ARTIFACT_SHA': sha256}
+    with dry_run(old_env, set_env_vars):
+        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_file', return_value=sha256)
+        put_artifact("tests/integration/test-pipefile.json")
+
+    # compare with approved cdb text file
+    verify_approval(capsys, ["out"])
+
+    # extract data from approved cdb text file
+    this_test = "test_file_protocol_not_at_root"
+    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
+    with open(approved) as file:
+        old_approval = file.read()
+    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
+
+    expected_method = "Putting"
+    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
+    expected_payload = {
+        'build_url': build_url,
+        'commit_url': f'https://github/me/project/commit/{commit}',
+        'description': f'Created by build {build_number}',
+        'filename': f"{directory}/{filename}",  # <<<<
+        'git_commit': commit,
+        'is_compliant': True,
+        'sha256': sha256,
+    }
+
+    # verify data from approved cdb text file
+    assert old_method == expected_method
+    assert old_url == expected_url
+    assert old_payload == expected_payload
 
     # make merkely call
     ev = new_log_artifact_env(commit)
@@ -126,17 +165,7 @@ def test_file_protocol_not_at_root(capsys):
         method, url, payload = command_processor.execute(context)
 
     # verify data
-    expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
-    expected_payload = {
-        'build_url': 'https://gitlab/build/1456',
-        'commit_url': f'https://github/me/project/commit/{commit}',
-        'description': 'Created by build 23',
-        'filename': filename, # <<<<<< does _not_ contain directory
-        'git_commit': commit,
-        'is_compliant': True,
-        'sha256': sha256,
-    }
+    expected_payload['filename'] = filename  # <<<<<
 
     assert method == expected_method
     assert url == expected_url
@@ -152,7 +181,7 @@ def test_file_protocol_not_at_root(capsys):
 
 def test_docker_protocol_image(capsys, mocker):
     """
-    Tests putting a docker image artifact via the env-var
+    Tests logging a docker image artifact via the env-var
     MERKELY_FINGERPRINT="docker://${IMAGE_NAME}"
     """
     # input data
@@ -230,9 +259,10 @@ def test_docker_protocol_image(capsys, mocker):
     ]
 
 
+# TODO: this is file at root, add file not at root
 def test_sha256_protocol_file(capsys):
     """
-    Tests putting a file artifact via the env-vars
+    Tests logging a file artifact via the env-vars
     MERKELY_FINGERPRINT="sha256://${SHA256}"
     MERKELY_DISPLAY_NAME="${FILE_PATH}"
     """
@@ -298,7 +328,7 @@ def test_sha256_protocol_file(capsys):
 
 def test_sha256_protocol_docker_image(capsys):
     """
-    Tests putting a docker image artifact via the env-vars
+    Tests logging a docker image artifact via the env-vars
     MERKELY_FINGERPRINT="sha256://${SHA256}"
     MERKELY_DISPLAY_NAME="${IMAGE_NAME_AND_TAG}"
     """
