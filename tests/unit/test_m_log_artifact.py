@@ -137,49 +137,18 @@ def test_file_protocol_not_at_root(capsys):
 
 def test_docker_protocol_image(capsys, mocker):
     # input data
-    commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
-    sha256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    sha256 = "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"
+    commit = "12037940e4e7503055d8a8eea87e177f04f14616"
     protocol = "docker://"
-    image_name = "acme/road-runner:6.8"
+    image_name = "acme/widget:3.4" # "acme/road-runner:6.8"
     domain = CDB_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
-    ev = new_log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
-
-    # make merkely call
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
-        context = make_context(env)
-        context.sha_digest_for_docker_image = lambda _image_name: sha256
-        method, url, payload = command_processor.execute(context)
-
-    assert method == "Putting"
-    assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
-    assert payload == {
-        'build_url': 'https://gitlab/build/1456',
-        'commit_url': f'https://github/me/project/commit/{commit}',
-        'description': 'Created by build 23',
-        'filename': image_name,
-        'git_commit': commit,
-        'is_compliant': True,
-        'sha256': sha256,
-    }
-    assert extract_blurb(capsys_read(capsys)) == [
-        'MERKELY_COMMAND=log_artifact',
-        f'Getting SHA for {protocol} artifact: {image_name}',
-        f"Calculated digest: {sha256}",
-        'MERKELY_IS_COMPLIANT: True'
-    ]
 
     # make cdb call
-    sha256 = "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"
-    commit = "12037940e4e7503055d8a8eea87e177f04f14616"
-    artifact_name = "acme/widget:3.4"
-
     old_env = {
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "CDB_ARTIFACT_DOCKER_IMAGE": artifact_name,
+        "CDB_ARTIFACT_DOCKER_IMAGE": image_name,
         "CDB_IS_COMPLIANT": "TRUE",
         "CDB_ARTIFACT_GIT_URL": f"http://github/me/project/commit/{commit}",
         "CDB_ARTIFACT_GIT_COMMIT": commit,
@@ -200,17 +169,13 @@ def test_docker_protocol_image(capsys, mocker):
         old_approval = file.read()
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
-    domain = "app.compliancedb.com"
-    owner = "compliancedb"
-    name = "cdb-controls-test-pipeline"
-
     expected_method = "Putting"
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     expected_payload = {
         "build_url": "BUILD_URL_UNDEFINED",
         "commit_url": f"http://github/me/project/commit/{commit}",
         "description": "Created by build UNDEFINED",
-        "filename": artifact_name,
+        "filename": image_name,
         "git_commit": commit,
         "is_compliant": True,
         "sha256": sha256
@@ -221,6 +186,35 @@ def test_docker_protocol_image(capsys, mocker):
     assert old_url == expected_url
     assert old_payload == expected_payload
 
+    # make merkely call
+    ev = new_log_artifact_env(commit)
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
+
+    # make merkely call
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
+        context = make_context(env)
+        context.sha_digest_for_docker_image = lambda _image_name: sha256
+        method, url, payload = command_processor.execute(context)
+
+    # verify matching data
+    assert method == "Putting"
+    assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
+    assert payload == {
+        'build_url': 'https://gitlab/build/1456',
+        'commit_url': f'https://github/me/project/commit/{commit}',
+        'description': 'Created by build 23',
+        'filename': image_name,
+        'git_commit': commit,
+        'is_compliant': True,
+        'sha256': sha256,
+    }
+    assert extract_blurb(capsys_read(capsys)) == [
+        'MERKELY_COMMAND=log_artifact',
+        f'Getting SHA for {protocol} artifact: {image_name}',
+        f"Calculated digest: {sha256}",
+        'MERKELY_IS_COMPLIANT: True'
+    ]
 
 
 def test_sha256_protocol_file(capsys):
