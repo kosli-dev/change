@@ -1,3 +1,4 @@
+from cdb.put_artifact import put_artifact
 from commands import command_processor, make_command, RequiredEnvVar
 from tests.utils import *
 
@@ -15,7 +16,8 @@ CDB_OWNER = "compliancedb"
 CDB_NAME = "cdb-controls-test-pipeline"
 
 
-def test_file_at_root(capsys):
+def test_file_at_root(capsys, mocker):
+    # Data
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
     protocol = "file://"
     directory = ""
@@ -26,6 +28,23 @@ def test_file_at_root(capsys):
     name = CDB_NAME
     build_url_number = '1456'
     build_number = '349'
+
+    old_env = {
+        "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
+        "CDB_ARTIFACT_FILENAME": "jam.jar",
+        "CDB_IS_COMPLIANT": "TRUE",
+        "CDB_ARTIFACT_GIT_URL": "http://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed3",
+        "CDB_ARTIFACT_GIT_COMMIT": "abc50c8a53f79974d615df335669b59fb56a4ed3",
+        "CDB_CI_BUILD_URL": "https://gitlab/build/1456",
+        "CDB_BUILD_NUMBER": "349"
+    }
+    sha = "ddcdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
+    set_env_vars = {'CDB_ARTIFACT_SHA': sha}
+
+    with ScopedEnvVars({**CDB_DRY_RUN, **old_env}, set_env_vars):
+        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_file', return_value=sha)
+        put_artifact("tests/integration/test-pipefile.json")
+    verify_approval(capsys, ["out"])
 
     expected_method = "Putting"
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
@@ -39,9 +58,9 @@ def test_file_at_root(capsys):
         'sha256': sha256,
     }
 
-    old_dir = "tests/integration/approved_executions"
-    old_file = "test_put_artifact"
-    old_test = "test_required_env_vars_uses_CDB_ARTIFACT_FILENAME"
+    old_dir = "tests/unit/approved_executions"
+    old_file = "test_m_log_artifact"
+    old_test = "test_file_at_root"
     approved = f"{old_dir}/{old_file}.{old_test}.approved.txt"
     with open(approved) as file:
         old_approval = file.read()
