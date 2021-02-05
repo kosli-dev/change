@@ -179,7 +179,7 @@ def test_file_protocol_not_at_root(capsys, mocker):
     ]
 
 
-def test_docker_protocol_image(capsys, mocker):
+def test_docker_protocol(capsys, mocker):
     """
     Tests logging a docker image artifact via the env-var
     MERKELY_FINGERPRINT="docker://${IMAGE_NAME}"
