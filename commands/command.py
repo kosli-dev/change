@@ -42,8 +42,8 @@ class Command:
 
     @property
     def host(self):
-        description = "The host name for Merkely"
         default = "https://app.compliancedb.com"
+        description = f"The host name for Merkely. The default is {default}"
         return self._defaulted_env_var("HOST", default, description)
 
     def _defaulted_env_var(self, name, default, description):
