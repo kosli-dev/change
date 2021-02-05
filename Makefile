@@ -159,18 +159,22 @@ branch:
 	@echo PROJFILE is ${PROJFILE}
 
 merkely_declare_pipeline:
-	docker run --rm \
+	docker run \
 			--env MERKELY_COMMAND=declare_pipeline \
+			\
 			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 			--env MERKELY_HOST=https://app.compliancedb.com \
+			--rm \
 			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 			${IMAGE}
 
 merkely_log_artifact:
-	docker run --rm \
+	docker run \
 			--env MERKELY_COMMAND=log_artifact \
+			\
 			--env MERKELY_FINGERPRINT="docker://${MERKELY_DOCKER_IMAGE}" \
 			--env MERKELY_DISPLAY_NAME=${MERKELY_DOCKER_IMAGE} \
+			\
 			--env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
 			--env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
 			--env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
@@ -178,21 +182,21 @@ merkely_log_artifact:
 			--env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
 			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 			--env MERKELY_HOST=https://app.compliancedb.com \
-			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+			--rm \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 			${IMAGE}
 
 put_project:
-	docker run --rm \
-			--volume ${PWD}/${PROJFILE}:/data/project.json \
+	docker run \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
+			--rm \
+			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			${IMAGE} python -m cdb.put_project -p /data/project.json
 
 put_artifact_image:
-	docker run --rm \
- 			--volume ${PWD}/${PROJFILE}:/data/project.json \
-			--volume=/var/run/docker.sock:/var/run/docker.sock \
+	docker run \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
@@ -201,12 +205,13 @@ put_artifact_image:
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
 			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
 			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
+			--rm \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+ 			--volume ${PWD}/${PROJFILE}:/data/project.json \
 	        ${IMAGE} python -m cdb.put_artifact_image -p /data/project.json
 
 publish_test_results:
-	docker run --rm \
-			--volume ${PWD}/${PROJFILE}:/data/project.json \
-			--volume=/var/run/docker.sock:/var/run/docker.sock \
+	docker run \
 			--env CDB_HOST=https://app.compliancedb.com \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
@@ -215,24 +220,26 @@ publish_test_results:
 			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
 			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
+			--rm \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			${IMAGE} python -m cdb.put_evidence -p /data/project.json
 
 control_and_publish_junit_results:
-	docker run --rm \
-			--volume ${PWD}/${PROJFILE}:/data/project.json \
-			--volume ${CDB_TEST_RESULTS}:/data/junit/junit.xml \
-			--volume=/var/run/docker.sock:/var/run/docker.sock \
+	docker run \
 			--env CDB_HOST=https://app.compliancedb.com \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_EVIDENCE_TYPE=${CDB_EVIDENCE_TYPE} \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
 			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
+			--rm \
+			--volume ${CDB_TEST_RESULTS}:/data/junit/junit.xml \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			${IMAGE} python -m cdb.control_junit -p /data/project.json
 
 publish_evidence:
-	docker run --rm \
-			--volume ${PWD}/${PROJFILE}:/data/project.json \
-			--volume=/var/run/docker.sock:/var/run/docker.sock \
+	docker run \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_IS_COMPLIANT=${CDB_IS_COMPLIANT} \
@@ -240,7 +247,10 @@ publish_evidence:
 			--env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
 			--env CDB_BUILD_NUMBER=${CDB_BUILD_NUMBER} \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
+			--rm \
 			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume ${PWD}/${PROJFILE}:/data/project.json \
 			${IMAGE} python -m cdb.put_evidence -p /data/project.json
 
 publish_release:
@@ -248,46 +258,46 @@ publish_release:
 
 create_release:
 	# Always release from project-master.json project
-	docker run --rm \
-			--volume ${PWD}/project-master.json:/data/project.json \
-			--volume ${PWD}:/src \
-			--volume=/var/run/docker.sock:/var/run/docker.sock \
+	docker run \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
 			--env CDB_TARGET_SRC_COMMITISH=${CDB_TARGET_SRC_COMMITISH} \
 			--env CDB_BASE_SRC_COMMITISH=${CDB_BASE_SRC_COMMITISH} \
 			--env CDB_RELEASE_DESCRIPTION="${CDB_RELEASE_DESCRIPTION}" \
+			--rm \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume ${PWD}/project-master.json:/data/project.json \
+			--volume ${PWD}:/src \
 			${IMAGE} python -m cdb.create_release -p /data/project.json
 
 control_latest_release:
 	# Always release from project-master.json project
-	docker run --rm \
-			--volume ${PWD}/project-master.json:/data/project.json \
+	docker run \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_ARTIFACT_SHA=${CDB_ARTIFACT_SHA} \
+			--rm \
+			--volume ${PWD}/project-master.json:/data/project.json \
 			${IMAGE} python -m cdb.control_latest_release -p /data/project.json
 
 create_deployment:
-	docker run --rm \
-			--volume ${PWD}/project-master.json:/data/project.json \
-			--volume ${PWD}:/src \
-			--volume=/var/run/docker.sock:/var/run/docker.sock \
+	docker run \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN=${CDB_API_TOKEN} \
 			--env CDB_ARTIFACT_DOCKER_IMAGE=${CDB_ARTIFACT_DOCKER_IMAGE} \
 			--env CDB_ENVIRONMENT=test \
 			--env CDB_CI_BUILD_URL=${CDB_CI_BUILD_URL} \
 			--env CDB_DESCRIPTION="${CDB_DESCRIPTION}" \
+			--rm \
+			--volume ${PWD}:/src \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume ${PWD}/project-master.json:/data/project.json \
 			${IMAGE} python -m cdb.create_deployment -p /data/project.json
 
 ## Test dry runs
 dry_run_put_artifact:
-	docker run --rm \
- 			--volume ${PWD}/${PROJFILE}:/data/project.json \
-			--volume=/var/run/docker.sock:/var/run/docker.sock \
-			--volume=${PWD}/Dockerfile:/data/artifact.txt \
+	docker run \
 			--env CDB_HOST=${CDB_HOST} \
 			--env CDB_API_TOKEN="${CDB_API_TOKEN}" \
 			--env CDB_IS_COMPLIANT="TRUE" \
@@ -297,6 +307,10 @@ dry_run_put_artifact:
 			--env CDB_BUILD_NUMBER="1234" \
 			--env CDB_ARTIFACT_FILENAME=/data/artifact.txt \
 			--env CDB_DRY_RUN="TRUE" \
+			--rm \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume=${PWD}/Dockerfile:/data/artifact.txt \
+ 			--volume ${PWD}/${PROJFILE}:/data/project.json \
 	        ${IMAGE} python -m cdb.put_artifact -p /data/project.json
 
 copy_approvals:
