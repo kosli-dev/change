@@ -21,4 +21,6 @@ def make_command(context):
         return LogArtifactCommand(context)
     if name == "log_deployment":
         return LogDeploymentCommand(context)
+    if name == "log_evidence":
+        return LogEvidenceCommand(context)
     return None

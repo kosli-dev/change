@@ -12,5 +12,6 @@ from .command import Command
 from .declare_pipeline_command import DeclarePipelineCommand
 from .log_artifact_command import LogArtifactCommand
 from .log_deployment_command import LogDeploymentCommand
+from .log_evidence_command import LogEvidenceCommand
 
 from .command_processor import make_command, execute

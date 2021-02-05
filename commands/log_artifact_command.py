@@ -43,6 +43,11 @@ class LogArtifactCommand(Command):
         return self._required_env_var('CI_BUILD_URL', description)
 
     @property
+    def display_name(self):
+        description = ""
+        return self._optional_env_var("DISPLAY_NAME", description)
+
+    @property
     def is_compliant(self):
         description = "Whether this artifact is considered compliant from you build process"
         return self._required_env_var('IS_COMPLIANT', description)
@@ -51,11 +56,6 @@ class LogArtifactCommand(Command):
     def fingerprint(self):
         description = ""
         return self._required_env_var("FINGERPRINT", description)
-
-    @property
-    def display_name(self):
-        description = ""
-        return self._optional_env_var("DISPLAY_NAME", description)
 
     def execute(self):
         file_protocol = "file://"
