@@ -114,9 +114,9 @@ def test_file_not_at_root(capsys):
         context.sha_digest_for_file = lambda _filename: sha256
         method, url, payload = command_processor.execute(context)
 
-    assert method == "Putting"
-    assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
-    assert payload == {
+    expected_method = "Putting"
+    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
+    expected_payload = {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'https://github/me/project/commit/{commit}',
         'description': 'Created by build 23',
@@ -125,6 +125,11 @@ def test_file_not_at_root(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
+
+    assert method == expected_method
+    assert url == expected_url
+    assert payload == expected_payload
+
     assert blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {directory}/{filename}',
