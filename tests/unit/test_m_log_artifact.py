@@ -335,6 +335,8 @@ def test_sha256_protocol_docker_image(capsys):
     sha256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     protocol = "sha256://"
     image_name = "acme/road-runner:4.8"
+    build_url = "https://gitlab/build/1456"
+    build_number = '23'
 
     domain = CDB_DOMAIN
     owner = CDB_OWNER
@@ -353,9 +355,9 @@ def test_sha256_protocol_docker_image(capsys):
     expected_method = "Putting"
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     expected_payload = {
-        'build_url': 'https://gitlab/build/1456',
+        'build_url': build_url,
         'commit_url': f'https://github/me/project/commit/{commit}',
-        'description': 'Created by build 23',
+        'description': f'Created by build {build_number}',
         'filename': image_name,
         'git_commit': commit,
         'is_compliant': True,
