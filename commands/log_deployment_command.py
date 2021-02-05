@@ -37,12 +37,35 @@ class LogDeploymentCommand(Command):
 
     @property
     def fingerprint(self):
-        description = ""
+        description = "\n".join([
+            '1. If prefixed by docker:// the name+tag of the docker image to fingerprint.',
+            '   The docker socket must be volume-mounted.',
+            '   Example:',
+            '   --env MERKELY_FINGERPRINT=”docker://${YOUR_DOCKER_IMAGE_AND_TAG}"',
+            '   --volume /var/run/docker.sock:/var/run/docker.sock',
+            '',
+            '2. If prefixed by file:// the name of the file to fingerprint.',
+            '   The file must be volume-mounted to /artifact/file',
+            '   Example:',
+            '   --env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH}',
+            '   --volume=${YOUR_FILE_PATH}:/artifact/file',
+            '',
+            "3. If prefixed by sha256:// the artifact's sha256 digest."
+            '   The name of the artifact must be provided in MERKELY_DISPLAY_NAME',
+            '   Example:',
+            '   --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}”',
+            '   --env MERKELY_DISPLAY_NAME=”${YOUR_ARTIFACT_NAME}”'
+        ])
         return self._required_env_var("FINGERPRINT", description)
 
     @property
     def display_name(self):
-        description = ""
+        description = "\n".join([
+            'The name of the deployed artifact.',
+            'Required when using MERKELY_FINGERPRINT="sha256://..."',
+            'Not required when using MERKELY_FINGERPRINT="file://..."',
+            'Not required when using MERKELY_FINGERPRINT="docker://..."'
+        ])
         return self._optional_env_var("DISPLAY_NAME", description)
 
     def execute(self):
