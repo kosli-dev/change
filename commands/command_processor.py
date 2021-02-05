@@ -9,7 +9,7 @@ def execute(context):
             cmd.verify_args()
             return cmd.execute()
     except CommandError as exc:
-        print(f"ERROR: {str(exc)}")
+        print(f"Error: {str(exc)}")
         return 144
 
 

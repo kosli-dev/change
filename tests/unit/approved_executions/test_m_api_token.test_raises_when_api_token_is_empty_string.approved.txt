@@ -1,2 +1,2 @@
 MERKELY_COMMAND=declare_pipeline
-ERROR: MERKELY_API_TOKEN environment-variable is empty string
+Error: MERKELY_API_TOKEN environment-variable is empty string

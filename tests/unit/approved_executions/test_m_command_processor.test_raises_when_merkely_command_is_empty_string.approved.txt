@@ -1,1 +1,1 @@
-ERROR: MERKELY_COMMAND environment-variable is empty string
+Error: MERKELY_COMMAND environment-variable is empty string
