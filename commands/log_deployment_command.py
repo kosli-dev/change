@@ -22,17 +22,17 @@ class LogDeploymentCommand(Command):
 
     @property
     def ci_build_url(self):
-        description = "A url for the deployment"
+        description = "A url for the deployment."
         return self._required_env_var('CI_BUILD_URL', description)
 
     @property
     def description(self):
-        description = "A description for the deployment"
+        description = "A description for the deployment."
         return self._required_env_var('DESCRIPTION', description)
 
     @property
     def environment(self):
-        description = "The name of the environment the artifact is being deployed to"
+        description = "The name of the environment the artifact is being deployed to."
         return self._required_env_var('ENVIRONMENT', description)
 
     @property
@@ -41,20 +41,20 @@ class LogDeploymentCommand(Command):
             '1. If prefixed by docker:// the name+tag of the docker image to fingerprint.',
             '   The docker socket must be volume-mounted.',
             '   Example:',
-            '   --env MERKELY_FINGERPRINT=”docker://${YOUR_DOCKER_IMAGE_AND_TAG}"',
-            '   --volume /var/run/docker.sock:/var/run/docker.sock',
+            '     --env MERKELY_FINGERPRINT=”docker://${YOUR_DOCKER_IMAGE_AND_TAG}"',
+            '     --volume /var/run/docker.sock:/var/run/docker.sock',
             '',
             '2. If prefixed by file:// the full path of the file to fingerprint.',
             '   The file must be volume-mounted to /artifact/file',
             '   Example:',
-            '   --env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH}',
-            '   --volume=${YOUR_FILE_PATH}:/artifact/file',
+            '     --env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH}',
+            '     --volume=${YOUR_FILE_PATH}:/artifact/file',
             '',
             "3. If prefixed by sha256:// the deployed artifact's sha256 digest."
             '   The name of the artifact must be provided in MERKELY_DISPLAY_NAME',
             '   Example:',
-            '   --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}”',
-            '   --env MERKELY_DISPLAY_NAME=”${YOUR_ARTIFACT_NAME}”'
+            '     --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}”',
+            '     --env MERKELY_DISPLAY_NAME=”${YOUR_ARTIFACT_NAME}”'
         ])
         return self._required_env_var("FINGERPRINT", description)
 
