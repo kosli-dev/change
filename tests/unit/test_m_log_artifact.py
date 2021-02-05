@@ -26,7 +26,7 @@ def test_file_at_root(capsys):
     name = CDB_NAME
     build_url_number = '1456'
     build_number = '349'
-    ev = log_artifact_env(commit, domain, build_url_number, build_number)
+    ev = new_log_artifact_env(commit, domain, build_url_number, build_number)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}{filename}"
 
     merkelypipe = "Merkelypipe.compliancedb.json"
@@ -47,7 +47,7 @@ def test_file_at_root(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb(full_capsys(capsys)) == [
+    assert blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {filename}',
         f"Calculated digest: {sha256}",
@@ -66,6 +66,9 @@ def test_file_at_root(capsys):
     assert old_payload == payload
 
 
+
+
+
 def test_file_not_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
     sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
@@ -75,7 +78,7 @@ def test_file_not_at_root(capsys):
     domain = CDB_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
-    ev = log_artifact_env(commit)
+    ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}/{filename}"
 
     merkelypipe = "Merkelypipe.compliancedb.json"
@@ -95,7 +98,7 @@ def test_file_not_at_root(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb(full_capsys(capsys)) == [
+    assert blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {directory}/{filename}',
         f"Calculated digest: {sha256}",
@@ -111,7 +114,7 @@ def test_docker_image(capsys):
     domain = CDB_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
-    ev = log_artifact_env(commit)
+    ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
 
     merkelypipe = "Merkelypipe.compliancedb.json"
@@ -131,7 +134,7 @@ def test_docker_image(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb(full_capsys(capsys)) == [
+    assert blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {image_name}',
         f"Calculated digest: {sha256}",
@@ -149,7 +152,7 @@ def test_sha256_file(capsys):
     name = CDB_NAME
     build_url_number = '2156'
     build_number = '751'
-    ev = log_artifact_env(commit, domain, build_url_number, build_number)
+    ev = new_log_artifact_env(commit, domain, build_url_number, build_number)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
     ev["MERKELY_DISPLAY_NAME"] = filename
 
@@ -169,7 +172,7 @@ def test_sha256_file(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb(full_capsys(capsys)) == [
+    assert blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         'MERKELY_IS_COMPLIANT: True'
     ]
@@ -193,7 +196,7 @@ def test_sha256_docker_image(capsys):
     domain = CDB_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
-    ev = log_artifact_env(commit)
+    ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
     ev["MERKELY_DISPLAY_NAME"] = image_name
 
@@ -213,7 +216,7 @@ def test_sha256_docker_image(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb(full_capsys(capsys)) == [
+    assert blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         'MERKELY_IS_COMPLIANT: True'
     ]
@@ -222,7 +225,7 @@ def test_sha256_docker_image(capsys):
 def test_each_required_env_var_missing(capsys):
     for arg in make_command_args():
         if isinstance(arg, RequiredEnvVar):
-            ev = log_artifact_env(any_commit())
+            ev = new_log_artifact_env(any_commit())
             ev.pop(arg.name)
             with dry_run(ev) as env, scoped_merkelypipe_json():
                 context = make_context(env)
@@ -231,12 +234,12 @@ def test_each_required_env_var_missing(capsys):
 
 
 def make_command_args():
-    env = log_artifact_env(any_commit())
+    env = new_log_artifact_env(any_commit())
     context = make_context(env)
     return make_command(context).args
 
 
-def log_artifact_env(commit, domain=None, build_url_number=None, build_number=None):
+def new_log_artifact_env(commit, domain=None, build_url_number=None, build_number=None):
     if domain is None:
         domain = "app.compliancedb.com"
     if build_url_number is None:
@@ -258,3 +261,34 @@ def log_artifact_env(commit, domain=None, build_url_number=None, build_number=No
 
 def any_commit():
     return "abc50c8a53f79974d615df335669b59fb56a4ed3"
+
+
+def blurb(output):
+    blurb, _, _, _ = blurb_method_payload_url(output)
+    return blurb
+
+
+def blurb_method_payload_url(output):
+    """
+    Splits output so each part can be asserted individually.
+    """
+    other_lines = []
+    payload_lines = []
+    in_payload = False
+    for line in output.splitlines(False):
+        if line == "{" or line == "}" or in_payload:
+            payload_lines.append(line)
+            if line == "{":
+                in_payload = True
+            if line == "}":
+                in_payload = False
+        else:
+            other_lines.append(line)
+            in_payload = False
+
+    import json
+    payload = json.loads("".join(payload_lines))
+    *blurb, method_line, to_url_line, _dry_run_line = other_lines
+    method = method_line.split()[0]
+    url = to_url_line.split()[-1]
+    return blurb, method, payload, url
