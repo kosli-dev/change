@@ -2,12 +2,6 @@ from cdb.put_artifact import put_artifact
 from commands import command_processor, make_command, RequiredEnvVar
 from tests.utils import *
 
-# TODO: Test when docker socket not volume-mounted
-# TODO: Test when sha256://SHA and SHA does not look like a SHA
-# TODO: test_sha256_file() when DISPLAY_NAME is missing
-# TODO: test_sha256_file() when supplied DISPLAY_NAME has full path...
-# TODO: test when FINGERPRINT protocol is unknown
-
 MERKELY_DOMAIN = "test.compliancedb.com"
 CDB_DOMAIN = "app.compliancedb.com"
 
@@ -51,7 +45,7 @@ def test_file_protocol_at_root(capsys, mocker):
     approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
     with open(approved) as file:
         old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = blurb_method_payload_url(old_approval)
+    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
@@ -88,7 +82,7 @@ def test_file_protocol_at_root(capsys, mocker):
     assert url == expected_url
     assert payload == expected_payload
 
-    assert blurb(capsys_read(capsys)) == [
+    assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {filename}',
         f"Calculated digest: {sha256}",
@@ -130,7 +124,7 @@ def test_file_not_at_root(capsys):
     assert url == expected_url
     assert payload == expected_payload
 
-    assert blurb(capsys_read(capsys)) == [
+    assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {directory}/{filename}',
         f"Calculated digest: {sha256}",
@@ -166,7 +160,7 @@ def test_docker_image(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb(capsys_read(capsys)) == [
+    assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {image_name}',
         f"Calculated digest: {sha256}",
@@ -196,9 +190,9 @@ def test_sha256_file(capsys):
         context = make_context(env)
         method, url, payload = command_processor.execute(context)
 
-    assert method == "Putting"
-    assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
-    assert payload == {
+    expected_method = "Putting"
+    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
+    expected_payload = {
         'build_url': f'https://gitlab/build/{build_url_number}',
         'commit_url': f'https://github/me/project/commit/{commit}',
         'description': f'Created by build {build_number}',
@@ -207,7 +201,11 @@ def test_sha256_file(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb(capsys_read(capsys)) == [
+
+    assert url == expected_url
+    assert method == expected_method
+    assert payload == expected_payload
+    assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         'MERKELY_IS_COMPLIANT: True'
     ]
@@ -217,7 +215,7 @@ def test_sha256_file(capsys):
     approved = f"{old_dir}/{old_file}.{old_test}.approved.txt"
     with open(approved) as file:
         old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = blurb_method_payload_url(old_approval)
+    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
     assert old_method == method
     assert old_url == url
     assert old_payload == payload
@@ -251,10 +249,17 @@ def test_sha256_docker_image(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb(capsys_read(capsys)) == [
+    assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         'MERKELY_IS_COMPLIANT: True'
     ]
+
+
+# TODO: Test when docker socket not volume-mounted
+# TODO: Test when sha256://SHA and SHA does not look like a SHA
+# TODO: test_sha256_file() when DISPLAY_NAME is missing
+# TODO: test_sha256_file() when supplied DISPLAY_NAME has full path...
+# TODO: test when FINGERPRINT protocol is unknown
 
 
 def test_each_required_env_var_missing(capsys):
@@ -313,33 +318,3 @@ def new_log_artifact_env(commit, *,
 def any_commit():
     return "abc50c8a53f79974d615df335669b59fb56a4ed3"
 
-
-def blurb(output):
-    blurb, _, _, _ = blurb_method_payload_url(output)
-    return blurb
-
-
-def blurb_method_payload_url(output):
-    """
-    Splits output so each part can be asserted individually.
-    """
-    other_lines = []
-    payload_lines = []
-    in_payload = False
-    for line in output.splitlines(False):
-        if line == "{" or line == "}" or in_payload:
-            payload_lines.append(line)
-            if line == "{":
-                in_payload = True
-            if line == "}":
-                in_payload = False
-        else:
-            other_lines.append(line)
-            in_payload = False
-
-    import json
-    payload = json.loads("".join(payload_lines))
-    *blurb, method_line, to_url_line, _dry_run_line = other_lines
-    method = method_line.split()[0]
-    url = to_url_line.split()[-1]
-    return blurb, method, payload, url
