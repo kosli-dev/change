@@ -164,7 +164,7 @@ def test_file_protocol_not_at_root(capsys, mocker):
         context.sha_digest_for_file = lambda _filename: sha256
         method, url, payload = command_processor.execute(context)
 
-    # verify data
+    # verify matching data
     expected_payload['filename'] = filename  # <<<<<
 
     assert method == expected_method
@@ -259,7 +259,6 @@ def test_docker_protocol_image(capsys, mocker):
     ]
 
 
-# TODO: this is file at root, also test file not at root
 def test_sha256_protocol_file(capsys):
     """
     Tests logging a file artifact via the env-vars
@@ -304,7 +303,6 @@ def test_sha256_protocol_file(capsys):
         'sha256': sha256,
     }
 
-    # TODO: make cdb call
     assert url == expected_url
     assert method == expected_method
     assert payload == expected_payload
@@ -312,6 +310,8 @@ def test_sha256_protocol_file(capsys):
         'MERKELY_COMMAND=log_artifact',
         'MERKELY_IS_COMPLIANT: True'
     ]
+
+    # TODO: make cdb call
     old_dir = "tests/integration/approved_executions"
     old_file = "test_put_artifact"
     old_test = "test_all_env_vars_uses_FILENAME_and_SHA"
@@ -350,9 +350,9 @@ def test_sha256_protocol_docker_image(capsys):
         context = make_context(env)
         method, url, payload = command_processor.execute(context)
 
-    assert method == "Putting"
-    assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
-    assert payload == {
+    expected_method = "Putting"
+    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
+    expected_payload = {
         'build_url': 'https://gitlab/build/1456',
         'commit_url': f'https://github/me/project/commit/{commit}',
         'description': 'Created by build 23',
@@ -361,6 +361,9 @@ def test_sha256_protocol_docker_image(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
+    assert method == expected_method
+    assert url == expected_url
+    assert payload == expected_payload
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         'MERKELY_IS_COMPLIANT: True'
@@ -371,11 +374,12 @@ def test_sha256_protocol_docker_image(capsys):
     #old_test = "test_required_env_vars_uses_CDB_ARTIFACT_SHA"
 
 
-# TODO: test_sha256_file() when DISPLAY_NAME is missing
-# TODO: test_sha256_file() when supplied DISPLAY_NAME has full path...?
 # TODO: test when FINGERPRINT protocol is unknown
-# TODO: test when all optional env-var are not supplied
 # TODO: Test when sha256://SHA and SHA does not look like a SHA?
+
+# TODO: test_sha256_protocol_file() when DISPLAY_NAME is missing
+# TODO: test_sha256_protocol_file() when supplied DISPLAY_NAME has full path...?
+# TODO: test when all optional env-var are not supplied
 
 # TODO: Test when docker image not found (decent error message)
 # TODO: Test when image not pushed (eg to dockerhub) so cannot get digest (decent error message)
