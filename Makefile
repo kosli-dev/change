@@ -312,7 +312,3 @@ dry_run_put_artifact:
 			--volume=${PWD}/Dockerfile:/data/artifact.txt \
  			--volume ${PWD}/${PROJFILE}:/data/project.json \
 	        ${IMAGE} python -m cdb.put_artifact -p /data/project.json
-
-copy_approvals:
-	@docker logs test_integration | grep mv | sed 's/mv -f /docker cp test_integration:/' | sed 's/ \/app\// /'
-	@docker logs test_unit        | grep mv | sed 's/mv -f /docker cp test_unit:/'        | sed 's/ \/app\// /'
