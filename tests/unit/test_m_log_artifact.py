@@ -27,12 +27,12 @@ def test_file_protocol_at_root(capsys, mocker):
     domain = CDB_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
-    build_url_number = '1456'
-    build_number = '349'
+    build_url = "https://gitlab/build/1456"
+    build_number = '23'
 
     # make cdb call
     old_env = old_put_artifact_env(commit,
-                                   build_url_number=build_url_number,
+                                   build_url=build_url,
                                    build_number=build_number)
     old_env["CDB_ARTIFACT_FILENAME"] = filename
     set_env_vars = {'CDB_ARTIFACT_SHA': sha256}
@@ -53,7 +53,7 @@ def test_file_protocol_at_root(capsys, mocker):
     expected_method = "Putting"
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     expected_payload = {
-        'build_url': f'https://gitlab/build/{build_url_number}',
+        'build_url': build_url,
         'commit_url': f'https://github/me/project/commit/{commit}',
         'description': f'Created by build {build_number}',
         'filename': filename,
@@ -70,7 +70,7 @@ def test_file_protocol_at_root(capsys, mocker):
     # make merkely call
     ev = new_log_artifact_env(commit,
                               domain=domain,
-                              build_url_number=build_url_number,
+                              build_url=build_url,
                               build_number=build_number)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}{filename}"
     merkelypipe = "Merkelypipe.compliancedb.json"
@@ -94,14 +94,18 @@ def test_file_protocol_at_root(capsys, mocker):
 
 
 def test_file_protocol_not_at_root(capsys):
+    # input data
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
     sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
     protocol = "file://"
     directory = "app/tests/data"
     filename = "jam.jar"
+
     domain = CDB_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
+
+    # make merkely call
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}/{filename}"
 
@@ -111,6 +115,7 @@ def test_file_protocol_not_at_root(capsys):
         context.sha_digest_for_file = lambda _filename: sha256
         method, url, payload = command_processor.execute(context)
 
+    # verify data
     expected_method = "Putting"
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     expected_payload = {
@@ -214,18 +219,22 @@ def test_docker_protocol_image(capsys, mocker):
 
 
 def test_sha256_protocol_file(capsys):
+    # input data
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed4"
     sha256 = "444daef69c676c2466571d3211180d559ccc2032b258fc5e73f99a103db462ef"
     protocol = "sha256://"
     filename = "door-is-a.jar"
+    build_url = "https://gitlab/build/2156"
+    build_number = '751'
+
     domain = MERKELY_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
-    build_url_number = '2156'
-    build_number = '751'
+
+    # make merkely call
     ev = new_log_artifact_env(commit,
                               domain=domain,
-                              build_url_number=build_url_number,
+                              build_url=build_url,
                               build_number=build_number)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
     ev["MERKELY_DISPLAY_NAME"] = filename
@@ -235,10 +244,11 @@ def test_sha256_protocol_file(capsys):
         context = make_context(env)
         method, url, payload = command_processor.execute(context)
 
+    # verify data
     expected_method = "Putting"
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     expected_payload = {
-        'build_url': f'https://gitlab/build/{build_url_number}',
+        'build_url': build_url,
         'commit_url': f'https://github/me/project/commit/{commit}',
         'description': f'Created by build {build_number}',
         'filename': filename,
@@ -269,15 +279,18 @@ def test_sha256_protocol_file(capsys):
     #old_test = "test_all_env_vars_uses_FILENAME_and_SHA"
 
 
-
 def test_sha256_protocol_docker_image(capsys):
+    # input data
     commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
     sha256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     protocol = "sha256://"
     image_name = "acme/road-runner:4.8"
+
     domain = CDB_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
+
+    # make merkely call
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
     ev["MERKELY_DISPLAY_NAME"] = image_name
@@ -334,26 +347,26 @@ def make_command_args():
 
 
 def old_put_artifact_env(commit, *,
-                         build_url_number,
+                         build_url,
                          build_number):
     return {
         "CDB_API_TOKEN": API_TOKEN,
         "CDB_IS_COMPLIANT": "TRUE",
         "CDB_ARTIFACT_GIT_COMMIT": commit,
         "CDB_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
-        "CDB_CI_BUILD_URL": f"https://gitlab/build/{build_url_number}",
+        "CDB_CI_BUILD_URL": build_url,
         "CDB_BUILD_NUMBER": build_number
     }
 
 
 def new_log_artifact_env(commit, *,
                          domain=None,
-                         build_url_number=None,
+                         build_url=None,
                          build_number=None):
     if domain is None:
         domain = "app.compliancedb.com"
-    if build_url_number is None:
-        build_url_number = '1456'
+    if build_url is None:
+        build_url = 'https://gitlab/build/1456'
     if build_number is None:
         build_number = '23'
     return {
@@ -361,7 +374,7 @@ def new_log_artifact_env(commit, *,
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_FINGERPRINT": 'dummy',
-        "MERKELY_CI_BUILD_URL": f"https://gitlab/build/{build_url_number}",
+        "MERKELY_CI_BUILD_URL": build_url,
         "MERKELY_CI_BUILD_NUMBER": build_number,
         "MERKELY_ARTIFACT_GIT_URL": "https://github/me/project/commit/" + commit,
         "MERKELY_ARTIFACT_GIT_COMMIT": commit,
