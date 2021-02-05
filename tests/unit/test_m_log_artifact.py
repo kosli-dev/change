@@ -90,7 +90,7 @@ def test_file_protocol_at_root(capsys, mocker):
     ]
 
 
-def test_file_not_at_root(capsys):
+def test_file_protocol_not_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
     sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
     protocol = "file://"
@@ -132,7 +132,7 @@ def test_file_not_at_root(capsys):
     ]
 
 
-def test_docker_image(capsys):
+def test_docker_protocol_image(capsys):
     commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
     sha256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     protocol = "docker://"
@@ -168,7 +168,7 @@ def test_docker_image(capsys):
     ]
 
 
-def test_sha256_file(capsys):
+def test_sha256_protocol_file(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed4"
     sha256 = "444daef69c676c2466571d3211180d559ccc2032b258fc5e73f99a103db462ef"
     protocol = "sha256://"
@@ -221,7 +221,7 @@ def test_sha256_file(capsys):
     assert old_payload == payload
 
 
-def test_sha256_docker_image(capsys):
+def test_sha256_protocol_docker_image(capsys):
     commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
     sha256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     protocol = "sha256://"
