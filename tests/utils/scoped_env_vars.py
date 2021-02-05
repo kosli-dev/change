@@ -1,12 +1,6 @@
 import copy
 import os
 
-CDB_DRY_RUN = {"CDB_DRY_RUN": "TRUE"}
-
-
-def dry_run(ev):
-    return ScopedEnvVars({**CDB_DRY_RUN, **ev})
-
 
 class ScopedEnvVars(object):
     def __init__(self, new_vars_on_enter, expected_new_vars_on_exit=None):

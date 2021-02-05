@@ -36,7 +36,7 @@ def test_file_protocol_at_root(capsys, mocker):
                                    build_number=build_number)
     old_env["CDB_ARTIFACT_FILENAME"] = filename
     set_env_vars = {'CDB_ARTIFACT_SHA': sha256}
-    with ScopedEnvVars({**CDB_DRY_RUN, **old_env}, set_env_vars):
+    with dry_run(old_env, set_env_vars):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_file', return_value=sha256)
         put_artifact("tests/integration/test-pipefile.json")
 
@@ -163,9 +163,7 @@ def test_docker_protocol_image(capsys, mocker):
         "CDB_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
         "CDB_ARTIFACT_GIT_COMMIT": commit,
     }
-    set_env_vars = {}
-
-    with ScopedEnvVars({**CDB_DRY_RUN, **old_env}, set_env_vars):
+    with dry_run(old_env):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         put_artifact_image("tests/integration/test-pipefile.json")
 
