@@ -23,6 +23,6 @@ def test_value_from_env():
     with ScopedEnvVars({name: value}) as env:
         dev = DefaultedEnvVar(name, env, default, description)
 
-    assert dev.value == value
-    assert dev.name == name
-    assert dev.description == description
+        assert dev.value == value
+        assert dev.name == name
+        assert dev.description == description

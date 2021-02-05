@@ -14,7 +14,7 @@ def execute(context):
 
 
 def make_command(context):
-    name = Command(context).name.verify().value
+    name = Command(context).name.value
     if name == "declare_pipeline":
         return DeclarePipelineCommand(context)
     if name == "log_artifact":

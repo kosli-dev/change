@@ -25,15 +25,15 @@ class Command:
     @property
     def merkelypipe(self):
         try:
-            merkelypipe_path = "/Merkelypipe.json"
-            with open(merkelypipe_path) as file:
+            filename = "/Merkelypipe.json"
+            with open(filename) as file:
                 return json.load(file)
         except FileNotFoundError:
-            raise CommandError(f"{merkelypipe_path} file not found")
+            raise CommandError(f"{filename} file not found")
         except IsADirectoryError:
-            raise CommandError(f"{merkelypipe_path} is a directory")
+            raise CommandError(f"{filename} is a directory")
         except json.decoder.JSONDecodeError as exc:
-            raise CommandError(f"{merkelypipe_path} invalid json - {str(exc)}")
+            raise CommandError(f"{filename} invalid json - {str(exc)}")
 
     @property
     def api_token(self):
@@ -47,11 +47,14 @@ class Command:
         return self._defaulted_env_var("HOST", host, description)
 
     def _defaulted_env_var(self, name, default, description=None):
-        return DefaultedEnvVar(f"MERKELY_{name}", self._context.env, default, description)
+        return DefaultedEnvVar(f"MERKELY_{name}", self._env, default, description)
 
     def _optional_env_var(self, name, description=None):
-        return OptionalEnvVar(f"MERKELY_{name}", self._context.env, description)
+        return OptionalEnvVar(f"MERKELY_{name}", self._env, description)
 
     def _required_env_var(self, name, description=None):
-        return RequiredEnvVar(f"MERKELY_{name}", self._context.env, description)
+        return RequiredEnvVar(f"MERKELY_{name}", self._env, description)
 
+    @property
+    def _env(self):
+        return self._context.env

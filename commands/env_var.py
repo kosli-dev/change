@@ -19,4 +19,3 @@ class EnvVar:
 
     def verify(self):
         self.value
-        return self
