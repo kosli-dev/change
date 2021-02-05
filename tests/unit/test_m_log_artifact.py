@@ -26,19 +26,10 @@ def test_file_at_root(capsys):
     name = CDB_NAME
     build_url_number = '1456'
     build_number = '349'
-    ev = new_log_artifact_env(commit, domain, build_url_number, build_number)
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}{filename}"
 
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
-        with ScopedFileCopier("/app/tests/data/jam.jar", "/"+filename):
-            context = make_context(env)
-            context.sha_digest_for_file = lambda _filename: sha256
-            method, url, payload = command_processor.execute(context)
-
-    assert method == "Putting"
-    assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
-    assert payload == {
+    expected_method = "Putting"
+    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
+    expected_payload = {
         'build_url': f'https://gitlab/build/{build_url_number}',
         'commit_url': f'http://github/me/project/commit/{commit}',
         'description': f'Created by build {build_number}',
@@ -47,12 +38,6 @@ def test_file_at_root(capsys):
         'is_compliant': True,
         'sha256': sha256,
     }
-    assert blurb(capsys_read(capsys)) == [
-        'MERKELY_COMMAND=log_artifact',
-        f'Getting SHA for {protocol} artifact: {filename}',
-        f"Calculated digest: {sha256}",
-        'MERKELY_IS_COMPLIANT: True'
-    ]
 
     old_dir = "tests/integration/approved_executions"
     old_file = "test_put_artifact"
@@ -61,9 +46,31 @@ def test_file_at_root(capsys):
     with open(approved) as file:
         old_approval = file.read()
     _old_blurb, old_method, old_payload, old_url = blurb_method_payload_url(old_approval)
-    assert old_method == method
-    assert old_url == url
-    assert old_payload == payload
+
+    assert old_method == expected_method
+    assert old_url == expected_url
+    assert old_payload == expected_payload
+
+    ev = new_log_artifact_env(commit, domain, build_url_number, build_number)
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{directory}{filename}"
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
+        with ScopedFileCopier("/app/tests/data/jam.jar", "/"+filename):
+            context = make_context(env)
+            context.sha_digest_for_file = lambda _filename: sha256
+            method, url, payload = command_processor.execute(context)
+
+    assert method == expected_method
+    assert url == expected_url
+    assert payload == expected_payload
+
+    # TODO: see if this still works if capsys has previously been 'drained'
+    assert blurb(capsys_read(capsys)) == [
+        'MERKELY_COMMAND=log_artifact',
+        f'Getting SHA for {protocol} artifact: {filename}',
+        f"Calculated digest: {sha256}",
+        'MERKELY_IS_COMPLIANT: True'
+    ]
 
 
 
