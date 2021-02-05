@@ -1,5 +1,5 @@
 import os
-from commands import Command
+from commands import Command, CommandError
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
@@ -58,19 +58,21 @@ class LogArtifactCommand(Command):
         return self._optional_env_var("DISPLAY_NAME", description)
 
     def execute(self):
-        fp = self.fingerprint.value
         file_protocol = "file://"
+        docker_protocol = "docker://"
+        sha_protocol = "sha256://"
+        fp = self.fingerprint.value
         if fp.startswith(file_protocol):
             artifact_name = fp[len(file_protocol):]
             return self._log_artifact_file(file_protocol, artifact_name)
-        docker_protocol = "docker://"
-        if fp.startswith(docker_protocol):
+        elif fp.startswith(docker_protocol):
             artifact_name = fp[len(docker_protocol):]
             return self._log_artifact_docker_image(docker_protocol, artifact_name)
-        sha_protocol = "sha256://"
-        if fp.startswith(sha_protocol):
+        elif fp.startswith(sha_protocol):
             sha256 = fp[len(sha_protocol):]
             return self._log_artifact_sha(sha256)
+        else:
+            raise CommandError(f"{self.fingerprint.name} has unknown protocol {fp}")
 
     def _log_artifact_file(self, protocol, filename):
         print(f"Getting SHA for {protocol} artifact: {filename}")
