@@ -3,9 +3,9 @@ Publish artifact to ComplianceDB
 CDB_IS_COMPLIANT: True
 Putting this payload:
 {
-    "build_url": "BUILD_URL_UNDEFINED",
-    "commit_url": "http://github/me/project/commit/12037940e4e7503055d8a8eea87e177f04f14616",
-    "description": "Created by build UNDEFINED",
+    "build_url": "https://gitlab/build/1456",
+    "commit_url": "https://github/me/project/commit/12037940e4e7503055d8a8eea87e177f04f14616",
+    "description": "Created by build 23",
     "filename": "acme/widget:3.4",
     "git_commit": "12037940e4e7503055d8a8eea87e177f04f14616",
     "is_compliant": true,

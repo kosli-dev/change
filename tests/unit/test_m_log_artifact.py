@@ -140,17 +140,22 @@ def test_docker_protocol_image(capsys, mocker):
     sha256 = "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"
     commit = "12037940e4e7503055d8a8eea87e177f04f14616"
     protocol = "docker://"
-    image_name = "acme/widget:3.4" # "acme/road-runner:6.8"
+    image_name = "acme/widget:3.4"
+    build_url = "https://gitlab/build/1456"
+    build_number = "23"
+
     domain = CDB_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
 
     # make cdb call
     old_env = {
-        "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
+        "CDB_API_TOKEN": API_TOKEN,
         "CDB_ARTIFACT_DOCKER_IMAGE": image_name,
+        "CDB_BUILD_NUMBER": build_number,
+        "CDB_CI_BUILD_URL": build_url,
         "CDB_IS_COMPLIANT": "TRUE",
-        "CDB_ARTIFACT_GIT_URL": f"http://github/me/project/commit/{commit}",
+        "CDB_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
         "CDB_ARTIFACT_GIT_COMMIT": commit,
     }
     set_env_vars = {}
@@ -172,9 +177,9 @@ def test_docker_protocol_image(capsys, mocker):
     expected_method = "Putting"
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     expected_payload = {
-        "build_url": "BUILD_URL_UNDEFINED",
-        "commit_url": f"http://github/me/project/commit/{commit}",
-        "description": "Created by build UNDEFINED",
+        "build_url": build_url,
+        "commit_url": f"https://github/me/project/commit/{commit}",
+        "description": f"Created by build {build_number}",
         "filename": image_name,
         "git_commit": commit,
         "is_compliant": True,
@@ -189,8 +194,6 @@ def test_docker_protocol_image(capsys, mocker):
     # make merkely call
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
-
-    # make merkely call
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = make_context(env)
@@ -198,17 +201,10 @@ def test_docker_protocol_image(capsys, mocker):
         method, url, payload = command_processor.execute(context)
 
     # verify matching data
-    assert method == "Putting"
-    assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
-    assert payload == {
-        'build_url': 'https://gitlab/build/1456',
-        'commit_url': f'https://github/me/project/commit/{commit}',
-        'description': 'Created by build 23',
-        'filename': image_name,
-        'git_commit': commit,
-        'is_compliant': True,
-        'sha256': sha256,
-    }
+    assert method == expected_method
+    assert url == expected_url
+    assert payload == expected_payload
+
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {image_name}',
