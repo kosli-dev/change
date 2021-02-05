@@ -255,6 +255,8 @@ def test_sha256_protocol_docker_image(capsys):
     ]
 
 
+# TODO: Test when docker image not found (decent error message)
+# TODO: Test when image not pushed (eg to dockerhub) so cannot get digest (decent error message)
 # TODO: Test when docker socket not volume-mounted
 # TODO: Test when sha256://SHA and SHA does not look like a SHA
 # TODO: test_sha256_file() when DISPLAY_NAME is missing
