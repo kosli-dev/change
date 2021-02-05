@@ -3,7 +3,7 @@ CDB_IS_COMPLIANT: True
 Putting this payload:
 {
     "build_url": "https://gitlab/build/2156",
-    "commit_url": "http://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed4",
+    "commit_url": "https://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed4",
     "description": "Created by build 751",
     "filename": "door-is-a.jar",
     "git_commit": "abc50c8a53f79974d615df335669b59fb56a4ed4",

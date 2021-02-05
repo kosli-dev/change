@@ -33,8 +33,8 @@ def test_file_at_root(capsys, mocker):
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_FILENAME": "jam.jar",
         "CDB_IS_COMPLIANT": "TRUE",
-        "CDB_ARTIFACT_GIT_URL": "http://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed3",
         "CDB_ARTIFACT_GIT_COMMIT": "abc50c8a53f79974d615df335669b59fb56a4ed3",
+        "CDB_ARTIFACT_GIT_URL": "https://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed3",
         "CDB_CI_BUILD_URL": "https://gitlab/build/1456",
         "CDB_BUILD_NUMBER": "349"
     }
@@ -50,7 +50,7 @@ def test_file_at_root(capsys, mocker):
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     expected_payload = {
         'build_url': f'https://gitlab/build/{build_url_number}',
-        'commit_url': f'http://github/me/project/commit/{commit}',
+        'commit_url': f'https://github/me/project/commit/{commit}',
         'description': f'Created by build {build_number}',
         'filename': filename,
         'git_commit': commit,
@@ -117,7 +117,7 @@ def test_file_not_at_root(capsys):
     assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
-        'commit_url': f'http://github/me/project/commit/{commit}',
+        'commit_url': f'https://github/me/project/commit/{commit}',
         'description': 'Created by build 23',
         'filename': filename, # <<<<<< does _not_ contain directory
         'git_commit': commit,
@@ -153,7 +153,7 @@ def test_docker_image(capsys):
     assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
-        'commit_url': f'http://github/me/project/commit/{commit}',
+        'commit_url': f'https://github/me/project/commit/{commit}',
         'description': 'Created by build 23',
         'filename': image_name,
         'git_commit': commit,
@@ -191,7 +191,7 @@ def test_sha256_file(capsys):
     assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     assert payload == {
         'build_url': f'https://gitlab/build/{build_url_number}',
-        'commit_url': f'http://github/me/project/commit/{commit}',
+        'commit_url': f'https://github/me/project/commit/{commit}',
         'description': f'Created by build {build_number}',
         'filename': filename,
         'git_commit': commit,
@@ -235,7 +235,7 @@ def test_sha256_docker_image(capsys):
     assert url == f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     assert payload == {
         'build_url': 'https://gitlab/build/1456',
-        'commit_url': f'http://github/me/project/commit/{commit}',
+        'commit_url': f'https://github/me/project/commit/{commit}',
         'description': 'Created by build 23',
         'filename': image_name,
         'git_commit': commit,
@@ -279,7 +279,7 @@ def new_log_artifact_env(commit, domain=None, build_url_number=None, build_numbe
         "MERKELY_FINGERPRINT": "file://jam.jar",
         "MERKELY_CI_BUILD_URL": f"https://gitlab/build/{build_url_number}",
         "MERKELY_CI_BUILD_NUMBER": build_number,
-        "MERKELY_ARTIFACT_GIT_URL": "http://github/me/project/commit/" + commit,
+        "MERKELY_ARTIFACT_GIT_URL": "https://github/me/project/commit/" + commit,
         "MERKELY_ARTIFACT_GIT_COMMIT": commit,
         "MERKELY_IS_COMPLIANT": "TRUE"
     }
