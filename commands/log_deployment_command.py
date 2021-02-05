@@ -45,10 +45,10 @@ class LogDeploymentCommand(Command):
             '     --volume /var/run/docker.sock:/var/run/docker.sock',
             '',
             '2. If prefixed by file:// the full path of the file to fingerprint.',
-            '   The file must be volume-mounted to /artifact/file',
+            '   The full path must be volume-mounted.',
             '   Example:',
             '     --env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH}',
-            '     --volume=${YOUR_FILE_PATH}:/artifact/file',
+            '     --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH}',
             '',
             "3. If prefixed by sha256:// the deployed artifact's sha256 digest."
             '   The name of the artifact must be provided in MERKELY_DISPLAY_NAME',
