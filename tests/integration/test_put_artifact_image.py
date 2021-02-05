@@ -11,18 +11,22 @@ APPROVAL_FILE = "test_put_artifact_image"
 
 def test_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
     # artifact sha calculated from CDB_ARTIFACT_DOCKER_IMAGE
+
+    sha256 = "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"
+    commit = "12037940e4e7503055d8a8eea87e177f04f14616"
+    artifact_name = "acme/widget:3.4"
+
     env = {
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "CDB_ARTIFACT_DOCKER_IMAGE": "acme/widget:3.4",
+        "CDB_ARTIFACT_DOCKER_IMAGE": artifact_name,
         "CDB_IS_COMPLIANT": "TRUE",
-        "CDB_ARTIFACT_GIT_URL": "http://github/me/project/commit/12037940e4e7503055d8a8eea87e177f04f14616",
-        "CDB_ARTIFACT_GIT_COMMIT": "12037940e4e7503055d8a8eea87e177f04f14616",
+        "CDB_ARTIFACT_GIT_URL": f"http://github/me/project/commit/{commit}",
+        "CDB_ARTIFACT_GIT_COMMIT": commit,
     }
     set_env_vars = {}
 
     with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
-        sha = "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"
-        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha)
+        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         put_artifact_image("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -33,34 +37,20 @@ def test_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
         old_approval = file.read()
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
-    expected_method = "Putting"
-
     domain = "app.compliancedb.com"
     owner = "compliancedb"
     name = "cdb-controls-test-pipeline"
 
+    expected_method = "Putting"
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
-    # actual_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
-
-    """"
-    X_payload = {
-        'build_url': f'https://gitlab/build/{build_url_number}',
-        'commit_url': f'https://github/me/project/commit/{commit}',
-        'description': f'Created by build {build_number}',
-        'filename': filename,
-        'git_commit': commit,
-        'is_compliant': True,
-        'sha256': sha256,
-    }
-    """
     expected_payload = {
         "build_url": "BUILD_URL_UNDEFINED",
-        "commit_url": "http://github/me/project/commit/12037940e4e7503055d8a8eea87e177f04f14616",
+        "commit_url": f"http://github/me/project/commit/{commit}",
         "description": "Created by build UNDEFINED",
-        "filename": "acme/widget:3.4",
-        "git_commit": "12037940e4e7503055d8a8eea87e177f04f14616",
+        "filename": artifact_name,
+        "git_commit": commit,
         "is_compliant": True,
-        "sha256": "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"
+        "sha256": sha256
     }
 
     # verify data from approved cdb text file
