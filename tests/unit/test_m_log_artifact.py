@@ -20,7 +20,7 @@ APPROVAL_FILE = "test_m_log_artifact"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
-def test_file_at_root(capsys, mocker):
+def test_file_protocol_at_root(capsys, mocker):
     # Data
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
     protocol = "file://"
@@ -47,7 +47,7 @@ def test_file_at_root(capsys, mocker):
     verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
-    this_test = "test_file_at_root"
+    this_test = "test_file_protocol_at_root"
     approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
     with open(approved) as file:
         old_approval = file.read()
