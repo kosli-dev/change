@@ -72,12 +72,12 @@ class LogDeploymentCommand(Command):
         fp = self.fingerprint.value
         file_protocol = "file://"
         if fp.startswith(file_protocol):
-            artifact_name = fp[len(file_protocol):]
-            return self._log_deployment_file(file_protocol, artifact_name)
+            filename = fp[len(file_protocol):]
+            return self._log_deployment_file(file_protocol, filename)
         docker_protocol = "docker://"
         if fp.startswith(docker_protocol):
-            artifact_name = fp[len(docker_protocol):]
-            return self._log_deployment_docker_image(docker_protocol, artifact_name)
+            image_name = fp[len(docker_protocol):]
+            return self._log_deployment_docker_image(docker_protocol, image_name)
         sha_protocol = "sha256://"
         if fp.startswith(sha_protocol):
             sha256 = fp[len(sha_protocol):]
