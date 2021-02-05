@@ -12,8 +12,12 @@ MERKELY_DOMAIN = "test.compliancedb.com"
 CDB_DOMAIN = "app.compliancedb.com"
 
 CDB_OWNER = "compliancedb"
-
 CDB_NAME = "cdb-controls-test-pipeline"
+
+APPROVAL_DIR = "tests/unit/approved_executions"
+APPROVAL_FILE = "test_m_log_artifact"
+
+API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
 def test_file_at_root(capsys, mocker):
@@ -30,19 +34,18 @@ def test_file_at_root(capsys, mocker):
     build_number = '349'
 
     old_env = {
-        "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "CDB_ARTIFACT_FILENAME": "jam.jar",
+        "CDB_API_TOKEN": API_TOKEN,
+        "CDB_ARTIFACT_FILENAME": filename,
         "CDB_IS_COMPLIANT": "TRUE",
-        "CDB_ARTIFACT_GIT_COMMIT": "abc50c8a53f79974d615df335669b59fb56a4ed3",
-        "CDB_ARTIFACT_GIT_URL": "https://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed3",
-        "CDB_CI_BUILD_URL": "https://gitlab/build/1456",
-        "CDB_BUILD_NUMBER": "349"
+        "CDB_ARTIFACT_GIT_COMMIT": commit,
+        "CDB_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
+        "CDB_CI_BUILD_URL": f"https://gitlab/build/{build_url_number}",
+        "CDB_BUILD_NUMBER": build_number
     }
-    sha = "ddcdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
-    set_env_vars = {'CDB_ARTIFACT_SHA': sha}
+    set_env_vars = {'CDB_ARTIFACT_SHA': sha256}
 
     with ScopedEnvVars({**CDB_DRY_RUN, **old_env}, set_env_vars):
-        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_file', return_value=sha)
+        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_file', return_value=sha256)
         put_artifact("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -58,10 +61,8 @@ def test_file_at_root(capsys, mocker):
         'sha256': sha256,
     }
 
-    old_dir = "tests/unit/approved_executions"
-    old_file = "test_m_log_artifact"
-    old_test = "test_file_at_root"
-    approved = f"{old_dir}/{old_file}.{old_test}.approved.txt"
+    this_test = "test_file_at_root"
+    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
     with open(approved) as file:
         old_approval = file.read()
     _old_blurb, old_method, old_payload, old_url = blurb_method_payload_url(old_approval)
@@ -83,15 +84,12 @@ def test_file_at_root(capsys, mocker):
     assert url == expected_url
     assert payload == expected_payload
 
-    # TODO: see if this still works if capsys has previously been 'drained'
     assert blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         f'Getting SHA for {protocol} artifact: {filename}',
         f"Calculated digest: {sha256}",
         'MERKELY_IS_COMPLIANT: True'
     ]
-
-
 
 
 
@@ -274,7 +272,7 @@ def new_log_artifact_env(commit, domain=None, build_url_number=None, build_numbe
         build_number = '23'
     return {
         "MERKELY_COMMAND": "log_artifact",
-        "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
+        "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_FINGERPRINT": "file://jam.jar",
         "MERKELY_CI_BUILD_URL": f"https://gitlab/build/{build_url_number}",
