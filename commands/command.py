@@ -43,16 +43,16 @@ class Command:
     @property
     def host(self):
         description = "The host name for Merkely"
-        host = "https://app.compliancedb.com"
-        return self._defaulted_env_var("HOST", host, description)
+        default = "https://app.compliancedb.com"
+        return self._defaulted_env_var("HOST", default, description)
 
-    def _defaulted_env_var(self, name, default, description=None):
+    def _defaulted_env_var(self, name, default, description):
         return DefaultedEnvVar(f"MERKELY_{name}", self._env, default, description)
 
-    def _optional_env_var(self, name, description=None):
+    def _optional_env_var(self, name, description):
         return OptionalEnvVar(f"MERKELY_{name}", self._env, description)
 
-    def _required_env_var(self, name, description=None):
+    def _required_env_var(self, name, description):
         return RequiredEnvVar(f"MERKELY_{name}", self._env, description)
 
     @property

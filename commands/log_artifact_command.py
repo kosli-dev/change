@@ -49,11 +49,13 @@ class LogArtifactCommand(Command):
 
     @property
     def fingerprint(self):
-        return self._required_env_var("FINGERPRINT")
+        description = ""
+        return self._required_env_var("FINGERPRINT", description)
 
     @property
     def display_name(self):
-        return self._optional_env_var("DISPLAY_NAME")
+        description = ""
+        return self._optional_env_var("DISPLAY_NAME", description)
 
     def execute(self):
         fp = self.fingerprint.value

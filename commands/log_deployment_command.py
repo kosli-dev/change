@@ -32,16 +32,18 @@ class LogDeploymentCommand(Command):
 
     @property
     def environment(self):
-        description = "The environment the artifact is being deployed to"
+        description = "The name of the environment the artifact is being deployed to"
         return self._required_env_var('ENVIRONMENT', description)
 
     @property
     def fingerprint(self):
-        return self._required_env_var("FINGERPRINT")
+        description = ""
+        return self._required_env_var("FINGERPRINT", description)
 
     @property
     def display_name(self):
-        return self._optional_env_var("DISPLAY_NAME")
+        description = ""
+        return self._optional_env_var("DISPLAY_NAME", description)
 
     def execute(self):
         fp = self.fingerprint.value
