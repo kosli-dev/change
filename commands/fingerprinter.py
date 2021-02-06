@@ -17,7 +17,7 @@ class Fingerprinter:
         elif env_var.value.startswith(self.DOCKER_PROTOCOL):
             return self._docker(env_var)
         elif env_var.value.startswith(self.SHA256_PROTOCOL):
-            return self._sha256(env_var, command)
+            return self._sha256(env_var), command.display_name.value
         else:
             raise CommandError(f"{env_var.name} has unknown protocol {env_var.value}")
 
@@ -35,9 +35,9 @@ class Fingerprinter:
         print(f"Calculated digest: {repo_digest}")
         return repo_digest, image_name
 
-    def _sha256(self, env_var, command):
+    def _sha256(self, env_var):
         sha256 = self._after(self.SHA256_PROTOCOL, env_var)
-        return sha256, command.display_name.value
+        return sha256
 
     def _after(self, protocol, env_var):
         return env_var.value[len(protocol):]
