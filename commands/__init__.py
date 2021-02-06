@@ -1,3 +1,5 @@
+from .fingerprinter import Fingerprinter
+
 from .context import Context
 
 from .command_error import CommandError
