@@ -23,16 +23,16 @@ class Fingerprinter:
 
     def _file(self, fingerprint_env_var):
         pathed_filename = self._after(self.FILE_PROTOCOL, fingerprint_env_var)
-        print(self._getting_sha_message(self.FILE_PROTOCOL, pathed_filename))
+        print(self._calculating_fingerprint_message(fingerprint_env_var))
         sha256 = self._fingerprint_file(pathed_filename)
-        print(self._got_sha_message(sha256))
+        print(self._calculated_fingerprint_message(sha256))
         return sha256, os.path.basename(pathed_filename)
 
     def _docker(self, fingerprint_env_var):
         image_name = self._after(self.DOCKER_PROTOCOL, fingerprint_env_var)
-        print(self._getting_sha_message(self.DOCKER_PROTOCOL, image_name))
+        print(self._calculating_fingerprint_message(fingerprint_env_var))
         repo_digest = self._fingerprint_image(image_name)
-        print(self._got_sha_message(repo_digest))
+        print(self._calculated_fingerprint_message(repo_digest))
         return repo_digest, image_name
 
     def _sha256(self, fingerprint_env_var):
@@ -60,9 +60,9 @@ class Fingerprinter:
         return fingerprint_env_var.value[len(protocol):]
 
     @staticmethod
-    def _getting_sha_message(protocol, name):
-        return f"Getting SHA for {protocol} artifact: {name}"
+    def _calculating_fingerprint_message(fingerprint_env_var):
+        return f"Calculating fingerprint for {fingerprint_env_var.value}"
 
     @staticmethod
-    def _got_sha_message(digest):
-        return f"Calculated digest: {digest}"
+    def _calculated_fingerprint_message(fingerprint):
+        return f"Calculated fingerprint: {fingerprint}"

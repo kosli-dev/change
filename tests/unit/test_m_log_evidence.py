@@ -90,8 +90,8 @@ def test_docker_protocol(capsys, mocker):
 
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_evidence',
-        f'Getting SHA for {protocol} artifact: {image_name}',
-        f"Calculated digest: {sha256}",
+        f'Calculating fingerprint for {protocol}{image_name}',
+        f"Calculated fingerprint: {sha256}",
         'MERKELY_IS_COMPLIANT: True'
     ]
 

@@ -91,8 +91,8 @@ def test_file_protocol_at_root(capsys, mocker):
 
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
-        f'Getting SHA for {protocol} artifact: {filename}',
-        f"Calculated digest: {sha256}",
+        f'Calculating fingerprint for {protocol}{directory}{filename}',
+        f"Calculated fingerprint: {sha256}",
         'MERKELY_IS_COMPLIANT: True'
     ]
 
@@ -171,8 +171,8 @@ def test_file_protocol_not_at_root(capsys, mocker):
 
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
-        f'Getting SHA for {protocol} artifact: {directory}/{filename}',
-        f"Calculated digest: {sha256}",
+        f'Calculating fingerprint for {protocol}{directory}/{filename}',
+        f"Calculated fingerprint: {sha256}",
         'MERKELY_IS_COMPLIANT: True'
     ]
 
@@ -250,8 +250,8 @@ def test_docker_protocol(capsys, mocker):
 
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
-        f'Getting SHA for {protocol} artifact: {image_name}',
-        f"Calculated digest: {sha256}",
+        f'Calculating fingerprint for {protocol}{image_name}',
+        f"Calculated fingerprint: {sha256}",
         'MERKELY_IS_COMPLIANT: True'
     ]
 

@@ -1,6 +1,6 @@
 MERKELY_COMMAND=log_deployment
-Getting SHA for file:// artifact: jam.jar
-Calculated digest: ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc
+Calculating fingerprint for file://jam.jar
+Calculated fingerprint: ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc
 Posting this payload:
 {
     "artifact_sha256": "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc",
