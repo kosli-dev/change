@@ -1,6 +1,6 @@
 from cdb.put_evidence import put_evidence
 
-from commands import command_runner, Context, build_command
+from commands import run
 
 from tests.utils import *
 
@@ -81,8 +81,7 @@ def test_docker_protocol(capsys, mocker):
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         with MockImageFingerprinter(image_name, sha256) as fingerprinter:
-            context = Context(env, fingerprinter)
-            method, url, payload = command_runner.run(context)
+            method, url, payload = run(env, fingerprinter)
 
     # verify matching data
     assert method == expected_method

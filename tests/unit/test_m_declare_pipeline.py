@@ -1,9 +1,9 @@
-from commands import command_runner, Context
+from commands import run
 from tests.utils import *
 
 
 def test_green(capsys):
     with dry_run(core_env_vars()) as env, scoped_merkelypipe_json():
-        command_runner.run(Context(env))
+        run(env)
 
     verify_approval(capsys)
