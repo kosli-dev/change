@@ -1,2 +1,2 @@
 MERKELY_COMMAND=declare_pipeline
-Error: /Merkelypipe.json file not found
+Error: /Merkelypipe.json file not found.

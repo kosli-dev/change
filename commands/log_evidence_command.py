@@ -66,10 +66,6 @@ class LogEvidenceCommand(Command):
         description = ""
         return self._required_env_var("FINGERPRINT", description)
 
-    def _print_compliance(self):
-        env_var = self.is_compliant
-        print(f"{env_var.name}: {env_var.value == 'TRUE'}")
-
     def _create_evidence(self, sha256, _name):
         payload = {
             "evidence_type": self.evidence_type.value,

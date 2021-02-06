@@ -29,9 +29,9 @@ class Command:
             with open(filename) as file:
                 return json.load(file)
         except FileNotFoundError:
-            raise CommandError(f"{filename} file not found")
+            raise CommandError(f"{filename} file not found.")
         except IsADirectoryError:
-            raise CommandError(f"{filename} is a directory")
+            raise CommandError(f"{filename} is a directory.")
         except json.decoder.JSONDecodeError as exc:
             raise CommandError(f"{filename} invalid json - {str(exc)}")
 
@@ -53,3 +53,7 @@ class Command:
     @property
     def _env(self):
         return self._context.env
+
+    def _print_compliance(self):
+        env_var = self.is_compliant
+        print(f"{env_var.name}: {env_var.value == 'TRUE'}")

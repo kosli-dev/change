@@ -91,7 +91,3 @@ class LogArtifactCommand(Command):
         url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)
         http_put_payload(url, payload, self.api_token.value)
         return 'Putting', url, payload
-
-    def _print_compliance(self):
-        env_var = self.is_compliant
-        print(f"{env_var.name}: {env_var.value == 'TRUE'}")

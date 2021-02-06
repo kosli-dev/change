@@ -1,2 +1,2 @@
 MERKELY_COMMAND=declare_pipeline
-Error: /Merkelypipe.json is a directory
+Error: /Merkelypipe.json is a directory.
