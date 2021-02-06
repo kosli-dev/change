@@ -25,7 +25,8 @@ class LogArtifactCommand(Command):
             'display_name',
             'fingerprint',
             'host',
-            'is_compliant'
+            'is_compliant',
+            'name'
         ))(
             self.api_token,
             self.artifact_git_commit,
@@ -35,7 +36,8 @@ class LogArtifactCommand(Command):
             self.display_name,
             self.fingerprint,
             self.host,
-            self.is_compliant
+            self.is_compliant,
+            self.name
         )
 
     @property

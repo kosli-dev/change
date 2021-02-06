@@ -23,7 +23,8 @@ class LogDeploymentCommand(Command):
             'description',
             'environment',
             'fingerprint',
-            'host'
+            'host',
+            'name'
         ))(
             self.api_token,
             self.ci_build_url,
@@ -31,7 +32,8 @@ class LogDeploymentCommand(Command):
             self.description,
             self.environment,
             self.fingerprint,
-            self.host
+            self.host,
+            self.name
         )
 
     @property

@@ -24,7 +24,8 @@ class LogEvidenceCommand(Command):
             'evidence_type',
             'fingerprint',
             'host',
-            'is_compliant'
+            'is_compliant',
+            'name'
         ))(
             self.api_token,
             self.ci_build_url,
@@ -33,7 +34,8 @@ class LogEvidenceCommand(Command):
             self.evidence_type,
             self.fingerprint,
             self.host,
-            self.is_compliant
+            self.is_compliant,
+            self.name
         )
 
     @property

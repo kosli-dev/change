@@ -1,1 +1,1 @@
-Error: MERKELY_COMMAND environment-variable is not set
+Error: MERKELY_COMMAND environment-variable is not set.
