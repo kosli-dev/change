@@ -1,5 +1,4 @@
-import os
-from commands import Command, CommandError
+from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
@@ -52,20 +51,15 @@ class LogEvidenceCommand(Command):
         return self._required_env_var("FINGERPRINT", description)
 
     def execute(self):
-        docker_protocol = "docker://"
-        fp = self.fingerprint.value
-        if fp.startswith(docker_protocol):
-            artifact_name = fp[len(docker_protocol):]
-            return self._log_evidence_docker_image(docker_protocol, artifact_name)
-
-    def _log_evidence_docker_image(self, protocol, image_name):
-        print(f"Getting SHA for {protocol} artifact: {image_name}")
-        sha256 = self._context.sha_digest_for_docker_image(image_name)
-        print(f"Calculated digest: {sha256}")
+        sha256, name = self._context.fingerprint(self)
         self._print_compliance()
-        return self._create_evidence(sha256)
+        return self._create_evidence(sha256, name)
 
-    def _create_evidence(self, sha256):
+    def _print_compliance(self):
+        env_var = self.is_compliant
+        print(f"{env_var.name}: {env_var.value == 'TRUE'}")
+
+    def _create_evidence(self, sha256, _name):
         payload = {
             "evidence_type": self.evidence_type.value,
             "contents": {
@@ -77,7 +71,3 @@ class LogEvidenceCommand(Command):
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, sha256)
         http_put_payload(url, payload, self.api_token.value)
         return 'Putting', url, payload
-
-    def _print_compliance(self):
-        env_var = self.is_compliant
-        print(f"{env_var.name}: {env_var.value == 'TRUE'}")

@@ -1,5 +1,4 @@
-import os
-from commands import Command, CommandError
+from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
@@ -58,39 +57,13 @@ class LogArtifactCommand(Command):
         return self._required_env_var("FINGERPRINT", description)
 
     def execute(self):
-        file_protocol = "file://"
-        docker_protocol = "docker://"
-        sha_protocol = "sha256://"
-        fp = self.fingerprint.value
-        if fp.startswith(file_protocol):
-            artifact_name = fp[len(file_protocol):]
-            return self._log_artifact_file(file_protocol, artifact_name)
-        elif fp.startswith(docker_protocol):
-            artifact_name = fp[len(docker_protocol):]
-            return self._log_artifact_docker_image(docker_protocol, artifact_name)
-        elif fp.startswith(sha_protocol):
-            sha256 = fp[len(sha_protocol):]
-            return self._log_artifact_sha(sha256)
-        else:
-            raise CommandError(f"{self.fingerprint.name} has unknown protocol {fp}")
-
-    def _log_artifact_file(self, protocol, filename):
-        print(f"Getting SHA for {protocol} artifact: {filename}")
-        sha256 = self._context.sha_digest_for_file('/'+filename)
-        print(f"Calculated digest: {sha256}")
+        sha256, name = self._context.fingerprint(self)
         self._print_compliance()
-        return self._create_artifact(sha256, os.path.basename(filename))
+        return self._create_artifact(sha256, name)
 
-    def _log_artifact_docker_image(self, protocol, image_name):
-        print(f"Getting SHA for {protocol} artifact: {image_name}")
-        sha256 = self._context.sha_digest_for_docker_image(image_name)
-        print(f"Calculated digest: {sha256}")
-        self._print_compliance()
-        return self._create_artifact(sha256, image_name)
-
-    def _log_artifact_sha(self, sha256):
-        self._print_compliance()
-        return self._create_artifact(sha256, self.display_name.value)
+    def _print_compliance(self):
+        env_var = self.is_compliant
+        print(f"{env_var.name}: {env_var.value == 'TRUE'}")
 
     def _create_artifact(self, sha256, display_name):
         description = f"Created by build {self.ci_build_number.value}"

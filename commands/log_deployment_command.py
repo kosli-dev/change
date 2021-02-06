@@ -69,34 +69,8 @@ class LogDeploymentCommand(Command):
         return self._optional_env_var("DISPLAY_NAME", description)
 
     def execute(self):
-        fp = self.fingerprint.value
-        file_protocol = "file://"
-        if fp.startswith(file_protocol):
-            filename = fp[len(file_protocol):]
-            return self._log_deployment_file(file_protocol, filename)
-        docker_protocol = "docker://"
-        if fp.startswith(docker_protocol):
-            image_name = fp[len(docker_protocol):]
-            return self._log_deployment_docker_image(docker_protocol, image_name)
-        sha_protocol = "sha256://"
-        if fp.startswith(sha_protocol):
-            sha256 = fp[len(sha_protocol):]
-            return self._log_deployment_sha(sha256)
-
-    def _log_deployment_file(self, protocol, filename):
-        print(f"Getting SHA for {protocol} artifact: {filename}")
-        sha256 = self._context.sha_digest_for_file('/'+filename)
-        print(f"Calculated digest: {sha256}")
-        return self._create_deployment(sha256, os.path.basename(filename))
-
-    def _log_deployment_docker_image(self, protocol, image_name):
-        print(f"Getting SHA for {protocol} artifact: {image_name}")
-        sha256 = self._context.sha_digest_for_docker_image(image_name)
-        print(f"Calculated digest: {sha256}")
-        return self._create_deployment(sha256, image_name)
-
-    def _log_deployment_sha(self, sha256):
-        return self._create_deployment(sha256, self.display_name.value)
+        sha256, name = self._context.fingerprint(self)
+        return self._create_deployment(sha256, name)
 
     def _create_deployment(self, sha256, display_name):
         payload = {

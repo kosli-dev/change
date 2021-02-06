@@ -1,8 +1,8 @@
-from .fingerprinter import Fingerprinter
-
 from .context import Context
 
 from .command_error import CommandError
+
+from .fingerprinter import Fingerprinter
 
 from .env_var import EnvVar
 from .defaulted_env_var import DefaultedEnvVar

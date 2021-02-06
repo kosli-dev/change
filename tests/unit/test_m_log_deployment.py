@@ -1,4 +1,4 @@
-from commands import command_processor
+from commands import command_processor, Context
 from tests.utils import *
 
 # def test_file_not_at_root(capsys):
@@ -6,14 +6,15 @@ from tests.utils import *
 
 def test_file_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
-    digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    protocol = "file://"
+    filename = "jam.jar"
     ev = log_deployment_env(commit)
-    ev["MERKELY_FINGERPRINT"] = "file://jam.jar"
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{filename}"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
-        with ScopedFileCopier("/app/tests/data/jam.jar", "/jam.jar"):
-            context = make_context(env)
-            context.sha_digest_for_file = lambda _filename: digest
+        with MockFileFingerprinter(filename, sha256) as fingerprinter:
+            context = Context(env, fingerprinter)
             command_processor.execute(context)
 
     verify_approval(capsys)
@@ -23,23 +24,22 @@ def test_file_at_root(capsys):
 def test_docker_image(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
     digest = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+    protocol = "docker://"
+    image_name = "acme/road-runner:6.8"
     ev = log_deployment_env(commit)
-    ev["MERKELY_FINGERPRINT"] = "docker://acme/road-runner:6.8"
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
-        with ScopedFileCopier("/app/tests/data/coverage.txt", "/jam.jar"):
-            context = make_context(env)
-            context.sha_digest_for_docker_image = lambda _filename: digest
+        with MockImageFingerprinter(image_name, digest) as fingerprinter:
+            context = Context(env, fingerprinter)
             command_processor.execute(context)
 
     verify_approval(capsys)
     #verify_payload_and_url(capsys)
 
+
 #def test_sha256_file(capsys):
 #def test_sha256_docker_image(capsys):
-
-#def test_MERKELY_CI_BUILD_URL_missing(capsys):
-#def test_MERKELY_FINGERPRINT_missing(capsys):
 
 
 def log_deployment_env(commit):

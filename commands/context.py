@@ -6,7 +6,11 @@ class Context:
     """
     Holds (some) external dependencies to make Classic style testing easier.
     """
-    def __init__(self, fingerprinter=None):
+    def __init__(self, env=None, fingerprinter=None):
+        if env is None:
+            self._env = os.environ
+        else:
+            self._env = env
         if fingerprinter is None:
             self._fingerprinter = Fingerprinter()
         else:
@@ -14,11 +18,8 @@ class Context:
 
     @property
     def env(self):
-        return os.environ
+        return self._env
 
-    def sha_digest_for_file(self, pathed_filename):
-        return self._fingerprinter.of_file(pathed_filename)
-
-    def sha_digest_for_docker_image(self, docker_image_name):
-        return self._fingerprinter.of_docker_image(docker_image_name)
+    def fingerprint(self, command):
+        return self._fingerprinter.fingerprint(command)
 
