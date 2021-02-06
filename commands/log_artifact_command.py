@@ -78,21 +78,6 @@ class LogArtifactCommand(Command):
         description = "Link to the build in the ci system."
         return self._required_env_var('CI_BUILD_URL', description)
 
-    @property
-    def display_name(self):
-        description = ""
-        return self._optional_env_var("DISPLAY_NAME", description)
-
-    @property
-    def is_compliant(self):
-        description = "Whether this artifact is considered compliant from you build process."
-        return self._required_env_var('IS_COMPLIANT', description)
-
-    @property
-    def fingerprint(self):
-        description = ""
-        return self._required_env_var("FINGERPRINT", description)
-
     def _print_compliance(self):
         env_var = self.is_compliant
         print(f"{env_var.name}: {env_var.value == 'TRUE'}")

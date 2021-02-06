@@ -57,28 +57,18 @@ class LogEvidenceCommand(Command):
 
     @property
     def ci_build_url(self):
-        description = ""
+        description = "Link to the build information."
         return self._required_env_var('CI_BUILD_URL', description)
 
     @property
     def description(self):
-        description = ""
+        description = "The description for the evidence."
         return self._optional_env_var('DESCRIPTION', description)
 
     @property
-    def display_name(self):
-        description = ""
-        return self._optional_env_var("DISPLAY_NAME", description)
-
-    @property
     def evidence_type(self):
-        description = ""
+        description = "The evidence type."
         return self._required_env_var("EVIDENCE_TYPE", description)
-
-    @property
-    def is_compliant(self):
-        description = ""
-        return self._required_env_var('IS_COMPLIANT', description)
 
     @property
     def fingerprint(self):
