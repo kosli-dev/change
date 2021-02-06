@@ -21,5 +21,5 @@ class Context:
         return self._env
 
     def fingerprint(self, command):
-        return self._fingerprinter.fingerprint(command)
+        return self._fingerprinter(command)
 
