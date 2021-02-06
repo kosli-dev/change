@@ -8,7 +8,7 @@ def execute(context):
             print(f"MERKELY_COMMAND={cmd.name.value}")
             for env_var in list(cmd.env_vars):
                 env_var.verify()
-            return cmd.execute()
+            return cmd()
     except CommandError as exc:
         print(f"Error: {str(exc)}")
         return 144

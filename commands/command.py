@@ -9,6 +9,9 @@ class Command:
     def __init__(self, context):
         self._context = context
 
+    def __call__(self):
+        raise NotImplementedError("Command is abstract")
+
     @property
     def name(self):
         description = "The Merkely command to execute"

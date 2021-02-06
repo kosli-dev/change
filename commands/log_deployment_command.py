@@ -10,6 +10,10 @@ class LogDeploymentCommand(Command):
     Command subclass for handling MERKELY_COMMAND=log_deployment
     """
 
+    def __call__(self):
+        sha256, name = self._context.fingerprint(self.env_vars)
+        return self._create_deployment(sha256, name)
+
     @property
     def env_vars(self):
         return namedtuple('EnvVars', (
@@ -77,10 +81,6 @@ class LogDeploymentCommand(Command):
             'Not required when using MERKELY_FINGERPRINT="docker://..."'
         ])
         return self._optional_env_var("DISPLAY_NAME", description)
-
-    def execute(self):
-        sha256, name = self._context.fingerprint(self.env_vars)
-        return self._create_deployment(sha256, name)
 
     def _create_deployment(self, sha256, display_name):
         payload = {

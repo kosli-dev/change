@@ -9,6 +9,11 @@ class LogArtifactCommand(Command):
     Command subclass for handling MERKELY_COMMAND=log_artifact
     """
 
+    def __call__(self):
+        sha256, name = self._context.fingerprint(self.env_vars)
+        self._print_compliance()
+        return self._create_artifact(sha256, name)
+
     @property
     def env_vars(self):
         return namedtuple('EnvVars', (
@@ -67,11 +72,6 @@ class LogArtifactCommand(Command):
     def fingerprint(self):
         description = ""
         return self._required_env_var("FINGERPRINT", description)
-
-    def execute(self):
-        sha256, name = self._context.fingerprint(self.env_vars)
-        self._print_compliance()
-        return self._create_artifact(sha256, name)
 
     def _print_compliance(self):
         env_var = self.is_compliant

@@ -18,6 +18,13 @@ class DeclarePipelineCommand(Command):
             merkely/change
     """
 
+    def __call__(self):
+        pipelines_url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
+        url = pipelines_url
+        payload = self.merkelypipe
+        http_put_payload(url, payload, api_token=self.api_token.value)
+        return 'Putting', url, payload
+
     @property
     def env_vars(self):
         return namedtuple('EnvVars', (
@@ -27,10 +34,3 @@ class DeclarePipelineCommand(Command):
             self.api_token,
             self.host
         )
-
-    def execute(self):
-        pipelines_url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
-        url = pipelines_url
-        payload = self.merkelypipe
-        http_put_payload(url, payload, api_token=self.api_token.value)
-        return 'Putting', url, payload
