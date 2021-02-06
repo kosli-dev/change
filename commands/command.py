@@ -14,8 +14,13 @@ class Command:
 
     @property
     def name(self):
-        description = "The Merkely command to execute"
+        description = "The Merkely command to execute."
         return self._required_env_var("COMMAND", description)
+
+    @property
+    def api_token(self):
+        description = "Your API token for Merkely."
+        return self._required_env_var("API_TOKEN", description)
 
     @property
     def merkelypipe(self):
@@ -29,11 +34,6 @@ class Command:
             raise CommandError(f"{filename} is a directory")
         except json.decoder.JSONDecodeError as exc:
             raise CommandError(f"{filename} invalid json - {str(exc)}")
-
-    @property
-    def api_token(self):
-        description = "Your API token for Merkely"
-        return self._required_env_var("API_TOKEN", description)
 
     @property
     def host(self):
