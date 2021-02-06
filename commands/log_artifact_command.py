@@ -1,3 +1,4 @@
+from collections import namedtuple
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
@@ -7,19 +8,30 @@ class LogArtifactCommand(Command):
     """
     Command subclass for handling MERKELY_COMMAND=log_artifact
     """
+
     @property
-    def args_list(self):
-        return [
+    def env_vars(self):
+        return namedtuple('EnvVars', (
+            'api_token',
+            'artifact_git_commit',
+            'artifact_git_url',
+            'ci_build_number',
+            'ci_build_url',
+            'display_name',
+            'fingerprint',
+            'host',
+            'is_compliant'
+        ))(
             self.api_token,
             self.artifact_git_commit,
             self.artifact_git_url,
             self.ci_build_number,
             self.ci_build_url,
             self.display_name,
-            self.is_compliant,
             self.fingerprint,
-            self.host
-        ]
+            self.host,
+            self.is_compliant
+        )
 
     @property
     def artifact_git_commit(self):
@@ -57,7 +69,7 @@ class LogArtifactCommand(Command):
         return self._required_env_var("FINGERPRINT", description)
 
     def execute(self):
-        sha256, name = self._context.fingerprint(self)
+        sha256, name = self._context.fingerprint(self.env_vars)
         self._print_compliance()
         return self._create_artifact(sha256, name)
 

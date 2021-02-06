@@ -1,4 +1,5 @@
 import os
+from collections import namedtuple
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
@@ -8,9 +9,18 @@ class LogDeploymentCommand(Command):
     """
     Command subclass for handling MERKELY_COMMAND=log_deployment
     """
+
     @property
-    def args_list(self):
-        return [
+    def env_vars(self):
+        return namedtuple('EnvVars', (
+            'api_token',
+            'ci_build_url',
+            'display_name',
+            'description',
+            'environment',
+            'fingerprint',
+            'host'
+        ))(
             self.api_token,
             self.ci_build_url,
             self.display_name,
@@ -18,7 +28,7 @@ class LogDeploymentCommand(Command):
             self.environment,
             self.fingerprint,
             self.host
-        ]
+        )
 
     @property
     def ci_build_url(self):
@@ -69,7 +79,7 @@ class LogDeploymentCommand(Command):
         return self._optional_env_var("DISPLAY_NAME", description)
 
     def execute(self):
-        sha256, name = self._context.fingerprint(self)
+        sha256, name = self._context.fingerprint(self.env_vars)
         return self._create_deployment(sha256, name)
 
     def _create_deployment(self, sha256, display_name):

@@ -408,20 +408,20 @@ def test_unknown_protocol(capsys):
 
 
 def test_each_required_env_var_missing(capsys):
-    for arg in make_command_args():
-        if isinstance(arg, RequiredEnvVar):
+    for env_var in make_command_env_vars():
+        if isinstance(env_var, RequiredEnvVar):
             ev = new_log_artifact_env()
-            ev.pop(arg.name)
+            ev.pop(env_var.name)
             with dry_run(ev) as env, scoped_merkelypipe_json():
                 context = Context(env)
                 command_processor.execute(context)
     verify_approval(capsys)
 
 
-def make_command_args():
+def make_command_env_vars():
     env = new_log_artifact_env()
     context = Context(env)
-    return make_command(context).args
+    return make_command(context).env_vars
 
 
 def old_put_artifact_env(commit, *,

@@ -1,3 +1,4 @@
+from collections import namedtuple
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
@@ -7,18 +8,28 @@ class LogEvidenceCommand(Command):
     """
     Command subclass for handling MERKELY_COMMAND=log_evidence
     """
+
     @property
-    def args_list(self):
-        return [
+    def env_vars(self):
+        return namedtuple('EnvVars', (
+            'api_token',
+            'ci_build_url',
+            'display_name',
+            'description',
+            'evidence_type',
+            'fingerprint',
+            'host',
+            'is_compliant'
+        ))(
             self.api_token,
             self.ci_build_url,
             self.display_name,
             self.description,
             self.evidence_type,
-            self.is_compliant,
             self.fingerprint,
-            self.host
-        ]
+            self.host,
+            self.is_compliant
+        )
 
     @property
     def ci_build_url(self):
@@ -51,7 +62,7 @@ class LogEvidenceCommand(Command):
         return self._required_env_var("FINGERPRINT", description)
 
     def execute(self):
-        sha256, name = self._context.fingerprint(self)
+        sha256, name = self._context.fingerprint(self.env_vars)
         self._print_compliance()
         return self._create_evidence(sha256, name)
 

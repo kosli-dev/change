@@ -10,16 +10,16 @@ class MockFileFingerprinter(Fingerprinter):
     def __enter__(self):
         return self
 
-    def _fingerprint_file(self, name):
+    def _fingerprint_file(self, filename):
         self._called = True
-        if name == self._expected:
+        if filename == self._expected:
             return self._sha
         else:
             message = "\n".join([
                 self.MY_NAME,
                 f"FAILED",
-                f"Expected: name=={self._expected}",
-                f"  Actual: name=={name}"
+                f"Expected: filename=={self._expected}",
+                f"  Actual: filename=={filename}"
             ])
             raise RuntimeError(message)
 
@@ -32,4 +32,4 @@ class MockFileFingerprinter(Fingerprinter):
             ])
             raise RuntimeError(message)
 
-    MY_NAME = 'MockFileFingerprinter._fingerprint_file(name)'
+    MY_NAME = 'MockFileFingerprinter._fingerprint_file(filename)'

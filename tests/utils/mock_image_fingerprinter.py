@@ -10,16 +10,16 @@ class MockImageFingerprinter(Fingerprinter):
     def __enter__(self):
         return self
 
-    def _fingerprint_image(self, name):
+    def _fingerprint_image(self, image_name):
         self._called = True
-        if name == self._expected:
+        if image_name == self._expected:
             return self._sha
         else:
             message = "\n".join([
                 self.MY_NAME,
                 f"FAILED",
-                f"Expected: name=={self._expected}",
-                f"  Actual: name=={name}"
+                f"Expected: image_name=={self._expected}",
+                f"  Actual: image_name=={image_name}"
             ])
             raise RuntimeError(message)
 
@@ -32,4 +32,4 @@ class MockImageFingerprinter(Fingerprinter):
             ])
             raise RuntimeError(message)
 
-    MY_NAME = 'MockImageFingerprinter._fingerprint_image(name'
+    MY_NAME = 'MockImageFingerprinter._fingerprint_image(image_name)'

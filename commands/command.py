@@ -15,14 +15,6 @@ class Command:
         return self._required_env_var("COMMAND", description)
 
     @property
-    def args(self):
-        return sorted(self.args_list, key=lambda arg: arg.name)
-
-    def verify_args(self):
-        for arg in self.args:
-            arg.verify()
-
-    @property
     def merkelypipe(self):
         try:
             filename = "/Merkelypipe.json"

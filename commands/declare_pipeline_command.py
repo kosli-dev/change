@@ -1,3 +1,4 @@
+from collections import namedtuple
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
@@ -16,12 +17,16 @@ class DeclarePipelineCommand(Command):
             --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
             merkely/change
     """
+
     @property
-    def args_list(self):
-        return [
+    def env_vars(self):
+        return namedtuple('EnvVars', (
+            'api_token',
+            'host'
+        ))(
             self.api_token,
             self.host
-        ]
+        )
 
     def execute(self):
         pipelines_url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)

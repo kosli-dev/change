@@ -10,16 +10,16 @@ class Fingerprinter:
     FILE_PROTOCOL = "file://"
     SHA256_PROTOCOL = "sha256://"
 
-    def fingerprint(self, command):
-        env_var = command.fingerprint
-        if env_var.value.startswith(self.FILE_PROTOCOL):
-            return self._file(env_var)
-        elif env_var.value.startswith(self.DOCKER_PROTOCOL):
-            return self._docker(env_var)
-        elif env_var.value.startswith(self.SHA256_PROTOCOL):
-            return self._sha256(env_var), command.display_name.value
+    def fingerprint(self, env_vars):
+        evfp = env_vars.fingerprint
+        if evfp.value.startswith(self.FILE_PROTOCOL):
+            return self._file(evfp)
+        elif evfp.value.startswith(self.DOCKER_PROTOCOL):
+            return self._docker(evfp)
+        elif evfp.value.startswith(self.SHA256_PROTOCOL):
+            return self._sha256(evfp), env_vars.display_name.value
         else:
-            raise CommandError(f"{env_var.name} has unknown protocol {env_var.value}")
+            raise CommandError(f"{evfp.name} has unknown protocol {evfp.value}")
 
     def _file(self, env_var):
         pathed_filename = self._after(self.FILE_PROTOCOL, env_var)

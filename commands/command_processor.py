@@ -6,7 +6,8 @@ def execute(context):
         cmd = make_command(context)
         if cmd is not None:
             print(f"MERKELY_COMMAND={cmd.name.value}")
-            cmd.verify_args()
+            for env_var in list(cmd.env_vars):
+                env_var.verify()
             return cmd.execute()
     except CommandError as exc:
         print(f"Error: {str(exc)}")
