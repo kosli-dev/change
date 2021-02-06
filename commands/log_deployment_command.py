@@ -7,7 +7,25 @@ from cdb.http import http_post_payload
 
 class LogDeploymentCommand(Command):
     """
-    Command subclass for handling MERKELY_COMMAND=log_deployment
+    Logs a deployment in Merkely.
+    Invoked like this:
+
+    docker run \
+        --env MERKELY_COMMAND=log_deployment \
+        --env MERKELY_API_TOKEN=${...} \
+        \
+        --env MERKELY_FINGERPRINT=${...} \
+        --env MERKELY_DISPLAY_NAME=${...} \
+        \
+        --env MERKELY_CI_BUILD_NUMBER=${...} \
+        --env MERKELY_CI_BUILD_URL=${...} \
+        --env MERKELY_DESCRIPTION=${...} \
+        --env MERKELY_ENVIRONMENT=${...} \
+        --env MERKELY_IS_COMPLIANT=${...} \
+        --rm \
+        ... \
+        --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
+        merkely/change
     """
 
     def __call__(self):

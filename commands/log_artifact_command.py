@@ -6,7 +6,25 @@ from cdb.http import http_put_payload
 
 class LogArtifactCommand(Command):
     """
-    Command subclass for handling MERKELY_COMMAND=log_artifact
+    Logs an artifact in Merkely.
+    Invoked like this:
+
+    docker run \
+        --env MERKELY_COMMAND=log_artifact \
+        --env MERKELY_API_TOKEN=${...} \
+        \
+        --env MERKELY_FINGERPRINT=${...} \
+        --env MERKELY_DISPLAY_NAME=${...} \
+        \
+        --env MERKELY_ARTIFACT_GIT_COMMIT=${...} \
+        --env MERKELY_ARTIFACT_GIT_URL=${...} \
+        --env MERKELY_CI_BUILD_NUMBER=${...} \
+        --env MERKELY_CI_BUILD_URL=${...} \
+        --env MERKELY_IS_COMPLIANT=${...} \
+        --rm \
+        ... \
+        --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
+        merkely/change
     """
 
     def __call__(self):
