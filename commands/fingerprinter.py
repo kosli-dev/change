@@ -1,4 +1,4 @@
-from .command_error import CommandError
+from commands import CommandError
 import docker
 import os
 import subprocess
@@ -21,35 +21,48 @@ class Fingerprinter:
         else:
             raise CommandError(f"{fingerprint.name} has unknown protocol {fingerprint.value}")
 
-    def _file(self, env_var):
-        pathed_filename = self._after(self.FILE_PROTOCOL, env_var)
-        print(f"Getting SHA for {self.FILE_PROTOCOL} artifact: {pathed_filename}")
+    def _file(self, fingerprint_env_var):
+        pathed_filename = self._after(self.FILE_PROTOCOL, fingerprint_env_var)
+        print(self._getting_sha_message(self.FILE_PROTOCOL, pathed_filename))
         sha256 = self._fingerprint_file(pathed_filename)
-        print(f"Calculated digest: {sha256}")
+        print(self._got_sha_message(sha256))
         return sha256, os.path.basename(pathed_filename)
 
-    def _docker(self, env_var):
-        image_name = self._after(self.DOCKER_PROTOCOL, env_var)
-        print(f"Getting SHA for {self.DOCKER_PROTOCOL} artifact: {image_name}")
+    def _docker(self, fingerprint_env_var):
+        image_name = self._after(self.DOCKER_PROTOCOL, fingerprint_env_var)
+        print(self._getting_sha_message(self.DOCKER_PROTOCOL, image_name))
         repo_digest = self._fingerprint_image(image_name)
-        print(f"Calculated digest: {repo_digest}")
+        print(self._got_sha_message(repo_digest))
         return repo_digest, image_name
 
-    def _sha256(self, env_var):
-        sha256 = self._after(self.SHA256_PROTOCOL, env_var)
+    def _sha256(self, fingerprint_env_var):
+        sha256 = self._after(self.SHA256_PROTOCOL, fingerprint_env_var)
         return sha256
 
-    def _after(self, protocol, env_var):
-        return env_var.value[len(protocol):]
-
     def _fingerprint_file(self, pathed_filename):
+        # Mocked in /tests/unit/utils/mock_file_fingerprinter.py
+        # openssl is an Alpine package installed in /Dockerfile
         output = subprocess.check_output(["openssl", "dgst", "-sha256", '/'+pathed_filename])
         digest_in_bytes = output.split()[1]
         sha256 = digest_in_bytes.decode('utf-8')
         return sha256
 
     def _fingerprint_image(self, image_name):
+        # Mocked in /tests/unit/utils/mock_image_fingerprinter.py
+        # docker is a Python package installed in requirements.txt
         client = docker.from_env()
         image = client.images.get(image_name)
         repo_digest = image.attrs["RepoDigests"][0].split(":")[1]
         return repo_digest
+
+    @staticmethod
+    def _after(protocol, fingerprint_env_var):
+        return fingerprint_env_var.value[len(protocol):]
+
+    @staticmethod
+    def _getting_sha_message(protocol, name):
+        return f"Getting SHA for {protocol} artifact: {name}"
+
+    @staticmethod
+    def _got_sha_message(digest):
+        return f"Calculated digest: {digest}"
