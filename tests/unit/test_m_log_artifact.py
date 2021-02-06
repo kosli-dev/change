@@ -1,7 +1,7 @@
 from cdb.put_artifact       import put_artifact
 from cdb.put_artifact_image import put_artifact_image
 
-from commands import command_processor, make_command, RequiredEnvVar, Context
+from commands import command_runner, build_command, RequiredEnvVar, Context
 
 from tests.utils import *
 
@@ -83,7 +83,7 @@ def test_file_protocol_at_root(capsys, mocker):
         with ScopedFileCopier("/app/tests/data/jam.jar", "/"+filename):
             with MockFileFingerprinter(filename, sha256) as fingerprinter:
                 context = Context(env, fingerprinter)
-                method, url, payload = command_processor.execute(context)
+                method, url, payload = command_runner.run(context)
 
     # verify matching data
     assert method == expected_method
@@ -162,7 +162,7 @@ def test_file_protocol_not_at_root(capsys, mocker):
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         with MockFileFingerprinter(f"{directory}/{filename}", sha256) as fingerprinter:
             context = Context(env, fingerprinter)
-            method, url, payload = command_processor.execute(context)
+            method, url, payload = command_runner.run(context)
 
     # verify matching data
     expected_payload['filename'] = filename  # <<<<<
@@ -244,7 +244,7 @@ def test_docker_protocol(capsys, mocker):
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         with MockImageFingerprinter(image_name, sha256) as fingerprinter:
             context = Context(env, fingerprinter)
-            method, url, payload = command_processor.execute(context)
+            method, url, payload = command_runner.run(context)
 
     # verify matching data
     assert method == expected_method
@@ -288,7 +288,7 @@ def test_sha256_protocol_file(capsys):
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = Context(env)
-        method, url, payload = command_processor.execute(context)
+        method, url, payload = command_runner.run(context)
 
     # verify data
     expected_method = "Putting"
@@ -350,7 +350,7 @@ def test_sha256_protocol_docker_image(capsys):
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = Context(env)
-        method, url, payload = command_processor.execute(context)
+        method, url, payload = command_runner.run(context)
 
     expected_method = "Putting"
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
@@ -391,7 +391,7 @@ def test_unknown_protocol(capsys):
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
         context = Context(env)
-        command_processor.execute(context)
+        command_runner.run(context)
 
     verify_approval(capsys, ["out"])
 
@@ -414,14 +414,14 @@ def test_each_required_env_var_missing(capsys):
             ev.pop(env_var.name)
             with dry_run(ev) as env, scoped_merkelypipe_json():
                 context = Context(env)
-                command_processor.execute(context)
+                command_runner.run(context)
     verify_approval(capsys)
 
 
 def make_command_env_vars():
     env = new_log_artifact_env()
     context = Context(env)
-    return make_command(context).env_vars
+    return build_command(context).env_vars
 
 
 def old_put_artifact_env(commit, *,

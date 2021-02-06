@@ -1,4 +1,4 @@
-from commands import command_processor, Context
+from commands import command_runner, Context
 from tests.utils import *
 
 # def test_file_not_at_root(capsys):
@@ -15,7 +15,7 @@ def test_file_at_root(capsys):
     with dry_run(ev) as env, scoped_merkelypipe_json():
         with MockFileFingerprinter(filename, sha256) as fingerprinter:
             context = Context(env, fingerprinter)
-            command_processor.execute(context)
+            command_runner.run(context)
 
     verify_approval(capsys)
     #verify_payload_and_url(capsys)
@@ -32,7 +32,7 @@ def test_docker_image(capsys):
     with dry_run(ev) as env, scoped_merkelypipe_json():
         with MockImageFingerprinter(image_name, digest) as fingerprinter:
             context = Context(env, fingerprinter)
-            command_processor.execute(context)
+            command_runner.run(context)
 
     verify_approval(capsys)
     #verify_payload_and_url(capsys)

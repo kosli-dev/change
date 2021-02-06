@@ -1,4 +1,4 @@
-from commands import command_processor, Context
+from commands import command_runner, Context
 from tests.utils import *
 
 
@@ -7,7 +7,7 @@ def test_host_not_set_defaults(capsys):
     ev.pop("MERKELY_HOST")
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
-        command_processor.execute(Context(env))
+        command_runner.run(Context(env))
 
     verify_approval(capsys)
 
@@ -17,6 +17,6 @@ def test_host_set(capsys):
     ev["MERKELY_HOST"] = "https://test.merkely.com"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
-        command_processor.execute(Context(env))
+        command_runner.run(Context(env))
 
     verify_approval(capsys)

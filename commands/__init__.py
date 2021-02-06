@@ -1,6 +1,6 @@
-from .context import Context
-
 from .command_error import CommandError
+
+from .context import Context
 
 from .fingerprinter import Fingerprinter
 
@@ -16,4 +16,5 @@ from .log_artifact_command import LogArtifactCommand
 from .log_deployment_command import LogDeploymentCommand
 from .log_evidence_command import LogEvidenceCommand
 
-from .command_processor import make_command, execute
+from .command_builder import build_command
+from .command_runner import run
