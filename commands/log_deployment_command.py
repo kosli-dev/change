@@ -82,7 +82,7 @@ class LogDeploymentCommand(Command):
         ])
         return self._optional_env_var("DISPLAY_NAME", description)
 
-    def _create_deployment(self, sha256, display_name):
+    def _create_deployment(self, sha256, _display_name):
         payload = {
             "artifact_sha256": sha256,
             "build_url": self.ci_build_url.value,
