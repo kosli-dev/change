@@ -64,7 +64,7 @@ class LogDeploymentCommand(Command):
             '     --env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH}',
             '     --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH}',
             '',
-            "3. If prefixed by sha256:// the deployed artifact's sha256 digest."
+            "3. If prefixed by sha256:// the artifact's sha256 digest."
             '   The name of the artifact must be provided in MERKELY_DISPLAY_NAME',
             '   Example:',
             '     --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}”',
@@ -75,7 +75,7 @@ class LogDeploymentCommand(Command):
     @property
     def display_name(self):
         description = "\n".join([
-            'The name of the deployed artifact.',
+            'The name of the fingerprinted artifact.',
             'Required when using MERKELY_FINGERPRINT="sha256://..."',
             'Not required when using MERKELY_FINGERPRINT="file://..."',
             'Not required when using MERKELY_FINGERPRINT="docker://..."'
