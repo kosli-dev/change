@@ -260,7 +260,7 @@ def test_sha256_protocol_file(capsys):
     """
     Tests logging a file artifact via the env-vars
     MERKELY_FINGERPRINT="sha256://${SHA256}"
-    MERKELY_DISPLAY_NAME="${FILE_PATH}"
+    MERKELY_DISPLAY_NAME="${ARTIFACT_NAME}"
     """
     # input data
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed4"
@@ -371,35 +371,7 @@ def test_sha256_protocol_docker_image(capsys):
     #old_test = "test_required_env_vars_uses_CDB_ARTIFACT_SHA"
 
 
-def test_unknown_protocol(capsys):
-    # input data
-    commit = "ddc50c8a53f79974d615df335669b59fb56a4ed3"
-    sha256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
-    protocol = "ash256://"
-    image_name = "acme/road-runner:4.8"
-
-    # make merkely call
-    ev = new_log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
-    ev["MERKELY_DISPLAY_NAME"] = image_name
-
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
-        status = run(env)
-
-    assert status != 0
-    verify_approval(capsys, ["out"])
-
-
-# TODO: Test when sha256://SHA and SHA does not look like a SHA?
-
-# TODO: test_sha256_protocol_file() when DISPLAY_NAME is missing
-# TODO: test_sha256_protocol_file() when supplied DISPLAY_NAME has full path...?
 # TODO: test when all optional env-var are not supplied
-
-# TODO: Test when docker image not found (decent error message)
-# TODO: Test when image not pushed (eg to dockerhub) so cannot get digest (decent error message)
-# TODO: Test when docker socket not volume-mounted
 
 
 def test_each_required_env_var_missing(capsys):
