@@ -14,5 +14,5 @@ class MockImageFingerprinter(MockFingerprinter):
             ])
 
     @staticmethod
-    def _function_sig(self):
+    def _function_sig():
         return "_fingerprint_image(filename)"
