@@ -1,6 +1,6 @@
 Posting this payload:
 {
-    "artifact_sha256": "ttcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
+    "artifact_sha256": "aacdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
     "description": "No description provided",
     "is_approved": false,
     "src_commit_list": [
