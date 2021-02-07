@@ -80,17 +80,13 @@ class Command:
         return self._defaulted_env_var("HOST", default, description)
 
     def _defaulted_env_var(self, name, default, description):
-        return DefaultedEnvVar(f"MERKELY_{name}", self._env, default, description)
+        return DefaultedEnvVar(self, f"MERKELY_{name}", default, description)
 
     def _optional_env_var(self, name, description):
-        return OptionalEnvVar(f"MERKELY_{name}", self._env, description)
+        return OptionalEnvVar(self, f"MERKELY_{name}", description)
 
     def _required_env_var(self, name, description):
-        return RequiredEnvVar(f"MERKELY_{name}", self._env, description)
-
-    @property
-    def _env(self):
-        return self._context.env
+        return RequiredEnvVar(self, f"MERKELY_{name}", description)
 
     def _print_compliance(self):
         env_var = self.is_compliant

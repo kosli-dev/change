@@ -2,8 +2,8 @@ from commands import EnvVar
 
 
 class OptionalEnvVar(EnvVar):
-    def __init__(self, name, env, description):
-        super().__init__(name, env, description)
+    def __init__(self, command, name, description):
+        super().__init__(command, name, description)
 
     @property
     def value(self):

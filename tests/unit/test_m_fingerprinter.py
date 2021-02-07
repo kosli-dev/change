@@ -1,5 +1,5 @@
 from collections import namedtuple
-from commands import CommandError, Fingerprinter, RequiredEnvVar
+from commands import Command, CommandError, Context, Fingerprinter, RequiredEnvVar
 
 from tests.utils import *
 from pytest import raises
@@ -61,13 +61,14 @@ def make_env_vars(fingerprint, display_name):
     if display_name is not None:
         env["MERKELY_DISPLAY_NAME"] = display_name
 
+    command = Command(Context(env))
     description = ""
     return namedtuple('EnvVars', (
         'fingerprint',
         'display_name'
     ))(
-        RequiredEnvVar('MERKELY_FINGERPRINT', env, description),
-        RequiredEnvVar('MERKELY_DISPLAY_NAME', env, description)
+        RequiredEnvVar(command, 'MERKELY_FINGERPRINT', description),
+        RequiredEnvVar(command, 'MERKELY_DISPLAY_NAME', description)
     )
 
 # Further tests

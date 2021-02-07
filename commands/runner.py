@@ -12,7 +12,7 @@ def run(env=None, fingerprinter=None):
         command = build_command(context)
         print(f"MERKELY_COMMAND={command.name.value}")
         for env_var in list(command.env_vars):
-            env_var.verify()
+            env_var.value
         return command()
     except CommandError as exc:
         print(f"Error: {str(exc)}")

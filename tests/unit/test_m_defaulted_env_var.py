@@ -1,28 +1,33 @@
-from commands import DefaultedEnvVar
-from tests.utils import *
+from commands import Command, Context, DefaultedEnvVar
+
+NAME = "MERKELY_HOST"
+DEFAULT = "https://default.merkely.com"
+DESCRIPTION = "The hostname of Merkely"
 
 
 def test_value_from_default():
-    name = "MERKELY_HOST"
-    default = "https://default.merkely.com"
-    description = "The hostname of Merkely"
+    _env, smart_env_var = make_test_variables()
 
-    dev = DefaultedEnvVar(name, {}, default, description)
-
-    assert dev.name == name
-    assert dev.value == default
-    assert dev.description == description
+    assert smart_env_var.name == NAME
+    assert smart_env_var.value == DEFAULT
+    assert smart_env_var.description == DESCRIPTION
 
 
 def test_value_from_env():
+    env, smart_env_vars = make_test_variables()
+
+    not_default = "https://test.merkely.com"
+    env.update({NAME: not_default})
+
+    assert smart_env_vars.name == NAME
+    assert smart_env_vars.value == not_default
+    assert smart_env_vars.description == DESCRIPTION
+
+
+def make_test_variables():
+    env = {}
+    command = Command(Context(env))
     name = "MERKELY_HOST"
-    value = "https://test.merkely.com"
-    default = None  # "https://other.merkely.com"
+    default = "https://default.merkely.com"
     description = "The hostname of Merkely"
-
-    with ScopedEnvVars({name: value}) as env:
-        dev = DefaultedEnvVar(name, env, default, description)
-
-        assert dev.value == value
-        assert dev.name == name
-        assert dev.description == description
+    return env, DefaultedEnvVar(command, name, default, description)

@@ -1,8 +1,6 @@
 from commands import run
 from tests.utils import *
 
-# def test_file_not_at_root(capsys):
-
 
 def test_file_at_root(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
@@ -34,10 +32,6 @@ def test_docker_image(capsys):
 
     verify_approval(capsys)
     #verify_payload_and_url(capsys)
-
-
-#def test_sha256_file(capsys):
-#def test_sha256_docker_image(capsys):
 
 
 def log_deployment_env(commit):
