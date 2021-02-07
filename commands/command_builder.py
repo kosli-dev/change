@@ -1,3 +1,4 @@
+from collections import namedtuple
 from commands import *
 
 
@@ -11,7 +12,15 @@ COMMANDS = {
 
 class UnknownCommand(Command):
     def __call__(self):
-        raise CommandError(f"Unknown command {self.name}")
+        raise CommandError(f"Unknown command: {self.name.value}")
+
+    @property
+    def env_vars(self):
+        return namedtuple('EnvVars', (
+            'name'
+        ))(
+            self.name
+        )
 
 
 def build_command(context):
