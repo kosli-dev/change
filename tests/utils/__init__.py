@@ -10,5 +10,6 @@ from .verify_approval import *
 from .core_env_vars import *
 from .extract import *
 from .dry_run import *
-from .mock_image_fingerprinter import *
+from .mock_fingerprinter import *
+from .mock_docker_fingerprinter import *
 from .mock_file_fingerprinter import *

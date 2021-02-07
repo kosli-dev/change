@@ -28,9 +28,20 @@ class LogArtifactCommand(Command):
     """
 
     def __call__(self):
-        sha256, name = self._context.fingerprint(self.env_vars)
         self._print_compliance()
-        return self._create_artifact(sha256, name)
+        payload = {
+            "sha256": self.fingerprint.sha,
+            "filename": self.display_name.value,
+            "description": f"Created by build {self.ci_build_number.value}",
+            "git_commit": self.artifact_git_commit.value,
+            "commit_url": self.artifact_git_url.value,
+            "build_url": self.ci_build_url.value,
+            "is_compliant": self.is_compliant.value == 'TRUE'
+        }
+        url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)
+        http_put_payload(url, payload, self.api_token.value)
+        return 'Putting', url, payload
+
 
     @property
     def env_vars(self):
@@ -77,22 +88,3 @@ class LogArtifactCommand(Command):
     def ci_build_url(self):
         description = "Link to the build in the ci system."
         return self._required_env_var('CI_BUILD_URL', description)
-
-    def _print_compliance(self):
-        env_var = self.is_compliant
-        print(f"{env_var.name}: {env_var.value == 'TRUE'}")
-
-    def _create_artifact(self, sha256, display_name):
-        description = f"Created by build {self.ci_build_number.value}"
-        payload = {
-            "sha256": sha256,
-            "filename": display_name,
-            "description": description,
-            "git_commit": self.artifact_git_commit.value,
-            "commit_url": self.artifact_git_url.value,
-            "build_url": self.ci_build_url.value,
-            "is_compliant": self.is_compliant.value == 'TRUE'
-        }
-        url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)
-        http_put_payload(url, payload, self.api_token.value)
-        return 'Putting', url, payload

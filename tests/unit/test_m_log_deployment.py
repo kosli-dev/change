@@ -12,7 +12,7 @@ def test_file_at_root(capsys):
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
         with MockFileFingerprinter(filename, sha256) as fingerprinter:
-            run(env, fingerprinter)
+            run(env, None, fingerprinter)
 
     verify_approval(capsys)
     #verify_payload_and_url(capsys)
@@ -27,8 +27,8 @@ def test_docker_image(capsys):
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
 
     with dry_run(ev) as env, scoped_merkelypipe_json():
-        with MockImageFingerprinter(image_name, digest) as fingerprinter:
-            run(env, fingerprinter)
+        with MockDockerFingerprinter(image_name, digest) as fingerprinter:
+            run(env, fingerprinter, None)
 
     verify_approval(capsys)
     #verify_payload_and_url(capsys)

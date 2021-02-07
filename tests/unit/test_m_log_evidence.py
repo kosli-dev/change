@@ -80,8 +80,8 @@ def test_docker_protocol(capsys, mocker):
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
-        with MockImageFingerprinter(image_name, sha256) as fingerprinter:
-            method, url, payload = run(env, fingerprinter)
+        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+            method, url, payload = run(env, fingerprinter, None)
 
     # verify matching data
     assert method == expected_method
@@ -90,9 +90,9 @@ def test_docker_protocol(capsys, mocker):
 
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_evidence',
+        'MERKELY_IS_COMPLIANT: True',
         f'Calculating fingerprint for {protocol}{image_name}',
         f"Calculated fingerprint: {sha256}",
-        'MERKELY_IS_COMPLIANT: True'
     ]
 
 

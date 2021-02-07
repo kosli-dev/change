@@ -1,7 +1,7 @@
 
 class EnvVar:
-    def __init__(self, command, name, description):
-        self._command = command
+    def __init__(self, env, name, description):
+        self._env = env
         self._name = name
         self._description = description
 
@@ -18,5 +18,5 @@ class EnvVar:
         return self._description
 
     @property
-    def _env(self):
-        return self._command._context.env
+    def env(self):
+        return self._env

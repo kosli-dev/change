@@ -26,8 +26,7 @@ def test_value_from_env():
 
 def make_test_variables():
     env = {}
-    command = Command(Context(env))
     name = "MERKELY_HOST"
     default = "https://default.merkely.com"
     description = "The hostname of Merkely"
-    return env, DefaultedEnvVar(command, name, default, description)
+    return env, DefaultedEnvVar(env, name, default, description)

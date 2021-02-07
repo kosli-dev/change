@@ -28,8 +28,15 @@ class LogDeploymentCommand(Command):
     """
 
     def __call__(self):
-        sha256, name = self._context.fingerprint(self.env_vars)
-        return self._create_deployment(sha256, name)
+        payload = {
+            "artifact_sha256": self.fingerprint.sha,
+            "build_url": self.ci_build_url.value,
+            "description": self.description.value,
+            "environment": self.environment.value,
+        }
+        url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
+        http_post_payload(url, payload, self.api_token.value)
+        return 'Posting', url, payload
 
     @property
     def env_vars(self):
@@ -67,14 +74,3 @@ class LogDeploymentCommand(Command):
     def environment(self):
         description = "The name of the environment the artifact is being deployed to."
         return self._required_env_var('ENVIRONMENT', description)
-
-    def _create_deployment(self, sha256, _display_name):
-        payload = {
-            "artifact_sha256": sha256,
-            "build_url": self.ci_build_url.value,
-            "description": self.description.value,
-            "environment": self.environment.value,
-        }
-        url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
-        http_post_payload(url, payload, self.api_token.value)
-        return 'Posting', url, payload

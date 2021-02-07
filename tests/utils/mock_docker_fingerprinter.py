@@ -1,7 +1,7 @@
-from commands import FileFingerprinter
+from commands import DockerFingerprinter
 
 
-class MockFileFingerprinter(FileFingerprinter):
+class MockDockerFingerprinter(DockerFingerprinter):
 
     def __init__(self, image_name, digest):
         self._expected = image_name
