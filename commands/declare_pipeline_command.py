@@ -25,12 +25,10 @@ class DeclarePipelineCommand(Command):
 
     @property
     def env_vars(self):
-        return namedtuple('EnvVars', (
+        names = [
             'api_token',
             'host',
-            'name'
-        ))(
-            self.api_token,
-            self.host,
-            self.name
-        )
+            'name',
+        ]
+        evs = [getattr(self, name) for name in names]
+        return namedtuple('EnvVars', tuple(names))(*evs)

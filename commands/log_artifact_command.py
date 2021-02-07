@@ -44,7 +44,7 @@ class LogArtifactCommand(Command):
 
     @property
     def env_vars(self):
-        return namedtuple('EnvVars', (
+        names = [
             'api_token',
             'artifact_git_commit',
             'artifact_git_url',
@@ -55,18 +55,9 @@ class LogArtifactCommand(Command):
             'host',
             'is_compliant',
             'name'
-        ))(
-            self.api_token,
-            self.artifact_git_commit,
-            self.artifact_git_url,
-            self.ci_build_number,
-            self.ci_build_url,
-            self.display_name,
-            self.fingerprint,
-            self.host,
-            self.is_compliant,
-            self.name
-        )
+        ]
+        evs = [getattr(self, name) for name in names]
+        return namedtuple('EnvVars', tuple(names))(*evs)
 
     @property
     def artifact_git_commit(self):

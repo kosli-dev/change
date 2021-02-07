@@ -20,13 +20,15 @@ class MockFileFingerprinter(FileFingerprinter):
         if image_name == self._expected:
             return self._digest
         else:
-            self._unmatched(image_name)
+            lines = [
+                f"Expected: artifact_name=={self._expected}",
+                f"  Actual: artifact_name=={image_name}",
+            ]
+            self._failed(lines)
 
-    def _unmatched(self, image_name):
+    def _failed(self, lines):
         message = "\n".join([
             f"{self.__class__.__name__}._fingerprint(artifact_name)",
             "FAILED",
-            f"Expected: artifact_name=={self._expected}",
-            f"  Actual: artifact_name=={image_name}"
-        ])
+        ] + lines)
         raise RuntimeError(message)

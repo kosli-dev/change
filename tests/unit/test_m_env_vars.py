@@ -1,4 +1,64 @@
 from commands import LogEvidenceCommand, Context
+from commands import RequiredEnvVar
+
+from collections import namedtuple
+
+
+def make_env_var_marker():
+    def marker(func):
+        func.is_env_var = True
+        return func
+    return marker
+
+
+class Example:
+    env_var = make_env_var_marker()
+
+    @property
+    def env_vars(self):
+        names = [
+            'api_token',
+            'host',
+        ]
+        evs = [getattr(self, name) for name in names]
+        return namedtuple('EnvVars', tuple(names))(*evs)
+
+    @property
+    def X_env_vars(self):
+        names = []
+        evs = []
+        for item in dir(self):
+            #print(f"Looking at {item!r} {type(item)}")
+            if hasattr(item, 'is_env_var'):
+                names.append(item.__name__)
+                evs.append(item(self))
+        return namedtuple('EnvVars', tuple(names))(*evs)
+
+    @property
+    @env_var
+    def api_token(self):
+        ev = {"API_TOKEN": "3455643212456"}
+        return RequiredEnvVar(ev, "API_TOKEN", "description")
+
+    @property
+    def simple(self):
+        return 42
+
+    @property
+    @env_var
+    def host(self):
+        ev = {"HOST": "https://tests.compliancedb.com"}
+        return RequiredEnvVar(ev, "HOST", "description")
+
+
+def test_env_vars_using_env_var_decorator():
+    eg = Example()
+    env_vars = eg.env_vars
+    assert len(eg.env_vars) == 2
+    assert eg.env_vars.api_token.name == "API_TOKEN"
+    assert eg.env_vars.api_token.value == "3455643212456"
+    assert eg.env_vars.host.name == "HOST"
+    assert eg.env_vars.host.value == "https://tests.compliancedb.com"
 
 
 def test_env_vars():

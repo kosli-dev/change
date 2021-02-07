@@ -40,7 +40,7 @@ class LogDeploymentCommand(Command):
 
     @property
     def env_vars(self):
-        return namedtuple('EnvVars', (
+        names = [
             'api_token',
             'ci_build_url',
             'display_name',
@@ -49,16 +49,9 @@ class LogDeploymentCommand(Command):
             'fingerprint',
             'host',
             'name'
-        ))(
-            self.api_token,
-            self.ci_build_url,
-            self.display_name,
-            self.description,
-            self.environment,
-            self.fingerprint,
-            self.host,
-            self.name
-        )
+        ]
+        evs = [getattr(self, name) for name in names]
+        return namedtuple('EnvVars', tuple(names))(*evs)
 
     @property
     def ci_build_url(self):
