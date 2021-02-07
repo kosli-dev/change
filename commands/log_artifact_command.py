@@ -42,7 +42,6 @@ class LogArtifactCommand(Command):
         http_put_payload(url, payload, self.api_token.value)
         return 'Putting', url, payload
 
-
     @property
     def env_vars(self):
         return namedtuple('EnvVars', (
