@@ -1,7 +1,6 @@
 import os
-from .fingerprinter import Fingerprinter
-from .file_fingerprinter import FileFingerprinter
 from .docker_fingerprinter import DockerFingerprinter
+from .file_fingerprinter import FileFingerprinter
 
 
 class Context:
@@ -27,10 +26,10 @@ class Context:
         return self._env
 
     @property
-    def file_fingerprinter(self):
-        return self._file_fingerprinter
-
-    @property
     def docker_fingerprinter(self):
         return self._docker_fingerprinter
+
+    @property
+    def file_fingerprinter(self):
+        return self._file_fingerprinter
 

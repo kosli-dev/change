@@ -7,7 +7,11 @@ class Fingerprinter:
         print(self._calculated_message(repo_digest))
         return repo_digest
 
-    def _calculating_message(self, protocol, artifact_name):
+    def _fingerprint(self, artifact_name):
+        raise NotImplementedError("Fingerprinter subclass override missing")
+
+    @staticmethod
+    def _calculating_message(protocol, artifact_name):
         return f"Calculating fingerprint for {protocol}{artifact_name}"
 
     @staticmethod
