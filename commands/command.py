@@ -4,13 +4,13 @@ from commands import CommandError, DefaultedEnvVar, OptionalEnvVar, RequiredEnvV
 
 class Command:
     """
-    Abstract Base Class for all commands.
+    Abstract Base Class for all merkely/change commands.
     """
     def __init__(self, context):
         self._context = context
 
     def __call__(self):
-        raise NotImplementedError("Command is abstract")
+        raise NotImplementedError("Command subclass override missing")
 
     @property
     def name(self):

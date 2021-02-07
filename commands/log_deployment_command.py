@@ -1,4 +1,3 @@
-import os
 from collections import namedtuple
 from commands import Command
 from cdb.api_schema import ApiSchema
