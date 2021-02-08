@@ -40,8 +40,7 @@ jobs:
         add_git_labels: TRUE
 
 
-    # Runs a set of commands using the runners shell
-    - name: Publish the pipeline and artifact information to ComplianceDB
+    - name: Publish the pipeline and artifact information to Merkely
       env:
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
         MERKELY_HOST: https://app.compliancedb.com
@@ -55,7 +54,7 @@ jobs:
         export MERKELY_DOCKER_IMAGE=merkely/change:sha-${SHA7}
         make branch merkely_declare_pipeline merkely_log_artifact
 
-    - name: Create the deployment in ComplianceDB
+    - name: Create the deployment in Merkely
       env:
         CDB_HOST: https://app.compliancedb.com
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
@@ -70,9 +69,9 @@ jobs:
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
       run: |
-        make test_all_build
+        make build_all test_all
 
-    - name: CDB Control Unit Test Results
+    - name: Merkely Control Unit Test Results
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
         CDB_HOST: https://app.compliancedb.com
@@ -89,7 +88,7 @@ jobs:
         export CDB_EVIDENCE_TYPE="integration_test"
         make control_and_publish_junit_results
 
-    - name: CDB Control Unit Test Results
+    - name: Merkely Control Unit Test Results
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
         CDB_HOST: https://app.compliancedb.com
@@ -107,7 +106,7 @@ jobs:
         name: code-coverage-report
         path: tmp/coverage/
 
-    - name: Publish coverage results to ComplianceDB
+    - name: Publish coverage results to Merkely
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
         CDB_HOST: https://app.compliancedb.com

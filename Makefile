@@ -36,13 +36,34 @@ list:
 pip_list:
 	@docker run --rm -it --entrypoint="" ${IMAGE} pip3 list
 
-# Use BUILD_OPTION=--no-cache to force a clean build
+rebuild_all: rebuild rebuild_bb
+
+rebuild:
+	@echo ${IMAGE}
+	@docker build \
+		--build-arg IMAGE_COMMIT_SHA=${SHA} \
+		--file Dockerfile \
+		--no-cache \
+		--tag ${IMAGE} .
+	@docker tag ${IMAGE} ${LATEST}
+
+rebuild_bb:
+	@echo ${IMAGE_PIPE}
+	@docker build \
+		--build-arg IMAGE_COMMIT_SHA=${SHA} \
+		--file Dockerfile.bb_pipe \
+		--no-cache \
+		--tag ${IMAGE_PIPE} .
+
+# - - - - - - - - - - - - - - - - - - - -
+
+build_all: build build_bb
+
 build:
 	@echo ${IMAGE}
 	@docker build \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile \
-		${BUILD_OPTION} \
 		--tag ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
 
@@ -53,11 +74,9 @@ build_bb:
 		--file Dockerfile.bb_pipe \
 		--tag ${IMAGE_PIPE} .
 
+# - - - - - - - - - - - - - - - - - - - -
+
 test_all: test_unit test_integration test_bb_integration
-test_all_build: test_unit_build test_integration_build test_bb_integration_build
-test_unit_build: build test_unit
-test_integration_build: build test_integration
-test_bb_integration_build: build_bb test_bb_integration
 
 test_unit:
 	@docker rm --force 2> /dev/null $@ || true
@@ -104,6 +123,8 @@ test_bb_integration:
 		--volume ${ROOT_DIR}/tmp/coverage/bb_integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
 			${IMAGE_PIPE} tests/bb_integration/${TARGET}
+
+# - - - - - - - - - - - - - - - - - - - -
 
 pytest_help:
 	@docker run \
