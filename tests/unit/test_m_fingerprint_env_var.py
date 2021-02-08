@@ -1,6 +1,7 @@
 from commands import Command, Context, CommandError
 from commands import FingerprintEnvVar
 from tests.utils import *
+from pytest import raises
 
 SHA256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
 
@@ -67,11 +68,27 @@ def test_sha_protocl(capsys):
     capsys_read(capsys)  # TODO
 
 
-# Further tests
-# sha256 and SHA does not look like a SHA?
-# sha256 when DISPLAY_NAME is missing
-# sha256 when supplied DISPLAY_NAME has full path...?
+def test_unknown_protocol(capsys):
+    protocol = "ash256://"
+    artifact_name = SHA256
+    fingerprint = f"{protocol}{artifact_name}"
+    env = {
+        "MERKELY_FINGERPRINT": fingerprint
+    }
+    context = Context(env, None, None)
+    command = Command(context)
+    fev = FingerprintEnvVar(command)
 
-# docker image not found (error message)
-# image not pushed (eg to dockerhub) so cannot get digest (error message)
-# docker socket not volume-mounted (error message)
+    assert fev.value == fingerprint
+
+    with raises(CommandError) as exc:
+        fev.protocol
+    assert str(exc.value) == f"Unknown protocol: {fingerprint}"
+
+    with raises(CommandError) as exc:
+        fev.artifact_name
+    assert str(exc.value) == f"Unknown protocol: {fingerprint}"
+
+    with raises(CommandError) as exc:
+        fev.sha
+    assert str(exc.value) == f"Unknown protocol: {fingerprint}"

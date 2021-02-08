@@ -1,0 +1,9 @@
+
+# Further tests
+# sha256 and SHA does not look like a SHA?
+# sha256 when DISPLAY_NAME is missing
+# sha256 when supplied DISPLAY_NAME has full path...?
+
+# docker image not found (error message)
+# image not pushed (eg to dockerhub) so cannot get digest (error message)
+# docker socket not volume-mounted (error message)

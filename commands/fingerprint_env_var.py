@@ -39,7 +39,7 @@ class FingerprintEnvVar(RequiredEnvVar):
         elif self.value.startswith(SHA256_PROTOCOL):
             return SHA256_PROTOCOL
         else:
-            raise CommandError("...")  # TODO
+            raise self.unknown_protocol_error()
 
     @property
     def artifact_name(self):
@@ -54,5 +54,7 @@ class FingerprintEnvVar(RequiredEnvVar):
         elif self.protocol == SHA256_PROTOCOL:
             return self.artifact_name
         else:
-            raise CommandError("...")  # TODO
+            raise self.unknown_protocol_error()
 
+    def unknown_protocol_error(self):
+        raise CommandError(f"Unknown protocol: {self.value}")
