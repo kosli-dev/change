@@ -22,7 +22,7 @@ DESCRIPTION = "\n".join([
     '     --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \\',
     '     ...',
     '',
-    "3. If prefixed by sha256:// the artifact's sha256 and name."
+    "3. If prefixed by sha256:// the artifact's sha256, then /, then it's name."
     '   Example:',
     '   docker run ... \\',
     '     --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}/${YOUR_ARTIFACT_NAME}” \\',
@@ -54,13 +54,22 @@ class FingerprintEnvVar(RequiredEnvVar):
         elif self.protocol == DOCKER_PROTOCOL:
             return self._command.docker_fingerprinter(self.protocol, self.artifact_name)
         elif self.protocol == SHA256_PROTOCOL:
-            return self.artifact_name
+            start = len(self.protocol)
+            return self.value[start:start+64]
         else:
             raise self.unknown_protocol_error()
 
     @property
     def artifact_name(self):
-        return self.value[len(self.protocol):]
+        if self.protocol == FILE_PROTOCOL:
+            return self._after(len(self.protocol))
+        elif self.protocol == DOCKER_PROTOCOL:
+            return self._after(len(self.protocol))
+        elif self.protocol == SHA256_PROTOCOL:
+            return self._after(len(self.protocol)+64+len('/'))
+
+    def _after(self, n):
+        return self.value[-(len(self.value)-n):]
 
     def unknown_protocol_error(self):
         return CommandError(f"Unknown protocol: {self.value}")

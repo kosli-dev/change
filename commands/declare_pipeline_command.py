@@ -10,8 +10,8 @@ class DeclarePipelineCommand(Command):
 
     docker run \
         --env MERKELY_COMMAND=declare_pipeline \
-        --env MERKELY_API_TOKEN=${YOUR_API_TOKEN} \
         --rm \
+        --env MERKELY_API_TOKEN=${YOUR_API_TOKEN} \
         --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
         merkely/change
     """

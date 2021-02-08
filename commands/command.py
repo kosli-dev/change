@@ -1,7 +1,6 @@
 from collections import namedtuple
 
-from env_vars import DefaultedEnvVar, OptionalEnvVar, RequiredEnvVar
-from env_vars import FingerprintEnvVar, DisplayNameEnvVar
+from env_vars import DefaultedEnvVar, OptionalEnvVar, RequiredEnvVar, FingerprintEnvVar
 from commands import load_json
 
 
@@ -40,10 +39,6 @@ class Command:
     def api_token(self):
         description = "Your API token for Merkely."
         return self._required_env_var("API_TOKEN", description)
-
-    @property
-    def display_name(self):
-        return DisplayNameEnvVar(self)
 
     @property
     def fingerprint(self):

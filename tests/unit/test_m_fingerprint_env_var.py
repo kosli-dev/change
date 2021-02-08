@@ -63,8 +63,8 @@ def test_sha_protocol():
 
     assert fev.value == fingerprint
     assert fev.protocol == protocol
-    #assert fev.sha == SHA256
-    #assert fev.artifact_name == artifact_name
+    assert fev.sha == SHA256
+    assert fev.artifact_name == artifact_name
 
 
 def test_unknown_protocol_raises():

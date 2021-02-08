@@ -241,7 +241,7 @@ def test_file_protocol_not_at_root(capsys, mocker):
             method, url, payload = run(env, None, fingerprinter)
 
     # verify matching data
-    expected_payload['filename'] = filename  # <<<<<
+    expected_payload['filename'] = f"{directory}/{filename}"
 
     assert method == expected_method
     assert url == expected_url
@@ -278,8 +278,7 @@ def test_sha256_protocol_file(capsys):
                               domain=domain,
                               build_url=build_url,
                               build_number=build_number)
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
-    ev["MERKELY_DISPLAY_NAME"] = filename
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{filename}"
 
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
@@ -339,8 +338,7 @@ def test_sha256_protocol_docker_image(capsys):
 
     # make merkely call
     ev = new_log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}"
-    ev["MERKELY_DISPLAY_NAME"] = image_name
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{image_name}"
 
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):

@@ -10,10 +10,7 @@ class LogDeploymentCommand(Command):
 
     docker run \
         --env MERKELY_COMMAND=log_deployment \
-        --env MERKELY_API_TOKEN=${...} \
-        \
         --env MERKELY_FINGERPRINT=${...} \
-        --env MERKELY_DISPLAY_NAME=${...} \
         \
         --env MERKELY_CI_BUILD_NUMBER=${...} \
         --env MERKELY_CI_BUILD_URL=${...} \
@@ -21,7 +18,7 @@ class LogDeploymentCommand(Command):
         --env MERKELY_ENVIRONMENT=${...} \
         --env MERKELY_IS_COMPLIANT=${...} \
         --rm \
-        ... \
+        --env MERKELY_API_TOKEN=${...} \
         --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
         merkely/change
     """
@@ -57,7 +54,6 @@ class LogDeploymentCommand(Command):
         return [
             'api_token',
             'ci_build_url',
-            'display_name',
             'description',
             'environment',
             'fingerprint',

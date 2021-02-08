@@ -1,5 +1,5 @@
 from commands import Command
-from env_vars import DisplayNameEnvVar, FingerprintEnvVar, UserDataEnvVar
+from env_vars import FingerprintEnvVar, UserDataEnvVar
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
 
@@ -20,17 +20,6 @@ class CreateDeploymentCommand(Command):
         return 'Posting', url, payload
 
     @property
-    def _env_var_names(self):
-        return [
-            'fingerprint',
-            'ci_build_url',
-            'description',
-            'display_name',
-            'environment',
-            'user_data'
-        ]
-
-    @property
     def fingerprint(self):
         return FingerprintEnvVar(self)
 
@@ -45,10 +34,6 @@ class CreateDeploymentCommand(Command):
         return self._defaulted_env_var(self, "DESCRIPTION", 'None', description)
 
     @property
-    def display_name(self):
-        return DisplayNameEnvVar(self)
-
-    @property
     def environment(self):
         description = ""
         return self._defaulted_env_var(self, "ENVIRONMENT", 'None', description)
@@ -56,3 +41,13 @@ class CreateDeploymentCommand(Command):
     @property
     def user_data(self):
         return UserDataEnvVar(self)
+
+    @property
+    def _env_var_names(self):
+        return [
+            'fingerprint',
+            'ci_build_url',
+            'description',
+            'environment',
+            'user_data'
+        ]

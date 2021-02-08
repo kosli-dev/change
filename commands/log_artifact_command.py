@@ -10,10 +10,7 @@ class LogArtifactCommand(Command):
 
     docker run \
         --env MERKELY_COMMAND=log_artifact \
-        --env MERKELY_API_TOKEN=${...} \
-        \
         --env MERKELY_FINGERPRINT=${...} \
-        --env MERKELY_DISPLAY_NAME=${...} \
         \
         --env MERKELY_ARTIFACT_GIT_COMMIT=${...} \
         --env MERKELY_ARTIFACT_GIT_URL=${...} \
@@ -21,7 +18,7 @@ class LogArtifactCommand(Command):
         --env MERKELY_CI_BUILD_URL=${...} \
         --env MERKELY_IS_COMPLIANT=${...} \
         --rm \
-        ... \
+        --env MERKELY_API_TOKEN=${...} \
         --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
         merkely/change
     """
@@ -30,7 +27,7 @@ class LogArtifactCommand(Command):
         self._print_compliance()
         payload = {
             "sha256": self.fingerprint.sha,
-            "filename": self.display_name.value,
+            "filename": self.fingerprint.artifact_name,
             "description": f"Created by build {self.ci_build_number.value}",
             "git_commit": self.artifact_git_commit.value,
             "commit_url": self.artifact_git_url.value,
@@ -69,7 +66,6 @@ class LogArtifactCommand(Command):
             'artifact_git_url',
             'ci_build_number',
             'ci_build_url',
-            'display_name',
             'fingerprint',
             'host',
             'is_compliant',
