@@ -33,8 +33,12 @@ endif
 list:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
 
+# list installed Python packages and their version numbers
 pip_list:
 	@docker run --rm -it --entrypoint="" ${IMAGE} pip3 list
+
+# - - - - - - - - - - - - - - - - - - - -
+# full image rebuilds with no Docker caching
 
 rebuild_all: rebuild rebuild_bb
 
@@ -56,6 +60,7 @@ rebuild_bb:
 		--tag ${IMAGE_PIPE} .
 
 # - - - - - - - - - - - - - - - - - - - -
+# image builds with Docker caching
 
 build_all: build build_bb
 
@@ -75,21 +80,30 @@ build_bb:
 		--tag ${IMAGE_PIPE} .
 
 # - - - - - - - - - - - - - - - - - - - -
+# run tests without building by volume-mounting
 
 test_all: test_unit test_integration test_bb_integration
 
+define SOURCE_VOLUME_MOUNTS
+	--volume ${ROOT_DIR}/cdb:/app/cdb
+endef
+
+define TEST_VOLUME_MOUNTS
+    --volume ${ROOT_DIR}/tests:/app/tests \
+	--volume ${ROOT_DIR}/commands:/app/commands \
+	--volume ${ROOT_DIR}/env_vars:/app/env_vars
+endef
+
 test_unit:
-	@docker rm --force 2> /dev/null $@ || true
-	@rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
-	@docker run \
+	docker rm --force 2> /dev/null $@ || true
+	rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
+	docker run \
 		--name $@ \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
-		--volume ${ROOT_DIR}/cdb:/app/cdb \
-		--volume ${ROOT_DIR}/tests:/app/tests \
-		--volume ${ROOT_DIR}/commands:/app/commands \
-		--volume ${ROOT_DIR}/env_vars:/app/env_vars \
-		--volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
+		${SOURCE_VOLUME_MOUNTS} \
+		${TEST_VOLUME_MOUNTS} \
+	    --volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
 
@@ -100,10 +114,8 @@ test_integration:
 		--name $@ \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
-		--volume ${ROOT_DIR}/cdb:/app/cdb \
-		--volume ${ROOT_DIR}/tests:/app/tests \
-		--volume ${ROOT_DIR}/commands:/app/commands \
-		--volume ${ROOT_DIR}/env_vars:/app/env_vars \
+		${SOURCE_VOLUME_MOUNTS} \
+		${TEST_VOLUME_MOUNTS} \
 		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/integration/coverage_entrypoint.sh \
 			${IMAGE} tests/integration/${TARGET}
@@ -115,16 +127,12 @@ test_bb_integration:
 		--name $@ \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
-		--volume ${ROOT_DIR}/cdb:/app/cdb \
+		${SOURCE_VOLUME_MOUNTS} \
 		--volume ${ROOT_DIR}/bitbucket_pipe/pipe.py:/app/pipe.py \
-		--volume ${ROOT_DIR}/tests:/app/tests \
-		--volume ${ROOT_DIR}/commands:/app/commands \
-		--volume ${ROOT_DIR}/env_vars:/app/env_vars \
+		${TEST_VOLUME_MOUNTS} \
 		--volume ${ROOT_DIR}/tmp/coverage/bb_integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
 			${IMAGE_PIPE} tests/bb_integration/${TARGET}
-
-# - - - - - - - - - - - - - - - - - - - -
 
 pytest_help:
 	@docker run \
@@ -132,6 +140,8 @@ pytest_help:
 		--rm \
 		${IMAGE} \
 		  python3 -m pytest --help
+
+# - - - - - - - - - - - - - - - - - - - -
 
 push:
 	@docker push ${IMAGE}
@@ -161,7 +171,7 @@ stats:
 	@cloc .
 
 
-# ComplianceDB recording tasks
+# recording tasks
 
 MASTER_BRANCH := master
 BRANCH_NAME := $(shell git rev-parse --abbrev-ref HEAD)
