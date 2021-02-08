@@ -176,6 +176,86 @@ def test_all_env_vars_file(capsys, mocker):
     ]
 
 
+def test_all_env_vars_sha(capsys, mocker):
+    """
+    New: MERKELY_COMMAND=log_artifact
+         MERKELY_FINGERPRINT="sha256://${SHA256}/${FILE_PATH}"
+         docker run ... merkely/change
+    Old: CDB_ARTIFACT_FILENAME=${FILE_PATH}
+         CDB_ARTIFACT_SHA=${SHA256}
+         docker run ... cdb.put_artifact ...
+    """
+
+    commit = "abc50c8a53f79974d615df335669b59fb56a4ed4"
+    artifact_name = "door-is-a.jar"
+    sha256 = "444daef69c676c2466571d3211180d559ccc2032b258fc5e73f99a103db462ef"
+    build_url = "https://gitlab/build/1456"
+    build_number = '23'
+
+    domain = "app.compliancedb.com"
+    owner = "compliancedb"
+    name = "cdb-controls-test-pipeline"
+
+    env = {
+        "CDB_HOST": f"https://{domain}",
+        "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
+        "CDB_ARTIFACT_FILENAME": artifact_name,
+        "CDB_ARTIFACT_SHA": sha256,
+        "CDB_IS_COMPLIANT": "TRUE",
+        "CDB_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
+        "CDB_ARTIFACT_GIT_COMMIT": commit,
+        "CDB_CI_BUILD_URL": build_url,
+        "CDB_BUILD_NUMBER": build_number
+    }
+    set_env_vars = {}
+
+    with dry_run(env, set_env_vars):
+        put_artifact("tests/integration/test-pipefile.json")
+    verify_approval(capsys, ["out"])
+
+    # extract data from approved cdb text file
+    this_test = "test_all_env_vars_sha"
+    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
+    with open(approved) as file:
+        old_approval = file.read()
+    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
+
+    expected_method = "Putting"
+    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
+    expected_payload = {
+        "build_url": build_url,
+        "commit_url": f"https://github/me/project/commit/{commit}",
+        "description": f"Created by build {build_number}",
+        "filename": artifact_name,
+        "git_commit": commit,
+        "is_compliant": True,
+        "sha256": sha256
+    }
+
+    # verify data from approved cdb text file
+    assert old_method == expected_method
+    assert old_url == expected_url
+    assert old_payload == expected_payload
+
+    # make merkely call
+    protocol = "sha256://"
+    ev = new_log_artifact_env(commit)
+    ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{artifact_name}"
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
+        method, url, payload = run(env, None, None)
+
+    # verify matching data
+    assert method == expected_method
+    assert url == expected_url
+    assert payload == expected_payload
+
+    assert extract_blurb(capsys_read(capsys)) == [
+        'MERKELY_COMMAND=log_artifact',
+        'MERKELY_IS_COMPLIANT: True',
+    ]
+
+
 # TODO: test when all optional env-var are not supplied
 
 
