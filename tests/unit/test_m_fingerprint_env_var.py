@@ -2,13 +2,18 @@ from commands import Command, CommandError, Context
 from env_vars import FingerprintEnvVar
 from tests.utils import *
 from pytest import raises
+import re
 
 SHA256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
 
 
 def test_sha_test_data():
+    regex = re.compile(r'(?P<sha>[0-9a-f]{64})$')
     assert len(SHA256) == 64
-    assert int(SHA256, 16) == 100382238559844117107660713596747001062775806001626650114972777586704962769372
+    match = regex.match(SHA256)
+    assert match is not None
+    sha = match.group('sha')
+    assert sha == SHA256
 
 
 def test_docker_protocol():
@@ -66,8 +71,11 @@ def test_sha256_protocol__bad_sha256_raises():
         "",   # empty
         'a',  # too short by a lot
         SHA256[0:-1],  # too short by 1
-        SHA256+'0',  # too long
-        SHA256[0:-1]+'F'  # lowercase f only
+        SHA256+'0',  # too long by 1
+        SHA256+'0123456789abcdef',  # too long by a lot
+        SHA256[0:-1]+'F',  # bad last char
+        'E'+SHA256[1:],  # bad first char
+        ('4'*32) + 'B' + ('5'*31),  # bad middle char
     ]
     for bad_sha in bad_shas:
         protocol = "sha256://"
@@ -97,7 +105,7 @@ def test_sha256_protocol__bad_artifact_name_raises():
         assert str(exc.value) == f"Invalid fingerprint: {fingerprint}"
 
 
-def test_unknown_protocol_raises():
+def test_unknown_protocol__all_properties_raise():
     protocol = "ash256://"
     artifact_name = SHA256
     fingerprint = f"{protocol}{artifact_name}"
@@ -108,14 +116,16 @@ def test_unknown_protocol_raises():
 
     assert fev.value == fingerprint
 
+    expected_diagnostic = f"Unknown protocol: {fingerprint}"
+
     with raises(CommandError) as exc:
         fev.protocol
-    assert str(exc.value) == f"Unknown protocol: {fingerprint}"
+    assert str(exc.value) == expected_diagnostic
 
     with raises(CommandError) as exc:
         fev.sha
-    assert str(exc.value) == f"Unknown protocol: {fingerprint}"
+    assert str(exc.value) == expected_diagnostic
 
     with raises(CommandError) as exc:
         fev.artifact_name
-    assert str(exc.value) == f"Unknown protocol: {fingerprint}"
+    assert str(exc.value) == expected_diagnostic
