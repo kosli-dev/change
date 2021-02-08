@@ -9,20 +9,24 @@ DESCRIPTION = "\n".join([
     '1. If prefixed by docker:// the name+tag of the docker image to fingerprint.',
     '   The docker socket must be volume-mounted.',
     '   Example:',
-    '     --env MERKELY_FINGERPRINT=”docker://${YOUR_DOCKER_IMAGE_AND_TAG}"',
-    '     --volume /var/run/docker.sock:/var/run/docker.sock',
+    '   docker run ... \\',
+    '     --env MERKELY_FINGERPRINT=”docker://${YOUR_DOCKER_IMAGE_AND_TAG}" \\',
+    '     --volume /var/run/docker.sock:/var/run/docker.sock \\',
+    '     ...',
     '',
     '2. If prefixed by file:// the full path of the file to fingerprint.',
     '   The full path must be volume-mounted.',
     '   Example:',
-    '     --env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH}',
-    '     --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH}',
+    '   docker run ... \\',
+    '     --env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH} \\',
+    '     --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \\',
+    '     ...',
     '',
-    "3. If prefixed by sha256:// the artifact's sha256 digest."
-    '   The name of the artifact must be provided in MERKELY_DISPLAY_NAME',
+    "3. If prefixed by sha256:// the artifact's sha256 and name."
     '   Example:',
-    '     --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}”',
-    '     --env MERKELY_DISPLAY_NAME=”${YOUR_ARTIFACT_NAME}”'
+    '   docker run ... \\',
+    '     --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}/${YOUR_ARTIFACT_NAME}” \\',
+    '     ...',
 ])
 
 
@@ -44,10 +48,6 @@ class FingerprintEnvVar(RequiredEnvVar):
             raise self.unknown_protocol_error()
 
     @property
-    def artifact_name(self):
-        return self.value[len(self.protocol):]
-
-    @property
     def sha(self):
         if self.protocol == FILE_PROTOCOL:
             return self._command.file_fingerprinter(self.protocol, self.artifact_name)
@@ -57,6 +57,10 @@ class FingerprintEnvVar(RequiredEnvVar):
             return self.artifact_name
         else:
             raise self.unknown_protocol_error()
+
+    @property
+    def artifact_name(self):
+        return self.value[len(self.protocol):]
 
     def unknown_protocol_error(self):
         return CommandError(f"Unknown protocol: {self.value}")

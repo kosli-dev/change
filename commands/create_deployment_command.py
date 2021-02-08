@@ -12,7 +12,6 @@ class CreateDeploymentCommand(Command):
             "environment": self.environment.value,
             "description": self.description.value,
             "build_url": self.ci_build_url.value,
-            # Note: The CDB payload does not contain the artifact name
         }
         if self.user_data.is_present:
             payload["user_data"] = self.user_data.json
