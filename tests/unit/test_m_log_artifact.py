@@ -261,10 +261,6 @@ def test_all_env_vars_sha(capsys, mocker):
 
 def test_each_required_env_var_missing(capsys):
     for env_var in make_command_env_vars():
-        #if env_var.name == 'MERKELY_FINGERPRINT':
-        #    continue
-        #if env_var.name == 'MERKELY_DISPLAY_NAME':
-        #    continue
         if isinstance(env_var, RequiredEnvVar):
             ev = new_log_artifact_env()
             ev.pop(env_var.name)
@@ -292,18 +288,12 @@ def old_put_artifact_env(commit, *,
     }
 
 
-def new_log_artifact_env(commit=None, *,
-                         domain=None,
-                         build_url=None,
-                         build_number=None):
+def new_log_artifact_env(commit=None):
     if commit is None:
-        commit = any_commit()
-    if domain is None:
-        domain = "app.compliancedb.com"
-    if build_url is None:
-        build_url = 'https://gitlab/build/1456'
-    if build_number is None:
-        build_number = '23'
+        commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
+    domain = "app.compliancedb.com"
+    build_url = 'https://gitlab/build/1456'
+    build_number = '23'
     return {
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_API_TOKEN": API_TOKEN,
@@ -315,8 +305,4 @@ def new_log_artifact_env(commit=None, *,
         "MERKELY_ARTIFACT_GIT_COMMIT": commit,
         "MERKELY_IS_COMPLIANT": "TRUE"
     }
-
-
-def any_commit():
-    return "abc50c8a53f79974d615df335669b59fb56a4ed3"
 
