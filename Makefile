@@ -43,6 +43,7 @@ pip_list:
 rebuild_all: rebuild rebuild_bb
 
 rebuild:
+	@docker image rm python:3.7-alpine
 	@echo ${IMAGE}
 	@docker build \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
