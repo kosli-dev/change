@@ -1,7 +1,7 @@
 from collections import namedtuple
-import json
 from commands import CommandError, DefaultedEnvVar, OptionalEnvVar, RequiredEnvVar
 from commands import FingerprintEnvVar, DisplayNameEnvVar
+from commands import load_json
 
 
 class Command:
@@ -63,16 +63,7 @@ class Command:
 
     @property
     def merkelypipe(self):
-        try:
-            filename = "/Merkelypipe.json"
-            with open(filename) as file:
-                return json.load(file)
-        except FileNotFoundError:
-            raise CommandError(f"{filename} file not found.")
-        except IsADirectoryError:
-            raise CommandError(f"{filename} is a directory.")
-        except json.decoder.JSONDecodeError as exc:
-            raise CommandError(f"{filename} invalid json - {str(exc)}")
+        return load_json("/Merkelypipe.json")
 
     # - - - - - - - - - - - - - - - - - - - - -
 
