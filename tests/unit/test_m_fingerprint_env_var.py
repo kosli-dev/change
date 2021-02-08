@@ -6,7 +6,12 @@ from pytest import raises
 SHA256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
 
 
-def test_docker_protocol(capsys):
+def test_sha_test_data():
+    assert len(SHA256) == 64
+    assert int(SHA256, 16) == 100382238559844117107660713596747001062775806001626650114972777586704962769372
+
+
+def test_docker_protocol():
     protocol = "docker://"
     artifact_name = "acme/road-runner:4.8"
     fingerprint = f"{protocol}{artifact_name}"
@@ -24,10 +29,8 @@ def test_docker_protocol(capsys):
     assert fev.artifact_name == artifact_name
     assert fev.sha == SHA256
 
-    capsys_read(capsys)
 
-
-def test_file_protocol(capsys):
+def test_file_protocol():
     protocol = "file://"
     artifact_name = "/user/artifact/jam.jar"
     fingerprint = f"{protocol}{artifact_name}"
@@ -45,13 +48,11 @@ def test_file_protocol(capsys):
     assert fev.artifact_name == artifact_name
     assert fev.sha == SHA256
 
-    capsys_read(capsys)
 
-
-def test_sha_protocl(capsys):
+def test_sha_protocol():
     protocol = "sha256://"
-    artifact_name = SHA256
-    fingerprint = f"{protocol}{artifact_name}"
+    artifact_name = "acme/road-runner:2.34"
+    fingerprint = f"{protocol}{SHA256}/{artifact_name}"
     env = {
         "MERKELY_FINGERPRINT": fingerprint
     }
@@ -62,13 +63,11 @@ def test_sha_protocl(capsys):
 
     assert fev.value == fingerprint
     assert fev.protocol == protocol
-    assert fev.artifact_name == SHA256
-    assert fev.sha == SHA256
-
-    capsys_read(capsys)  # TODO
+    #assert fev.sha == SHA256
+    #assert fev.artifact_name == artifact_name
 
 
-def test_unknown_protocol(capsys):
+def test_unknown_protocol_raises():
     protocol = "ash256://"
     artifact_name = SHA256
     fingerprint = f"{protocol}{artifact_name}"
@@ -86,9 +85,9 @@ def test_unknown_protocol(capsys):
     assert str(exc.value) == f"Unknown protocol: {fingerprint}"
 
     with raises(CommandError) as exc:
-        fev.artifact_name
+        fev.sha
     assert str(exc.value) == f"Unknown protocol: {fingerprint}"
 
     with raises(CommandError) as exc:
-        fev.sha
+        fev.artifact_name
     assert str(exc.value) == f"Unknown protocol: {fingerprint}"
