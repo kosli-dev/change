@@ -1,0 +1,15 @@
+MERKELY_COMMAND=log_artifact
+Error: MERKELY_API_TOKEN environment-variable is not set.
+MERKELY_COMMAND=log_artifact
+Error: MERKELY_ARTIFACT_GIT_COMMIT environment-variable is not set.
+MERKELY_COMMAND=log_artifact
+Error: MERKELY_ARTIFACT_GIT_URL environment-variable is not set.
+MERKELY_COMMAND=log_artifact
+Error: MERKELY_CI_BUILD_NUMBER environment-variable is not set.
+MERKELY_COMMAND=log_artifact
+Error: MERKELY_CI_BUILD_URL environment-variable is not set.
+MERKELY_COMMAND=log_artifact
+Error: MERKELY_FINGERPRINT environment-variable is not set.
+MERKELY_COMMAND=log_artifact
+Error: MERKELY_IS_COMPLIANT environment-variable is not set.
+Error: MERKELY_COMMAND environment-variable is not set.
