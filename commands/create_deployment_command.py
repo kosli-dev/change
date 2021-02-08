@@ -1,4 +1,5 @@
-from commands import Command, DisplayNameEnvVar, FingerprintEnvVar, UserDataEnvVar
+from commands import Command
+from env_vars import DisplayNameEnvVar, FingerprintEnvVar, UserDataEnvVar
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
 

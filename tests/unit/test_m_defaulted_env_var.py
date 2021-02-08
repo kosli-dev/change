@@ -1,4 +1,4 @@
-from commands import Command, Context, DefaultedEnvVar
+from env_vars import DefaultedEnvVar
 
 NAME = "MERKELY_HOST"
 DEFAULT = "https://default.merkely.com"

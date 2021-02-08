@@ -20,6 +20,7 @@ ENV IMAGE_SHA=${IMAGE_COMMIT_SHA}
 COPY cdb/ cdb/
 COPY tests/ tests/
 COPY commands commands/
+COPY env_vars env_vars/
 COPY main.py .
 
 ADD tests/data/test_source_repo.tar.gz /

@@ -1,4 +1,5 @@
-from commands import RequiredEnvVar, CommandError
+from commands import CommandError
+from env_vars import RequiredEnvVar
 
 FILE_PROTOCOL = 'file://'
 DOCKER_PROTOCOL = 'docker://'

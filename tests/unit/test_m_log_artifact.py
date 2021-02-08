@@ -1,7 +1,8 @@
 from cdb.put_artifact       import put_artifact
 from cdb.put_artifact_image import put_artifact_image
 
-from commands import run, build_command, RequiredEnvVar, Context
+from commands import run, build_command, Context
+from env_vars import RequiredEnvVar
 
 from tests.utils import *
 

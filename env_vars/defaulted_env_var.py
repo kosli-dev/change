@@ -1,4 +1,4 @@
-from .env_var import EnvVar
+from env_vars import EnvVar
 
 
 class DefaultedEnvVar(EnvVar):

@@ -1,5 +1,5 @@
 from commands import LogEvidenceCommand, Context
-from commands import RequiredEnvVar
+from env_vars import RequiredEnvVar
 
 from collections import namedtuple
 

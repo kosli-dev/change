@@ -1,4 +1,5 @@
-from commands import EnvVar, CommandError
+from commands import CommandError
+from env_vars import EnvVar
 
 
 class RequiredEnvVar(EnvVar):

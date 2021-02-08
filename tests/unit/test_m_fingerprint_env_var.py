@@ -1,5 +1,5 @@
-from commands import Command, Context, CommandError
-from commands import FingerprintEnvVar
+from commands import Command, CommandError, Context
+from env_vars import FingerprintEnvVar
 from tests.utils import *
 from pytest import raises
 

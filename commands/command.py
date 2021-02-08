@@ -1,6 +1,7 @@
 from collections import namedtuple
-from commands import CommandError, DefaultedEnvVar, OptionalEnvVar, RequiredEnvVar
-from commands import FingerprintEnvVar, DisplayNameEnvVar
+
+from env_vars import DefaultedEnvVar, OptionalEnvVar, RequiredEnvVar
+from env_vars import FingerprintEnvVar, DisplayNameEnvVar
 from commands import load_json
 
 

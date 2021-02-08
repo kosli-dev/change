@@ -1,5 +1,5 @@
 from commands import LogArtifactCommand, Context, CommandError
-from commands import DisplayNameEnvVar
+from env_vars import DisplayNameEnvVar
 from pytest import raises
 
 SHA256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"

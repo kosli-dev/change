@@ -1,4 +1,5 @@
-from commands import OptionalEnvVar, load_json
+from commands import load_json
+from env_vars import OptionalEnvVar
 
 DESCRIPTION = "\n".join([
     "A filename whose json content to embed in the deployment.",
