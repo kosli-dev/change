@@ -2,10 +2,6 @@ from .command_error import CommandError
 
 from .json_loader import load_json
 
-from .fingerprinter import Fingerprinter
-from .docker_fingerprinter import DockerFingerprinter
-from .file_fingerprinter import FileFingerprinter
-
 from .context import Context
 
 from .command import Command

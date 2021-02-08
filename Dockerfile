@@ -21,6 +21,7 @@ COPY cdb/ cdb/
 COPY tests/ tests/
 COPY commands commands/
 COPY env_vars env_vars/
+COPY fingerprinters fingerprinters/
 COPY main.py .
 
 ADD tests/data/test_source_repo.tar.gz /

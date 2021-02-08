@@ -1,4 +1,4 @@
-from commands import DockerFingerprinter
+from fingerprinters import DockerFingerprinter
 
 
 class MockDockerFingerprinter(DockerFingerprinter):

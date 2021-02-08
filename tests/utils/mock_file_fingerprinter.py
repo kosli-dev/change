@@ -1,4 +1,4 @@
-from commands import FileFingerprinter
+from fingerprinters import FileFingerprinter
 
 
 class MockFileFingerprinter(FileFingerprinter):

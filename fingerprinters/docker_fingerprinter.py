@@ -1,4 +1,4 @@
-from commands import Fingerprinter
+from fingerprinters import Fingerprinter
 import docker
 
 

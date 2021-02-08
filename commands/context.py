@@ -1,6 +1,5 @@
 import os
-from .docker_fingerprinter import DockerFingerprinter
-from .file_fingerprinter import FileFingerprinter
+from fingerprinters import DockerFingerprinter, FileFingerprinter
 
 
 class Context:

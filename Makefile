@@ -91,7 +91,8 @@ endef
 define TEST_VOLUME_MOUNTS
     --volume ${ROOT_DIR}/tests:/app/tests \
 	--volume ${ROOT_DIR}/commands:/app/commands \
-	--volume ${ROOT_DIR}/env_vars:/app/env_vars
+	--volume ${ROOT_DIR}/env_vars:/app/env_vars \
+	--volume ${ROOT_DIR}/fingerprinters:/app/fingerprinters
 endef
 
 test_unit:
