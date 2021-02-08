@@ -1,2 +1,0 @@
-MERKELY_COMMAND=log_artifact
-Error: MERKELY_FINGERPRINT has unknown protocol ash256://ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc
