@@ -7,7 +7,7 @@ class EnvVar:
 
     @property
     def value(self):
-        raise NotImplementedError("EnvVar value override missing")
+        raise NotImplementedError(f"{self.__class__.__name__}.value override missing")
 
     @property
     def name(self):

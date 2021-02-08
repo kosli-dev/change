@@ -12,7 +12,7 @@ class Command:
         self._context = context
 
     def __call__(self):
-        raise NotImplementedError("Command subclass override missing")
+        raise NotImplementedError("Command.__call__(self) subclass override missing")
 
     @property
     def env_vars(self):
@@ -22,7 +22,7 @@ class Command:
 
     @property
     def _env_var_names(self):
-        raise NotImplementedError("Command subclass override missing.")
+        raise NotImplementedError("Command._env_var_names(self) subclass override missing.")
 
     # - - - - - - - - - - - - - - - - - - - - -
 

@@ -363,10 +363,19 @@ def test_sha256_protocol_docker_image(capsys):
         'MERKELY_COMMAND=log_artifact',
         'MERKELY_IS_COMPLIANT: True'
     ]
+
     # TODO: make cdb call
-    #old_dir = "tests/integration/approved_executions"
-    #old_file = "test_put_artifact"
-    #old_test = "test_required_env_vars_uses_CDB_ARTIFACT_SHA"
+    old_dir = "tests/integration/approved_executions"
+    old_file = "test_put_artifact_image"
+    old_test = "test_required_env_vars_uses_CDB_ARTIFACT_SHA"
+    approved = f"{old_dir}/{old_file}.{old_test}.approved.txt"
+    with open(approved) as file:
+        old_approval = file.read()
+    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
+    assert old_method == method
+    assert old_url == url
+    #assert old_payload == payload
+    # "filename": "NO_DOCKER_IMAGE_FOUND",
 
 
 # TODO: test when all optional env-var are not supplied
