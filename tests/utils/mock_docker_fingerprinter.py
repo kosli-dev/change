@@ -13,8 +13,7 @@ class MockDockerFingerprinter(DockerFingerprinter):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if not self._called:
-            pass
-            #self._failed(["Expected call did not happen"])
+            self._failed(["Expected call did not happen"])
 
     def _fingerprint(self, image_name):
         self._called = True
