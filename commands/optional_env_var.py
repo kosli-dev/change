@@ -8,3 +8,7 @@ class OptionalEnvVar(EnvVar):
     @property
     def value(self):
         return self.env.get(self.name, None)
+
+    @property
+    def is_present(self):
+        return self.value is not None

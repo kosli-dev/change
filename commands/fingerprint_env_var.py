@@ -26,6 +26,7 @@ DESCRIPTION = "\n".join([
 
 
 class FingerprintEnvVar(RequiredEnvVar):
+
     def __init__(self, command):
         super().__init__(command.env, "MERKELY_FINGERPRINT", DESCRIPTION)
         self._command = command
@@ -57,4 +58,4 @@ class FingerprintEnvVar(RequiredEnvVar):
             raise self.unknown_protocol_error()
 
     def unknown_protocol_error(self):
-        raise CommandError(f"Unknown protocol: {self.value}")
+        return CommandError(f"Unknown protocol: {self.value}")

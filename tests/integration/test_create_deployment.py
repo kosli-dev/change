@@ -5,6 +5,7 @@ from tests.utils import *
 APPROVAL_DIR = "tests/integration/approved_executions"
 APPROVAL_FILE = "test_create_deployment"
 
+
 def test_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
     # sha provided explicitly
     sha256 = '99cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212'
@@ -60,7 +61,7 @@ def test_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
         create_deployment("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
-   # extract data from approved cdb text file
+    # extract data from approved cdb text file
     this_test = "test_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE"
     approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
     with open(approved) as file:
@@ -100,7 +101,7 @@ def test_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
         create_deployment("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
-   # extract data from approved cdb text file
+    # extract data from approved cdb text file
     this_test = "test_required_env_vars_uses_CDB_ARTIFACT_FILENAME"
     approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
     with open(approved) as file:
@@ -149,7 +150,7 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys, mocker):
         create_deployment("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
-   # extract data from approved cdb text file
+    # extract data from approved cdb text file
     this_test = "test_all_env_vars_uses_CDB_ARTIFACT_SHA"
     approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
     with open(approved) as file:

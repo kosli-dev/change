@@ -14,6 +14,7 @@ DESCRIPTION = "\n".join([
 
 
 class DisplayNameEnvVar(OptionalEnvVar):
+
     def __init__(self, command):
         super().__init__(command.env, "MERKELY_DISPLAY_NAME", DESCRIPTION)
         self._command = command

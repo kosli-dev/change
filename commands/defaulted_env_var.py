@@ -2,6 +2,7 @@ from .env_var import EnvVar
 
 
 class DefaultedEnvVar(EnvVar):
+
     def __init__(self, env, name, default, description):
         super().__init__(env, name, description)
         self._default = default
