@@ -79,12 +79,13 @@ def test_sha256_protocol__bad_sha256_raises():
         fev = FingerprintEnvVar(command)
         with raises(CommandError) as exc:
             fev.sha
-        #assert str(exc.value) == 'xxxx'
+        assert str(exc.value) == f"Invalid fingerprint: {fingerprint}"
 
 
 def test_sha256_protocol__bad_artifact_name_raises():
-    # artifact_name empty raises
-    for bad in ['', '/']:
+    no_slash = ''
+    empty = '/'
+    for bad in [no_slash, empty]:
         protocol = 'sha256://'
         fingerprint = f"{protocol}{SHA256}{bad}"
         env = {"MERKELY_FINGERPRINT": fingerprint}
@@ -93,7 +94,7 @@ def test_sha256_protocol__bad_artifact_name_raises():
         fev = FingerprintEnvVar(command)
         with raises(CommandError) as exc:
             fev.artifact_name
-        #assert str(exc.value) == 'xxxx'
+        assert str(exc.value) == f"Invalid fingerprint: {fingerprint}"
 
 
 def test_unknown_protocol_raises():
