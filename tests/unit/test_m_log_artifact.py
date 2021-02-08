@@ -5,9 +5,7 @@ from commands import run, build_command, RequiredEnvVar, Context
 
 from tests.utils import *
 
-MERKELY_DOMAIN = "test.compliancedb.com"
 CDB_DOMAIN = "app.compliancedb.com"
-
 CDB_OWNER = "compliancedb"
 CDB_NAME = "cdb-controls-test-pipeline"
 
