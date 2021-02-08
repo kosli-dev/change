@@ -24,7 +24,7 @@ DESCRIPTION = "\n".join([
     '     --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \\',
     '     ...',
     '',
-    "3. If prefixed by sha256:// the artifact's sha256, then /, then it's name."
+    "3. If prefixed by sha256:// the artifact's 64 character sha256, then /, then it's non-empty name."
     '   Example:',
     '   docker run ... \\',
     '     --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}/${YOUR_ARTIFACT_NAME}” \\',
@@ -39,13 +39,30 @@ class FingerprintEnvVar(RequiredEnvVar):
         self._command = command
 
     @property
+    def value(self):
+        self.protocol
+        self.artifact_name
+        return self._raw_value
+
+    @property
     def protocol(self):
-        if self.value.startswith(FILE_PROTOCOL):
+        if self._raw_value.startswith(FILE_PROTOCOL):
             return FILE_PROTOCOL
-        elif self.value.startswith(DOCKER_PROTOCOL):
+        elif self._raw_value.startswith(DOCKER_PROTOCOL):
             return DOCKER_PROTOCOL
-        elif self.value.startswith(SHA256_PROTOCOL):
+        elif self._raw_value.startswith(SHA256_PROTOCOL):
             return SHA256_PROTOCOL
+        else:
+            raise self._unknown_protocol_error()
+
+    @property
+    def artifact_name(self):
+        if self.protocol == FILE_PROTOCOL:
+            return self._non_empty_artifact_name()
+        elif self.protocol == DOCKER_PROTOCOL:
+            return self._non_empty_artifact_name()
+        elif self.protocol == SHA256_PROTOCOL:
+            return self._validated.artifact_name
         else:
             raise self._unknown_protocol_error()
 
@@ -60,21 +77,16 @@ class FingerprintEnvVar(RequiredEnvVar):
         else:
             raise self._unknown_protocol_error()
 
+    # - - - - - - - - - - - - - - -
+
     @property
-    def artifact_name(self):
-        if self.protocol == FILE_PROTOCOL:
-            return self._non_empty_artifact_name()
-        elif self.protocol == DOCKER_PROTOCOL:
-            return self._non_empty_artifact_name()
-        elif self.protocol == SHA256_PROTOCOL:
-            return self._validated.artifact_name
-        #TODO: else:
-        #   raise self._unknown_protocol_error()
+    def _raw_value(self):
+        return super().value
 
     def _non_empty_artifact_name(self):
-        name = self.value[len(self.protocol):]
+        name = self._raw_value[len(self.protocol):]
         if name == "":
-            raise CommandError(f"Empty {self.protocol} fingerprint")
+            raise CommandError(f"Empty {self._raw_value} fingerprint")
         else:
             return name
 
@@ -82,7 +94,7 @@ class FingerprintEnvVar(RequiredEnvVar):
 
     @property
     def _validated(self):
-        both = self.value[len(SHA256_PROTOCOL):]
+        both = self._raw_value[len(SHA256_PROTOCOL):]
         match = self._REGEX.match(both)
         if match is None:
             raise CommandError(f"Invalid sha256:// fingerprint: {both}")
@@ -91,4 +103,4 @@ class FingerprintEnvVar(RequiredEnvVar):
         return namedtuple('Both',names)(*args)
 
     def _unknown_protocol_error(self):
-        return CommandError(f"Unknown protocol: {self.value}")
+        return CommandError(f"Unknown protocol: {self._raw_value}")

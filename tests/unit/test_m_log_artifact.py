@@ -280,7 +280,7 @@ def new_log_artifact_env(commit=None):
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{domain}",
-        "MERKELY_FINGERPRINT": 'dummy',
+        "MERKELY_FINGERPRINT": 'docker://acme/road-runner:2.3',
         "MERKELY_CI_BUILD_URL": BUILD_URL,
         "MERKELY_CI_BUILD_NUMBER": BUILD_NUMBER,
         "MERKELY_ARTIFACT_GIT_URL": commit_url(commit),
