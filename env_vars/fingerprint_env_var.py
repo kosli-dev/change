@@ -1,5 +1,7 @@
 from commands import CommandError
 from env_vars import RequiredEnvVar
+from collections import namedtuple
+import re
 
 FILE_PROTOCOL = 'file://'
 DOCKER_PROTOCOL = 'docker://'
@@ -45,7 +47,7 @@ class FingerprintEnvVar(RequiredEnvVar):
         elif self.value.startswith(SHA256_PROTOCOL):
             return SHA256_PROTOCOL
         else:
-            raise self.unknown_protocol_error()
+            raise self._unknown_protocol_error()
 
     @property
     def sha(self):
@@ -54,10 +56,9 @@ class FingerprintEnvVar(RequiredEnvVar):
         elif self.protocol == DOCKER_PROTOCOL:
             return self._command.docker_fingerprinter(self.protocol, self.artifact_name)
         elif self.protocol == SHA256_PROTOCOL:
-            start = len(self.protocol)
-            return self.value[start:start+64]
+            return self._validated.sha
         else:
-            raise self.unknown_protocol_error()
+            raise self._unknown_protocol_error()
 
     @property
     def artifact_name(self):
@@ -66,10 +67,27 @@ class FingerprintEnvVar(RequiredEnvVar):
         elif self.protocol == DOCKER_PROTOCOL:
             return self._after(len(self.protocol))
         elif self.protocol == SHA256_PROTOCOL:
-            return self._after(len(self.protocol)+64+len('/'))
+            return self._validated.artifact_name
+
+    _REGEX = re.compile('(?P<sha>[0-9a-f]+)\/(?P<artifact_name>.*)')
+
+    @property
+    def _validated(self):
+        both = self.value[len(SHA256_PROTOCOL):]
+        match = self._REGEX.match(both)
+        if match is None:
+            raise self._invalid_fingerprint()
+        sha = match.group('sha')
+        artifact_name = match.group('artifact_name')
+        names = ('sha', 'artifact_name')
+        args = (sha, artifact_name)
+        return namedtuple('Both',names)(*args)
 
     def _after(self, n):
         return self.value[-(len(self.value)-n):]
 
-    def unknown_protocol_error(self):
+    def _unknown_protocol_error(self):
         return CommandError(f"Unknown protocol: {self.value}")
+
+    def _invalid_fingerprint(self):
+        return CommandError(f"Invalid fingerprint: {self.value}")
