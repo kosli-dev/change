@@ -63,11 +63,20 @@ class FingerprintEnvVar(RequiredEnvVar):
     @property
     def artifact_name(self):
         if self.protocol == FILE_PROTOCOL:
-            return self._after(len(self.protocol))
+            return self._non_empty_artifact_name()
         elif self.protocol == DOCKER_PROTOCOL:
-            return self._after(len(self.protocol))
+            return self._non_empty_artifact_name()
         elif self.protocol == SHA256_PROTOCOL:
             return self._validated.artifact_name
+        #TODO: else:
+        #   raise self._unknown_protocol_error()
+
+    def _non_empty_artifact_name(self):
+        name = self.value[len(self.protocol):]
+        if name == "":
+            raise CommandError(f"Empty {self.protocol} fingerprint")
+        else:
+            return name
 
     _REGEX = re.compile(r'(?P<sha>[0-9a-f]{64})\/(?P<artifact_name>.+)')
 
@@ -76,17 +85,18 @@ class FingerprintEnvVar(RequiredEnvVar):
         both = self.value[len(SHA256_PROTOCOL):]
         match = self._REGEX.match(both)
         if match is None:
-            raise self._sha256_fingerprint_error()
+            raise CommandError(f"Invalid sha256:// fingerprint: {both}")
+            #raise self._sha256_fingerprint_error()
         names = ('sha', 'artifact_name')
         args = (match.group('sha'), match.group('artifact_name'))
         return namedtuple('Both',names)(*args)
 
-    def _after(self, n):
-        return self.value[-(len(self.value)-n):]
+    #def _after(self, n):
+    #    return self.value[-(len(self.value)-n):]
 
     def _unknown_protocol_error(self):
         return CommandError(f"Unknown protocol: {self.value}")
 
-    def _sha256_fingerprint_error(self):
-        both = self.value[len(SHA256_PROTOCOL):]
-        return CommandError(f"Invalid sha256:// fingerprint: {both}")
+    #def _sha256_fingerprint_error(self):
+    #    both = self.value[len(SHA256_PROTOCOL):]
+    #    return CommandError(f"Invalid sha256:// fingerprint: {both}")

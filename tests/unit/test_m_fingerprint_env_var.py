@@ -16,7 +16,7 @@ def test_sha_test_data():
     assert sha == SHA256
 
 
-def test_docker_protocol():
+def test_docker_protocol__good():
     protocol = "docker://"
     artifact_name = "acme/road-runner:4.8"
     fingerprint = f"{protocol}{artifact_name}"
@@ -33,7 +33,23 @@ def test_docker_protocol():
     assert fev.sha == SHA256
 
 
-def test_file_protocol():
+def test_docker_protocol__empty_image_name_raises():
+    protocol = "docker://"
+    image_name = ""
+    env = {"MERKELY_FINGERPRINT": f"{protocol}{image_name}"}
+    context = Context(env, None, None)
+    command = Command(context)
+
+    fev = FingerprintEnvVar(command)
+
+    assert fev.protocol == protocol
+
+    with raises(CommandError) as exc:
+        fev.artifact_name
+    assert str(exc.value) == f"Empty docker:// fingerprint"
+
+
+def test_file_protocol__good():
     protocol = "file://"
     artifact_name = "/user/artifact/jam.jar"
     fingerprint = f"{protocol}{artifact_name}"
@@ -50,7 +66,23 @@ def test_file_protocol():
     assert fev.sha == SHA256
 
 
-def test_sha_protocol():
+def test_file_protocol__empty_filename_raises():
+    protocol = "file://"
+    filename = ""
+    env = {"MERKELY_FINGERPRINT": f"{protocol}{filename}"}
+    context = Context(env, None, None)
+    command = Command(context)
+
+    fev = FingerprintEnvVar(command)
+
+    assert fev.protocol == protocol
+
+    with raises(CommandError) as exc:
+        fev.artifact_name
+    assert str(exc.value) == f"Empty file:// fingerprint"
+
+
+def test_sha_protocol__good():
     protocol = "sha256://"
     artifact_name = "acme/road-runner:2.34"
     fingerprint = f"{protocol}{SHA256}/{artifact_name}"
