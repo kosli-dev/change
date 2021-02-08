@@ -176,7 +176,7 @@ def test_docker_protocol(capsys, mocker):
     ]
 
 
-def X_test_file_protocol_not_at_root(capsys, mocker):
+def test_file_protocol_not_at_root(capsys, mocker):
     """
     Tests logging a file artifact via the env-var
     MERKELY_FINGERPRINT="file://${FILE_PATH}"
@@ -250,13 +250,13 @@ def X_test_file_protocol_not_at_root(capsys, mocker):
 
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
-        'MERKELY_IS_COMPLIANT: True'
+        'MERKELY_IS_COMPLIANT: True',
         f'Calculating fingerprint for {protocol}{directory}/{filename}',
         f"Calculated fingerprint: {sha256}",
     ]
 
 
-def X_test_sha256_protocol_file(capsys):
+def test_sha256_protocol_file(capsys):
     """
     Tests logging a file artifact via the env-vars
     MERKELY_FINGERPRINT="sha256://${SHA256}"
@@ -268,9 +268,9 @@ def X_test_sha256_protocol_file(capsys):
     protocol = "sha256://"
     filename = "door-is-a.jar"
     build_url = "https://gitlab/build/2156"
-    build_number = '751'
+    build_number = '2156'
 
-    domain = MERKELY_DOMAIN
+    domain = CDB_DOMAIN
     owner = CDB_OWNER
     name = CDB_NAME
 
@@ -320,7 +320,7 @@ def X_test_sha256_protocol_file(capsys):
     assert old_payload == payload
 
 
-def X_test_sha256_protocol_docker_image(capsys):
+def test_sha256_protocol_docker_image(capsys):
     """
     Tests logging a docker image artifact via the env-vars
     MERKELY_FINGERPRINT="sha256://${SHA256}"
@@ -376,6 +376,10 @@ def X_test_sha256_protocol_docker_image(capsys):
 
 def X_test_each_required_env_var_missing(capsys):
     for env_var in make_command_env_vars():
+        #if env_var.name == 'MERKELY_FINGERPRINT':
+        #    continue
+        #if env_var.name == 'MERKELY_DISPLAY_NAME':
+        #    continue
         if isinstance(env_var, RequiredEnvVar):
             ev = new_log_artifact_env()
             ev.pop(env_var.name)

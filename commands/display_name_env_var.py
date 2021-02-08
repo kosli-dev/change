@@ -1,4 +1,5 @@
 from commands import RequiredEnvVar
+from os import path
 
 DESCRIPTION = "\n".join([
     'The name of the fingerprinted artifact.',
@@ -18,6 +19,8 @@ class DisplayNameEnvVar(RequiredEnvVar):
         fingerprint = self._command.env_vars.fingerprint
         if fingerprint.protocol == 'sha256://':
             return super().value
+        elif fingerprint.protocol == 'file://':
+            return path.basename(fingerprint.artifact_name)
         else:
             return fingerprint.artifact_name
 
