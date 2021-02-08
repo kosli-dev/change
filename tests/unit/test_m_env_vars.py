@@ -27,11 +27,11 @@ class Example:
     def X_env_vars(self):
         names = []
         evs = []
-        for item in dir(self):
+        for name,maybe in Example.__dict__.items():
             #print(f"Looking at {item!r} {type(item)}")
-            if hasattr(item, 'is_env_var'):
-                names.append(item.__name__)
-                evs.append(item(self))
+            if hasattr(maybe, 'is_env_var'):
+                names.append(name)
+                evs.append(maybe())
         return namedtuple('EnvVars', tuple(names))(*evs)
 
     @property

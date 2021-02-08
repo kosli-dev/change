@@ -15,6 +15,18 @@ class Command:
         raise NotImplementedError("Command subclass override missing")
 
     @property
+    def env_vars(self):
+        names = self._env_var_names
+        evs = [getattr(self, name) for name in names]
+        return namedtuple('EnvVars', tuple(names))(*evs)
+
+    @property
+    def _env_var_names(self):
+        raise NotImplementedError("Command subclass override missing.")
+
+    # - - - - - - - - - - - - - - - - - - - - -
+
+    @property
     def name(self):
         description = "The Merkely command to execute."
         return self._required_env_var("COMMAND", description)

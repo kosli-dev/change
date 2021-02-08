@@ -1,4 +1,3 @@
-from collections import namedtuple
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
@@ -24,11 +23,9 @@ class DeclarePipelineCommand(Command):
         return 'Putting', url, payload
 
     @property
-    def env_vars(self):
-        names = [
+    def _env_var_names(self):
+        return [
             'api_token',
             'host',
             'name',
         ]
-        evs = [getattr(self, name) for name in names]
-        return namedtuple('EnvVars', tuple(names))(*evs)

@@ -1,4 +1,3 @@
-from collections import namedtuple
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
@@ -43,23 +42,6 @@ class LogArtifactCommand(Command):
         return 'Putting', url, payload
 
     @property
-    def env_vars(self):
-        names = [
-            'api_token',
-            'artifact_git_commit',
-            'artifact_git_url',
-            'ci_build_number',
-            'ci_build_url',
-            'display_name',
-            'fingerprint',
-            'host',
-            'is_compliant',
-            'name'
-        ]
-        evs = [getattr(self, name) for name in names]
-        return namedtuple('EnvVars', tuple(names))(*evs)
-
-    @property
     def artifact_git_commit(self):
         description = "The sha of the git commit that produced this build."
         return self._required_env_var('ARTIFACT_GIT_COMMIT', description)
@@ -78,3 +60,18 @@ class LogArtifactCommand(Command):
     def ci_build_url(self):
         description = "Link to the build in the ci system."
         return self._required_env_var('CI_BUILD_URL', description)
+
+    @property
+    def _env_var_names(self):
+        return [
+            'api_token',
+            'artifact_git_commit',
+            'artifact_git_url',
+            'ci_build_number',
+            'ci_build_url',
+            'display_name',
+            'fingerprint',
+            'host',
+            'is_compliant',
+            'name'
+        ]

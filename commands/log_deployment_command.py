@@ -1,4 +1,3 @@
-from collections import namedtuple
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
@@ -39,21 +38,6 @@ class LogDeploymentCommand(Command):
         return 'Posting', url, payload
 
     @property
-    def env_vars(self):
-        names = [
-            'api_token',
-            'ci_build_url',
-            'display_name',
-            'description',
-            'environment',
-            'fingerprint',
-            'host',
-            'name'
-        ]
-        evs = [getattr(self, name) for name in names]
-        return namedtuple('EnvVars', tuple(names))(*evs)
-
-    @property
     def ci_build_url(self):
         description = "A url for the deployment."
         return self._required_env_var('CI_BUILD_URL', description)
@@ -67,3 +51,16 @@ class LogDeploymentCommand(Command):
     def environment(self):
         description = "The name of the environment the artifact is being deployed to."
         return self._required_env_var('ENVIRONMENT', description)
+
+    @property
+    def _env_var_names(self):
+        return [
+            'api_token',
+            'ci_build_url',
+            'display_name',
+            'description',
+            'environment',
+            'fingerprint',
+            'host',
+            'name'
+        ]

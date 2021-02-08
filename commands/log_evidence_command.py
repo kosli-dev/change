@@ -1,4 +1,3 @@
-from collections import namedtuple
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
@@ -41,22 +40,6 @@ class LogEvidenceCommand(Command):
         return 'Putting', url, payload
 
     @property
-    def env_vars(self):
-        names = [
-            'api_token',
-            'ci_build_url',
-            'display_name',
-            'description',
-            'evidence_type',
-            'fingerprint',
-            'host',
-            'is_compliant',
-            'name'
-        ]
-        evs = [getattr(self, name) for name in names]
-        return namedtuple('EnvVars', tuple(names))(*evs)
-
-    @property
     def ci_build_url(self):
         description = "Link to the build information."
         return self._required_env_var('CI_BUILD_URL', description)
@@ -70,3 +53,17 @@ class LogEvidenceCommand(Command):
     def evidence_type(self):
         description = "The evidence type."
         return self._required_env_var("EVIDENCE_TYPE", description)
+
+    @property
+    def _env_var_names(self):
+        return [
+            'api_token',
+            'ci_build_url',
+            'display_name',
+            'description',
+            'evidence_type',
+            'fingerprint',
+            'host',
+            'is_compliant',
+            'name'
+        ]
