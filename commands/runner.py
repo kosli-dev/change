@@ -14,8 +14,7 @@ def run(env=None, docker_fingerprinter=None, file_fingerprinter=None):
         context = Context(env, docker_fingerprinter, file_fingerprinter)
         command = build_command(context)
         print(f"MERKELY_COMMAND={command.name.value}")
-        for env_var in list(command.env_vars):
-            env_var.value  # to verify
+        command.check()
         return command()
     except CommandError as exc:
         print(f"Error: {str(exc)}")

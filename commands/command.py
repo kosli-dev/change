@@ -12,7 +12,11 @@ class Command:
         self._context = context
 
     def __call__(self):
-        raise NotImplementedError("Command.__call__(self) subclass override missing")
+        raise NotImplementedError(f"{self.class_name}.__call__(self) subclass override missing")
+
+    def check(self):
+        for env_var in self.env_vars:
+            env_var.value
 
     @property
     def env_vars(self):
@@ -22,7 +26,7 @@ class Command:
 
     @property
     def _env_var_names(self):
-        raise NotImplementedError("Command._env_var_names(self) subclass override missing.")
+        raise NotImplementedError(f"{self.class_name}._env_var_names(self) subclass override missing.")
 
     # - - - - - - - - - - - - - - - - - - - - -
 
@@ -95,6 +99,14 @@ class Command:
     def _required_env_var(self, name, description):
         return RequiredEnvVar(self.env, f"MERKELY_{name}", description)
 
+    # - - - - - - - - - - - - - - - - - - - - -
+
     def _print_compliance(self):
         env_var = self.is_compliant
         print(f"{env_var.name}: {env_var.value == 'TRUE'}")
+
+    # - - - - - - - - - - - - - - - - - - - - -
+
+    @property
+    def class_name(self):
+        return self.__class__.__name__
