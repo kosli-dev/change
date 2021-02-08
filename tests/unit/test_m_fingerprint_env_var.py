@@ -15,9 +15,7 @@ def test_docker_protocol():
     protocol = "docker://"
     artifact_name = "acme/road-runner:4.8"
     fingerprint = f"{protocol}{artifact_name}"
-    env = {
-        "MERKELY_FINGERPRINT": fingerprint
-    }
+    env = {"MERKELY_FINGERPRINT": fingerprint}
     fingerprinter = MockDockerFingerprinter(artifact_name, SHA256)
     context = Context(env, fingerprinter, None)
     command = Command(context)
@@ -34,9 +32,7 @@ def test_file_protocol():
     protocol = "file://"
     artifact_name = "/user/artifact/jam.jar"
     fingerprint = f"{protocol}{artifact_name}"
-    env = {
-        "MERKELY_FINGERPRINT": fingerprint
-    }
+    env = {"MERKELY_FINGERPRINT": fingerprint}
     fingerprinter = MockFileFingerprinter(artifact_name, SHA256)
     context = Context(env, None, fingerprinter)
     command = Command(context)
@@ -53,9 +49,7 @@ def test_sha_protocol():
     protocol = "sha256://"
     artifact_name = "acme/road-runner:2.34"
     fingerprint = f"{protocol}{SHA256}/{artifact_name}"
-    env = {
-        "MERKELY_FINGERPRINT": fingerprint
-    }
+    env = {"MERKELY_FINGERPRINT": fingerprint}
     context = Context(env, None, None)
     command = Command(context)
 
@@ -79,9 +73,7 @@ def test_sha256_protocol__bad_sha256_raises():
         protocol = "sha256://"
         artifact_name = "acme/road-runner:2.34"
         fingerprint = f"{protocol}{bad_sha}/{artifact_name}"
-        env = {
-            "MERKELY_FINGERPRINT": fingerprint
-        }
+        env = {"MERKELY_FINGERPRINT": fingerprint}
         context = Context(env, None, None)
         command = Command(context)
         fev = FingerprintEnvVar(command)
@@ -92,16 +84,23 @@ def test_sha256_protocol__bad_sha256_raises():
 
 def test_sha256_protocol__bad_artifact_name_raises():
     # artifact_name empty raises
-    pass
+    for bad in ['', '/']:
+        protocol = 'sha256://'
+        fingerprint = f"{protocol}{SHA256}{bad}"
+        env = {"MERKELY_FINGERPRINT": fingerprint}
+        context = Context(env, None, None)
+        command = Command(context)
+        fev = FingerprintEnvVar(command)
+        with raises(CommandError) as exc:
+            fev.artifact_name
+        #assert str(exc.value) == 'xxxx'
 
 
 def test_unknown_protocol_raises():
     protocol = "ash256://"
     artifact_name = SHA256
     fingerprint = f"{protocol}{artifact_name}"
-    env = {
-        "MERKELY_FINGERPRINT": fingerprint
-    }
+    env = {"MERKELY_FINGERPRINT": fingerprint}
     context = Context(env, None, None)
     command = Command(context)
     fev = FingerprintEnvVar(command)
