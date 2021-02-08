@@ -86,17 +86,9 @@ class FingerprintEnvVar(RequiredEnvVar):
         match = self._REGEX.match(both)
         if match is None:
             raise CommandError(f"Invalid sha256:// fingerprint: {both}")
-            #raise self._sha256_fingerprint_error()
         names = ('sha', 'artifact_name')
         args = (match.group('sha'), match.group('artifact_name'))
         return namedtuple('Both',names)(*args)
 
-    #def _after(self, n):
-    #    return self.value[-(len(self.value)-n):]
-
     def _unknown_protocol_error(self):
         return CommandError(f"Unknown protocol: {self.value}")
-
-    #def _sha256_fingerprint_error(self):
-    #    both = self.value[len(SHA256_PROTOCOL):]
-    #    return CommandError(f"Invalid sha256:// fingerprint: {both}")
