@@ -196,21 +196,13 @@ def test_all_env_vars_sha(capsys, mocker):
     owner = "compliancedb"
     name = "cdb-controls-test-pipeline"
 
-    env = {
-        "CDB_HOST": f"https://{domain}",
-        "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "CDB_ARTIFACT_FILENAME": artifact_name,
-        "CDB_ARTIFACT_SHA": sha256,
-        "CDB_IS_COMPLIANT": "TRUE",
-        "CDB_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
-        "CDB_ARTIFACT_GIT_COMMIT": commit,
-        "CDB_CI_BUILD_URL": build_url,
-        "CDB_BUILD_NUMBER": build_number
-    }
+    env = old_put_artifact_env(commit)
+    env["CDB_ARTIFACT_FILENAME"] = artifact_name
+    env["CDB_ARTIFACT_SHA"] = sha256
     set_env_vars = {}
-
     with dry_run(env, set_env_vars):
         put_artifact("tests/integration/test-pipefile.json")
+
     verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
@@ -276,15 +268,19 @@ def make_command_env_vars():
 
 
 def old_put_artifact_env(commit, *,
-                         build_url,
-                         build_number):
+                         build_url=None,
+                         build_number=None):
+    if build_url is None:
+        build_url = 'https://gitlab/build/1456'
+    if build_number is None:
+        build_number = '23'
     return {
         "CDB_API_TOKEN": API_TOKEN,
-        "CDB_IS_COMPLIANT": "TRUE",
         "CDB_ARTIFACT_GIT_COMMIT": commit,
         "CDB_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
         "CDB_CI_BUILD_URL": build_url,
-        "CDB_BUILD_NUMBER": build_number
+        "CDB_BUILD_NUMBER": build_number,
+        "CDB_IS_COMPLIANT": "TRUE",
     }
 
 
@@ -301,7 +297,7 @@ def new_log_artifact_env(commit=None):
         "MERKELY_FINGERPRINT": 'dummy',
         "MERKELY_CI_BUILD_URL": build_url,
         "MERKELY_CI_BUILD_NUMBER": build_number,
-        "MERKELY_ARTIFACT_GIT_URL": "https://github/me/project/commit/" + commit,
+        "MERKELY_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
         "MERKELY_ARTIFACT_GIT_COMMIT": commit,
         "MERKELY_IS_COMPLIANT": "TRUE"
     }
