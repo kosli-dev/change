@@ -69,7 +69,7 @@ class FingerprintEnvVar(RequiredEnvVar):
         elif self.protocol == SHA256_PROTOCOL:
             return self._validated.artifact_name
 
-    _REGEX = re.compile('(?P<sha>[0-9a-f]+)\/(?P<artifact_name>.*)')
+    _REGEX = re.compile('(?P<sha>[0-9a-f]*)\/(?P<artifact_name>.*)')
 
     @property
     def _validated(self):
@@ -77,11 +77,16 @@ class FingerprintEnvVar(RequiredEnvVar):
         match = self._REGEX.match(both)
         if match is None:
             raise self._invalid_fingerprint()
-        sha = match.group('sha')
+        sha = self._validated_sha(match.group('sha'))
         artifact_name = match.group('artifact_name')
         names = ('sha', 'artifact_name')
         args = (sha, artifact_name)
         return namedtuple('Both',names)(*args)
+
+    def _validated_sha(self, sha):
+        if len(sha) != 64:
+            raise self._invalid_fingerprint()
+        return sha
 
     def _after(self, n):
         return self.value[-(len(self.value)-n):]

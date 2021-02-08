@@ -67,10 +67,7 @@ def test_sha_protocol():
     assert fev.artifact_name == artifact_name
 
 
-def X_test_bad_sha256_raises():
-    # sha not 64 chars long raises
-    # sha not base-16 raises
-    # artifact_name empty raises
+def test_sha256_protocol__bad_sha256_raises():
     bad_shas = [
         "",   # empty
         'a',  # too short by a lot
@@ -90,7 +87,12 @@ def X_test_bad_sha256_raises():
         fev = FingerprintEnvVar(command)
         with raises(CommandError) as exc:
             fev.sha
-        assert str(exc.value) == 'xxxx'
+        #assert str(exc.value) == 'xxxx'
+
+
+def test_sha256_protocol__bad_artifact_name_raises():
+    # artifact_name empty raises
+    pass
 
 
 def test_unknown_protocol_raises():
