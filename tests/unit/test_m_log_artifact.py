@@ -13,8 +13,6 @@ CDB_NAME = "cdb-controls-test-pipeline"
 APPROVAL_DIR = "tests/unit/approved_executions"
 APPROVAL_FILE = "test_m_log_artifact"
 
-API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
-
 
 def test_all_env_vars_image(capsys, mocker):
     """
@@ -36,16 +34,9 @@ def test_all_env_vars_image(capsys, mocker):
     name = CDB_NAME
 
     # make cdb call
-    old_env = {
-        "CDB_API_TOKEN": API_TOKEN,
-        "CDB_ARTIFACT_DOCKER_IMAGE": image_name,
-        "CDB_BUILD_NUMBER": build_number,
-        "CDB_CI_BUILD_URL": build_url,
-        "CDB_IS_COMPLIANT": "TRUE",
-        "CDB_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
-        "CDB_ARTIFACT_GIT_COMMIT": commit,
-    }
-    with dry_run(old_env):
+    env = old_put_artifact_env(commit)
+    env["CDB_ARTIFACT_DOCKER_IMAGE"] = image_name
+    with dry_run(env):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         put_artifact_image("tests/integration/test-pipefile.json")  # <<<<<<
 
@@ -63,7 +54,7 @@ def test_all_env_vars_image(capsys, mocker):
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     expected_payload = {
         "build_url": build_url,
-        "commit_url": f"https://github/me/project/commit/{commit}",
+        "commit_url": commit_url(commit),
         "description": f"Created by build {build_number}",
         "filename": image_name,
         "git_commit": commit,
@@ -118,9 +109,7 @@ def test_all_env_vars_file(capsys, mocker):
     name = CDB_NAME
 
     # make cdb call
-    old_env = old_put_artifact_env(commit,
-                                   build_url=build_url,
-                                   build_number=build_number)
+    old_env = old_put_artifact_env(commit)
     old_env["CDB_ARTIFACT_FILENAME"] = artifact_name
     set_env_vars = {'CDB_ARTIFACT_SHA': sha256}
     with dry_run(old_env, set_env_vars):
@@ -141,7 +130,7 @@ def test_all_env_vars_file(capsys, mocker):
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     expected_payload = {
         'build_url': build_url,
-        'commit_url': f'https://github/me/project/commit/{commit}',
+        'commit_url': commit_url(commit),
         'description': f'Created by build {build_number}',
         'filename': artifact_name,
         'git_commit': commit,
@@ -216,7 +205,7 @@ def test_all_env_vars_sha(capsys, mocker):
     expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
     expected_payload = {
         "build_url": build_url,
-        "commit_url": f"https://github/me/project/commit/{commit}",
+        "commit_url": commit_url(commit),
         "description": f"Created by build {build_number}",
         "filename": artifact_name,
         "git_commit": commit,
@@ -267,19 +256,18 @@ def make_command_env_vars():
     return build_command(context).env_vars
 
 
-def old_put_artifact_env(commit, *,
-                         build_url=None,
-                         build_number=None):
-    if build_url is None:
-        build_url = 'https://gitlab/build/1456'
-    if build_number is None:
-        build_number = '23'
+API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
+BUILD_URL = 'https://gitlab/build/1456'
+BUILD_NUMBER = '23'
+
+
+def old_put_artifact_env(commit):
     return {
         "CDB_API_TOKEN": API_TOKEN,
         "CDB_ARTIFACT_GIT_COMMIT": commit,
-        "CDB_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
-        "CDB_CI_BUILD_URL": build_url,
-        "CDB_BUILD_NUMBER": build_number,
+        "CDB_ARTIFACT_GIT_URL": commit_url(commit),
+        "CDB_CI_BUILD_URL": BUILD_URL,
+        "CDB_BUILD_NUMBER": BUILD_NUMBER,
         "CDB_IS_COMPLIANT": "TRUE",
     }
 
@@ -288,17 +276,18 @@ def new_log_artifact_env(commit=None):
     if commit is None:
         commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
     domain = "app.compliancedb.com"
-    build_url = 'https://gitlab/build/1456'
-    build_number = '23'
     return {
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_FINGERPRINT": 'dummy',
-        "MERKELY_CI_BUILD_URL": build_url,
-        "MERKELY_CI_BUILD_NUMBER": build_number,
-        "MERKELY_ARTIFACT_GIT_URL": f"https://github/me/project/commit/{commit}",
+        "MERKELY_CI_BUILD_URL": BUILD_URL,
+        "MERKELY_CI_BUILD_NUMBER": BUILD_NUMBER,
+        "MERKELY_ARTIFACT_GIT_URL": commit_url(commit),
         "MERKELY_ARTIFACT_GIT_COMMIT": commit,
         "MERKELY_IS_COMPLIANT": "TRUE"
     }
 
+
+def commit_url(commit):
+    return f"https://github/me/project/commit/{commit}"
