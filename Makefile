@@ -4,7 +4,7 @@ TAG    := $$(git log -1 --pretty=%h) # eg 5d72e2b
 SHA    := $$(git log -1 --pretty=%H) # eg 5d72e2b158be269390d4b3931ed5d0febd784fb5
 
 IMAGE  := merkely/${APP}:master
-IMAGE_PIPE := merkely/${APP}-bbpipe
+IMAGE_BBPIPE := merkely/${APP}-bbpipe
 
 LATEST := ${NAME}:latest
 CONTAINER := change
@@ -52,12 +52,12 @@ rebuild:
 	@docker tag ${IMAGE} ${LATEST}
 
 rebuild_bb:
-	@echo ${IMAGE_PIPE}
+	@echo ${IMAGE_BBPIPE}
 	@docker build \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile.bb_pipe \
 		--no-cache \
-		--tag ${IMAGE_PIPE} .
+		--tag ${IMAGE_BBPIPE} .
 
 # - - - - - - - - - - - - - - - - - - - -
 # image builds with Docker caching
@@ -73,11 +73,11 @@ build:
 	@docker tag ${IMAGE} ${LATEST}
 
 build_bb:
-	@echo ${IMAGE_PIPE}
+	@echo ${IMAGE_BBPIPE}
 	@docker build \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile.bb_pipe \
-		--tag ${IMAGE_PIPE} .
+		--tag ${IMAGE_BBPIPE} .
 
 # - - - - - - - - - - - - - - - - - - - -
 # run tests without building by volume-mounting
@@ -95,10 +95,10 @@ define TEST_VOLUME_MOUNTS
 endef
 
 test_unit:
-	docker rm --force 2> /dev/null $@ || true
+	docker rm --force ${CONTAINER} 2> /dev/null $@ || true
 	rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
 	docker run \
-		--name $@ \
+		--name ${CONTAINER} \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
@@ -108,10 +108,10 @@ test_unit:
 			${IMAGE} tests/unit/${TARGET}
 
 test_integration:
-	@docker rm --force $@ 2> /dev/null || true
+	@docker rm --force ${CONTAINER} 2> /dev/null || true
 	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
 	@docker run \
-		--name $@ \
+		--name ${CONTAINER} \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
@@ -121,10 +121,10 @@ test_integration:
 			${IMAGE} tests/integration/${TARGET}
 
 test_bb_integration:
-	@docker rm --force $@ 2> /dev/null || true
+	@docker rm --force ${CONTAINER} 2> /dev/null || true
 	@rm -rf tmp/coverage/bb_integration && mkdir -p tmp/coverage/bb_integration
 	@docker run \
-		--name $@ \
+		--name ${CONTAINER} \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
@@ -132,7 +132,7 @@ test_bb_integration:
 		${TEST_VOLUME_MOUNTS} \
 		--volume ${ROOT_DIR}/tmp/coverage/bb_integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
-			${IMAGE_PIPE} tests/bb_integration/${TARGET}
+			${IMAGE_BBPIPE} tests/bb_integration/${TARGET}
 
 pytest_help:
 	@docker run \
@@ -214,6 +214,7 @@ merkely_log_artifact:
 			--env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
 			--env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
 			--env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
+			\
 			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 			--env MERKELY_HOST=https://app.compliancedb.com \
 			--rm \
