@@ -70,6 +70,7 @@ build_all: build build_bb
 build:
 	@echo ${IMAGE}
 	@docker build \
+		--build-arg BASE_IMAGE=${BASE_IMAGE} \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile \
 		--tag ${IMAGE} .
