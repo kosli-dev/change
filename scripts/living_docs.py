@@ -6,7 +6,7 @@ def living_docs():
     context = Context(env, None, None)
     command = COMMANDS['log_evidence'](context)
     for env_var in command.env_vars:
-        print(f"{env_var.name} {env_var.description}")
+        print(f"{env_var.name} {env_var.type} {env_var.description}")
 
 
 if __name__ == '__main__':
