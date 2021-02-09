@@ -1,4 +1,5 @@
-FROM python:3.7-alpine
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
 RUN apk update
 #Needed for libgit2-dev

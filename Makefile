@@ -3,6 +3,7 @@ NAME   := ${APP}
 TAG    := $$(git log -1 --pretty=%h) # eg 5d72e2b
 SHA    := $$(git log -1 --pretty=%H) # eg 5d72e2b158be269390d4b3931ed5d0febd784fb5
 
+BASE_IMAGE := python:3.7-alpine
 IMAGE  := merkely/${APP}:master
 IMAGE_BBPIPE := merkely/${APP}-bbpipe
 
@@ -43,9 +44,10 @@ pip_list:
 rebuild_all: rebuild rebuild_bb
 
 rebuild:
-	@docker image rm python:3.7-alpine
+	@docker image rm ${BASE_IMAGE} 2> /dev/null || true
 	@echo ${IMAGE}
 	@docker build \
+	    --build-arg BASE_IMAGE=${BASE_IMAGE} \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile \
 		--no-cache \
@@ -97,7 +99,7 @@ define TEST_VOLUME_MOUNTS
 endef
 
 test_unit:
-	docker rm --force ${CONTAINER} 2> /dev/null $@ || true
+	docker rm --force ${CONTAINER} 2> /dev/null || true
 	rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
 	docker run \
 		--name ${CONTAINER} \
