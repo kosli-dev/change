@@ -11,16 +11,6 @@ def test_type_is_required():
     assert ev.type == 'required'
 
 
-def test_name_as_set_in_ctor():
-    _, ev = make_test_variables()
-    assert ev.name == NAME
-
-
-def test_description_as_set_in_ctor():
-    _, ev = make_test_variables()
-    assert ev.description == DESCRIPTION
-
-
 def test_value_when_set_to_non_empty_in_os():
     os_env, ev = make_test_variables()
     expected = 'value-set-from-os'

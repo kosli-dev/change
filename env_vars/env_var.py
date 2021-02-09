@@ -4,6 +4,10 @@ class EnvVar:
     An abstract base class for 'smart' OS env-vars.
     """
     def __init__(self, env, name, description):
+        assert name is not None
+        assert name != ""
+        assert description is not None
+        assert description != ""
         self._env = env
         self._name = name
         self._description = description
