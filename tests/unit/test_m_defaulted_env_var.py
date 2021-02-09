@@ -5,28 +5,33 @@ DEFAULT = "https://default.merkely.com"
 DESCRIPTION = "The hostname of Merkely"
 
 
-def test_value_from_default():
-    _env, smart_env_var = make_test_variables()
-
-    assert smart_env_var.name == NAME
-    assert smart_env_var.value == DEFAULT
-    assert smart_env_var.description == DESCRIPTION
+def test_type_is_defaulted():
+    _, ev = make_test_variables()
+    assert ev.type == 'defaulted'
 
 
-def test_value_from_env():
-    env, smart_env_vars = make_test_variables()
+def test_name_as_set_in_ctor():
+    _, ev = make_test_variables()
+    assert ev.name == NAME
 
+
+def test_description_as_set_in_ctor():
+    _, ev = make_test_variables()
+    assert ev.description == DESCRIPTION
+
+
+def test_value_from_default_when_not_set_in_os():
+    _, ev = make_test_variables()
+    assert ev.value == DEFAULT
+
+
+def test_value_when_set_in_os():
+    os_env, ev = make_test_variables()
     not_default = "https://test.merkely.com"
-    env.update({NAME: not_default})
-
-    assert smart_env_vars.name == NAME
-    assert smart_env_vars.value == not_default
-    assert smart_env_vars.description == DESCRIPTION
+    os_env[NAME] = not_default
+    assert ev.value == not_default
 
 
 def make_test_variables():
-    env = {}
-    name = "MERKELY_HOST"
-    default = "https://default.merkely.com"
-    description = "The hostname of Merkely"
-    return env, DefaultedEnvVar(env, name, default, description)
+    os_env = {}
+    return os_env, DefaultedEnvVar(os_env, NAME, DEFAULT, DESCRIPTION)

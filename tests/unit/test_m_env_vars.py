@@ -25,6 +25,10 @@ class Example:
 
     @property
     def X_env_vars(self):
+        """
+        Trying to use reflection but my Python fu is not
+        strong enough yet...
+        """
         names = []
         evs = []
         for name,maybe in Example.__dict__.items():
@@ -88,4 +92,3 @@ def test_env_vars():
     assert env_vars.fingerprint.value == f"{protocol}/{image_name}"
     assert env_vars.host.value == f"https://{domain}"
     assert env_vars.is_compliant.value == 'TRUE'
-
