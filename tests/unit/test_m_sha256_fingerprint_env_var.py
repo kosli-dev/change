@@ -2,26 +2,21 @@ from commands import Command, CommandError, Context
 from env_vars import FingerprintEnvVar
 from tests.utils import *
 from pytest import raises
-import re
 
+SHA256_PROTOCOL = 'sha256://'
 SHA256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
 
 
-def test_sha_protocol__good():
-    protocol = "sha256://"
+def test_sha256_protocol__valid_sha_and_non_empty_artifact_name_properties():
     image_name = "acme/road-runner:2.34"
-    fingerprint = f"{protocol}{SHA256}/{image_name}"
-    env = {"MERKELY_FINGERPRINT": fingerprint}
-    context = Context(env, None, None)
-    command = Command(context)
-    fev = FingerprintEnvVar(command)
-    assert fev.value == fingerprint
-    assert fev.protocol == protocol
-    assert fev.sha == SHA256
-    assert fev.artifact_name == image_name
+    ev, fingerprint = make_fingerprint_env_var(SHA256, '/'+image_name)
+    assert ev.value == fingerprint
+    assert ev.protocol == SHA256_PROTOCOL
+    assert ev.sha == SHA256
+    assert ev.artifact_name == image_name
 
 
-def test_sha256_protocol__bad_sha_value_raises():
+def test_sha256_protocol__bad_sha_raises():
     bad_shas = [
         "",   # empty
         'a',  # too short by a lot
@@ -33,27 +28,26 @@ def test_sha256_protocol__bad_sha_value_raises():
         ('4'*32) + 'B' + ('5'*31),  # bad middle char
     ]
     for bad_sha in bad_shas:
-        protocol = "sha256://"
         image_name = "acme/road-runner:2.34"
-        env = {"MERKELY_FINGERPRINT": f"{protocol}{bad_sha}/{image_name}"}
-        context = Context(env, None, None)
-        command = Command(context)
-        fev = FingerprintEnvVar(command)
+        ev, fingerprint = make_fingerprint_env_var(bad_sha, image_name)
         with raises(CommandError) as exc:
-            fev.sha
-        assert str(exc.value) == f"Invalid sha256:// fingerprint: {bad_sha}/{image_name}"
+            ev.sha
+        assert str(exc.value) == f"Invalid {SHA256_PROTOCOL} fingerprint: {bad_sha}{image_name}"
 
 
 def test_sha256_protocol__no_artifact_name_raises():
     no_slash = ''
     empty = '/'
     for bad in [no_slash, empty]:
-        protocol = 'sha256://'
-        fingerprint = f"{protocol}{SHA256}{bad}"
-        env = {"MERKELY_FINGERPRINT": fingerprint}
-        context = Context(env, None, None)
-        command = Command(context)
-        fev = FingerprintEnvVar(command)
+        ev, _fingerprint = make_fingerprint_env_var(SHA256, bad)
         with raises(CommandError) as exc:
-            fev.artifact_name
-        assert str(exc.value) == f"Invalid sha256:// fingerprint: {SHA256}{bad}"
+            ev.artifact_name
+        assert str(exc.value) == f"Invalid {SHA256_PROTOCOL} fingerprint: {SHA256}{bad}"
+
+
+def make_fingerprint_env_var(sha256, artifact_name):
+    fingerprint = f"{SHA256_PROTOCOL}{sha256}{artifact_name}"
+    env = {"MERKELY_FINGERPRINT": fingerprint}
+    context = Context(env, None, None)
+    command = Command(context)
+    return FingerprintEnvVar(command), fingerprint
