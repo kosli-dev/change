@@ -115,33 +115,36 @@ endef
 
 test_unit:
 	docker rm --force ${CONTAINER} 2> /dev/null || true
-	rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
+	$(eval COVERAGE_DIR = tmp/coverage/unit)
+	rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
 	docker run \
 		--name ${CONTAINER} \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
 		${TESTS_VOLUME_MOUNT} \
-	    --volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
+	    --volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
 
 test_integration:
 	@docker rm --force ${CONTAINER} 2> /dev/null || true
-	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
+	$(eval COVERAGE_DIR = tmp/coverage/integration)
+	@rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
 	@docker run \
 		--name ${CONTAINER} \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
 		${TESTS_VOLUME_MOUNT} \
-		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
+		--volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/integration/coverage_entrypoint.sh \
 			${IMAGE} tests/integration/${TARGET}
 
 test_bb_integration:
 	@docker rm --force ${CONTAINER} 2> /dev/null || true
-	@rm -rf tmp/coverage/bb_integration && mkdir -p tmp/coverage/bb_integration
+	$(eval COVERAGE_DIR = tmp/coverage/bb_integration)
+	@rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
 	@docker run \
 		--name ${CONTAINER} \
 		${DOCKER_RUN_TTY} \
@@ -149,7 +152,7 @@ test_bb_integration:
 		${SOURCE_VOLUME_MOUNTS} \
 		--volume ${ROOT_DIR}/bitbucket_pipe/pipe.py:/app/pipe.py \
 		${TESTS_VOLUME_MOUNT} \
-		--volume ${ROOT_DIR}/tmp/coverage/bb_integration/htmlcov:/app/htmlcov \
+		--volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
 			${IMAGE_BBPIPE} tests/bb_integration/${TARGET}
 
