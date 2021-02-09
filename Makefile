@@ -38,13 +38,11 @@ pip_list:
 	@docker run --rm -it --entrypoint="" ${IMAGE} pip3 list
 
 # - - - - - - - - - - - - - - - - - - - -
-# full image rebuilds with no Docker caching
+# full image rebuilds, with fresh base image, and no Docker caching
 
 rebuild_all: rebuild rebuild_bb
 
-rebuild:
-	@docker image rm python:3.7-alpine 2> /dev/null || true
-	@echo ${IMAGE}
+rebuild: build delete_base_image
 	@docker build \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile \
@@ -52,13 +50,30 @@ rebuild:
 		--tag ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
 
-rebuild_bb:
-	@echo ${IMAGE_BBPIPE}
+rebuild_bb: build_bb delete_base_image_bb
 	@docker build \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile.bb_pipe \
 		--no-cache \
 		--tag ${IMAGE_BBPIPE} .
+
+delete_base_image:
+    # Get the ID of the image
+	$(eval IMAGE_ID = $(shell docker image list --format "table {{.ID}} {{.Repository}}:{{.Tag}}" | grep "${IMAGE}" | awk '{print $$1}'))
+	# Get the Dockerfile layers of the image
+	$(eval IMAGE_LAYERS = $(shell docker run -v /var/run/docker.sock:/var/run/docker.sock --rm chenzj/dfimage ${IMAGE_ID}))
+	# Get the base FROM image
+	$(eval BASE_IMAGE = $(shell echo "${IMAGE_LAYERS}" | head -n 1 | awk '{print $$2}'))
+	@docker image rm ${BASE_IMAGE}
+
+delete_base_image_bb:
+    # Get the ID of the image
+	$(eval IMAGE_ID = $(shell docker image list --format "table {{.ID}} {{.Repository}}:{{.Tag}}" | grep "${IMAGE_BBPIPE}" | awk '{print $$1}'))
+	# Get the Dockerfile layers of the image
+	$(eval IMAGE_LAYERS = $(shell docker run -v /var/run/docker.sock:/var/run/docker.sock --rm chenzj/dfimage ${IMAGE_ID}))
+	# Get the base FROM image
+	$(eval BASE_IMAGE = $(shell echo "${IMAGE_LAYERS}" | head -n 1 | awk '{print $$2}'))
+	@docker image rm ${BASE_IMAGE}
 
 # - - - - - - - - - - - - - - - - - - - -
 # image builds with Docker caching
