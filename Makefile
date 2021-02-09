@@ -88,14 +88,15 @@ build_bb:
 test_all: test_unit test_integration test_bb_integration
 
 define SOURCE_VOLUME_MOUNTS
-	--volume ${ROOT_DIR}/cdb:/app/cdb
+	--volume ${ROOT_DIR}/cdb:/app/cdb \
+	--volume ${ROOT_DIR}/commands:/app/commands \
+	--volume ${ROOT_DIR}/env_vars:/app/env_vars \
+	--volume ${ROOT_DIR}/fingerprinters:/app/fingerprinters \
+    --volume ${ROOT_DIR}/scripts:/app/scripts
 endef
 
 define TEST_VOLUME_MOUNTS
-    --volume ${ROOT_DIR}/tests:/app/tests \
-	--volume ${ROOT_DIR}/commands:/app/commands \
-	--volume ${ROOT_DIR}/env_vars:/app/env_vars \
-	--volume ${ROOT_DIR}/fingerprinters:/app/fingerprinters
+    --volume ${ROOT_DIR}/tests:/app/tests
 endef
 
 test_unit:
@@ -144,6 +145,15 @@ pytest_help:
 		--rm \
 		${IMAGE} \
 		  python3 -m pytest --help
+
+# - - - - - - - - - - - - - - - - - - - -
+
+living_docs:
+	@docker run \
+		--interactive \
+        --rm \
+        ${SOURCE_VOLUME_MOUNTS} \
+        ${BASE_IMAGE} python /app/scripts/living_docs.py
 
 # - - - - - - - - - - - - - - - - - - - -
 

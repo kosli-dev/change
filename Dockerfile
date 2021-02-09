@@ -18,14 +18,14 @@ RUN pip3 install -r requirements.txt
 ARG IMAGE_COMMIT_SHA
 ENV IMAGE_SHA=${IMAGE_COMMIT_SHA}
 
-COPY cdb/ cdb/
 COPY tests/ tests/
+ADD tests/data/test_source_repo.tar.gz /
+
+COPY cdb/ cdb/
 COPY commands commands/
 COPY env_vars env_vars/
 COPY fingerprinters fingerprinters/
 COPY main.py .
-
-ADD tests/data/test_source_repo.tar.gz /
 
 ENV PYTHONPATH="/app"
 ENTRYPOINT [""]
