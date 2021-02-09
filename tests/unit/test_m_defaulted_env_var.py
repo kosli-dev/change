@@ -12,11 +12,13 @@ def test_type_is_defaulted():
 
 def test_value_from_default_when_not_set_in_os():
     _, ev = make_test_variables()
+    assert ev.default == DEFAULT
     assert ev.value == DEFAULT
 
 
 def test_value_when_set_in_os():
     os_env, ev = make_test_variables()
+    assert ev.default == DEFAULT
     not_default = "https://test.merkely.com"
     os_env[NAME] = not_default
     assert ev.value == not_default

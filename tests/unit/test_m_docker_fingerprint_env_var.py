@@ -1,5 +1,5 @@
 from commands import Command, CommandError, Context
-from env_vars import FingerprintEnvVar
+from env_vars import FingerprintEnvVar, DockerFingerprintEnvVar
 from tests.utils import *
 from pytest import raises
 
@@ -29,6 +29,11 @@ def test_docker_protocol__empty_image_name_raises():
     assert_raises('value')
     assert_raises('artifact_name')
     assert_raises('sha')
+
+
+def test_description_is_not_empty():
+    ev = DockerFingerprintEnvVar(None, None, None)
+    assert len(ev.description) > 0
 
 
 def make_fingerprint_env_var(image_name):

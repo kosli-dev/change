@@ -1,9 +1,9 @@
 
 class Fingerprinter:
 
-    def __call__(self, protocol, image_name):
-        print(self._calculating_message(protocol, image_name))
-        repo_digest = self._fingerprint(image_name)
+    def __call__(self, protocol, artifact_name):
+        print(self._calculating_message(protocol, artifact_name))
+        repo_digest = self._fingerprint(artifact_name)
         print(self._calculated_message(repo_digest))
         return repo_digest
 

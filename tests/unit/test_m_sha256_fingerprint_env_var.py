@@ -1,5 +1,5 @@
 from commands import Command, CommandError, Context
-from env_vars import FingerprintEnvVar
+from env_vars import FingerprintEnvVar, Sha256FingerprintEnvVar
 from tests.utils import *
 from pytest import raises
 
@@ -33,6 +33,11 @@ def test_sha256_protocol__bad_sha_raises():
         with raises(CommandError) as exc:
             ev.sha
         assert str(exc.value) == f"Invalid {SHA256_PROTOCOL} fingerprint: {bad_sha}{image_name}"
+
+
+def test_description_is_not_empty():
+    ev = Sha256FingerprintEnvVar(None, None, None)
+    assert len(ev.description) > 0
 
 
 def test_sha256_protocol__no_artifact_name_raises():
