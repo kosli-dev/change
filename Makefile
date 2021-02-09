@@ -196,7 +196,7 @@ stats:
 	@echo Commits: $$(git rev-list --count master)
 	@cloc .
 
-
+# - - - - - - - - - - - - - - - - - - - -
 # recording tasks
 
 MASTER_BRANCH := master
@@ -218,6 +218,9 @@ branch:
 	@echo IS_MASTER is ${IS_MASTER}
 	@echo PROJFILE is ${PROJFILE}
 
+# - - - - - - - - - - - - - - - - - - - -
+# Merkely commands
+
 merkely_declare_pipeline:
 	docker run \
 			--env MERKELY_COMMAND=declare_pipeline \
@@ -233,7 +236,6 @@ merkely_log_artifact:
 			--env MERKELY_COMMAND=log_artifact \
 			\
 			--env MERKELY_FINGERPRINT="docker://${MERKELY_DOCKER_IMAGE}" \
-			--env MERKELY_DISPLAY_NAME=${MERKELY_DOCKER_IMAGE} \
 			\
 			--env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
 			--env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
@@ -247,6 +249,9 @@ merkely_log_artifact:
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 			${IMAGE}
+
+# - - - - - - - - - - - - - - - - - - - -
+# CDB Commands
 
 put_project:
 	docker run \
