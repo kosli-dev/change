@@ -7,9 +7,10 @@ IMAGE  := merkely/${APP}:master
 IMAGE_BBPIPE := merkely/${APP}-bbpipe
 
 LATEST := ${NAME}:latest
-CONTAINER := change
+CONTAINER := ${NAME}
 
 CDB_HOST=https://app.compliancedb.com
+MERKELY_HOST=https://app.compliancedb.com
 
 # all non-latest images - for prune target
 IMAGES := $(shell docker image ls --format '{{.Repository}}:{{.Tag}}' $(NAME) | grep -v latest)
@@ -226,7 +227,7 @@ merkely_declare_pipeline:
 			--env MERKELY_COMMAND=declare_pipeline \
 			\
 			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
-			--env MERKELY_HOST=https://app.compliancedb.com \
+			--env MERKELY_HOST=${MERKELY_HOST} \
 			--rm \
 			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 			${IMAGE}
@@ -236,15 +237,14 @@ merkely_log_artifact:
 			--env MERKELY_COMMAND=log_artifact \
 			\
 			--env MERKELY_FINGERPRINT="docker://${MERKELY_DOCKER_IMAGE}" \
-			\
-			--env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
 			--env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
 			--env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
 			--env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
 			--env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
+			--env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
 			\
 			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
-			--env MERKELY_HOST=https://app.compliancedb.com \
+			--env MERKELY_HOST=${MERKELY_HOST} \
 			--rm \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
