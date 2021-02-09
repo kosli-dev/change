@@ -109,7 +109,7 @@ define SOURCE_VOLUME_MOUNTS
     --volume ${ROOT_DIR}/scripts:/app/scripts
 endef
 
-define TEST_VOLUME_MOUNTS
+define TESTS_VOLUME_MOUNT
     --volume ${ROOT_DIR}/tests:/app/tests
 endef
 
@@ -121,7 +121,7 @@ test_unit:
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
-		${TEST_VOLUME_MOUNTS} \
+		${TESTS_VOLUME_MOUNT} \
 	    --volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
@@ -134,7 +134,7 @@ test_integration:
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
-		${TEST_VOLUME_MOUNTS} \
+		${TESTS_VOLUME_MOUNT} \
 		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/integration/coverage_entrypoint.sh \
 			${IMAGE} tests/integration/${TARGET}
@@ -148,7 +148,7 @@ test_bb_integration:
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
 		--volume ${ROOT_DIR}/bitbucket_pipe/pipe.py:/app/pipe.py \
-		${TEST_VOLUME_MOUNTS} \
+		${TESTS_VOLUME_MOUNT} \
 		--volume ${ROOT_DIR}/tmp/coverage/bb_integration/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
 			${IMAGE_BBPIPE} tests/bb_integration/${TARGET}
