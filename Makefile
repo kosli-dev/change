@@ -43,7 +43,7 @@ pip_list:
 
 rebuild_all: rebuild rebuild_bb
 
-rebuild: build delete_base_image
+rebuild: delete_base_image
 	@docker build \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile \
@@ -51,14 +51,14 @@ rebuild: build delete_base_image
 		--tag ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
 
-rebuild_bb: build_bb delete_base_image_bb
+rebuild_bb: delete_base_image_bb
 	@docker build \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile.bb_pipe \
 		--no-cache \
 		--tag ${IMAGE_BBPIPE} .
 
-delete_base_image:
+delete_base_image: build
     # Get the ID of the image
 	$(eval IMAGE_ID = $(shell docker image list --format "table {{.ID}} {{.Repository}}:{{.Tag}}" | grep "${IMAGE}" | awk '{print $$1}'))
 	# Get the Dockerfile layers of the image
@@ -67,7 +67,7 @@ delete_base_image:
 	$(eval BASE_IMAGE = $(shell echo "${IMAGE_LAYERS}" | head -n 1 | awk '{print $$2}'))
 	@docker image rm ${BASE_IMAGE}
 
-delete_base_image_bb:
+delete_base_image_bb: build_bb
     # Get the ID of the image
 	$(eval IMAGE_ID = $(shell docker image list --format "table {{.ID}} {{.Repository}}:{{.Tag}}" | grep "${IMAGE_BBPIPE}" | awk '{print $$1}'))
 	# Get the Dockerfile layers of the image
