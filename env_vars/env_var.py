@@ -42,9 +42,9 @@ class EnvVar:
     @property
     def value(self):
         """
-        run() validates its command by getting the property
-        of each command's env-var. Each command's env-var will
-        raise if it is invalid.
+        run() validates its command by getting the value property
+        of each command's env-var. Each env-var's value raises
+        if it is invalid.
         """
         raise NotImplementedError(f"{self.__class__.__name__}.value override missing")
 

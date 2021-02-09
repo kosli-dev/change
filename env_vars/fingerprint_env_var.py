@@ -31,6 +31,12 @@ DESCRIPTION = "\n".join([
     '     ...',
 ])
 
+FINGERPRINTER_ENV_VARS = {
+    'docker://': True,
+    'file://': True,
+    'sha256://': True
+}
+
 
 class FingerprintEnvVar(RequiredEnvVar):
 
@@ -44,14 +50,16 @@ class FingerprintEnvVar(RequiredEnvVar):
         self.artifact_name
         return self._raw_value
 
+    _PROTOCOL = re.compile(r'(?P<protocol>[0-9a-z]+:\/\/)')
+
     @property
     def protocol(self):
-        if self._raw_value.startswith(FILE_PROTOCOL):
-            return FILE_PROTOCOL
-        elif self._raw_value.startswith(DOCKER_PROTOCOL):
-            return DOCKER_PROTOCOL
-        elif self._raw_value.startswith(SHA256_PROTOCOL):
-            return SHA256_PROTOCOL
+        match = self._PROTOCOL.match(self._raw_value)
+        if match is None:
+            raise self._unknown_protocol_error()
+        protocol = match.group('protocol')
+        if protocol in FINGERPRINTER_ENV_VARS:
+            return protocol
         else:
             raise self._unknown_protocol_error()
 
