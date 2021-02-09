@@ -150,10 +150,9 @@ pytest_help:
 
 living_docs:
 	@docker run \
-		--interactive \
         --rm \
         ${SOURCE_VOLUME_MOUNTS} \
-        ${BASE_IMAGE} python /app/scripts/living_docs.py
+        ${IMAGE} python /app/scripts/living_docs.py
 
 # - - - - - - - - - - - - - - - - - - - -
 
