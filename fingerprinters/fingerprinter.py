@@ -7,7 +7,7 @@ class Fingerprinter:
         print(self._calculated_message(sha256))
         return sha256
 
-    def _fingerprint(self, artifact_name):
+    def _fingerprint(self, artifact_name):  # pragma: no cover
         raise NotImplementedError(f"{self._class_name}._fingerprint(...) subclass override missing")
 
     @staticmethod
@@ -19,5 +19,5 @@ class Fingerprinter:
         return f"Calculated fingerprint: {sha256}"
 
     @property
-    def _class_name(self):
+    def _class_name(self):  # pragma: no cover
         return self.__class__.__name__

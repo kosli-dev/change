@@ -3,6 +3,8 @@ Should create a source/ dir and move everything into it.
 
 load_json() should be in context to allow easy stubbing.
 
+Context() ctor should have keyword args.
+
 Could look for unused env-vars starting with MERKELY_
 and report warnings...
 
@@ -25,3 +27,7 @@ consider whether it should be part of the living documentation.
 
 Once living documentation is in place, warning/error messages can
 include targeted urls.
+
+properties/methods that exist in abstract-base-classes only to be
+overridden are marked # pragma: no cover
+Maybe add programmer-tests for these and remove the pragmas.

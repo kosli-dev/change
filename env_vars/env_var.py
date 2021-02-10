@@ -22,7 +22,7 @@ class EnvVar:
         return self._name
 
     @property
-    def type(self):
+    def type(self):  # pragma: no cover
         """
         Non-empty string.
         Used in living documentation.
@@ -40,7 +40,7 @@ class EnvVar:
         return self._description
 
     @property
-    def value(self):
+    def value(self):  # pragma: no cover
         """
         run() validates its command by getting the value property
         of each command's env-var. Each env-var's value raises

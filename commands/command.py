@@ -11,7 +11,7 @@ class Command:
     def __init__(self, context):
         self._context = context
 
-    def __call__(self):
+    def __call__(self):  # pragma: no cover
         raise NotImplementedError(f"{self._class_name}.__call__(self) subclass override missing")
 
     def check(self):
@@ -25,7 +25,7 @@ class Command:
         return namedtuple('EnvVars', tuple(names))(*objects)
 
     @property
-    def _env_var_names(self):
+    def _env_var_names(self):  # pragma: no cover
         raise NotImplementedError(f"{self._class_name}._env_var_names(self) subclass override missing.")
 
     # - - - - - - - - - - - - - - - - - - - - -
@@ -97,5 +97,5 @@ class Command:
     # - - - - - - - - - - - - - - - - - - - - -
 
     @property
-    def _class_name(self):
+    def _class_name(self):  # pragma: no cover
         return self.__class__.__name__
