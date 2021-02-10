@@ -4,23 +4,26 @@ from cdb.http import http_put_payload
 
 
 class LogEvidenceCommand(Command):
-    """
-    Logs evidence in Merkely.
-    Invoked like this:
 
-    docker run \
-        --env MERKELY_COMMAND=log_deployment \
-        --env MERKELY_FINGERPRINT=${...} \
-        \
-        --env MERKELY_CI_BUILD_URL=${...} \
-        --env MERKELY_DESCRIPTION=${...} \
-        --env MERKELY_EVIDENCE_TYPE=${...} \
-        --env MERKELY_IS_COMPLIANT=${...} \
-        --rm \
-        --env MERKELY_API_TOKEN=${...} \
-        --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
-        merkely/change
-    """
+    @property
+    def description(self):
+        return "\n".join([
+            "Logs evidence in Merkely.",
+            "Invoked like this:",
+            "",
+            "docker run \\",
+            "    --env MERKELY_COMMAND=log_deployment \\",
+            "    --env MERKELY_FINGERPRINT=${...} \\",
+            "    \\",
+            "    --env MERKELY_CI_BUILD_URL=${...} \\",
+            "    --env MERKELY_DESCRIPTION=${...} \\",
+            "    --env MERKELY_EVIDENCE_TYPE=${...} \\",
+            "    --env MERKELY_IS_COMPLIANT=${...} \\",
+            "    --rm \\",
+            "    --env MERKELY_API_TOKEN=${...} \\",
+            "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\",
+            "    merkely/change",
+        ])
 
     def __call__(self):
         self._print_compliance()
