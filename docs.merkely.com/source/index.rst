@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-DevOps Change Management with Merkely!
-======================================
+DevOps Change Management with Merkely!!!
+========================================
 
 `Merkely <https://www.merkely.com/>`_ is a DevOps Change Management Platform.
 
