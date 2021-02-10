@@ -2,9 +2,11 @@ from commands import COMMANDS, Context
 
 
 def print_living_docs():
-    env = {}
+    name = 'log_evidence'
+    env = {"MERKELY_COMMAND": name}
     context = Context(env, None, None)
-    command = COMMANDS['log_evidence'](context)
+    command = COMMANDS[name](context)
+    print(command.overview)
     for env_var in command.env_vars:
         print(f"{env_var.name} {env_var.type} {env_var.description}")
 

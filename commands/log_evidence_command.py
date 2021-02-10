@@ -6,21 +6,21 @@ from cdb.http import http_put_payload
 class LogEvidenceCommand(Command):
 
     @property
-    def description(self):
+    def overview(self):
         return "\n".join([
             "Logs evidence in Merkely.",
             "Invoked like this:",
             "",
             "docker run \\",
             "    --env MERKELY_COMMAND=log_deployment \\",
-            "    --env MERKELY_FINGERPRINT=${...} \\",
+            f"    --env {self.fingerprint.name}=${{...}} \\",
             "    \\",
             "    --env MERKELY_CI_BUILD_URL=${...} \\",
             "    --env MERKELY_DESCRIPTION=${...} \\",
             "    --env MERKELY_EVIDENCE_TYPE=${...} \\",
             "    --env MERKELY_IS_COMPLIANT=${...} \\",
             "    --rm \\",
-            "    --env MERKELY_API_TOKEN=${...} \\",
+            f"    --env {self.api_token.name}=${{...}} \\",
             "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\",
             "    merkely/change",
         ])
