@@ -24,7 +24,7 @@ def create_deployment_env(commit):
         "MERKELY_CI_BUILD_URL": "https://gitlab/build/1456",
         "MERKELY_ENVIRONMENT": "production",
         "MERKELY_DESCRIPTION": "some description",
-        #"MERKELY_USER_DATA_FILE": "to do",
+        "MERKELY_USER_DATA_FILE": "/app/tests/data/user_data.json",
     }
     return {**core_env_vars("create_deployment"), **ev}
 

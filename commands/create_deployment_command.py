@@ -1,5 +1,5 @@
 from commands import Command
-from env_vars import FingerprintEnvVar, UserDataEnvVar
+from env_vars import FingerprintEnvVar, UserDataFileEnvVar
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
 
@@ -13,15 +13,11 @@ class CreateDeploymentCommand(Command):
             "description": self.description.value,
             "build_url": self.ci_build_url.value,
         }
-        if self.user_data.is_present:
-            payload["user_data"] = self.user_data.json
+        if self.user_data_file.is_set:
+            payload["user_data"] = self.user_data_file.json
         url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
         http_post_payload(url, payload, self.api_token.value)
         return 'Posting', url, payload
-
-    @property
-    def fingerprint(self):
-        return FingerprintEnvVar(self)
 
     @property
     def ci_build_url(self):
@@ -39,8 +35,8 @@ class CreateDeploymentCommand(Command):
         return self._defaulted_env_var("ENVIRONMENT", 'None', description)
 
     @property
-    def user_data(self):
-        return UserDataEnvVar(self)
+    def user_data_file(self):
+        return UserDataFileEnvVar(self.env)
 
     @property
     def _env_var_names(self):
@@ -49,5 +45,5 @@ class CreateDeploymentCommand(Command):
             'ci_build_url',
             'description',
             'environment',
-            'user_data'
+            'user_data_file'
         ]

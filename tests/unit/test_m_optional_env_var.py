@@ -14,13 +14,13 @@ def test_value_when_set_in_os():
     expected = 'value-set-from-os'
     os_env[NAME] = expected
     assert ev.value == expected
-    assert ev.is_present
+    assert ev.is_set
 
 
 def test_value_is_None_when_not_set_in_os():
     _, ev = make_test_variables()
     assert ev.value is None
-    assert not ev.is_present
+    assert not ev.is_set
 
 
 def make_test_variables():

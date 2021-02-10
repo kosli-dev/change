@@ -8,6 +8,10 @@ and report warnings...
 
 Command could start by printing list of environment variables and their type.
 
+Print 'success' at end of successful command run?
+
+Look into how Python recommended style for abstract-base-classes.
+
 Mock fingerprinters code in tests/utils could be collapsed using
 multiple inheritance.
 

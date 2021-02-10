@@ -7,10 +7,10 @@ DESCRIPTION = "\n".join([
 ])
 
 
-class UserDataEnvVar(OptionalEnvVar):
+class UserDataFileEnvVar(OptionalEnvVar):
 
-    def __init__(self, command):
-        super().__init__(command.env, "MERKELY_USER_DATA", DESCRIPTION)
+    def __init__(self, env):
+        super().__init__(env, "MERKELY_USER_DATA_FILE", DESCRIPTION)
 
     @property
     def json(self):

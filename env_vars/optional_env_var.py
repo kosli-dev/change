@@ -22,5 +22,5 @@ class OptionalEnvVar(EnvVar):
         return self.env.get(self.name, None)
 
     @property
-    def is_present(self):
+    def is_set(self):
         return self.value is not None
