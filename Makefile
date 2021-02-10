@@ -164,14 +164,8 @@ pytest_help:
 
 # - - - - - - - - - - - - - - - - - - - -
 
-living_docs:
-	@docker run \
-        --rm \
-        --volume ${ROOT_DIR}/scripts:/app/scripts \
-        ${SOURCE_VOLUME_MOUNTS} \
-        ${IMAGE} python /app/scripts/living_docs.py
-
 DOCS_IMAGE := merkely/docs
+
 build_docs_dockerfile:
 	docker build -t ${DOCS_IMAGE} docs.merkely.com/
 
@@ -182,6 +176,7 @@ build_docs:
 		-v ${PWD}:/app \
 		${DOCS_IMAGE} make clean html
 	@cp -RP docs.merkely.com/build/html/. docs/.
+
 # - - - - - - - - - - - - - - - - - - - -
 
 push:
