@@ -103,7 +103,21 @@
       
   <div class="section" id="logging-controls">
 <h1>Logging Controls<a class="headerlink" href="#logging-controls" title="Permalink to this headline">¶</a></h1>
-<p>Coming soon….</p>
+<p>Some summary regarding logging control evidence to an artifact…</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
+    --env MERKELY_COMMAND=log_evidence \
+    --env MERKELY_FINGERPRINT=${{...}} \
+    --env MERKELY_EVIDENCE_TYPE=${{...}} \
+    --env MERKELY_IS_COMPLIANT=${{...}} \
+    --env MERKELY_DESCRIPTION=${{...}} \
+    --env MERKELY_CI_BUILD_URL=${{...}} \
+    --env MERKELY_API_TOKEN=${{...}} \
+    --env MERKELY_HOST=${{...}} \
+    --rm \
+    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
+    merkely/change
+</pre></div>
+</div>
 </div>
 
 

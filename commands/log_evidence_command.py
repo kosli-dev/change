@@ -11,24 +11,20 @@ class LogEvidenceCommand(Command):
 
     @property
     def invocation(self):
-        def env(prop):
+        def env(prop, value="${{...}}"):
             ev_name = getattr(self, prop).name
-            return f"    --env {ev_name}=${{...}} \\"
+            if ev_name == "MERKELY_COMMAND":
+                value = getattr(self, prop).value
+            return f"    --env {ev_name}={value} \\\n"
 
-        return "\n".join([
-            "docker run \\",
-            "    --env MERKELY_COMMAND=log_deployment \\",
-            env('fingerprint'),
-            '',
-            env('ci_build_url'),
-            env('description'),
-            env('evidence_type'),
-            env('is_compliant'),
-            "    --rm \\",
-            f"    --env {self.api_token.name}=${{...}} \\",
-            "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\",
-            "    merkely/change",
-        ])
+        invocation_string = "docker run \\\n"
+        for name in self._env_var_names:
+            invocation_string += env(name)
+
+        invocation_string += "    --rm \\\n"
+        invocation_string += "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\\n"
+        invocation_string += "    merkely/change"
+        return invocation_string
 
     def __call__(self):
         self._print_compliance()
@@ -62,17 +58,13 @@ class LogEvidenceCommand(Command):
     @property
     def _env_var_names(self):
         return [
-            'api_token',
-            'ci_build_url',
-            'description',
-            'evidence_type',
+            'name',
             'fingerprint',
-            'host',
+            'evidence_type',
             'is_compliant',
-            'name'
+            'description',
+            'ci_build_url',
+            'api_token',
+            'host',
         ]
-        # SORT ORDER
-        # command name
-        # required in alpha order
-        # optional in alpha order
-        # defaulted in alpha order
+        # Print according to this order

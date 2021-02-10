@@ -106,15 +106,15 @@
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=log_deployment \
-    --env MERKELY_FINGERPRINT=${...} \
-
-    --env MERKELY_CI_BUILD_URL=${...} \
-    --env MERKELY_DESCRIPTION=${...} \
-    --env MERKELY_EVIDENCE_TYPE=${...} \
-    --env MERKELY_IS_COMPLIANT=${...} \
+    --env MERKELY_COMMAND=log_evidence \
+    --env MERKELY_FINGERPRINT=${{...}} \
+    --env MERKELY_EVIDENCE_TYPE=${{...}} \
+    --env MERKELY_IS_COMPLIANT=${{...}} \
+    --env MERKELY_DESCRIPTION=${{...}} \
+    --env MERKELY_CI_BUILD_URL=${{...}} \
+    --env MERKELY_API_TOKEN=${{...}} \
+    --env MERKELY_HOST=${{...}} \
     --rm \
-    --env MERKELY_API_TOKEN=${...} \
     --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
     merkely/change
 </pre></div>
@@ -130,37 +130,37 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
+<tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
 <td><p>required</p></td>
-<td><p>Your API token for Merkely.</p></td>
+<td><p>The Merkely command to execute.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
+<tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
 <td><p>required</p></td>
-<td><p>Link to the build information.</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_EVIDENCE_TYPE</p></td>
+<td><p>required</p></td>
+<td><p>The evidence type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_IS_COMPLIANT</p></td>
+<td><p>required</p></td>
+<td><p>Whether this artifact is considered compliant from you build process.</p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>optional</p></td>
 <td><p>The description for the evidence.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_EVIDENCE_TYPE</p></td>
+<tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
 <td><p>required</p></td>
-<td><p>The evidence type.</p></td>
+<td><p>Link to the build information.</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_FINGERPRINT</p></td>
+<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>required</p></td>
-<td><p>…</p></td>
+<td><p>Your API token for Merkely.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>defaulted</p></td>
 <td><p>The host name for Merkely. The default is https://app.compliancedb.com</p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_IS_COMPLIANT</p></td>
-<td><p>required</p></td>
-<td><p>Whether this artifact is considered compliant from you build process.</p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_COMMAND</p></td>
-<td><p>required</p></td>
-<td><p>The Merkely command to execute.</p></td>
 </tr>
 </tbody>
 </table>
