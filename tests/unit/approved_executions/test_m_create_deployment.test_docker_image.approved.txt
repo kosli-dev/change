@@ -1,15 +1,11 @@
-MERKELY_COMMAND=create_deployment
-Calculating fingerprint for docker://acme/road-runner:6.8
-Calculated fingerprint: ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc
+Getting SHA for docker image: acme/road-runner:4.56
+Calculated digest: efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212
 Posting this payload:
 {
-    "artifact_sha256": "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc",
+    "artifact_sha256": "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
     "build_url": "https://gitlab/build/1456",
     "description": "some description",
-    "environment": "production",
-    "user_data": {
-        "status": "deployed"
-    }
+    "environment": "production"
 }
-To this url: https://app.compliancedb.com/api/v1/projects/merkely-test/merkely-change-test-pipeline/deployments/
+To this url: https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/deployments/
 DRY RUN: Post not sent

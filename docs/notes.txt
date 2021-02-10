@@ -1,4 +1,8 @@
 
+Check when using pathed-filename to get sha for that
+cdb and merkely behave the same regarding only showing
+the basename of the pathed-filename.
+
 Should create a source/ dir and move everything into it.
 
 load_json() should be in context to allow easy stubbing.
