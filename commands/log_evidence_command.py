@@ -71,3 +71,8 @@ class LogEvidenceCommand(Command):
             'is_compliant',
             'name'
         ]
+        # SORT ORDER
+        # command name
+        # required in alpha order
+        # optional in alpha order
+        # defaulted in alpha order
