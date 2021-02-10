@@ -1,3 +1,0 @@
-
-Could look for unused env-vars starting with MERKELY_
-and report warnings...
