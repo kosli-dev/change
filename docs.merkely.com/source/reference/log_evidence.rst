@@ -5,4 +5,4 @@ Log Evidence
 
 Parameters
 ----------
-.. parameters:: log_evidence
+.. command_parameters:: log_evidence

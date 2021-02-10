@@ -15,7 +15,7 @@ import sys
 
 sys.path.append(os.path.abspath("./_ext"))
 sys.path.append(os.path.abspath("/app"))
-extensions = ['helloworld']
+extensions = ['command_parameters']
 
 import sphinx_bootstrap_theme
 

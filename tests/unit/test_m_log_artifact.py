@@ -16,7 +16,7 @@ APPROVAL_FILE = "test_m_log_artifact"
 
 def test_all_env_vars_image(capsys, mocker):
     """
-    New: MERKELY_COMMAND=log_artifact
+    New: MERKELY_COMMAND=log_evidence
          MERKELY_FINGERPRINT="docker://${IMAGE_NAME}"
          docker run ... merkely/change
     Old: CDB_ARTIFACT_DOCKER_IMAGE=${IMAGE_NAME}
@@ -82,7 +82,7 @@ def test_all_env_vars_image(capsys, mocker):
     assert payload == expected_payload
 
     assert extract_blurb(capsys_read(capsys)) == [
-        'MERKELY_COMMAND=log_artifact',
+        'MERKELY_COMMAND=log_evidence',
         'MERKELY_IS_COMPLIANT: True',
         f'Calculating fingerprint for {protocol}{image_name}',
         f"Calculated fingerprint: {sha256}",
@@ -91,7 +91,7 @@ def test_all_env_vars_image(capsys, mocker):
 
 def test_all_env_vars_file(capsys, mocker):
     """
-    New: MERKELY_COMMAND=log_artifact
+    New: MERKELY_COMMAND=log_evidence
          MERKELY_FINGERPRINT="file://${FILE_PATH}"
          docker run ... merkely/change
     Old: CDB_ARTIFACT_FILENAME=${FILE_PATH}
@@ -158,7 +158,7 @@ def test_all_env_vars_file(capsys, mocker):
     assert payload == expected_payload
 
     assert extract_blurb(capsys_read(capsys)) == [
-        'MERKELY_COMMAND=log_artifact',
+        'MERKELY_COMMAND=log_evidence',
         'MERKELY_IS_COMPLIANT: True',
         f'Calculating fingerprint for {protocol}{artifact_name}',
         f"Calculated fingerprint: {sha256}",
@@ -167,7 +167,7 @@ def test_all_env_vars_file(capsys, mocker):
 
 def test_all_env_vars_sha(capsys, mocker):
     """
-    New: MERKELY_COMMAND=log_artifact
+    New: MERKELY_COMMAND=log_evidence
          MERKELY_FINGERPRINT="sha256://${SHA256}/${FILE_PATH}"
          docker run ... merkely/change
     Old: CDB_ARTIFACT_FILENAME=${FILE_PATH}
@@ -232,7 +232,7 @@ def test_all_env_vars_sha(capsys, mocker):
     assert payload == expected_payload
 
     assert extract_blurb(capsys_read(capsys)) == [
-        'MERKELY_COMMAND=log_artifact',
+        'MERKELY_COMMAND=log_evidence',
         'MERKELY_IS_COMPLIANT: True',
     ]
 
@@ -277,7 +277,7 @@ def new_log_artifact_env(commit=None):
         commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
     domain = "app.compliancedb.com"
     return {
-        "MERKELY_COMMAND": "log_artifact",
+        "MERKELY_COMMAND": "log_evidence",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_FINGERPRINT": 'docker://acme/road-runner:2.3',

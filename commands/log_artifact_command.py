@@ -9,7 +9,7 @@ class LogArtifactCommand(Command):
     Invoked like this:
 
     docker run \
-        --env MERKELY_COMMAND=log_artifact \
+        --env MERKELY_COMMAND=log_evidence \
         --env MERKELY_FINGERPRINT=${...} \
         \
         --env MERKELY_ARTIFACT_GIT_COMMIT=${...} \

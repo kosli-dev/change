@@ -4,8 +4,7 @@ from docutils.parsers.rst import Directive
 from commands import COMMANDS, Context
 
 
-def log_evidence_env_table():
-    name = 'log_evidence'
+def command_env_table(name):
     env = {"MERKELY_COMMAND": name}
     context = Context(env, None, None)
     command = COMMANDS[name](context)
@@ -33,15 +32,17 @@ def env_vars_to_table(env_vars):
     return table
 
 
-class HelloWorld(Directive):
+class CommandParameters(Directive):
+
+    has_content = True
 
     def run(self):
-        log_evidence = log_evidence_env_table()
-        return [log_evidence]
+        name = self.content[0]
+        return [command_env_table(name)]
 
 
 def setup(app):
-    app.add_directive("helloworld", HelloWorld)
+    app.add_directive("command_parameters", CommandParameters)
 
     return {
         'version': '0.1',
