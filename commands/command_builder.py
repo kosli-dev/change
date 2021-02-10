@@ -3,7 +3,7 @@ from commands import *
 
 COMMANDS = {
     "declare_pipeline": DeclarePipelineCommand,
-    "log_evidence": LogArtifactCommand,
+    "log_artifact": LogArtifactCommand,
     "log_deployment": LogDeploymentCommand,
     "log_evidence": LogEvidenceCommand,
 }
