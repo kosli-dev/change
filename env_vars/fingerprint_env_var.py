@@ -8,11 +8,12 @@ DESCRIPTION = "\n".join([
     "...",
 ])
 
+EXAMPLE = "docker://${YOUR_IMAGE_AND_TAG}"
 
 class FingerprintEnvVar(RequiredEnvVar):
 
     def __init__(self, command):
-        super().__init__(command.env, "MERKELY_FINGERPRINT", DESCRIPTION)
+        super().__init__(command.env, "MERKELY_FINGERPRINT", DESCRIPTION, EXAMPLE)
         self._command = command
 
     @property

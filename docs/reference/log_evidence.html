@@ -106,14 +106,14 @@
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=log_evidence \
+    --env MERKELY_COMMAND=&quot;log_evidence&quot; \
     --env MERKELY_FINGERPRINT=&quot;docker://${YOUR_IMAGE_AND_TAG}&quot; \
-    --env MERKELY_EVIDENCE_TYPE=${...} \
-    --env MERKELY_IS_COMPLIANT=${...} \
-    --env MERKELY_DESCRIPTION=${...} \
-    --env MERKELY_CI_BUILD_URL=${...} \
-    --env MERKELY_API_TOKEN=${...} \
-    --env MERKELY_HOST=${...} \
+    --env MERKELY_EVIDENCE_TYPE=&quot;${...}&quot; \
+    --env MERKELY_IS_COMPLIANT=&quot;${...}&quot; \
+    --env MERKELY_DESCRIPTION=&quot;${...}&quot; \
+    --env MERKELY_CI_BUILD_URL=&quot;${...}&quot; \
+    --env MERKELY_API_TOKEN=&quot;${...}&quot; \
+    --env MERKELY_HOST=&quot;${...}&quot; \
     --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \

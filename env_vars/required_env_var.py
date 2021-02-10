@@ -7,8 +7,8 @@ class RequiredEnvVar(EnvVar):
     Represents a required OS environment-variable that
     contributes something to its parent Command's http payload.
     """
-    def __init__(self, env, name, description):
-        super().__init__(env, name, description)
+    def __init__(self, env, name, description, example=None):
+        super().__init__(env, name, description, example)
 
     @property
     def type(self):

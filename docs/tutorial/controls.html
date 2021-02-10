@@ -105,12 +105,12 @@
 <h1>Logging Controls<a class="headerlink" href="#logging-controls" title="Permalink to this headline">¶</a></h1>
 <p>Some summary regarding logging control evidence to an artifact…</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=log_evidence \
+    --env MERKELY_COMMAND=&quot;log_evidence&quot; \
     --env MERKELY_FINGERPRINT=&quot;docker://${YOUR_IMAGE_AND_TAG}&quot; \
-    --env MERKELY_EVIDENCE_TYPE=${...} \
-    --env MERKELY_IS_COMPLIANT=${...} \
-    --env MERKELY_CI_BUILD_URL=${...} \
-    --env MERKELY_API_TOKEN=${...} \
+    --env MERKELY_EVIDENCE_TYPE=&quot;${...}&quot; \
+    --env MERKELY_IS_COMPLIANT=&quot;${...}&quot; \
+    --env MERKELY_CI_BUILD_URL=&quot;${...}&quot; \
+    --env MERKELY_API_TOKEN=&quot;${...}&quot; \
     --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \

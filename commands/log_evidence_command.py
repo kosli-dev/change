@@ -14,10 +14,10 @@ class LogEvidenceCommand(Command):
             if var.name == "MERKELY_COMMAND":
                 value = var.value
             elif var.name == "MERKELY_FINGERPRINT":
-                value = "\"docker://${YOUR_IMAGE_AND_TAG}\""
+                value = var.example
             else:
                 value = "${...}"
-            return f"    --env {var.name}={value} \\\n"
+            return f'    --env {var.name}="{value}" \\\n'
 
         invocation_string = "docker run \\\n"
         for name in self._env_var_names:
