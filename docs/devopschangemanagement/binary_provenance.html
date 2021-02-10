@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logging Artifacts &#8212; Merkely  documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/merkely-custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/merkely-custom.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Logging Controls" href="controls.html" />
+    <link rel="prev" title="Defining Your Pipeline" href="pipefile.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html"><span><img src="../_static/w-merkely-white-01.png"></span>
+           </a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Contents <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Quick Start:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pipefile.html">Defining Your Pipeline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Logging Artifacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controls.html">Logging Controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployments.html">Logging Deployments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approvals.html">Creating Approvals</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Concepts:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/devops_change_is_the_new_normal.html">DevOps: Change is the New Normal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/devops_and_change_management.html">DevOps and Change Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/value_stream.html">Mapping your value stream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/binary_provenance.html">Understanding Binary Provenance</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="logging-artifacts">
+<h1>Logging Artifacts<a class="headerlink" href="#logging-artifacts" title="Permalink to this headline">¶</a></h1>
+<p>To register an artifact in Merkely, you use the <cite>log_artifact</cite> command.  To get the sha256 for your artifact, you have some options:</p>
+<p>Explicitly provide the sha256 of the binary to the command
+Provide the file, the command will calculate the sha digest
+Provide the docker image and access to the docker daemon, and the command will query the docker daemon to query the repoDigest of the docker image. This requires the image to be pushed to a registry first.</p>
+<p>Here is an example using a docker image:</p>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+            --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_artifact <span class="se">\</span>
+            <span class="se">\</span>
+            --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_API_TOKEN</span><span class="si">}</span> <span class="se">\</span>
+            --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;docker://</span><span class="si">${</span><span class="nv">YOUR_DOCKER_IMAGE_AND_TAG</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+            --env <span class="nv">MERKELY_ARTIFACT_NAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">YOUR_DOCKER_IMAGE_AND_TAG</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+            --env <span class="nv">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_CI_BUILD_URL</span><span class="si">}</span> <span class="se">\</span>
+            --env <span class="nv">MERKELY_BUILD_NUMBER</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_BUILD_NUMBER</span><span class="si">}</span> <span class="se">\</span>
+            --env <span class="nv">MERKELY_ARTIFACT_GIT_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_GIT_COMMIT_URL</span><span class="si">}</span> <span class="se">\</span>
+            --env <span class="nv">MERKELY_ARTIFACT_GIT_COMMIT</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_SOURCE_GIT_COMMIT</span><span class="si">}</span> <span class="se">\</span>
+            --rm <span class="se">\</span>
+            --volume <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/<span class="si">${</span><span class="nv">YOUR_MERKELY_PIPE</span><span class="si">}</span>:/data/Merkelypipe.json <span class="se">\</span>
+            --volume<span class="o">=</span>/var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
+            merkely/change
+</pre></div>
+</td></tr></table></div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Merkely.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

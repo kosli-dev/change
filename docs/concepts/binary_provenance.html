@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Understanding Binary Provenance &#8212; Merkely  documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/merkely-custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/merkely-custom.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Mapping your value stream" href="value_stream.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html"><span><img src="../_static/w-merkely-white-01.png"></span>
+           </a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Contents <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Quick Start:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../devopschangemanagement/pipefile.html">Defining Your Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devopschangemanagement/binary_provenance.html">Logging Artifacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devopschangemanagement/controls.html">Logging Controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devopschangemanagement/deployments.html">Logging Deployments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devopschangemanagement/approvals.html">Creating Approvals</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Concepts:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="devops_change_is_the_new_normal.html">DevOps: Change is the New Normal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="devops_and_change_management.html">DevOps and Change Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="value_stream.html">Mapping your value stream</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Understanding Binary Provenance</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="understanding-binary-provenance">
+<h1>Understanding Binary Provenance<a class="headerlink" href="#understanding-binary-provenance" title="Permalink to this headline">¶</a></h1>
+<p>From a security and change management perspective,  the strongest form of trust in your production environment is to identify what is running and know where it came from.</p>
+<p>This is important because all the controls, audit trails and tools are worth nothing if you can simply switch the binaries at any stage in your delivery process.</p>
+<p>To implement binary provenance, there are two problems to solve:</p>
+<ol class="arabic simple">
+<li><p>How to uniquely identify your software</p></li>
+<li><p>How to trace this identity to a provenance audit trail</p></li>
+</ol>
+<p>Traditionally, software artifacts (docker images, zip files, etc) are identified using labels, such as, semantic versions, filenames, or other metadata.  We prefer to identify each software artifact by its binary content.</p>
+<div class="topic">
+<p class="topic-title">What is Content-Addressable Storage?</p>
+<p>Content-Addressable Storage is a fancy phrase with a simple meaning: “the content of the binary determines its identity”.  Cryptographic hash functions such as the sha256 digest give you a one-way algorithm for identifying any collection of bytes.  This digest acts as a unique fingerprint.</p>
+<img alt="../_images/fingerprint.png" src="../_images/fingerprint.png" />
+<p>Any change to the software package would result in a different fingerprint.</p>
+</div>
+<p>There are many advantages to this approach:</p>
+<ul class="simple">
+<li><p>Any tampering to the image produces a different fingerprint</p></li>
+<li><p>There is no need for specific naming or versioning</p></li>
+<li><p>There is no need for metadata to be tracked along with binaries</p></li>
+</ul>
+<p>In addition, this approach significantly simplifies your devops pipelines.</p>
+<p>Now that we can identify software, then we need to solve the second problem: how do we trace this identity to a provenance audit trail?  For this we need somewhere secure to store our evidence, be that a database, a git repository, or Merkely (which happens to be both 😇).</p>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Merkely.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

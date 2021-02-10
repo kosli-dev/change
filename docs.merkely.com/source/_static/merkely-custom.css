@@ -1,0 +1,33 @@
+:root {
+  --custom-color: #f0f0f0;
+  --cdb-green: #00f4b9;
+  --cdb-red: #ff3e15;
+  --cdb-dblue: #00117a;
+  --cdb-ddblue: #010d5a;
+  --cdb-mblue: #0139d3;
+  --cdb-lblue: #01abe9; /* #1EAEDB; is what skeleton has for links - may want to harmonize this */
+  --cdb-mbackground: rgba(1, 57, 210, 0.04);
+  --cdb-black: #13151b;
+  --cdb-sblack: #000000;
+  --cdb-grey: #cfcfd1;
+  --cdb-white: #fff;
+}
+
+
+.navbar {
+  min-height: 70px;
+}
+
+.navbar-default {
+  background-color: var(--cdb-ddblue);
+  border-color: var(--cdb-ddblue);
+}
+
+.navbar .container{
+  padding-top: 10px;
+}
+
+.navbar-brand{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

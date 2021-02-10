@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevOps and Change Management &#8212; Merkely  documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/merkely-custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/merkely-custom.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Mapping your value stream" href="value_stream.html" />
+    <link rel="prev" title="DevOps: Change is the New Normal" href="devops_change_is_the_new_normal.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html"><span><img src="../_static/w-merkely-white-01.png"></span>
+           </a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Contents <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Quick Start:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../devopschangemanagement/pipefile.html">Defining Your Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devopschangemanagement/binary_provenance.html">Logging Artifacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devopschangemanagement/controls.html">Logging Controls</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devopschangemanagement/deployments.html">Logging Deployments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devopschangemanagement/approvals.html">Creating Approvals</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Concepts:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="devops_change_is_the_new_normal.html">DevOps: Change is the New Normal</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DevOps and Change Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="value_stream.html">Mapping your value stream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binary_provenance.html">Understanding Binary Provenance</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="devops-and-change-management">
+<h1>DevOps and Change Management<a class="headerlink" href="#devops-and-change-management" title="Permalink to this headline">¶</a></h1>
+<p>If you work in regulated industries such as finance, medical, and retail, or even just need to follow certain industry standards such as ISO - the way you make software has compliance needs.</p>
+<p>At a high level, all software processes have three components:</p>
+<ol class="arabic simple">
+<li><p>Process: You must have a defined (documented) way of working</p></li>
+<li><p>Implementation: You must follow this process</p></li>
+<li><p>Proof: You must be able to prove that you have followed this process</p></li>
+</ol>
+<p>So how are these needs typically met in traditional IT change management vs DevOps Change management?</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 17%" />
+<col style="width: 38%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Approach</p></th>
+<th class="head"><p>Process</p></th>
+<th class="head"><p>Implementation</p></th>
+<th class="head"><p>Proof</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Traditional</p></td>
+<td><p>Wiki Documentation</p></td>
+<td><p>Manual build, qualification, and deployment</p></td>
+<td><p>Meeting minutes and Change Documentation</p></td>
+</tr>
+<tr class="row-odd"><td><p>DevOps Lite</p></td>
+<td><p>Wiki Documentation</p></td>
+<td><p>DevOps Pipelines</p></td>
+<td><p>Meeting minutes and Change Documentation</p></td>
+</tr>
+<tr class="row-even"><td><p>DevOps</p></td>
+<td><p>Live Documentation</p></td>
+<td><p>DevOps Pipelines</p></td>
+<td><p>DevOps Journal</p></td>
+</tr>
+</tbody>
+</table>
+<p>It can be tempting to adopt DevOps and carry on with traditional change management approaches. In this setup, you implement continuous integration and continuous delivery, and when it comes time to release you create the necessary proof that processes have been followed.</p>
+<img alt="../_images/change_management_as_a_gate.png" src="../_images/change_management_as_a_gate.png" />
+<p>This approach provides the illusion of speed, however it comes with some serious consequences.  While the team can feel that they are efficient and able to work in fast loops, they are not connected to the final delivery to the customer until long after the work is complete. This batching of changes increases lead times, slows feedback, increases the risk that a change will fail, and makes it difficult to debug failures that occur.  We call this the DevOps-Lite Trap, or DOLT.. (insert picture of homer simpson)</p>
+<div class="topic">
+<p class="topic-title">How do you know if you are in the devops-lite trap?</p>
+<dl class="simple">
+<dt>You could be in the trap if your team has CI which automatically builds and tests their software but:</dt><dd><ul class="simple">
+<li><p>Cannot deploy on demand</p></li>
+<li><p>Depend upon another team to deliver your work</p></li>
+<li><p>Are not responsible for operating the application</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<p>A better approach is to automatically bake in as much change management and risk controls as possible into every change, using DevOps Change Management.</p>
+<img alt="../_images/continuous_change_management.png" src="../_images/continuous_change_management.png" />
+<p>This approach:</p>
+<ul class="simple">
+<li><p>Reduces manual work</p></li>
+<li><p>Improves process conformance</p></li>
+<li><p>Shortens lead time for changes</p></li>
+<li><p>Lowers deployment risks</p></li>
+</ul>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Merkely.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
