@@ -1,28 +1,41 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
-
 from commands import COMMANDS, Context
 
 
+class DescribeCommand(Directive):
+
+    has_content = True
+
+    def run(self):
+        args = self.content[0].split()
+        name = args[0]
+        description_type = args[1]
+        if description_type == "summary":
+            return command_summary(name)
+        if description_type == "invocation":
+            return command_invocation(name)
+        if description_type == "parameters":
+            return command_parameters(name)
+        return []
+
+
 def command_summary(name):
-    env = {"MERKELY_COMMAND": name}
-    context = Context(env, None, None)
-    command = COMMANDS[name](context)
-    return [nodes.paragraph(text=command.summary)]
+    return [nodes.paragraph(text=command_for(name).summary)]
 
 
 def command_invocation(name):
-    env = {"MERKELY_COMMAND": name}
-    context = Context(env, None, None)
-    command = COMMANDS[name](context)
-    return [nodes.literal_block(text=command.invocation)]
+    return [nodes.literal_block(text=command_for(name).invocation)]
 
 
-def command_env_table(name):
+def command_parameters(name):
+    return [env_vars_to_table(command_for(name).env_vars)]
+
+
+def command_for(name):
     env = {"MERKELY_COMMAND": name}
     context = Context(env, None, None)
-    command = COMMANDS[name](context)
-    return env_vars_to_table(command.env_vars)
+    return COMMANDS[name](context)
 
 
 def env_vars_to_table(env_vars):
@@ -57,25 +70,8 @@ def env_vars_to_table(env_vars):
     return table
 
 
-class CommandParameters(Directive):
-
-    has_content = True
-
-    def run(self):
-        name = self.content[0].split()[0]
-        description_type = self.content[0].split()[1]
-        if description_type == "parameters":
-            return [command_env_table(name)]
-        if description_type == "invocation":
-            return command_invocation(name)
-        if description_type == "summary":
-            return command_summary(name)
-        return []
-
-
 def setup(app):
-    app.add_directive("describe_command", CommandParameters)
-
+    app.add_directive("describe_command", DescribeCommand)
     return {
         'version': '0.1',
         'parallel_read_safe': True,
