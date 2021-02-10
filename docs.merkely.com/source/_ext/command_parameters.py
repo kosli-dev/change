@@ -16,17 +16,28 @@ def env_vars_to_table(env_vars):
     tgroup = nodes.tgroup(cols=3)
     table += tgroup
 
-    colspec = nodes.colspec(colwidth=100)
+    colspec = nodes.colspec()
     tgroup += colspec
     tgroup += colspec
     tgroup += colspec
 
+    thead = nodes.thead()
+    tgroup += thead
+    row = nodes.row()
+    row += nodes.entry("", nodes.paragraph(text="NAME"))
+    row += nodes.entry("", nodes.paragraph(text="Type"))
+    row += nodes.entry("", nodes.paragraph(text="Description"))
+    thead += row
+    
     tbody = nodes.tbody()
     for env_var in env_vars:
         row = nodes.row()
         row += nodes.entry("", nodes.paragraph(text=env_var.name))
         row += nodes.entry("", nodes.paragraph(text=env_var.type))
-        row += nodes.entry("", nodes.paragraph(text=env_var.description))
+        if env_var.description == "<FINGERPRINT_LINK>":
+            pass
+        else:
+            row += nodes.entry("", nodes.paragraph(text=env_var.description))
         tbody += row
     tgroup += tbody
     return table
