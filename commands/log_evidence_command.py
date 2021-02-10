@@ -7,18 +7,22 @@ class LogEvidenceCommand(Command):
 
     @property
     def overview(self):
+        def env(prop):
+            ev_name = getattr(self, prop).name
+            return f"    --env {ev_name}=${{...}} \\"
+
         return "\n".join([
             "Logs evidence in Merkely.",
             "Invoked like this:",
             "",
             "docker run \\",
             "    --env MERKELY_COMMAND=log_deployment \\",
-            f"    --env {self.fingerprint.name}=${{...}} \\",
-            "    \\",
-            "    --env MERKELY_CI_BUILD_URL=${...} \\",
-            "    --env MERKELY_DESCRIPTION=${...} \\",
-            "    --env MERKELY_EVIDENCE_TYPE=${...} \\",
-            "    --env MERKELY_IS_COMPLIANT=${...} \\",
+            env('fingerprint'),
+            '',
+            env('ci_build_url'),
+            env('description'),
+            env('evidence_type'),
+            env('is_compliant'),
             "    --rm \\",
             f"    --env {self.api_token.name}=${{...}} \\",
             "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\",
