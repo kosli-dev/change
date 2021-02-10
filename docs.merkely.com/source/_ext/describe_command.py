@@ -12,23 +12,25 @@ class DescribeCommand(Directive):
         name = args[0]
         description_type = args[1]
         if description_type == "summary":
-            return command_summary(name)
-        if description_type == "invocation":
-            return command_invocation(name)
+            return summary(name)
+        if description_type == "invocation_full":
+            return invocation(name, 'full')
+        if description_type == "invocation_minimum":
+            return invocation(name, 'minimum')
         if description_type == "parameters":
-            return command_parameters(name)
+            return parameters(name)
         return []
 
 
-def command_summary(name):
+def summary(name):
     return [nodes.paragraph(text=command_for(name).summary)]
 
 
-def command_invocation(name):
-    return [nodes.literal_block(text=command_for(name).invocation)]
+def invocation(name, kind):
+    return [nodes.literal_block(text=command_for(name).invocation(kind))]
 
 
-def command_parameters(name):
+def parameters(name):
     return [env_vars_to_table(command_for(name).env_vars)]
 
 

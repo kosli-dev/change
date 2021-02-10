@@ -9,19 +9,26 @@ class LogEvidenceCommand(Command):
     def summary(self):
         return "Logs evidence in Merkely."
 
-    @property
-    def invocation(self):
-        def env(prop, value="${{...}}"):
-            ev_name = getattr(self, prop).name
-            if ev_name == "MERKELY_COMMAND":
-                value = getattr(self, prop).value
-            return f"    --env {ev_name}={value} \\\n"
+    def invocation(self, type):
+        def env(var):
+            if var.name == "MERKELY_COMMAND":
+                value = var.value
+            elif var.name == "MERKELY_FINGERPRINT":
+                value = "\"docker://${YOUR_IMAGE_AND_TAG}\""
+            else:
+                value = "${...}"
+            return f"    --env {var.name}={value} \\\n"
 
         invocation_string = "docker run \\\n"
         for name in self._env_var_names:
-            invocation_string += env(name)
+            var = getattr(self, name)
+            if type == 'full':
+                invocation_string += env(var)
+            if type == 'minimum' and var.type == 'required':
+                invocation_string += env(var)
 
         invocation_string += "    --rm \\\n"
+        invocation_string += "    --volume /var/run/docker.sock:/var/run/docker.sock \\\n"
         invocation_string += "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\\n"
         invocation_string += "    merkely/change"
         return invocation_string
@@ -57,6 +64,7 @@ class LogEvidenceCommand(Command):
 
     @property
     def _env_var_names(self):
+        # Print according to this order
         return [
             'name',
             'fingerprint',
@@ -67,4 +75,3 @@ class LogEvidenceCommand(Command):
             'api_token',
             'host',
         ]
-        # Print according to this order

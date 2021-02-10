@@ -4,7 +4,7 @@ Log Evidence
 
 Invocation
 ----------
-.. describe_command:: log_evidence invocation
+.. describe_command:: log_evidence invocation_full
 
 Parameters
 ----------
