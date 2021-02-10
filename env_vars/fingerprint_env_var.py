@@ -6,7 +6,6 @@ import re
 
 DESCRIPTION = "\n".join([
     "...",
-    "..."
 ])
 
 
