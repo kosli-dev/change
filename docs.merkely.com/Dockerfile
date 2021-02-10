@@ -1,5 +1,7 @@
 # Docker image for building doc site
-FROM sphinxdoc/sphinx
+FROM merkely/change
+
+#install sphinx
 
 WORKDIR /docs
 ADD requirements.txt /docs
