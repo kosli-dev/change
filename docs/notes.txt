@@ -1,11 +1,13 @@
 
-Priorities
-FROM                   TO
-put_artifact_image     log_artifact
-control_junit          log_test_results
-control_bitbucket_pr   log_bitbucket_pr
-create_deployment      log_deployment
-create_release         log_approval
+Priorities                                    Tests
+FROM                   TO                     ALL-EVS   ONLY-REQ-EVS   MISSING-REQ-EVS
+put_artifact_image     log_artifact           yes       no             yes
+control_junit          log_test_results       no        no             no
+control_bitbucket_pr   log_bitbucket_pr       no        no             no
+create_deployment      log_deployment         yes       no             no
+create_release         log_approval           no        no             no
+                       log_evidence           yes       no             no
+                       declare_pipeline       yes       N/A            no
 
 
 Check when using pathed-filename to get sha for that
