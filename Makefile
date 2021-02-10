@@ -105,8 +105,7 @@ define SOURCE_VOLUME_MOUNTS
 	--volume ${ROOT_DIR}/cdb:/app/cdb \
 	--volume ${ROOT_DIR}/commands:/app/commands \
 	--volume ${ROOT_DIR}/env_vars:/app/env_vars \
-	--volume ${ROOT_DIR}/fingerprinters:/app/fingerprinters \
-    --volume ${ROOT_DIR}/scripts:/app/scripts
+	--volume ${ROOT_DIR}/fingerprinters:/app/fingerprinters
 endef
 
 define TESTS_VOLUME_MOUNT
@@ -168,6 +167,7 @@ pytest_help:
 living_docs:
 	@docker run \
         --rm \
+        --volume ${ROOT_DIR}/scripts:/app/scripts \
         ${SOURCE_VOLUME_MOUNTS} \
         ${IMAGE} python /app/scripts/living_docs.py
 
