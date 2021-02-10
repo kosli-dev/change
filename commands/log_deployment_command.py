@@ -13,7 +13,6 @@ class LogDeploymentCommand(Command):
         --env MERKELY_FINGERPRINT=${...} \
         \
         --env MERKELY_CI_BUILD_NUMBER=${...} \
-        --env MERKELY_CI_BUILD_URL=${...} \
         --env MERKELY_DESCRIPTION=${...} \
         --env MERKELY_ENVIRONMENT=${...} \
         --env MERKELY_IS_COMPLIANT=${...} \

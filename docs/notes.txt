@@ -1,4 +1,13 @@
 
+Priorities
+FROM                   TO
+put_artifact_image     log_artifact
+control_junit          log_test_results
+control_bitbucket_pr   log_bitbucket_pr
+create_deployment      log_deployment
+create_release         log_approval
+
+
 Check when using pathed-filename to get sha for that
 cdb and merkely behave the same regarding only showing
 the basename of the pathed-filename.

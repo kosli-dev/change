@@ -6,7 +6,6 @@ COMMANDS = {
     "log_artifact": LogArtifactCommand,
     "log_deployment": LogDeploymentCommand,
     "log_evidence": LogEvidenceCommand,
-    "create_deployment": CreateDeploymentCommand
 }
 
 
