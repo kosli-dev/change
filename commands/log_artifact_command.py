@@ -10,15 +10,16 @@ class LogArtifactCommand(Command):
 
     docker run \
         --env MERKELY_COMMAND=log_evidence \
-        --env MERKELY_FINGERPRINT=${...} \
+        --env MERKELY_FINGERPRINT="docker://${...}" \
         \
+        --env MERKELY_IS_COMPLIANT=${...} \
         --env MERKELY_ARTIFACT_GIT_COMMIT=${...} \
         --env MERKELY_ARTIFACT_GIT_URL=${...} \
         --env MERKELY_CI_BUILD_NUMBER=${...} \
         --env MERKELY_CI_BUILD_URL=${...} \
-        --env MERKELY_IS_COMPLIANT=${...} \
         --rm \
         --env MERKELY_API_TOKEN=${...} \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
         --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
         merkely/change
     """
@@ -60,14 +61,15 @@ class LogArtifactCommand(Command):
 
     @property
     def _env_var_names(self):
+        # Print according to this order
         return [
-            'api_token',
+            'name',
+            'fingerprint',
+            'is_compliant',
             'artifact_git_commit',
             'artifact_git_url',
             'ci_build_number',
             'ci_build_url',
-            'fingerprint',
+            'api_token',
             'host',
-            'is_compliant',
-            'name'
         ]

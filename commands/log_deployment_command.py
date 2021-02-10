@@ -10,14 +10,15 @@ class LogDeploymentCommand(Command):
 
     docker run \
         --env MERKELY_COMMAND=log_deployment \
-        --env MERKELY_FINGERPRINT=${...} \
+        --env MERKELY_FINGERPRINT="docker://${...}" \
         \
+        --env MERKELY_IS_COMPLIANT=${...} \
         --env MERKELY_CI_BUILD_NUMBER=${...} \
         --env MERKELY_DESCRIPTION=${...} \
         --env MERKELY_ENVIRONMENT=${...} \
-        --env MERKELY_IS_COMPLIANT=${...} \
         --rm \
         --env MERKELY_API_TOKEN=${...} \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
         --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
         merkely/change
     """
@@ -50,12 +51,13 @@ class LogDeploymentCommand(Command):
 
     @property
     def _env_var_names(self):
+        # Print according to this order
         return [
-            'api_token',
+            'name',
+            'fingerprint',
             'ci_build_url',
             'description',
             'environment',
-            'fingerprint',
+            'api_token',
             'host',
-            'name'
         ]
