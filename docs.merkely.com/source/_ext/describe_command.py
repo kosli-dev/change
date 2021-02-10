@@ -4,6 +4,13 @@ from docutils.parsers.rst import Directive
 from commands import COMMANDS, Context
 
 
+def command_summary(name):
+    env = {"MERKELY_COMMAND": name}
+    context = Context(env, None, None)
+    command = COMMANDS[name](context)
+    return [nodes.paragraph(text=command.summary)]
+
+
 def command_invocation(name):
     env = {"MERKELY_COMMAND": name}
     context = Context(env, None, None)
@@ -61,6 +68,8 @@ class CommandParameters(Directive):
             return [command_env_table(name)]
         if description_type == "invocation":
             return command_invocation(name)
+        if description_type == "summary":
+            return command_summary(name)
         return []
 
 
