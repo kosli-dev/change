@@ -20,3 +20,8 @@ DevOps Change Management with Merkely!!!
 
    concepts/index
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference:
+
+   reference/index
