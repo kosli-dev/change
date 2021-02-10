@@ -102,6 +102,23 @@
       
   <div class="section" id="log-evidence">
 <h1>Log Evidence<a class="headerlink" href="#log-evidence" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="invocation">
+<h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
+    --env MERKELY_COMMAND=log_deployment \
+    --env MERKELY_FINGERPRINT=${...} \
+
+    --env MERKELY_CI_BUILD_URL=${...} \
+    --env MERKELY_DESCRIPTION=${...} \
+    --env MERKELY_EVIDENCE_TYPE=${...} \
+    --env MERKELY_IS_COMPLIANT=${...} \
+    --rm \
+    --env MERKELY_API_TOKEN=${...} \
+    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
+    merkely/change
+</pre></div>
+</div>
+</div>
 <div class="section" id="parameters">
 <h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
 <table class="docutils align-default">

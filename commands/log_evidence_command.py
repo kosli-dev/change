@@ -6,15 +6,16 @@ from cdb.http import http_put_payload
 class LogEvidenceCommand(Command):
 
     @property
-    def overview(self):
+    def summary(self):
+        return "Logs evidence in Merkely."
+
+    @property
+    def invocation(self):
         def env(prop):
             ev_name = getattr(self, prop).name
             return f"    --env {ev_name}=${{...}} \\"
 
         return "\n".join([
-            "Logs evidence in Merkely.",
-            "Invoked like this:",
-            "",
             "docker run \\",
             "    --env MERKELY_COMMAND=log_deployment \\",
             env('fingerprint'),

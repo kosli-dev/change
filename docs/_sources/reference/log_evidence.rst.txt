@@ -1,8 +1,12 @@
 Log Evidence
 ============
 
+Invocation
+----------
+
+.. describe_command:: log_evidence invocation
 
 
 Parameters
 ----------
-.. command_parameters:: log_evidence
+.. describe_command:: log_evidence parameters
