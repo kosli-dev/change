@@ -12,7 +12,7 @@ class Command:
         self._context = context
 
     def __call__(self):  # pragma: no cover
-        raise NotImplementedError(f"{self._class_name}.__call__(self) subclass override missing")
+        raise NotImplementedError
 
     def check(self):
         for env_var in self.env_vars:
@@ -26,7 +26,7 @@ class Command:
 
     @property
     def _env_var_names(self):  # pragma: no cover
-        raise NotImplementedError(f"{self._class_name}._env_var_names(self) subclass override missing.")
+        raise NotImplementedError
 
     # - - - - - - - - - - - - - - - - - - - - -
     # common env-vars
@@ -93,9 +93,3 @@ class Command:
     def _print_compliance(self):
         env_var = self.is_compliant
         print(f"{env_var.name}: {env_var.value == 'TRUE'}")
-
-    # - - - - - - - - - - - - - - - - - - - - -
-
-    @property
-    def _class_name(self):  # pragma: no cover
-        return self.__class__.__name__

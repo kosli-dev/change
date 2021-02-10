@@ -28,7 +28,7 @@ class EnvVar:
         Used in living documentation.
         Never raises.
         """
-        raise NotImplementedError(f"{self.__class__.__name__}.type override missing")
+        raise NotImplementedError
 
     @property
     def description(self):
@@ -46,7 +46,7 @@ class EnvVar:
         of each command's env-var. Each env-var's value raises
         if it is invalid.
         """
-        raise NotImplementedError(f"{self.__class__.__name__}.value override missing")
+        raise NotImplementedError
 
     @property
     def env(self):
