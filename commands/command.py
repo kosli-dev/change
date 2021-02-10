@@ -12,7 +12,7 @@ class Command:
         self._context = context
 
     def __call__(self):
-        raise NotImplementedError(f"{self.class_name}.__call__(self) subclass override missing")
+        raise NotImplementedError(f"{self._class_name}.__call__(self) subclass override missing")
 
     def check(self):
         for env_var in self.env_vars:
@@ -21,14 +21,15 @@ class Command:
     @property
     def env_vars(self):
         names = self._env_var_names
-        evs = [getattr(self, name) for name in names]
-        return namedtuple('EnvVars', tuple(names))(*evs)
+        objects = [getattr(self, name) for name in names]
+        return namedtuple('EnvVars', tuple(names))(*objects)
 
     @property
     def _env_var_names(self):
-        raise NotImplementedError(f"{self.class_name}._env_var_names(self) subclass override missing.")
+        raise NotImplementedError(f"{self._class_name}._env_var_names(self) subclass override missing.")
 
     # - - - - - - - - - - - - - - - - - - - - -
+    # common env-vars
 
     @property
     def name(self):
@@ -62,6 +63,7 @@ class Command:
         return load_json("/Merkelypipe.json")
 
     # - - - - - - - - - - - - - - - - - - - - -
+    # context objects
 
     @property
     def docker_fingerprinter(self):
@@ -95,5 +97,5 @@ class Command:
     # - - - - - - - - - - - - - - - - - - - - -
 
     @property
-    def class_name(self):
+    def _class_name(self):
         return self.__class__.__name__

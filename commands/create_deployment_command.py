@@ -25,18 +25,18 @@ class CreateDeploymentCommand(Command):
 
     @property
     def ci_build_url(self):
-        description = ""
-        return self._defaulted_env_var(self, "CI_BUILD_URL", None, description)
+        description = "TODO"
+        return self._defaulted_env_var("CI_BUILD_URL", None, description)
 
     @property
     def description(self):
-        description = ""
-        return self._defaulted_env_var(self, "DESCRIPTION", 'None', description)
+        description = "TODO"
+        return self._defaulted_env_var("DESCRIPTION", 'None', description)
 
     @property
     def environment(self):
-        description = ""
-        return self._defaulted_env_var(self, "ENVIRONMENT", 'None', description)
+        description = "TODO"
+        return self._defaulted_env_var("ENVIRONMENT", 'None', description)
 
     @property
     def user_data(self):

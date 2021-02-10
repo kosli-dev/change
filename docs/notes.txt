@@ -1,4 +1,8 @@
 
+Should create a source/ dir and move everything into it.
+
+load_json() should be in context to allow easy stubbing.
+
 Could look for unused env-vars starting with MERKELY_
 and report warnings...
 
