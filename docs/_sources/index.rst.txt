@@ -12,7 +12,7 @@ DevOps Change Management with Merkely!!!
    :maxdepth: 2
    :caption: Quick Start:
 
-   devopschangemanagement/index
+   tutorial/index
 
 .. toctree::
    :maxdepth: 2
