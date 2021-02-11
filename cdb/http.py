@@ -9,10 +9,14 @@ from cdb.http_retry import HttpRetry
 def http_get_json(url, api_token):
     print("Getting json:")
     print("From this url: " + url)
-    auth = HTTPBasicAuth(api_token, 'unused')
-    response = HttpRetry().get(url, auth=auth)
-    print(response.text)
-    return response.json()
+    if in_cdb_dry_run():
+        print("DRY RUN: Get not performed")
+    else:
+        auth = HTTPBasicAuth(api_token, 'unused')
+        response = HttpRetry().get(url, auth=auth)
+        print(response.text)
+        return response.json()
+    return None
 
 
 def http_put_payload(url, payload, api_token):

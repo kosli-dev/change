@@ -1,3 +1,4 @@
+from cdb.control_deployment import control_deployment_approved
 
 UNAPPROVED_REQUEST = {
 	"approvals": [],
@@ -31,12 +32,6 @@ APPROVED_REQUEST = {
 	"target_artifact": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc1"
 }
 
-
-def control_deployment_approved(approvals):
-	for approval in approvals:
-		if approval["state"] == "APPROVED":
-			return True
-	return False
 
 def test_returns_false_when_approvals_empty():
 	is_approved = control_deployment_approved(approvals=[])

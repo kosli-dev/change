@@ -24,8 +24,8 @@ class ApiSchema:
         return ApiSchema.url_for_artifacts(host, project_data) + sha256_digest
 
     @staticmethod
-    def url_for_artifacts(host, project_data):
-        return ApiSchema.url_for_project(host, project_data) + '/artifacts/'
+    def url_for_artifact_approvals(host, project_data, sha256_digest):
+        return ApiSchema.url_for_artifact(host, project_data, sha256_digest) + '/approvals/'
 
     @staticmethod
     def url_for_releases(host, project_data):
