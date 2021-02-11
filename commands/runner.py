@@ -1,5 +1,4 @@
 from commands import Context, build_command, CommandError
-import sys
 
 
 def run(env=None, docker_fingerprinter=None, file_fingerprinter=None):
@@ -11,6 +10,6 @@ def run(env=None, docker_fingerprinter=None, file_fingerprinter=None):
         return command()
     except CommandError as exc:
         print(f"Error: {str(exc)}")
-        sys.exit(144)
+        return 144
 
 
