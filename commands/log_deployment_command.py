@@ -1,5 +1,5 @@
 from commands import Command, load_json
-from env_vars import UserDataFileEnvVar
+from env_vars import UserDataEnvVar
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
 
@@ -31,9 +31,8 @@ class LogDeploymentCommand(Command):
             "build_url": self.ci_build_url.value,
             "description": self.description.value,
             "environment": self.environment.value,
+            "user_data": self.user_data.value
         }
-        if self.user_data.is_set:
-            payload["user_data"] = self.user_data.json
         url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
         http_post_payload(url, payload, self.api_token.value)
         return 'Posting', url, payload
@@ -55,7 +54,7 @@ class LogDeploymentCommand(Command):
 
     @property
     def user_data(self):
-        return UserDataFileEnvVar(self.env)
+        return UserDataEnvVar(self.env)
 
     @property
     def _env_var_names(self):
@@ -66,6 +65,7 @@ class LogDeploymentCommand(Command):
             'ci_build_url',
             'description',
             'environment',
+            'user_data',
             'api_token',
             'host',
         ]

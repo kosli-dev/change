@@ -16,7 +16,7 @@ CI_BUILD_URL = "https://gitlab/build/1456"
 IMAGE_NAME = "acme/road-runner:4.56"
 SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 
-USER_DATA_FILENAME = "/app/tests/data/user_data.json"
+USER_DATA = "/app/tests/data/user_data.json"
 
 def test_docker_image(capsys, mocker):
     # make the cdb call
@@ -25,7 +25,7 @@ def test_docker_image(capsys, mocker):
         "CDB_DESCRIPTION": DESCRIPTION,
         "CDB_ENVIRONMENT": ENVIRONMENT,
         "CDB_CI_BUILD_URL": CI_BUILD_URL,
-        "CDB_USER_DATA": USER_DATA_FILENAME,
+        "CDB_USER_DATA": USER_DATA,
     }
     set_env_vars = {'CDB_ARTIFACT_SHA': SHA256}
     with dry_run(env, set_env_vars):
@@ -81,7 +81,7 @@ def create_new_deployment_env():
         "MERKELY_ENVIRONMENT": ENVIRONMENT,
         "MERKELY_DESCRIPTION": DESCRIPTION,
         "MERKELY_HOST": f"https://{DOMAIN}",
-        "MERKELY_USER_DATA_FILE": USER_DATA_FILENAME,
+        "MERKELY_USER_DATA": USER_DATA,
     }
     return {**core_env_vars("log_deployment"), **ev}
 

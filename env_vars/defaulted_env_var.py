@@ -3,10 +3,7 @@ from env_vars import EnvVar
 
 class DefaultedEnvVar(EnvVar):
     """
-    Represents a defaulted OS environment-variable.
-    Contributes something to its parent Command's http payload.
-    The default is supplied at construction, and is used
-    as its value if it does not exist at runtime.
+    A defaulted OS environment-variable.
     """
     def __init__(self, env, name, default, description):
         super().__init__(env, name, description)
@@ -18,7 +15,11 @@ class DefaultedEnvVar(EnvVar):
 
     @property
     def value(self):
-        return self.env.get(self.name, self._default)
+        return self.env.get(self.name, self.default)
+
+    @property
+    def is_set(self):
+        return self.env.get(self.name) is not None
 
     @property
     def default(self):

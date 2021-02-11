@@ -55,7 +55,8 @@ class LogEvidenceCommand(Command):
     @property
     def description(self):
         description = "The description for the evidence."
-        return self._optional_env_var('DESCRIPTION', description)
+        default = "UNDEFINED"
+        return self._defaulted_env_var('DESCRIPTION', default, description)
 
     @property
     def evidence_type(self):

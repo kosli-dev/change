@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from env_vars import DefaultedEnvVar, OptionalEnvVar, RequiredEnvVar, FingerprintEnvVar
+from env_vars import DefaultedEnvVar, RequiredEnvVar, FingerprintEnvVar
 from commands import load_json
 
 
@@ -12,7 +12,7 @@ class Command:
         self._context = context
 
     def __call__(self):  # pragma: no cover
-        raise NotImplementedError
+        raise NotImplementedError(self.name)
 
     def check(self):
         for env_var in self.env_vars:
@@ -26,7 +26,7 @@ class Command:
 
     @property
     def _env_var_names(self):  # pragma: no cover
-        raise NotImplementedError
+        raise NotImplementedError(self.name)
 
     # - - - - - - - - - - - - - - - - - - - - -
     # common env-vars
@@ -48,7 +48,7 @@ class Command:
     @property
     def host(self):
         default = "https://app.compliancedb.com"
-        description = f"The host name for Merkely. The default is {default}"
+        description = f"Defaults to {default}"
         return self._defaulted_env_var("HOST", default, description)
 
     @property
@@ -81,9 +81,6 @@ class Command:
 
     def _defaulted_env_var(self, name, default, description):
         return DefaultedEnvVar(self.env, f"MERKELY_{name}", default, description)
-
-    def _optional_env_var(self, name, description):
-        return OptionalEnvVar(self.env, f"MERKELY_{name}", description)
 
     def _required_env_var(self, name, description):
         return RequiredEnvVar(self.env, f"MERKELY_{name}", description)

@@ -51,7 +51,7 @@ class EnvVar:
         Used in living documentation.
         Never raises.
         """
-        raise NotImplementedError
+        raise NotImplementedError(self.name)
 
     @property
     def value(self):  # pragma: no cover
@@ -60,4 +60,4 @@ class EnvVar:
         of each command's env-var. Each env-var's value raises
         if it is invalid.
         """
-        raise NotImplementedError
+        raise NotImplementedError(self.name)

@@ -4,8 +4,7 @@ from env_vars import EnvVar
 
 class RequiredEnvVar(EnvVar):
     """
-    Represents a required OS environment-variable that
-    contributes something to its parent Command's http payload.
+    A required OS environment-variable.
     """
     def __init__(self, env, name, description, example=None):
         super().__init__(env, name, description, example)
@@ -17,8 +16,8 @@ class RequiredEnvVar(EnvVar):
     @property
     def value(self):
         """
-        The OS env-var for name if present and a non empty string.
-        Raises if not present or the empty string.
+        The OS env-var for name if present and non empty.
+        Raises if not present or empty.
         """
         result = self.env.get(self.name, None)
         if result is None:
