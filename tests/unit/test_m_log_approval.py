@@ -77,7 +77,7 @@ def test_docker_image(capsys, mocker):
     assert url == expected_url
     assert payload == expected_payload
     """
-    
+
 
 def new_log_approval_env():
     protocol = "docker://"
