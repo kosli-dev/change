@@ -18,6 +18,7 @@ SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 
 USER_DATA = "/app/tests/data/user_data.json"
 
+
 def test_docker_image(capsys, mocker):
     # make the cdb call
     env = {

@@ -268,7 +268,7 @@ merkely_log_deployment:
         --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
         --env MERKELY_DESCRIPTION=${MERKELY_DESCRIPTION} \
         --env MERKELY_ENVIRONMENT=${MERKELY_ENVIRONMENT} \
-        --env MERKELY_USER_DATA=${MERKELY_USER_DATA§} \
+        --env MERKELY_USER_DATA=${MERKELY_USER_DATA} \
         \
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env MERKELY_HOST=${MERKELY_HOST} \
