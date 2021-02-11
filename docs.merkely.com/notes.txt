@@ -46,19 +46,20 @@ Then it would be alive.
   o) We would scrape from the loan-calculator repo.
   o) It would be deliberately kept OFF the merkely github org so it has client-centric names.
   o) The loan-calculator's .yml file should be a "bash" version without using a makefile.
+
 Eg  For github Actions, the "bash" version of log_artifact would be like this:
 
     - name: Publish docker image information to Merkely
       run: |
         export SHA7=$(git log -1 --pretty=%h)
         export MY_IMAGE_AND_TAG=acme/loan-calculator:sha-${SHA7}
-        export MY_REPO_URL=https://github.com/acme/loan-calculator/commit/${GITHUB_SHA}
+        export MY_GIT_URL=https://github.com/acme/loan-calculator/commit/${GITHUB_SHA}
         export MY_CI_URL=https://github.com/acme/loan-calculator/actions/runs/${GITHUB_RUN_ID}
 
 	    docker run \
 			--env MERKELY_COMMAND=log_artifact \
 			--env MERKELY_FINGERPRINT="docker://${MY_IMAGE_AND_TAG}" \
-			--env MERKELY_GIT_URL="url://${MY_REPO_URL}" \
+			--env MERKELY_GIT_URL="url://${MY_GIT_URL}" \
 			--env MERKELY_CI_URL="url://${MY_CI_URL} \
 			--env MERKELY_IS_COMPLIANT=bool://TRUE \
 			\
@@ -75,14 +76,16 @@ Notes:
 
 o) We would add a prominent note on the html reference page saying that
    this is the "reference" bash version, which can easily be pushed
-   down into a sourced bash function, or a makefile, etc.
+   down into a sourced bash function, or a makefile, etc, with the words
+   'bash function' and 'makefile' being http-links to the actual files
+   in the loan-calculator repo.
 
 o) This means declare_pipeline has its own separate entry too.
    Which feels ok since this is a reference.
 
 o) I have imagined dropping the word ARTIFACT from the ENV_VAR names.
 
-
+o) It feels like MERKELY_FINGERPRINT now wants to be MERKELY_ARTIFACT
 
 
 
