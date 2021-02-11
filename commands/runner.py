@@ -7,7 +7,8 @@ def run(env=None, docker_fingerprinter=None, file_fingerprinter=None):
         command = build_command(context)
         print(f"MERKELY_COMMAND={command.name.value}")
         command.check()
-        return command()
+        command()
+        return 0
     except CommandError as exc:
         print(f"Error: {str(exc)}")
         return 144
