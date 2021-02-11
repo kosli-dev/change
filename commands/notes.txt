@@ -21,10 +21,12 @@ control_bitbucket_pr   log_bitbucket_pr    no         no        no             n
 create_release         request_approval    no         no        no             no
 
 
+
+Parked...
+
 tests/unit/test_m_defaulted_env_var.py's 1st line is this:
 from commands import CommandError # avoid cyclic dependency
 Look into solving this cyclic-dependency properly.
-
 
 Check when using pathed-filename to get sha for that
 cdb and merkely behave the same regarding only showing
@@ -47,6 +49,9 @@ Look into how Python recommended style for abstract-base-classes.
 
 Mock fingerprinters code in tests/utils could be collapsed using
 multiple inheritance.
+
+Mock fingerprinters should print stack-trace if exception comes
+through __exit__()
 
 Commands should return the triple(method,url,payload)
 and a 2nd step is to do the http get/post/put.
