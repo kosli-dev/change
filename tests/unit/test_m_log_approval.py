@@ -1,4 +1,5 @@
 from cdb.create_release import create_release
+from commands import run
 
 from tests.utils import *
 from tests.unit.test_git import TEST_REPO_ROOT
@@ -17,7 +18,8 @@ APPROVAL_FILE = "test_m_log_approval"
 def test_docker_image(capsys, mocker):
     image_name = "acme/runner:4.56"
     sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
-    merkelypipe = "tests/integration/test-pipefile.json"
+    merkleypipe_dir = "tests/data"
+    merkelypipe = "test-pipefile.json"
     mock_artifacts_for_commit = {
         "artifacts": [{"sha256": sha256}]
     }
@@ -31,7 +33,7 @@ def test_docker_image(capsys, mocker):
     with dry_run(env, set_env_vars), ScopedDirCopier("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         mocker.patch('cdb.create_release.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
-        create_release(merkelypipe)
+        create_release(f"{merkleypipe_dir}/{merkelypipe}")
     verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
@@ -62,13 +64,11 @@ def test_docker_image(capsys, mocker):
     assert old_url == expected_url
     assert old_payload == expected_payload
 
-    """
     # make merkely call
     protocol = "docker://"
     ev = new_log_approval_env()
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
-    #merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env, scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             method, url, payload = run(env, fingerprinter, None)
 
@@ -76,7 +76,6 @@ def test_docker_image(capsys, mocker):
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
-    """
 
 
 def new_log_approval_env():

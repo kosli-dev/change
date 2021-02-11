@@ -24,25 +24,25 @@ class LogApprovalCommand(Command):
     def release_description(self):
         notes = "todo"
         # defaults to "No description provided""
-        return self._defaulted_env_var(self, "RELEASE_DESCRIPTION", notes)
+        return self._defaulted_env_var("RELEASE_DESCRIPTION", notes)
 
     @property
     def target_src_commitish(self):
         notes = "todo"
         # defaults to None
-        return self._defaulted_env_var(self, "TARGET_SRC_COMMITISH", notes)
+        return self._defaulted_env_var("TARGET_SRC_COMMITISH", notes)
 
     @property
     def base_src_commitish(self):
         notes = "todo"
         # defaults to None
-        return self._defaulted_env_var(self, "BASE_SRC_COMMITISH", notes)
+        return self._defaulted_env_var("BASE_SRC_COMMITISH", notes)
 
     @property
     def src_repo_root(self):
         notes = "todo"
         # defaults to DEFAULT_REPO_ROOT
-        return self._defaulted_env_var(self, "SRC_REPO_ROOT", notes)
+        return self._defaulted_env_var("SRC_REPO_ROOT", notes)
 
     @property
     def _env_var_names(self):

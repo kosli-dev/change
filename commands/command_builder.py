@@ -5,6 +5,7 @@ COMMANDS = {
     "log_artifact": LogArtifactCommand,
     "log_deployment": LogDeploymentCommand,
     "log_evidence": LogEvidenceCommand,
+    "log_approval": LogApprovalCommand,
     "control_deployment": ControlDeploymentCommand,
 }
 
