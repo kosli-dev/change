@@ -24,6 +24,9 @@ create_release         request_approval    no         no        no             n
 
 Parked...
 
+Some tests are producing output when they run.
+eg tests/unit/test_m_log_approval.py
+
 tests/unit/test_m_defaulted_env_var.py's 1st line is this:
 from commands import CommandError # avoid cyclic dependency
 Look into solving this cyclic-dependency properly.
