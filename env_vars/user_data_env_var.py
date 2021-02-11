@@ -23,4 +23,4 @@ class UserDataEnvVar(DefaultedEnvVar):
 
     @property
     def default(self):
-        return '{}'
+        return {}
