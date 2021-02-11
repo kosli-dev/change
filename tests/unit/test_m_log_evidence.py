@@ -5,14 +5,13 @@ from tests.utils import *
 
 MERKELY_DOMAIN = "test.compliancedb.com"
 CDB_DOMAIN = "app.compliancedb.com"
-
 CDB_OWNER = "compliancedb"
 CDB_NAME = "cdb-controls-test-pipeline"
 
+API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
+
 APPROVAL_DIR = "tests/unit/approved_executions"
 APPROVAL_FILE = "test_m_log_evidence"
-
-API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
 def test_docker_protocol(capsys, mocker):
