@@ -53,7 +53,7 @@ class Command:
 
     @property
     def is_compliant(self):
-        notes = "Whether this artifact is considered compliant from you build process."
+        notes = "TRUE if the artifact is considered compliant from you build process."
         return self._required_env_var('IS_COMPLIANT', notes)
 
     # - - - - - - - - - - - - - - - - - - - - -
