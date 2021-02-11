@@ -68,9 +68,11 @@ def test_docker_image(capsys, mocker):
     protocol = "docker://"
     ev = new_log_approval_env()
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
-    with dry_run(ev) as env, scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
-        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-            method, url, payload = run(env, fingerprinter, None)
+    with dry_run(ev) as env:
+        with ScopedDirCopier("/test_src", "/src"):
+            with scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
+                with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+                    method, url, payload = run(env, fingerprinter, None)
 
     # verify matching data
     assert method == expected_method

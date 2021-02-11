@@ -80,7 +80,7 @@ class Command:
         return RequiredEnvVar(self.env, f"MERKELY_{name}", notes)
 
     def _static_defaulted_env_var(self, name, default, notes):
-        return StaticDefaultedEnvVar(self.env, name, default, notes)
+        return StaticDefaultedEnvVar(self.env, f"MERKELY_{name}", default, notes)
 
     def _defaulted_env_var(self, name, notes):
         return DefaultedEnvVar(self.env, f"MERKELY_{name}", notes)

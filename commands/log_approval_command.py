@@ -8,17 +8,14 @@ from cdb.git import list_commits_between, repo_at
 class LogApprovalCommand(Command):
 
     def __call__(self):
-        #commit_list = list_commits_between(repo_at(self.src_repo_root.value),
-        #                                   self.target_src_commitish.value,
-        #                                   self.base_src_commitish.value)
+        commit_list = list_commits_between(repo_at(self.src_repo_root.value),
+                                           self.target_src_commitish.value,
+                                           self.base_src_commitish.value)
         payload = {
             "base_artifact": self.fingerprint.sha,
             "description": self.release_description.value,
             "target_artifact": self.fingerprint.sha,
-            "src_commit_list": [
-                "8f5b384644eb83e7f2a6d9499539a077e7256b8b",
-                "e0ad84e1a2464a9486e777c1ecde162edff930a9"
-            ]
+            "src_commit_list": commit_list,
         }
         url = ApiSchema.url_for_releases(self.host.value, self.merkelypipe)
         http_post_payload(url, payload, self.api_token.value)
