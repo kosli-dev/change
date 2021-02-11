@@ -54,7 +54,7 @@ jobs:
         export MERKELY_FINGERPRINT=docker://merkely/change:sha-${SHA7}
         make branch merkely_declare_pipeline merkely_log_artifact
 
-    - name: Create the deployment in Merkely
+    - name: Log the deployment in Merkely
       env:
         CDB_HOST: https://app.compliancedb.com
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}

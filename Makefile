@@ -233,13 +233,13 @@ branch:
 
 merkely_declare_pipeline:
 	docker run \
-        --env MERKELY_COMMAND=declare_pipeline \
-        \
-        --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
-        --env MERKELY_HOST=${MERKELY_HOST} \
-        --rm \
-        --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
-        ${IMAGE}
+		--env MERKELY_COMMAND=declare_pipeline \
+		\
+		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+		--env MERKELY_HOST=${MERKELY_HOST} \
+		--rm \
+		--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+		${IMAGE}
 
 merkely_log_artifact:
 	docker run \
@@ -260,7 +260,7 @@ merkely_log_artifact:
         ${IMAGE}
 
 merkely_log_deployment:
-    docker run \
+	docker run \
         --env MERKELY_COMMAND=log_deployment \
         \
         --env MERKELY_FINGERPRINT=${MERKELY_DOCKER_IMAGE} \
