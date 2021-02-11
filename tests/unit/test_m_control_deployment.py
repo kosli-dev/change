@@ -9,18 +9,37 @@ OWNER = "compliancedb"
 NAME = "cdb-controls-test-pipeline"
 IMAGE_NAME = "acme/road-runner:4.56"
 SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
+MERKELY_PIPE = "Merkelypipe.compliancedb.json"
 
 
-def test_raises_when_no_approvals(mocker):
+def test_when_no_approvals_then_raises(mocker):
     mocked_get = mocker.patch('commands.control_deployment_command.http_get_json', return_value=[])
-    protocol = "docker://"
+
     ev = new_control_deployment_env()
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{IMAGE_NAME}"
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=MERKELY_PIPE):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             with raises(CommandError):
                 method, url, payload = run(env, fingerprinter, None)
+
+    mocked_get.assert_called_once_with(
+        "https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212/approvals/",
+        "MY_SUPER_SECRET_API_TOKEN"
+    )
+
+
+def test_when_approved_then_does_not_raise(mocker):
+    mock_payload = [{"some_random": "stuff"}]
+    mocked_get = mocker.patch('commands.control_deployment_command.http_get_json', return_value=mock_payload)
+    mocker.patch('commands.control_deployment_command.control_deployment_approved', return_value=True)
+
+    ev = new_control_deployment_env()
+
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=MERKELY_PIPE):
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+            method, url, payload = run(env, fingerprinter, None)
+            assert mock_payload == payload
+
     mocked_get.assert_called_once_with(
         "https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212/approvals/",
         "MY_SUPER_SECRET_API_TOKEN"
@@ -28,6 +47,6 @@ def test_raises_when_no_approvals(mocker):
 
 
 def new_control_deployment_env():
-    ev = {
-    }
+    protocol = "docker://"
+    ev = {"MERKELY_FINGERPRINT": f"{protocol}{IMAGE_NAME}"}
     return {**core_env_vars("control_deployment"), **ev}
