@@ -1,4 +1,98 @@
 
+
+Currently...
+NAME                    Type       Description
+
+MERKELY_COMMAND         required    The Merkely command to execute.
+MERKELY_FINGERPRINT     required    ...
+MERKELY_EVIDENCE_TYPE   required    The evidence type.
+MERKELY_IS_COMPLIANT    required    Whether this artifact is considered compliant from you build process.
+MERKELY_DESCRIPTION     optional    The description for the evidence.
+MERKELY_CI_BUILD_URL    required    Link to the build information.
+MERKELY_API_TOKEN       required    Your API token for Merkely.
+MERKELY_HOST            defaulted   The host name for Merkely. The default is https://app.compliancedb.com
+
+Proposed...
+NAME                    required?   protocols:// (drop down?)         notes (keyed on the dropdown selection)
+
+MERKELY_COMMAND         yes         string://log_evidence
+MERKELY_FINGERPRINT     yes         docker:// file:// sha256://       The name and tag of my docker image.
+MERKELY_EVIDENCE_TYPE   yes         string://                         A Merkelypipe.json "template" entry
+MERKELY_IS_COMPLIANT    yes         bool://                           bool://TRUE or bool://FALSE
+MERKELY_DESCRIPTION     no          string://
+MERKELY_CI_BUILD        yes         url://
+MERKELY_API_TOKEN       yes         string:// ??
+MERKELY_HOST            no          url://                            defaults to https://app.merkely.com
+Plus...for other commands...
+MERKELY_USER_DATA       no          file:// json://
+
+
+Note: Not sure about which of these...?
+MERKELY_CI_BUILD_URL="url://${...}"
+MERKELY_CI_BUILD="url://${...}"
+
+
+
+THOUGHTS...
+The living-documentation of merkely/change doesn't feel right yet.
+The [docker run...] "summary" examples we are generating are too fiddly.
+Not "alive enough"
+Not extensible enough.
+Not at the right level of abstraction...
+Consider, in the docs reference section, the [docker run...] example will
+have several tabs, eg, Github-Actions, CircleCI, etc, etc
+I think our DescribeCommand sphinx extension should scrape ACTUAL .yml files.
+Then it would be alive.
+  o) We would scrape from the loan-calculator repo.
+  o) It would be deliberately kept OFF the merkely github org so it has client-centric names.
+  o) The loan-calculator's .yml file should be a "bash" version without using a makefile.
+Eg  For github Actions, the "bash" version of log_artifact would be like this:
+
+    - name: Publish docker image information to Merkely
+      run: |
+        export SHA7=$(git log -1 --pretty=%h)
+        export MY_IMAGE_AND_TAG=acme/loan-calculator:sha-${SHA7}
+        export MY_REPO_URL=https://github.com/acme/loan-calculator/commit/${GITHUB_SHA}
+        export MY_CI_URL=https://github.com/acme/loan-calculator/actions/runs/${GITHUB_RUN_ID}
+
+	    docker run \
+			--env MERKELY_COMMAND=log_artifact \
+			--env MERKELY_FINGERPRINT="docker://${MY_IMAGE_AND_TAG}" \
+			--env MERKELY_GIT_URL="url://${MY_REPO_URL}" \
+			--env MERKELY_CI_URL="url://${MY_CI_URL} \
+			--env MERKELY_IS_COMPLIANT=bool://TRUE \
+			\
+			--env MERKELY_GIT_COMMIT="string://${GITHUB_SHA}" \
+			--env MERKELY_CI_NUMBER="integer://${GITHUB_RUN_ID}" \
+			--env MERKELY_API_TOKEN="string://${{ secrets.MERKELY_API_TOKEN }}" \
+			--rm \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+			merkely/change
+
+
+Notes:
+
+o) We would add a prominent note on the html reference page saying that
+   this is the "reference" bash version, which can easily be pushed
+   down into a sourced bash function, or a makefile, etc.
+
+o) This means declare_pipeline has its own separate entry too.
+   Which feels ok since this is a reference.
+
+o) I have imagined dropping the word ARTIFACT from the ENV_VAR names.
+
+
+
+
+
+
+
+
+
+
+
+
 Priorities                                    Tests
 FROM                   TO                     ALL-EVS   ONLY-REQ-EVS   MISSING-REQ-EVS
 put_artifact_image     log_artifact           yes       no             yes
