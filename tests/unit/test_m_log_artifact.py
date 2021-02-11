@@ -1,11 +1,8 @@
 from cdb.put_artifact       import put_artifact
 from cdb.put_artifact_image import put_artifact_image
-
-from commands import main, run, build_command, Context, CommandError
-from env_vars import RequiredEnvVar
+from commands import main, run, build_command, Context
 
 from tests.utils import *
-from pytest import raises
 
 CDB_DOMAIN = "app.compliancedb.com"
 CDB_OWNER = "compliancedb"

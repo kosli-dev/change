@@ -20,7 +20,7 @@ def test_docker_image(capsys, mocker):
         "CDB_TARGET_SRC_COMMITISH": "master",
     }
     set_env_vars = {"CDB_ARTIFACT_SHA": sha256}
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), ScopedDirCopier("/test_src", "/src"):
+    with dry_run(env, set_env_vars), ScopedDirCopier("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         mocker.patch('cdb.create_release.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
         create_release("tests/integration/test-pipefile.json")

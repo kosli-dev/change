@@ -1,5 +1,4 @@
 from cdb.put_evidence import put_evidence
-
 from commands import run
 
 from tests.utils import *
