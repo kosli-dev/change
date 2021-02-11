@@ -1,4 +1,5 @@
-from commands import Command
+from commands import Command, load_json
+from env_vars import UserDataFileEnvVar
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
 
@@ -16,6 +17,7 @@ class LogDeploymentCommand(Command):
         --env MERKELY_CI_BUILD_NUMBER=${...} \
         --env MERKELY_DESCRIPTION=${...} \
         --env MERKELY_ENVIRONMENT=${...} \
+        --env MERKELY_USER_DATA=${...} \
         --rm \
         --env MERKELY_API_TOKEN=${...} \
         --volume /var/run/docker.sock:/var/run/docker.sock \
@@ -30,6 +32,8 @@ class LogDeploymentCommand(Command):
             "description": self.description.value,
             "environment": self.environment.value,
         }
+        if self.user_data.is_set:
+            payload["user_data"] = self.user_data.json
         url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
         http_post_payload(url, payload, self.api_token.value)
         return 'Posting', url, payload
@@ -48,6 +52,10 @@ class LogDeploymentCommand(Command):
     def environment(self):
         description = "The name of the environment the artifact is being deployed to."
         return self._required_env_var('ENVIRONMENT', description)
+
+    @property
+    def user_data(self):
+        return UserDataFileEnvVar(self.env)
 
     @property
     def _env_var_names(self):

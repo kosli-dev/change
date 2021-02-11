@@ -5,7 +5,10 @@ Posting this payload:
     "artifact_sha256": "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
     "build_url": "https://gitlab/build/1456",
     "description": "some description",
-    "environment": "production"
+    "environment": "production",
+    "user_data": {
+        "status": "deployed"
+    }
 }
 To this url: https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/deployments/
 DRY RUN: Post not sent
