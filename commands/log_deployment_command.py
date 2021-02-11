@@ -39,18 +39,18 @@ class LogDeploymentCommand(Command):
 
     @property
     def ci_build_url(self):
-        description = "A url for the deployment."
-        return self._required_env_var('CI_BUILD_URL', description)
+        notes = "A url for the deployment."
+        return self._required_env_var('CI_BUILD_URL', notes)
 
     @property
     def description(self):
-        description = "A description for the deployment."
-        return self._required_env_var('DESCRIPTION', description)
+        notes = "A description for the deployment."
+        return self._required_env_var('DESCRIPTION', notes)
 
     @property
     def environment(self):
-        description = "The name of the environment the artifact is being deployed to."
-        return self._required_env_var('ENVIRONMENT', description)
+        notes = "The name of the environment the artifact is being deployed to."
+        return self._required_env_var('ENVIRONMENT', notes)
 
     @property
     def user_data(self):

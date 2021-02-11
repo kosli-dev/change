@@ -24,7 +24,7 @@ class LogEvidenceCommand(Command):
             var = getattr(self, name)
             if type == 'full':
                 invocation_string += env(var)
-            if type == 'minimum' and var.type == 'required':
+            if type == 'minimum' and var.is_required:
                 invocation_string += env(var)
 
         invocation_string += "    --rm \\\n"
@@ -49,19 +49,19 @@ class LogEvidenceCommand(Command):
 
     @property
     def ci_build_url(self):
-        description = "Link to the build information."
-        return self._required_env_var('CI_BUILD_URL', description)
+        notes = "Link to the build information."
+        return self._required_env_var('CI_BUILD_URL', notes)
 
     @property
     def description(self):
-        description = "The description for the evidence."
+        notes = "Defaults to UNDEFINED."
         default = "UNDEFINED"
-        return self._defaulted_env_var('DESCRIPTION', default, description)
+        return self._defaulted_env_var('DESCRIPTION', default, notes)
 
     @property
     def evidence_type(self):
-        description = "The evidence type."
-        return self._required_env_var("EVIDENCE_TYPE", description)
+        notes = "The evidence type."
+        return self._required_env_var("EVIDENCE_TYPE", notes)
 
     @property
     def _env_var_names(self):

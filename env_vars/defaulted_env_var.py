@@ -5,13 +5,13 @@ class DefaultedEnvVar(EnvVar):
     """
     A defaulted OS environment-variable.
     """
-    def __init__(self, env, name, default, description):
-        super().__init__(env, name, description)
+    def __init__(self, env, name, default, notes):
+        super().__init__(env, name, notes)
         self._default = default
 
     @property
-    def type(self):
-        return 'defaulted'
+    def is_required(self):
+        return False
 
     @property
     def value(self):

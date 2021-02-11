@@ -54,19 +54,23 @@ def env_vars_to_table(env_vars):
     tgroup += thead
     row = nodes.row()
     row += nodes.entry("", nodes.paragraph(text="NAME"))
-    row += nodes.entry("", nodes.paragraph(text="Type"))
-    row += nodes.entry("", nodes.paragraph(text="Description"))
+    row += nodes.entry("", nodes.paragraph(text="Required?"))
+    row += nodes.entry("", nodes.paragraph(text="Notes"))
     thead += row
 
     tbody = nodes.tbody()
     for env_var in env_vars:
         row = nodes.row()
         row += nodes.entry("", nodes.paragraph(text=env_var.name))
-        row += nodes.entry("", nodes.paragraph(text=env_var.type))
-        if env_var.description == "<FINGERPRINT_LINK>":
+        if env_var.is_required:
+            required = 'yes'
+        else:
+            required = 'no'
+        row += nodes.entry("", nodes.paragraph(text=required))
+        if env_var.notes == "<FINGERPRINT_LINK>":
             pass
         else:
-            row += nodes.entry("", nodes.paragraph(text=env_var.description))
+            row += nodes.entry("", nodes.paragraph(text=env_var.notes))
         tbody += row
     tgroup += tbody
     return table

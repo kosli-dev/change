@@ -3,14 +3,14 @@ class EnvVar:
     """
     An abstract base class for 'smart' OS env-vars.
     """
-    def __init__(self, env, name, description, example=None):
+    def __init__(self, env, name, notes, example=None):
         assert name is not None
         assert name != ""
-        assert description is not None
-        assert description != ""
+        assert notes is not None
+        assert notes != ""
         self._env = env
         self._name = name
-        self._description = description
+        self._notes = notes
         if example is None:
             example = "${...}"
         self._example = example
@@ -32,22 +32,22 @@ class EnvVar:
         return self._name
 
     @property
-    def description(self):
+    def notes(self):
         """
         Non-empty string as set in the ctor.
         Used in living documentation.
         Never raises.
         """
-        return self._description
+        return self._notes
 
     @property
     def example(self):
         return self._example
 
     @property
-    def type(self):  # pragma: no cover
+    def is_required(self):  # pragma: no cover
         """
-        Non-empty string.
+        True or False.
         Used in living documentation.
         Never raises.
         """

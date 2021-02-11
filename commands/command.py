@@ -33,13 +33,13 @@ class Command:
 
     @property
     def name(self):
-        description = "The Merkely command to execute."
-        return self._required_env_var("COMMAND", description)
+        notes = "The Merkely command to execute."
+        return self._required_env_var("COMMAND", notes)
 
     @property
     def api_token(self):
-        description = "Your API token for Merkely."
-        return self._required_env_var("API_TOKEN", description)
+        notes = "Your API token for Merkely."
+        return self._required_env_var("API_TOKEN", notes)
 
     @property
     def fingerprint(self):
@@ -48,13 +48,13 @@ class Command:
     @property
     def host(self):
         default = "https://app.compliancedb.com"
-        description = f"Defaults to {default}"
-        return self._defaulted_env_var("HOST", default, description)
+        notes = f"Defaults to {default}"
+        return self._defaulted_env_var("HOST", default, notes)
 
     @property
     def is_compliant(self):
-        description = "Whether this artifact is considered compliant from you build process."
-        return self._required_env_var('IS_COMPLIANT', description)
+        notes = "Whether this artifact is considered compliant from you build process."
+        return self._required_env_var('IS_COMPLIANT', notes)
 
     # - - - - - - - - - - - - - - - - - - - - -
 
@@ -79,11 +79,11 @@ class Command:
 
     # - - - - - - - - - - - - - - - - - - - - -
 
-    def _defaulted_env_var(self, name, default, description):
-        return DefaultedEnvVar(self.env, f"MERKELY_{name}", default, description)
+    def _defaulted_env_var(self, name, default, notes):
+        return DefaultedEnvVar(self.env, f"MERKELY_{name}", default, notes)
 
-    def _required_env_var(self, name, description):
-        return RequiredEnvVar(self.env, f"MERKELY_{name}", description)
+    def _required_env_var(self, name, notes):
+        return RequiredEnvVar(self.env, f"MERKELY_{name}", notes)
 
     # - - - - - - - - - - - - - - - - - - - - -
 
