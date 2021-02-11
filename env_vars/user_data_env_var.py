@@ -1,10 +1,12 @@
 from commands import load_json
 from env_vars import DefaultedEnvVar
 
+DEFAULT = {}
+
 NOTES = "\n".join([
     "If provided, a filename whose json content to embed in the deployment.",
     "The filename must be volume-mounted in the container.",
-    "If not provided, defaults to an empty json object {}",
+    f"If not provided, defaults to {DEFAULT}",
 ])
 
 
@@ -15,12 +17,8 @@ class UserDataEnvVar(DefaultedEnvVar):
 
     @property
     def value(self):
-        filename = super().value
-        if filename is None or filename == "":
-            return self.default
-        else:
+        if self._is_set:
+            filename = super().value
             return load_json(filename)
-
-    @property
-    def default(self):
-        return {}
+        else:
+            return DEFAULT

@@ -14,8 +14,7 @@ class HostEnvVar(DefaultedEnvVar):
 
     @property
     def value(self):
-        host = super().value
-        if host is None or host == "":
-            return DEFAULT
+        if self._is_set:
+            return super().value
         else:
-            return host
+            return DEFAULT

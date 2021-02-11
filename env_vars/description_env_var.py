@@ -14,8 +14,7 @@ class DescriptionEnvVar(DefaultedEnvVar):
 
     @property
     def value(self):
-        description = super().value
-        if description is None or description == "":
-            return DEFAULT
+        if self._is_set:
+            return super().value
         else:
-            return description
+            return DEFAULT
