@@ -5,10 +5,10 @@ Loan-calculator
 
 
 Used in loan-calculator?
-YES-------------------------------------------------------------------------------------------
+YES----------------------------------------Makefile--Tests------------------------------------
 FROM                    TO                 Target    ALL-EVS   ONLY-REQ-EVS   MISSING-REQ-EVS
 put_pipeline            declare_pipeline   yes       yes       N/A            no
-create_release          log_approval       no        no        no             no
+create_release          log_approval       no        yes       no             no
 control_junit           log_test           no        no        no             no
 put_artifact_image      log_artifact       yes       yes       no             yes
 create_deployment       log_deployment     yes       yes       no             no

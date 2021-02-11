@@ -61,7 +61,6 @@ jobs:
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_DESCRIPTION: "Deployment of ${MERKELY_DOCKER_IMAGE} to docker hub"
         MERKELY_ENVIRONMENT: 'docker_hub'
-        #MERKELY_USER_DATA: defaults gives {}
       run: |
         export SHA7=$(git log -1 --pretty=%h)
         #export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
