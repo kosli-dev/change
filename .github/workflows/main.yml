@@ -45,9 +45,9 @@ jobs:
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
         MERKELY_HOST: https://app.compliancedb.com
         MERKELY_IS_COMPLIANT: 'TRUE'
-        MERKELY_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
+        MERKELY_ARTIFACT_GIT_URL: https://github.com/merkely-development/change/commit/${GITHUB_SHA}
         MERKELY_ARTIFACT_GIT_COMMIT: ${GITHUB_SHA}
-        MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
+        MERKELY_CI_BUILD_URL: https://github.com/merkely-development/change/actions/runs/${GITHUB_RUN_ID}
         MERKELY_CI_BUILD_NUMBER: ${GITHUB_RUN_ID}
       run: |
         export SHA7=$(git log -1 --pretty=%h)
