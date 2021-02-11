@@ -17,7 +17,7 @@ def test_raises_when_no_approvals(mocker):
     ev = new_control_deployment_env()
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{IMAGE_NAME}"
     merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             with raises(CommandError):
                 method, url, payload = run(env, fingerprinter, None)

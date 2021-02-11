@@ -61,7 +61,7 @@ def test_docker_image(capsys, mocker):
     ev = create_new_deployment_env()
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{IMAGE_NAME}"
     merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             method, url, payload = run(env, fingerprinter, None)
 

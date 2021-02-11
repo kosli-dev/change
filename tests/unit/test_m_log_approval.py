@@ -17,7 +17,7 @@ APPROVAL_FILE = "test_m_log_approval"
 def test_docker_image(capsys, mocker):
     image_name = "acme/runner:4.56"
     sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
-    merkeypipe = "tests/integration/test-pipefile.json"
+    merkelypipe = "tests/integration/test-pipefile.json"
     mock_artifacts_for_commit = {
         "artifacts": [{"sha256": sha256}]
     }
@@ -31,7 +31,7 @@ def test_docker_image(capsys, mocker):
     with dry_run(env, set_env_vars), ScopedDirCopier("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         mocker.patch('cdb.create_release.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
-        create_release(merkeypipe)
+        create_release(merkelypipe)
     verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
@@ -65,10 +65,10 @@ def test_docker_image(capsys, mocker):
     """
     # make merkely call
     protocol = "docker://"
-    ev = new_log_evidence_env()
+    ev = new_log_approval_env()
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
     #merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             method, url, payload = run(env, fingerprinter, None)
 
@@ -88,11 +88,9 @@ def new_log_approval_env():
         "MERKELY_FINGERPRINT": f"{protocol}/{image_name}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{domain}",
+        "MERKELY_TARGET_SRC_COMMITISH": "master",
+        "MERKELY_BASE_SRC_COMMITISH": "production",
 
-        # "MERKELY_TARGET_SRC_COMMITISH": "todo",
-        # "MERKELY_BASE_SRC_COMMITISH": "todo",
-        # "MERKELY_RELEASE_DESCRIPTION": "todo",
-        # "MERKELY_SRC_REPO_ROOT": "todo",  DEFAULT_REPO_ROOT
-        # "MERKELY_EVIDENCE_TYPE": "unit_test",
-        # "MERKELY_RELEASE_DESCRIPTION": "branch coverage"
+        # "MERKELY_RELEASE_DESCRIPTION": defaults to "No description provided"
+        # "MERKELY_SRC_REPO_ROOT": defaults to  DEFAULT_REPO_ROOT
     }
