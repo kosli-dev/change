@@ -1,0 +1,132 @@
+
+Invocation-strings
+------------------
+
+The [docker run...] invocation-strings we are generating feel "too fiddly".
+Not "alive enough"
+Not extensible enough.
+Not at the right level of abstraction...
+Consider, in the docs.merkely.com reference section, the [docker run...]
+invocation-string examples will have several tabs, eg, Github-Actions, CircleCI, etc.
+I think our DescribeCommand sphinx extension should scrape ACTUAL .yml files.
+Then it would be alive.
+  o) We would scrape from ACTUAL repos, eg the loan-calculator
+  o) These repos would be deliberately kept OFF the merkely github org so they have client-centric names.
+  o) The repo's initial .yml file would _not_ use a makefile or bash function.
+     Suppose it was called merkely_reference.yml
+
+Eg  For github Actions, the invocation-string for log_artifact would scrape
+    loan-calculator's merkely_reference.yml and look like this:
+    (... ellipsis fleshed out further down)
+
+    - name: Publish docker image information to Merkely
+      run: |
+        export SHA7=$(git log -1 --pretty=%h)
+        export MY_IMAGE_AND_TAG=acme/loan-calculator:sha-${SHA7}
+        export MY_GIT_URL=https://github.com/acme/loan-calculator/commit/${GITHUB_SHA}
+        export MY_CI_URL=https://github.com/acme/loan-calculator/actions/runs/${GITHUB_RUN_ID}
+
+	    docker run \
+			--env MERKELY_COMMAND=log_artifact \
+			--env MERKELY_FINGERPRINT=... \
+			--env MERKELY_GIT_URL=... \
+			--env MERKELY_CI_URL=... \
+			--env MERKELY_IS_COMPLIANT=... \
+			\
+			--env MERKELY_GIT_COMMIT=... \
+			--env MERKELY_CI_NUMBER=... \
+			--env MERKELY_API_TOKEN=... \
+			--rm \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+			merkely/change
+
+
+Notes:
+
+o) We could add http-links to other .yml files, as we create them, eg
+     o) one using a bash function, the bash script file would be in the repo.
+     o) one using a Makefile, the makefile would be in the repo.
+
+o) This means declare_pipeline having its own separate entry in merkely-reference.yml
+   This feels right since this would be a reference.
+
+
+The env-var parameters table
+----------------------------
+
+Currently it looks like this:
+
+NAME                    Type       Description
+
+MERKELY_COMMAND         required    The Merkely command to execute.
+MERKELY_FINGERPRINT     required    ...
+MERKELY_EVIDENCE_TYPE   required    The evidence type.
+MERKELY_IS_COMPLIANT    required    Whether this artifact is considered compliant from you build process.
+MERKELY_DESCRIPTION     optional    The description for the evidence.
+MERKELY_CI_BUILD_URL    required    Link to the build information.
+MERKELY_API_TOKEN       required    Your API token for Merkely.
+MERKELY_HOST            defaulted   The host name for Merkely. The default is https://app.compliancedb.com
+
+I propose _all_ env-vars have a protocol prefix, except MERKELY_COMMAND
+
+For example:
+
+NAME                    Required?   Protocols                         Notes
+
+MERKELY_COMMAND         yes         N/A                               These are the notes for log_evidence
+MERKELY_FINGERPRINT     yes         docker:// file:// sha256://       The name and tag of your docker image.
+MERKELY_EVIDENCE_TYPE   yes         string://                         A Merkelypipe.json "template" entry.
+MERKELY_IS_COMPLIANT    yes         bool://                           bool://TRUE or bool://FALSE
+MERKELY_DESCRIPTION     no          string://
+MERKELY_CI_BUILD        yes         url://
+MERKELY_API_TOKEN       yes         string:// ??
+MERKELY_HOST            no          url://                            defaults to https://app.merkely.com
+Plus...for other commands...
+MERKELY_USER_DATA       no          file://
+
+
+Notes
+
+o) The Notes column could be keyed on the protocol where there is more than one option
+
+o) There could different kinds of url://
+   For example
+     curled_url:// which curls the url to verify it exists
+
+o) MERKELY_USER_DATA could now also be json://
+
+o) It feels like MERKELY_FINGERPRINT now wants to be MERKELY_ARTIFACT
+   The command is the verb action.
+   Everything else names a thing, a noun.
+
+o) MERKELY_COMMAND does quite sit right in the table now.
+   Perhaps that could be a merkely/change CMD?
+
+
+Combining these two together, the invocation-string would be:
+
+      run: |
+        export SHA7=$(git log -1 --pretty=%h)
+        export MY_IMAGE_AND_TAG=acme/loan-calculator:sha-${SHA7}
+        export MY_GIT_URL=https://github.com/acme/loan-calculator/commit/${GITHUB_SHA}
+        export MY_CI_URL=https://github.com/acme/loan-calculator/actions/runs/${GITHUB_RUN_ID}
+
+	    docker run \
+			--env MERKELY_ARTIFACT="docker://${MY_IMAGE_AND_TAG}" \
+			--env MERKELY_GIT_URL="url://${MY_GIT_URL}" \
+			--env MERKELY_CI_URL="url://${MY_CI_URL} \
+			--env MERKELY_IS_COMPLIANT=bool://TRUE \
+			\
+			--env MERKELY_GIT_COMMIT="string://${GITHUB_SHA}" \
+			--env MERKELY_CI_NUMBER="integer://${GITHUB_RUN_ID}" \
+			--env MERKELY_API_TOKEN="string://${{ secrets.MERKELY_API_TOKEN }}" \
+			--rm \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+			merkely/change log_artifact
+
+Final note:
+I am guessing that in Github-Actions there is already an env-var
+for the name of the github-org and the name of the github-repo
+which would simplify the exports in the above example.
