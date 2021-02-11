@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Understanding Binary Provenance &#8212; Merkely  documentation</title>
+    <title>Control Deployment &#8212; Merkely  documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/merkely-custom.css" />
@@ -15,8 +15,7 @@
     <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="../reference/index.html" />
-    <link rel="prev" title="Mapping your value stream" href="value_stream.html" />
+    <link rel="prev" title="Log Evidence" href="log_evidence.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -63,16 +62,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/approvals.html">Creating Approvals</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Concepts:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="devops_change_is_the_new_normal.html">DevOps: Change is the New Normal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="devops_and_change_management.html">DevOps and Change Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="value_stream.html">Mapping your value stream</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Understanding Binary Provenance</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/devops_change_is_the_new_normal.html">DevOps: Change is the New Normal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/devops_and_change_management.html">DevOps and Change Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/value_stream.html">Mapping your value stream</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/binary_provenance.html">Understanding Binary Provenance</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../reference/log_evidence.html">Log Evidence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/control_deployment.html">Control Deployment</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="log_evidence.html">Log Evidence</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Control Deployment</a></li>
 </ul>
 </ul>
 </li>
@@ -102,30 +101,52 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="understanding-binary-provenance">
-<h1>Understanding Binary Provenance<a class="headerlink" href="#understanding-binary-provenance" title="Permalink to this headline">¶</a></h1>
-<p>From a security and change management perspective,  the strongest form of trust in your production environment is to identify what is running and know where it came from.</p>
-<p>This is important because all the controls, audit trails and tools are worth nothing if you can simply switch the binaries at any stage in your delivery process.</p>
-<p>To implement binary provenance, there are two problems to solve:</p>
-<ol class="arabic simple">
-<li><p>How to uniquely identify your software</p></li>
-<li><p>How to trace this identity to a provenance audit trail</p></li>
-</ol>
-<p>Traditionally, software artifacts (docker images, zip files, etc) are identified using labels, such as, semantic versions, filenames, or other metadata.  We prefer to identify each software artifact by its binary content.</p>
-<div class="topic">
-<p class="topic-title">What is Content-Addressable Storage?</p>
-<p>Content-Addressable Storage is a fancy phrase with a simple meaning: “the content of the binary determines its identity”.  Cryptographic hash functions such as the sha256 digest give you a one-way algorithm for identifying any collection of bytes.  This digest acts as a unique fingerprint.</p>
-<img alt="../_images/fingerprint.png" src="../_images/fingerprint.png" />
-<p>Any change to the software package would result in a different fingerprint.</p>
+  <div class="section" id="control-deployment">
+<h1>Control Deployment<a class="headerlink" href="#control-deployment" title="Permalink to this headline">¶</a></h1>
+<p>Controls Deployments by short-circuiting pipelines if artifact not approved for release</p>
+<div class="section" id="invocation">
+<h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
+    --env MERKELY_COMMAND=&quot;control_deployment&quot; \
+    --env MERKELY_FINGERPRINT=&quot;docker://${YOUR_IMAGE_AND_TAG}&quot; \
+    --env MERKELY_API_TOKEN=&quot;${...}&quot; \
+    --env MERKELY_HOST=&quot;${...}&quot; \
+    --rm \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
+    merkely/change
+</pre></div>
 </div>
-<p>There are many advantages to this approach:</p>
-<ul class="simple">
-<li><p>Any tampering to the image produces a different fingerprint</p></li>
-<li><p>There is no need for specific naming or versioning</p></li>
-<li><p>There is no need for metadata to be tracked along with binaries</p></li>
-</ul>
-<p>In addition, this approach significantly simplifies your devops pipelines.</p>
-<p>Now that we can identify software, then we need to solve the second problem: how do we trace this identity to a provenance audit trail?  For this we need somewhere secure to store our evidence, be that a database, a git repository, or Merkely (which happens to be both 😇).</p>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>NAME</p></th>
+<th class="head"><p>Required?</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
+<td><p>yes</p></td>
+<td><p>The Merkely command to execute.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
+<td><p>yes</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
+<td><p>yes</p></td>
+<td><p>Your API token for Merkely.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_HOST</p></td>
+<td><p>no</p></td>
+<td><p>Defaults to https://app.compliancedb.com</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
