@@ -82,15 +82,18 @@ MERKELY_HOST            no          url://                            Defaults t
 Plus...for other commands...
 
 
-Notes
+Notes:
 
 o) There could different kinds of url://
    For example
      curled_url:// which curls the url to verify its existence
 
 o) env-vars that name a json file could now be:
-   MERKELY_USER_DATA=file://${JSON_FILENAME}
-   MERKELY_USER_DATA=json://${JSON}
+     MERKELY_USER_DATA="file://${JSON_FILENAME}"
+     MERKELY_USER_DATA="json://$(cat ${JSON_FILENAME})"
+     MERKELY_USER_DATA="json://${JSON}"
+   In the same way FINGERPRINT=sha256:// doesn't need a volume-mount
+   neither does json://
 
 o) The Notes column could eventually be keyed on the protocol when there is more than one option.
 
@@ -103,7 +106,7 @@ o) MERKELY_COMMAND doesn't quite sit right in the table...
 
 
 Combining these ideas together, the invocation-string in both the
-merkely_reference.yml file and the living documentation page would be:
+merkely_reference.yml file, and the living documentation page would be:
 
       run: |
         export SHA7=$(git log -1 --pretty=%h)
@@ -126,11 +129,13 @@ merkely_reference.yml file and the living documentation page would be:
 			merkely/change \
 			  log_artifact
 
-Final note:
+Note:
+
 I am guessing Github-Actions has built-in env-vars for
   o) the name of the github-org
   o) the name of the github-repo
 which would simplify the exports in the above example.
+
 
 3. Summary
 ----------
@@ -141,3 +146,5 @@ o) It would be very client-centric.
 o) It would be quick to get going, we are just scraping.
 o) It would be extensible, add more .yml files.
 o) It would be extensible, add more protocols.
+o) Scraping source for documentation means source needs to be kept clean!
+ 
