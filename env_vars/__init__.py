@@ -1,7 +1,8 @@
 from .env_var import EnvVar
 
-from .defaulted_env_var import DefaultedEnvVar
 from .required_env_var import RequiredEnvVar
+from .defaulted_env_var import DefaultedEnvVar
+from .static_defaulted_env_var import StaticDefaultedEnvVar
 
 from .fingerprint_env_var_cls_for import fingerprint_env_var_cls_for
 

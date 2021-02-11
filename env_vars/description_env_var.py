@@ -1,4 +1,4 @@
-from env_vars import DefaultedEnvVar
+from env_vars import StaticDefaultedEnvVar
 
 DEFAULT = "UNDEFINED"
 
@@ -7,14 +7,7 @@ NOTES = "\n".join([
 ])
 
 
-class DescriptionEnvVar(DefaultedEnvVar):
+class DescriptionEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_DESCRIPTION", NOTES)
-
-    @property
-    def value(self):
-        if self._is_set:
-            return super().value
-        else:
-            return DEFAULT
+        super().__init__(env, "MERKELY_DESCRIPTION", DEFAULT, NOTES)

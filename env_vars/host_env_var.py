@@ -1,4 +1,4 @@
-from env_vars import DefaultedEnvVar
+from env_vars import StaticDefaultedEnvVar
 
 DEFAULT = "https://app.compliancedb.com"
 
@@ -7,14 +7,7 @@ NOTES = "\n".join([
 ])
 
 
-class HostEnvVar(DefaultedEnvVar):
+class HostEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_HOST", NOTES)
-
-    @property
-    def value(self):
-        if self._is_set:
-            return super().value
-        else:
-            return DEFAULT
+        super().__init__(env, "MERKELY_HOST", DEFAULT, NOTES)
