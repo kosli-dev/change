@@ -1,17 +1,17 @@
 from commands import load_json
 from env_vars import DefaultedEnvVar
 
-DESCRIPTION = "\n".join([
+NOTES = "\n".join([
     "If provided, a filename whose json content to embed in the deployment.",
     "The filename must be volume-mounted in the container.",
-    "If not provided, defaults to an empty json Hash '{}'",
+    "If not provided, defaults to an empty json object {}",
 ])
 
 
 class UserDataEnvVar(DefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_USER_DATA", None, DESCRIPTION)
+        super().__init__(env, "MERKELY_USER_DATA", NOTES)
 
     @property
     def value(self):

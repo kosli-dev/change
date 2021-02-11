@@ -1,4 +1,5 @@
 from commands import Command
+from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
@@ -54,9 +55,7 @@ class LogEvidenceCommand(Command):
 
     @property
     def description(self):
-        notes = "Defaults to UNDEFINED."
-        default = "UNDEFINED"
-        return self._defaulted_env_var('DESCRIPTION', default, notes)
+        return DescriptionEnvVar(self.env)
 
     @property
     def evidence_type(self):

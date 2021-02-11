@@ -42,7 +42,7 @@ class Example:
     @env_var
     def api_token(self):
         ev = {"API_TOKEN": "3455643212456"}
-        return RequiredEnvVar(ev, "API_TOKEN", "description")
+        return RequiredEnvVar(ev, "API_TOKEN", "notes")
 
     @property
     def simple(self):
@@ -52,7 +52,7 @@ class Example:
     @env_var
     def host(self):
         ev = {"HOST": "https://tests.compliancedb.com"}
-        return RequiredEnvVar(ev, "HOST", "description")
+        return RequiredEnvVar(ev, "HOST", "notes")
 
 
 def test_env_vars_using_env_var_decorator():

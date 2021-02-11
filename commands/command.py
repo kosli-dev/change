@@ -1,6 +1,5 @@
 from collections import namedtuple
-
-from env_vars import DefaultedEnvVar, RequiredEnvVar, FingerprintEnvVar
+from env_vars import *
 from commands import load_json
 
 
@@ -47,9 +46,7 @@ class Command:
 
     @property
     def host(self):
-        default = "https://app.compliancedb.com"
-        notes = f"Defaults to {default}"
-        return self._defaulted_env_var("HOST", default, notes)
+        return HostEnvVar(self.env)
 
     @property
     def is_compliant(self):
@@ -79,8 +76,8 @@ class Command:
 
     # - - - - - - - - - - - - - - - - - - - - -
 
-    def _defaulted_env_var(self, name, default, notes):
-        return DefaultedEnvVar(self.env, f"MERKELY_{name}", default, notes)
+    def _defaulted_env_var(self, name, notes):
+        return DefaultedEnvVar(self.env, f"MERKELY_{name}", notes)
 
     def _required_env_var(self, name, notes):
         return RequiredEnvVar(self.env, f"MERKELY_{name}", notes)
