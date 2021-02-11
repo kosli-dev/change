@@ -1,10 +1,9 @@
 #!/bin/bash
 
-export ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
+export ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
 MERKELY_COMMAND=log_artifact
-MERKELY_DOCKER_IMAGE=acme/road-runner:2.3
+MERKELY_DOCKER_IMAGE=python:3.7-alpine
 MERKELY_IS_COMPLIANT=TRUE
 MERKELY_ARTIFACT_GIT_URL=https://github/me/project/commit/abc50c8a53f79974d615df335669b59fb56a4ed3
 MERKELY_ARTIFACT_GIT_COMMIT=abc50c8a53f79974d615df335669b59fb56a4ed3
@@ -12,9 +11,12 @@ MERKELY_CI_BUILD_URL=https://gitlab/build/1456
 MERKELY_CI_BUILD_NUMBER=23
 MERKELY_API_TOKEN=5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4
 
-CDB_DRY_RUN=TRUE
+MERKELYPIPE="${ROOT_DIR}/Dockerfile"
+#MERKELYPIPE="${ROOT_DIR}/tests/data/Merkelypipe.json"
 
 docker run \
+      --interactive \
+      --tty \
       --env CDB_DRY_RUN=TRUE \
       --env MERKELY_COMMAND=log_artifact \
       \
@@ -28,9 +30,12 @@ docker run \
       --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
       --rm \
       --volume=/var/run/docker.sock:/var/run/docker.sock \
-      --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
-      merkely/change
+      --volume ${MERKELYPIPE}:/Merkelypipe.json \
+      merkely/change:master
 
+STATUS=$?
+
+echo "STATUS=${STATUS}"
 
 
 
