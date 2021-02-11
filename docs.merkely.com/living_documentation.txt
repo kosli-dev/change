@@ -82,7 +82,7 @@ MERKELY_FINGERPRINT     yes         docker:// file:// sha256://       The name a
 MERKELY_EVIDENCE_TYPE   yes         string://                         A Merkelypipe.json "template" entry.
 MERKELY_IS_COMPLIANT    yes         bool://                           bool://TRUE or bool://FALSE
 MERKELY_DESCRIPTION     no          string://
-MERKELY_CI_BUILD        yes         url://
+MERKELY_CI_BUILD_URL    yes         https://
 MERKELY_API_TOKEN       yes         string:// ??
 MERKELY_HOST            no          url://                            Defaults to https://app.merkely.com
 Plus...for other commands...
@@ -90,17 +90,11 @@ Plus...for other commands...
 
 Notes:
 
-o) There could different kinds of url://
-   For example
-     curled_url:// which curls the url to verify its existence
-   Problem with this is you'd end up with two protocols... url://https://
-   Maybe better to keep that one without a protocol
-   and include URL in the env-var name.
-
 o) env-vars that name a json file could now be:
      MERKELY_USER_DATA="file://${JSON_FILENAME}"
      MERKELY_USER_DATA="json://$(cat ${JSON_FILENAME})"
      MERKELY_USER_DATA="json://${JSON}"
+
    In the same way FINGERPRINT=sha256:// doesn't need a volume-mount
    neither does json://
 
