@@ -73,7 +73,7 @@ jobs:
         #export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
         #export CDB_DESCRIPTION="Deployment of ${CDB_ARTIFACT_DOCKER_IMAGE} to docker hub"
         #make create_deployment
-        make log_deployment
+        make merkely_log_deployment
 
     - name: Run unit tests
       env:
