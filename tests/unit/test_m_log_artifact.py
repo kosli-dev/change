@@ -240,7 +240,7 @@ def test_all_env_vars_sha(capsys, mocker):
 # TODO: test when all optional env-var are not supplied
 
 
-def test_each_required_env_var_missing(capsys):
+def X_test_each_required_env_var_missing(capsys):
     for env_var in make_command_env_vars():
         if isinstance(env_var, RequiredEnvVar):
             ev = new_log_artifact_env()

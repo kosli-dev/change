@@ -12,4 +12,4 @@ from .log_deployment_command import LogDeploymentCommand
 from .log_evidence_command import LogEvidenceCommand
 
 from .command_builder import build_command, COMMANDS
-from .runner import run
+from .runner import run, main

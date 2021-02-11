@@ -1,36 +1,30 @@
-from commands import run
+from commands import run, CommandError
 from tests.utils import *
+from pytest import raises
 
 
-def test_file_not_found(capsys):
-    with dry_run(core_env_vars()) as env:
+def test_raises_when_not_found(capsys):
+    with dry_run(core_env_vars()) as env, raises(CommandError):
         # no /Merkelypipe.json
-        status_code = run(env)
-
-    assert status_code != 0
-    verify_approval(capsys)
+        run(env)
 
 
-def test_invalid_json(capsys):
+def test_raises_when_invalid_json(capsys):
     with dry_run(core_env_vars()) as env:
         with ScopedFileCopier("/app/tests/data/Merkelypipe.bad.json", "/Merkelypipe.json"):
-            status_code = run(env)
-
-    assert status_code != 0
-    verify_approval(capsys)
+            with raises(CommandError):
+                run(env)
 
 
-def test_is_a_dir(capsys):
+def test_raises_when_is_a_dir(capsys):
     with dry_run(core_env_vars()) as env:
         with ScopedDirCopier("/test_src", "/Merkelypipe.json"):
-            status_code = run(env)
-
-    assert status_code != 0
-    verify_approval(capsys)
+            with raises(CommandError):
+                run(env)
 
 
 """
-Possible negative test cases:
+Possible further tests:
 
 json has no key "owner"
 json "owner" value not string

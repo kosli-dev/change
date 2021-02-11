@@ -1,2 +1,0 @@
-MERKELY_COMMAND=wibble
-Error: Unknown command: wibble

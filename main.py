@@ -1,5 +1,5 @@
-from commands import run
+from commands import main
 import sys
 
 if __name__ == '__main__':
-    sys.exit(run())
+    sys.exit(main())
