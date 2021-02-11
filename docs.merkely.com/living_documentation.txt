@@ -68,7 +68,8 @@ MERKELY_CI_BUILD_URL    required    Link to the build information.
 MERKELY_API_TOKEN       required    Your API token for Merkely.
 MERKELY_HOST            defaulted   The host name for Merkely. The default is https://app.compliancedb.com
 
-I propose _all_ env-vars have a protocol prefix, except MERKELY_COMMAND
+I propose that we drop optional-env-vars and that
+_all_ env-vars have a protocol prefix, except MERKELY_COMMAND.
 
 For example:
 
@@ -81,14 +82,12 @@ MERKELY_IS_COMPLIANT    yes         bool://                           bool://TRU
 MERKELY_DESCRIPTION     no          string://
 MERKELY_CI_BUILD        yes         url://
 MERKELY_API_TOKEN       yes         string:// ??
-MERKELY_HOST            no          url://                            defaults to https://app.merkely.com
+MERKELY_HOST            no          url://                            Defaults to https://app.merkely.com
 Plus...for other commands...
 MERKELY_USER_DATA       no          file://
 
 
 Notes
-
-o) The Notes column could be keyed on the protocol where there is more than one option
 
 o) There could different kinds of url://
    For example
@@ -96,15 +95,18 @@ o) There could different kinds of url://
 
 o) MERKELY_USER_DATA could now also be json://
 
+o) The Notes column could be keyed on the protocol where there is more than one option
+
 o) It feels like MERKELY_FINGERPRINT now wants to be MERKELY_ARTIFACT
    The command is the verb action.
    Everything else names a thing, a noun.
 
 o) MERKELY_COMMAND does quite sit right in the table now.
-   Perhaps that could be a merkely/change CMD?
+   Perhaps that could be a merkely/change Docker image CMD?
 
 
-Combining these two together, the invocation-string would be:
+Combining these together, the invocation-string in both the
+merkely-reference.yml file and the living documentation page would be:
 
       run: |
         export SHA7=$(git log -1 --pretty=%h)
@@ -124,9 +126,11 @@ Combining these two together, the invocation-string would be:
 			--rm \
 			--volume=/var/run/docker.sock:/var/run/docker.sock \
 			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
-			merkely/change log_artifact
+			merkely/change \
+			  log_artifact
 
 Final note:
-I am guessing that in Github-Actions there is already an env-var
-for the name of the github-org and the name of the github-repo
+I am guessing Github-Actions has built-in env-vars for
+  o) the name of the github-org
+  o) the name of the github-repo
 which would simplify the exports in the above example.
