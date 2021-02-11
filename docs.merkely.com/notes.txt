@@ -1,6 +1,7 @@
 
 
-Currently...
+Currently:
+
 NAME                    Type       Description
 
 MERKELY_COMMAND         required    The Merkely command to execute.
@@ -12,12 +13,13 @@ MERKELY_CI_BUILD_URL    required    Link to the build information.
 MERKELY_API_TOKEN       required    Your API token for Merkely.
 MERKELY_HOST            defaulted   The host name for Merkely. The default is https://app.compliancedb.com
 
-Proposed...
-NAME                    required?   protocols:// (drop down?)         notes (keyed on the dropdown selection)
+Proposal: All env-vars must be a string with a protocol prefix.
+
+NAME                    Required?   Protocols                         Notes (can be keyed on the clicked protocol?)
 
 MERKELY_COMMAND         yes         string://log_evidence
-MERKELY_FINGERPRINT     yes         docker:// file:// sha256://       The name and tag of my docker image.
-MERKELY_EVIDENCE_TYPE   yes         string://                         A Merkelypipe.json "template" entry
+MERKELY_FINGERPRINT     yes         docker:// file:// sha256://       The name and tag of your docker image.
+MERKELY_EVIDENCE_TYPE   yes         string://                         A Merkelypipe.json "template" entry.
 MERKELY_IS_COMPLIANT    yes         bool://                           bool://TRUE or bool://FALSE
 MERKELY_DESCRIPTION     no          string://
 MERKELY_CI_BUILD        yes         url://
@@ -30,12 +32,13 @@ MERKELY_USER_DATA       no          file:// json://
 Note: Not sure about which of these...?
 MERKELY_CI_BUILD_URL="url://${...}"
 MERKELY_CI_BUILD="url://${...}"
-
+Could different kinds of url.
+eg curled_url:// which curls the url to verify it exists
 
 
 THOUGHTS...
 The living-documentation of merkely/change doesn't feel right yet.
-The [docker run...] "summary" examples we are generating are too fiddly.
+The [docker run...] strings we are generating feel too fiddly.
 Not "alive enough"
 Not extensible enough.
 Not at the right level of abstraction...
@@ -43,11 +46,11 @@ Consider, in the docs reference section, the [docker run...] example will
 have several tabs, eg, Github-Actions, CircleCI, etc, etc
 I think our DescribeCommand sphinx extension should scrape ACTUAL .yml files.
 Then it would be alive.
-  o) We would scrape from the loan-calculator repo.
-  o) It would be deliberately kept OFF the merkely github org so it has client-centric names.
-  o) The loan-calculator's .yml file should be a "bash" version without using a makefile.
+  o) We would scrape from ACTUAL repos, eg the loan-calculator
+  o) These repos would be deliberately kept OFF the merkely github org so they have client-centric names.
+  o) The repo's initial .yml file should be reference.yml which does not use a makefile.
 
-Eg  For github Actions, the "bash" version of log_artifact would be like this:
+Eg  For github Actions, log_artifact would  scrape from reference.yml which would be this:
 
     - name: Publish docker image information to Merkely
       run: |
@@ -74,19 +77,22 @@ Eg  For github Actions, the "bash" version of log_artifact would be like this:
 
 Notes:
 
+o) The org-name and repo-name are surely available as env-vars exposed by Github-Action?
+
 o) We would add a prominent note on the html reference page saying that
-   this is the "reference" bash version, which can easily be pushed
-   down into a sourced bash function, or a makefile, etc, with the words
-   'bash function' and 'makefile' being http-links to the actual files
-   in the loan-calculator repo.
+   this is the "reference" version, which can easily be 'pushed down'
+   into a bash file, or a makefile, held in the repo, with the words
+   'bash file' and 'makefile' being http-links to the actual files
+   in the scraped repo.
 
 o) This means declare_pipeline has its own separate entry too.
-   Which feels ok since this is a reference.
+   Which feels right since this is a reference.
 
 o) I have imagined dropping the word ARTIFACT from the ENV_VAR names.
 
 o) It feels like MERKELY_FINGERPRINT now wants to be MERKELY_ARTIFACT
-
+   The command is the verb action.
+   Everything else names a thing, a noun.
 
 
 
