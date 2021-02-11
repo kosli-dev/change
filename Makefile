@@ -245,7 +245,7 @@ merkely_log_artifact:
 	docker run \
         --env MERKELY_COMMAND=log_artifact \
         \
-        --env MERKELY_FINGERPRINT="docker://${MERKELY_DOCKER_IMAGE}" \
+        --env MERKELY_FINGERPRINT=${MERKELY_DOCKER_IMAGE} \
         --env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
         --env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
         --env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \

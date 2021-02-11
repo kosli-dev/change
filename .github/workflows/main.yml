@@ -51,7 +51,7 @@ jobs:
         MERKELY_CI_BUILD_NUMBER: ${GITHUB_RUN_ID}
       run: |
         export SHA7=$(git log -1 --pretty=%h)
-        export MERKELY_DOCKER_IMAGE=merkely/change:sha-${SHA7}
+        export MERKELY_DOCKER_IMAGE=docker://merkely/change:sha-${SHA7}
         make branch merkely_declare_pipeline merkely_log_artifact
 
     - name: Create the deployment in Merkely
