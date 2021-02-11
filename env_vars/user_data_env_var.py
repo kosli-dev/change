@@ -11,14 +11,16 @@ DESCRIPTION = "\n".join([
 class UserDataEnvVar(DefaultedEnvVar):
 
     def __init__(self, env):
-        default = '{}'
-        super().__init__(env, "MERKELY_USER_DATA", default, DESCRIPTION)
+        super().__init__(env, "MERKELY_USER_DATA", None, DESCRIPTION)
 
     @property
     def value(self):
-        if self.is_set:
-            filename = super().value
-            return load_json(filename)
-        else:
+        filename = super().value
+        if filename is None or filename == "":
             return self.default
+        else:
+            return load_json(filename)
 
+    @property
+    def default(self):
+        return '{}'
