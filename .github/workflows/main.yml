@@ -63,7 +63,7 @@ jobs:
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_DESCRIPTION: "Deployment of ${MERKELY_DOCKER_IMAGE} to docker hub"
         MERKELY_ENVIRONMENT: 'docker_hub'
-        MERKELY_USER_DATA: defaults to '{}'
+        #MERKELY_USER_DATA: defaults to '{}'
 
         #CDB_HOST: https://app.compliancedb.com
         #CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
