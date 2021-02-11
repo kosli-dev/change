@@ -1,0 +1,2 @@
+Getting pull requests from https://api.bitbucket.org/2.0/repositories/None/None/commit/None/pullrequests
+Repository does not exists or pull requests are not indexed. Please make sure Pull Request Commit Links app is installed
