@@ -1,6 +1,6 @@
 
-Invocation-strings
-------------------
+1. Invocation-strings
+---------------------
 
 The [docker run...] invocation-strings we are generating feel "too fiddly".
 Not "alive enough"
@@ -21,18 +21,13 @@ Eg  For github Actions, the invocation-string for log_artifact would scrape
 
     - name: Publish docker image information to Merkely
       run: |
-        export SHA7=$(git log -1 --pretty=%h)
-        export MY_IMAGE_AND_TAG=acme/loan-calculator:sha-${SHA7}
-        export MY_GIT_URL=https://github.com/acme/loan-calculator/commit/${GITHUB_SHA}
-        export MY_CI_URL=https://github.com/acme/loan-calculator/actions/runs/${GITHUB_RUN_ID}
-
+        ...
 	    docker run \
 			--env MERKELY_COMMAND=log_artifact \
 			--env MERKELY_FINGERPRINT=... \
 			--env MERKELY_GIT_URL=... \
 			--env MERKELY_CI_URL=... \
 			--env MERKELY_IS_COMPLIANT=... \
-			\
 			--env MERKELY_GIT_COMMIT=... \
 			--env MERKELY_CI_NUMBER=... \
 			--env MERKELY_API_TOKEN=... \
@@ -47,13 +42,14 @@ Notes:
 o) We could add http-links to other .yml files, as we create them, eg
      o) one using a bash function, the bash script file would be in the repo.
      o) one using a Makefile, the makefile would be in the repo.
+     o) etc
 
 o) This means declare_pipeline having its own separate entry in merkely-reference.yml
    This feels right since this would be a reference.
 
 
-The env-var parameters table
-----------------------------
+2. The env-var parameters table
+-------------------------------
 
 Currently it looks like this:
 
@@ -68,8 +64,8 @@ MERKELY_CI_BUILD_URL    required    Link to the build information.
 MERKELY_API_TOKEN       required    Your API token for Merkely.
 MERKELY_HOST            defaulted   The host name for Merkely. The default is https://app.compliancedb.com
 
-I propose that we drop optional-env-vars and that
-_all_ env-vars have a protocol prefix, except MERKELY_COMMAND.
+I propose that we drop optional-env-vars
+Instead, _all_ env-vars have a protocol prefix, except possibly MERKELY_COMMAND.
 
 For example:
 
@@ -84,29 +80,30 @@ MERKELY_CI_BUILD        yes         url://
 MERKELY_API_TOKEN       yes         string:// ??
 MERKELY_HOST            no          url://                            Defaults to https://app.merkely.com
 Plus...for other commands...
-MERKELY_USER_DATA       no          file://
 
 
 Notes
 
 o) There could different kinds of url://
    For example
-     curled_url:// which curls the url to verify it exists
+     curled_url:// which curls the url to verify its existence
 
-o) MERKELY_USER_DATA could now also be json://
+o) env-vars that name a json file could now be:
+   MERKELY_USER_DATA=file://${JSON_FILENAME}
+   MERKELY_USER_DATA=json://${JSON}
 
-o) The Notes column could be keyed on the protocol where there is more than one option
+o) The Notes column could eventually be keyed on the protocol when there is more than one option.
 
 o) It feels like MERKELY_FINGERPRINT now wants to be MERKELY_ARTIFACT
    The command is the verb action.
    Everything else names a thing, a noun.
 
-o) MERKELY_COMMAND does quite sit right in the table now.
+o) MERKELY_COMMAND doesn't quite sit right in the table...
    Perhaps that could be a merkely/change Docker image CMD?
 
 
-Combining these together, the invocation-string in both the
-merkely-reference.yml file and the living documentation page would be:
+Combining these ideas together, the invocation-string in both the
+merkely_reference.yml file and the living documentation page would be:
 
       run: |
         export SHA7=$(git log -1 --pretty=%h)
@@ -134,3 +131,13 @@ I am guessing Github-Actions has built-in env-vars for
   o) the name of the github-org
   o) the name of the github-repo
 which would simplify the exports in the above example.
+
+3. Summary
+----------
+
+o) It would be _living_ documentation.
+o) It would be example-based.
+o) It would be very client-centric.
+o) It would be quick to get going, we are just scraping.
+o) It would be extensible, add more .yml files.
+o) It would be extensible, add more protocols.
