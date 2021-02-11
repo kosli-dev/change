@@ -9,3 +9,5 @@ tests/integration/__pycache__/
 tests/unit/__pycache__/
 tests/utils/__pycache__/
 .idea/dictionaries/*
+docs/.buildinfo
+docs.merkely.com/build

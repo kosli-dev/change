@@ -1,2 +1,0 @@
-MERKELY_COMMAND=declare_pipeline
-Error: /Merkelypipe.json invalid json - Expecting value: line 9 column 1 (char 190)

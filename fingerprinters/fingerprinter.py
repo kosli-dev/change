@@ -1,23 +1,19 @@
 
 class Fingerprinter:
 
-    def __call__(self, protocol, image_name):
-        print(self._calculating_message(protocol, image_name))
-        repo_digest = self._fingerprint(image_name)
-        print(self._calculated_message(repo_digest))
-        return repo_digest
+    def __call__(self, protocol, artifact_name):
+        print(self._calculating_message(protocol, artifact_name))
+        sha256 = self._fingerprint(artifact_name)
+        print(self._calculated_message(sha256))
+        return sha256
 
-    def _fingerprint(self, artifact_name):
-        raise NotImplementedError(f"{self.class_name}._fingerprint(...) subclass override missing")
+    def _fingerprint(self, artifact_name):  # pragma: no cover
+        raise NotImplementedError
 
     @staticmethod
     def _calculating_message(protocol, artifact_name):
         return f"Calculating fingerprint for {protocol}{artifact_name}"
 
     @staticmethod
-    def _calculated_message(sha):
-        return f"Calculated fingerprint: {sha}"
-
-    @property
-    def class_name(self):
-        return self.__class__.__name__
+    def _calculated_message(sha256):
+        return f"Calculated fingerprint: {sha256}"

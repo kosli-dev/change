@@ -1,0 +1,11 @@
+{
+    "name": "cdb-controls-test-pipeline",
+    "description": "Test Pipeline Controls for ComplianceDB",
+    "owner": "compliancedb",
+    "visibility": "public",
+    "template": [
+        "artifact",
+        "unit_test",
+        "coverage"
+    ]
+}

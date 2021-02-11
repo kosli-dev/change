@@ -1,26 +1,38 @@
 from commands import Command
+from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
 
 class LogEvidenceCommand(Command):
-    """
-    Logs evidence in Merkely.
-    Invoked like this:
 
-    docker run \
-        --env MERKELY_COMMAND=log_deployment \
-        --env MERKELY_FINGERPRINT=${...} \
-        \
-        --env MERKELY_CI_BUILD_URL=${...} \
-        --env MERKELY_DESCRIPTION=${...} \
-        --env MERKELY_EVIDENCE_TYPE=${...} \
-        --env MERKELY_IS_COMPLIANT=${...} \
-        --rm \
-        --env MERKELY_API_TOKEN=${...} \
-        --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
-        merkely/change
-    """
+    @property
+    def summary(self):
+        return "Logs evidence in Merkely."
+
+    def invocation(self, type):
+        def env(var):
+            if var.name == "MERKELY_COMMAND":
+                value = var.value
+            elif var.name == "MERKELY_FINGERPRINT":
+                value = var.example
+            else:
+                value = "${...}"
+            return f'    --env {var.name}="{value}" \\\n'
+
+        invocation_string = "docker run \\\n"
+        for name in self._env_var_names:
+            var = getattr(self, name)
+            if type == 'full':
+                invocation_string += env(var)
+            if type == 'minimum' and var.is_required:
+                invocation_string += env(var)
+
+        invocation_string += "    --rm \\\n"
+        invocation_string += "    --volume /var/run/docker.sock:/var/run/docker.sock \\\n"
+        invocation_string += "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\\n"
+        invocation_string += "    merkely/change"
+        return invocation_string
 
     def __call__(self):
         self._print_compliance()
@@ -38,28 +50,28 @@ class LogEvidenceCommand(Command):
 
     @property
     def ci_build_url(self):
-        description = "Link to the build information."
-        return self._required_env_var('CI_BUILD_URL', description)
+        notes = "Link to the build information."
+        return self._required_env_var('CI_BUILD_URL', notes)
 
     @property
     def description(self):
-        description = "The description for the evidence."
-        return self._optional_env_var('DESCRIPTION', description)
+        return DescriptionEnvVar(self.env)
 
     @property
     def evidence_type(self):
-        description = "The evidence type."
-        return self._required_env_var("EVIDENCE_TYPE", description)
+        notes = "The evidence type."
+        return self._required_env_var("EVIDENCE_TYPE", notes)
 
     @property
     def _env_var_names(self):
+        # Print according to this order
         return [
-            'api_token',
-            'ci_build_url',
-            'description',
-            'evidence_type',
+            'name',
             'fingerprint',
-            'host',
+            'evidence_type',
             'is_compliant',
-            'name'
+            'description',
+            'ci_build_url',
+            'api_token',
+            'host',
         ]

@@ -1,19 +1,17 @@
 from cdb.put_evidence import put_evidence
-
 from commands import run
 
 from tests.utils import *
 
 MERKELY_DOMAIN = "test.compliancedb.com"
 CDB_DOMAIN = "app.compliancedb.com"
-
 CDB_OWNER = "compliancedb"
 CDB_NAME = "cdb-controls-test-pipeline"
 
+API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
+
 APPROVAL_DIR = "tests/unit/approved_executions"
 APPROVAL_FILE = "test_m_log_evidence"
-
-API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
 def test_docker_protocol(capsys, mocker):
@@ -79,7 +77,7 @@ def test_docker_protocol(capsys, mocker):
     ev = new_log_evidence_env()
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
     merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             method, url, payload = run(env, fingerprinter, None)
 

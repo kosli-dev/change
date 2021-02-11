@@ -1,8 +1,6 @@
 from cdb.put_artifact       import put_artifact
 from cdb.put_artifact_image import put_artifact_image
-
-from commands import run, build_command, Context
-from env_vars import RequiredEnvVar
+from commands import main, run, build_command, Context
 
 from tests.utils import *
 
@@ -16,7 +14,7 @@ APPROVAL_FILE = "test_m_log_artifact"
 
 def test_all_env_vars_image(capsys, mocker):
     """
-    New: MERKELY_COMMAND=log_artifact
+    New: MERKELY_COMMAND=log_evidence
          MERKELY_FINGERPRINT="docker://${IMAGE_NAME}"
          docker run ... merkely/change
     Old: CDB_ARTIFACT_DOCKER_IMAGE=${IMAGE_NAME}
@@ -72,7 +70,7 @@ def test_all_env_vars_image(capsys, mocker):
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
     merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             method, url, payload = run(env, fingerprinter, None)
 
@@ -91,7 +89,7 @@ def test_all_env_vars_image(capsys, mocker):
 
 def test_all_env_vars_file(capsys, mocker):
     """
-    New: MERKELY_COMMAND=log_artifact
+    New: MERKELY_COMMAND=log_evidence
          MERKELY_FINGERPRINT="file://${FILE_PATH}"
          docker run ... merkely/change
     Old: CDB_ARTIFACT_FILENAME=${FILE_PATH}
@@ -148,7 +146,7 @@ def test_all_env_vars_file(capsys, mocker):
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{artifact_name}"
     merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockFileFingerprinter(artifact_name, sha256) as fingerprinter:
             method, url, payload = run(env, None, fingerprinter)
 
@@ -167,7 +165,7 @@ def test_all_env_vars_file(capsys, mocker):
 
 def test_all_env_vars_sha(capsys, mocker):
     """
-    New: MERKELY_COMMAND=log_artifact
+    New: MERKELY_COMMAND=log_evidence
          MERKELY_FINGERPRINT="sha256://${SHA256}/${FILE_PATH}"
          docker run ... merkely/change
     Old: CDB_ARTIFACT_FILENAME=${FILE_PATH}
@@ -223,7 +221,7 @@ def test_all_env_vars_sha(capsys, mocker):
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{artifact_name}"
     merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(merkelypipe):
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         method, url, payload = run(env, None, None)
 
     # verify matching data
@@ -237,16 +235,17 @@ def test_all_env_vars_sha(capsys, mocker):
     ]
 
 
-# TODO: test when all optional env-var are not supplied
+# TODO: test when only required env-vars are supplied
 
 
 def test_each_required_env_var_missing(capsys):
     for env_var in make_command_env_vars():
-        if isinstance(env_var, RequiredEnvVar):
+        if env_var.is_required:
             ev = new_log_artifact_env()
             ev.pop(env_var.name)
             with dry_run(ev) as env, scoped_merkelypipe_json():
-                run(env)
+                status = main(env)
+                assert status != 0
     verify_approval(capsys)
 
 

@@ -3,14 +3,24 @@ class EnvVar:
     """
     An abstract base class for 'smart' OS env-vars.
     """
-    def __init__(self, env, name, description):
+    def __init__(self, env, name, notes, example=None):
         assert name is not None
         assert name != ""
-        assert description is not None
-        assert description != ""
+        assert notes is not None
+        assert notes != ""
         self._env = env
         self._name = name
-        self._description = description
+        self._notes = notes
+        if example is None:
+            example = "${...}"
+        self._example = example
+
+    @property
+    def env(self):
+        """
+        The underlying OS environment.
+        """
+        return self._env
 
     @property
     def name(self):
@@ -22,35 +32,32 @@ class EnvVar:
         return self._name
 
     @property
-    def type(self):
-        """
-        Non-empty string.
-        Used in living documentation.
-        Never raises.
-        """
-        raise NotImplementedError(f"{self.__class__.__name__}.type override missing")
-
-    @property
-    def description(self):
+    def notes(self):
         """
         Non-empty string as set in the ctor.
         Used in living documentation.
         Never raises.
         """
-        return self._description
+        return self._notes
 
     @property
-    def value(self):
+    def example(self):
+        return self._example
+
+    @property
+    def is_required(self):  # pragma: no cover
+        """
+        True or False.
+        Used in living documentation.
+        Never raises.
+        """
+        raise NotImplementedError(self.name)
+
+    @property
+    def value(self):  # pragma: no cover
         """
         run() validates its command by getting the value property
         of each command's env-var. Each env-var's value raises
         if it is invalid.
         """
-        raise NotImplementedError(f"{self.__class__.__name__}.value override missing")
-
-    @property
-    def env(self):
-        """
-        The underlying OS environment.
-        """
-        return self._env
+        raise NotImplementedError(self.name)

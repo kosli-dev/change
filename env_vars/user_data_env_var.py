@@ -1,19 +1,24 @@
 from commands import load_json
-from env_vars import OptionalEnvVar
+from env_vars import DefaultedEnvVar
 
-DESCRIPTION = "\n".join([
-    "A filename whose json content to embed in the deployment.",
-    "The filename must be volume-mounted in the container."
+DEFAULT = {}
+
+NOTES = "\n".join([
+    "If provided, a filename whose json content to embed in the deployment.",
+    "The filename must be volume-mounted in the container.",
+    f"If not provided, defaults to {DEFAULT}",
 ])
 
 
-class UserDataEnvVar(OptionalEnvVar):
+class UserDataEnvVar(DefaultedEnvVar):
 
-    def __init__(self, command):
-        super().__init__(command.env, "MERKELY_USER_DATA", DESCRIPTION)
+    def __init__(self, env):
+        super().__init__(env, "MERKELY_USER_DATA", NOTES)
 
     @property
-    def json(self):
-        filename = self.value
-        return load_json(filename)
-
+    def value(self):
+        if self._is_set:
+            filename = super().value
+            return load_json(filename)
+        else:
+            return DEFAULT

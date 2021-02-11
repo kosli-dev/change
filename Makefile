@@ -7,9 +7,10 @@ IMAGE  := merkely/${APP}:master
 IMAGE_BBPIPE := merkely/${APP}-bbpipe
 
 LATEST := ${NAME}:latest
-CONTAINER := change
+CONTAINER := ${NAME}
 
 CDB_HOST=https://app.compliancedb.com
+MERKELY_HOST=https://app.compliancedb.com
 
 # all non-latest images - for prune target
 IMAGES := $(shell docker image ls --format '{{.Repository}}:{{.Tag}}' $(NAME) | grep -v latest)
@@ -38,13 +39,11 @@ pip_list:
 	@docker run --rm -it --entrypoint="" ${IMAGE} pip3 list
 
 # - - - - - - - - - - - - - - - - - - - -
-# full image rebuilds with no Docker caching
+# full image rebuilds, with fresh base image, and no Docker caching
 
 rebuild_all: rebuild rebuild_bb
 
-rebuild:
-	@docker image rm python:3.7-alpine 2> /dev/null || true
-	@echo ${IMAGE}
+rebuild: delete_base_image
 	@docker build \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile \
@@ -52,13 +51,30 @@ rebuild:
 		--tag ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
 
-rebuild_bb:
-	@echo ${IMAGE_BBPIPE}
+rebuild_bb: delete_base_image_bb
 	@docker build \
 		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile.bb_pipe \
 		--no-cache \
 		--tag ${IMAGE_BBPIPE} .
+
+delete_base_image: build
+    # Get the ID of the image
+	$(eval IMAGE_ID = $(shell docker image list --format "table {{.ID}} {{.Repository}}:{{.Tag}}" | grep "${IMAGE}" | awk '{print $$1}'))
+	# Get the Dockerfile layers of the image
+	$(eval IMAGE_LAYERS = $(shell docker run -v /var/run/docker.sock:/var/run/docker.sock --rm chenzj/dfimage ${IMAGE_ID}))
+	# Get the base FROM image
+	$(eval BASE_IMAGE = $(shell echo "${IMAGE_LAYERS}" | head -n 1 | awk '{print $$2}'))
+	@docker image rm ${BASE_IMAGE}
+
+delete_base_image_bb: build_bb
+    # Get the ID of the image
+	$(eval IMAGE_ID = $(shell docker image list --format "table {{.ID}} {{.Repository}}:{{.Tag}}" | grep "${IMAGE_BBPIPE}" | awk '{print $$1}'))
+	# Get the Dockerfile layers of the image
+	$(eval IMAGE_LAYERS = $(shell docker run -v /var/run/docker.sock:/var/run/docker.sock --rm chenzj/dfimage ${IMAGE_ID}))
+	# Get the base FROM image
+	$(eval BASE_IMAGE = $(shell echo "${IMAGE_LAYERS}" | head -n 1 | awk '{print $$2}'))
+	@docker image rm ${BASE_IMAGE}
 
 # - - - - - - - - - - - - - - - - - - - -
 # image builds with Docker caching
@@ -89,51 +105,53 @@ define SOURCE_VOLUME_MOUNTS
 	--volume ${ROOT_DIR}/cdb:/app/cdb \
 	--volume ${ROOT_DIR}/commands:/app/commands \
 	--volume ${ROOT_DIR}/env_vars:/app/env_vars \
-	--volume ${ROOT_DIR}/fingerprinters:/app/fingerprinters \
-    --volume ${ROOT_DIR}/scripts:/app/scripts
+	--volume ${ROOT_DIR}/fingerprinters:/app/fingerprinters
 endef
 
-define TEST_VOLUME_MOUNTS
+define TESTS_VOLUME_MOUNT
     --volume ${ROOT_DIR}/tests:/app/tests
 endef
 
 test_unit:
 	docker rm --force ${CONTAINER} 2> /dev/null || true
-	rm -rf tmp/coverage/unit && mkdir -p tmp/coverage/unit
+	$(eval COVERAGE_DIR = tmp/coverage/unit)
+	rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
 	docker run \
 		--name ${CONTAINER} \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
-		${TEST_VOLUME_MOUNTS} \
-	    --volume ${ROOT_DIR}/tmp/coverage/unit/htmlcov:/app/htmlcov \
+		${TESTS_VOLUME_MOUNT} \
+	    --volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
 
 test_integration:
 	@docker rm --force ${CONTAINER} 2> /dev/null || true
-	@rm -rf tmp/coverage/integration && mkdir -p tmp/coverage/integration
+	$(eval COVERAGE_DIR = tmp/coverage/integration)
+	@rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
 	@docker run \
 		--name ${CONTAINER} \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
-		${TEST_VOLUME_MOUNTS} \
-		--volume ${ROOT_DIR}/tmp/coverage/integration/htmlcov:/app/htmlcov \
+		${TESTS_VOLUME_MOUNT} \
+		--volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/integration/coverage_entrypoint.sh \
 			${IMAGE} tests/integration/${TARGET}
 
 test_bb_integration:
 	@docker rm --force ${CONTAINER} 2> /dev/null || true
-	@rm -rf tmp/coverage/bb_integration && mkdir -p tmp/coverage/bb_integration
+	$(eval COVERAGE_DIR = tmp/coverage/bb_integration)
+	@rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
 	@docker run \
 		--name ${CONTAINER} \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
 		${SOURCE_VOLUME_MOUNTS} \
 		--volume ${ROOT_DIR}/bitbucket_pipe/pipe.py:/app/pipe.py \
-		${TEST_VOLUME_MOUNTS} \
-		--volume ${ROOT_DIR}/tmp/coverage/bb_integration/htmlcov:/app/htmlcov \
+		${TESTS_VOLUME_MOUNT} \
+		--volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
 			${IMAGE_BBPIPE} tests/bb_integration/${TARGET}
 
@@ -146,11 +164,18 @@ pytest_help:
 
 # - - - - - - - - - - - - - - - - - - - -
 
-living_docs:
+DOCS_IMAGE := merkely/docs
+
+build_docs_dockerfile:
+	docker build -t ${DOCS_IMAGE} docs.merkely.com/
+
+build_docs:
 	@docker run \
-        --rm \
-        ${SOURCE_VOLUME_MOUNTS} \
-        ${IMAGE} python /app/scripts/living_docs.py
+		--rm \
+		-v ${PWD}/docs.merkely.com:/docs \
+		-v ${PWD}:/app \
+		${DOCS_IMAGE} make clean html
+	@cp -RP docs.merkely.com/build/html/. docs/.
 
 # - - - - - - - - - - - - - - - - - - - -
 
@@ -181,7 +206,7 @@ stats:
 	@echo Commits: $$(git rev-list --count master)
 	@cloc .
 
-
+# - - - - - - - - - - - - - - - - - - - -
 # recording tasks
 
 MASTER_BRANCH := master
@@ -203,35 +228,59 @@ branch:
 	@echo IS_MASTER is ${IS_MASTER}
 	@echo PROJFILE is ${PROJFILE}
 
+# - - - - - - - - - - - - - - - - - - - -
+# Merkely commands
+
 merkely_declare_pipeline:
 	docker run \
-			--env MERKELY_COMMAND=declare_pipeline \
-			\
-			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
-			--env MERKELY_HOST=https://app.compliancedb.com \
-			--rm \
-			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
-			${IMAGE}
+		--env MERKELY_COMMAND=declare_pipeline \
+		\
+		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+		--env MERKELY_HOST=${MERKELY_HOST} \
+		--rm \
+		--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+		${IMAGE}
+
 
 merkely_log_artifact:
 	docker run \
-			--env MERKELY_COMMAND=log_artifact \
-			\
-			--env MERKELY_FINGERPRINT="docker://${MERKELY_DOCKER_IMAGE}" \
-			--env MERKELY_DISPLAY_NAME=${MERKELY_DOCKER_IMAGE} \
-			\
-			--env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
-			--env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
-			--env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
-			--env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
-			--env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
-			\
-			--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
-			--env MERKELY_HOST=https://app.compliancedb.com \
-			--rm \
-			--volume=/var/run/docker.sock:/var/run/docker.sock \
-			--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
-			${IMAGE}
+        --env MERKELY_COMMAND=log_artifact \
+        \
+        --env MERKELY_FINGERPRINT="docker://${MERKELY_DOCKER_IMAGE}" \
+        --env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
+        --env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
+        --env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
+        --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
+        --env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
+        \
+        --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+        --env MERKELY_HOST=${MERKELY_HOST} \
+        --rm \
+        --volume=/var/run/docker.sock:/var/run/docker.sock \
+        --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+        ${IMAGE}
+
+
+merkely_log_deployment:
+	docker run \
+        --env MERKELY_COMMAND=log_deployment \
+        \
+        --env MERKELY_FINGERPRINT="docker://${MERKELY_DOCKER_IMAGE}" \
+        --env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
+        --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
+        --env MERKELY_DESCRIPTION="${MERKELY_DESCRIPTION}" \
+        --env MERKELY_ENVIRONMENT=${MERKELY_ENVIRONMENT} \
+        --env MERKELY_USER_DATA=${MERKELY_USER_DATA} \
+        \
+        --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+        --env MERKELY_HOST=${MERKELY_HOST} \
+        --rm \
+        --volume=/var/run/docker.sock:/var/run/docker.sock \
+        --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+        ${IMAGE}
+
+# - - - - - - - - - - - - - - - - - - - -
+# CDB Commands
 
 put_project:
 	docker run \

@@ -3,12 +3,12 @@ from env_vars import RequiredEnvVar
 from pytest import raises
 
 NAME = "MERKELY_MORSE"
-DESCRIPTION = "A favourite tv program"
+NOTES = "A favourite tv program"
 
 
-def test_type_is_required():
+def test_is_required():
     _, ev = make_test_variables()
-    assert ev.type == 'required'
+    assert ev.is_required
 
 
 def test_value_when_set_to_non_empty_in_os():
@@ -35,4 +35,4 @@ def test_value_raises_when_not_set_in_os():
 
 def make_test_variables():
     os_env = {}
-    return os_env, RequiredEnvVar(os_env, NAME, DESCRIPTION)
+    return os_env, RequiredEnvVar(os_env, NAME, NOTES)
