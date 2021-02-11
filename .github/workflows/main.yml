@@ -43,7 +43,6 @@ jobs:
     - name: Declare the pipeline and log docker-image artifact information to Merkely
       env:
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
-        MERKELY_HOST: https://app.compliancedb.com
         MERKELY_IS_COMPLIANT: 'TRUE'
         MERKELY_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
         MERKELY_ARTIFACT_GIT_COMMIT: ${GITHUB_SHA}
@@ -58,21 +57,15 @@ jobs:
       env:
         MERKELY_DOCKER_IMAGE: merkely/change:sha-${SHA7}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
-        #MERKELY_HOST: https://app.compliancedb.com
         MERKELY_IS_COMPLIANT: 'TRUE'
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_DESCRIPTION: "Deployment of ${MERKELY_DOCKER_IMAGE} to docker hub"
         MERKELY_ENVIRONMENT: 'docker_hub'
-        #MERKELY_USER_DATA: defaults to '{}'
-
-        #CDB_HOST: https://app.compliancedb.com
-        #CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
-        #CDB_ENVIRONMENT: "docker_hub"
+        #MERKELY_USER_DATA: defaults gives {}
       run: |
         export SHA7=$(git log -1 --pretty=%h)
         #export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
         #export CDB_DESCRIPTION="Deployment of ${CDB_ARTIFACT_DOCKER_IMAGE} to docker hub"
-        #make create_deployment
         make merkely_log_deployment
 
     - name: Run unit tests

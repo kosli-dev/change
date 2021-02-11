@@ -241,6 +241,7 @@ merkely_declare_pipeline:
 		--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 		${IMAGE}
 
+
 merkely_log_artifact:
 	docker run \
         --env MERKELY_COMMAND=log_artifact \
@@ -258,6 +259,7 @@ merkely_log_artifact:
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
         ${IMAGE}
+
 
 merkely_log_deployment:
 	docker run \
