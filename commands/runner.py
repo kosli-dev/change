@@ -9,9 +9,9 @@ def run(env=None, docker_fingerprinter=None, file_fingerprinter=None):
     return command()
 
 
-def main():
+def main(env=None, docker_fingerprinter=None, file_fingerprinter=None):
     try:
-        run()
+        run(env, docker_fingerprinter, file_fingerprinter)
         return 0
     except CommandError as exc:
         print(f"Error: {str(exc)}")

@@ -1,10 +1,11 @@
 from cdb.put_artifact       import put_artifact
 from cdb.put_artifact_image import put_artifact_image
 
-from commands import run, build_command, Context
+from commands import main, run, build_command, Context, CommandError
 from env_vars import RequiredEnvVar
 
 from tests.utils import *
+from pytest import raises
 
 CDB_DOMAIN = "app.compliancedb.com"
 CDB_OWNER = "compliancedb"
@@ -237,16 +238,17 @@ def test_all_env_vars_sha(capsys, mocker):
     ]
 
 
-# TODO: test when all optional env-var are not supplied
+# TODO: test when only required env-vars are supplied
 
 
-def X_test_each_required_env_var_missing(capsys):
+def test_each_required_env_var_missing(capsys):
     for env_var in make_command_env_vars():
-        if isinstance(env_var, RequiredEnvVar):
+        if env_var.is_required:
             ev = new_log_artifact_env()
             ev.pop(env_var.name)
             with dry_run(ev) as env, scoped_merkelypipe_json():
-                run(env)
+                status = main(env)
+                assert status != 0
     verify_approval(capsys)
 
 

@@ -11,31 +11,62 @@ MERKELY_CI_BUILD_URL=https://gitlab/build/1456
 MERKELY_CI_BUILD_NUMBER=23
 MERKELY_API_TOKEN=5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4
 
-MERKELYPIPE="${ROOT_DIR}/Dockerfile"
-#MERKELYPIPE="${ROOT_DIR}/tests/data/Merkelypipe.json"
+function merkely_log_artifact()
+{
+  local -r MERKELYPIPE="${1}"
+  docker run \
+        --interactive \
+        --tty \
+        --env CDB_DRY_RUN=TRUE \
+        --env MERKELY_COMMAND=log_artifact \
+        \
+        --env MERKELY_FINGERPRINT="docker://${MERKELY_DOCKER_IMAGE}" \
+        --env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
+        --env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
+        --env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
+        --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
+        --env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
+        \
+        --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+        --rm \
+        --volume=/var/run/docker.sock:/var/run/docker.sock \
+        --volume ${MERKELYPIPE}:/Merkelypipe.json \
+        merkely/change:master
+}
 
-docker run \
-      --interactive \
-      --tty \
-      --env CDB_DRY_RUN=TRUE \
-      --env MERKELY_COMMAND=log_artifact \
-      \
-      --env MERKELY_FINGERPRINT="docker://${MERKELY_DOCKER_IMAGE}" \
-      --env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
-      --env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
-      --env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
-      --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
-      --env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
-      \
-      --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
-      --rm \
-      --volume=/var/run/docker.sock:/var/run/docker.sock \
-      --volume ${MERKELYPIPE}:/Merkelypipe.json \
-      merkely/change:master
+function test_status_non_zero()
+{
+  local -r expected=144
+  merkely_log_artifact "${ROOT_DIR}/Dockerfile"
+  status=$?
+  echo
+  echo "expected STATUS=${expected}"
+  echo "  actual STATUS=${status}"
+  if [ "${status}" == "${expected}" ]; then
+    echo "PASSED"; echo
+    true
+  else
+    echo "FAILED"; echo
+    false
+  fi
+}
 
-STATUS=$?
+function test_status_zero()
+{
+  local -r expected=0
+  merkely_log_artifact "${ROOT_DIR}/tests/data/Merkelypipe.json"
+  status=$?
+  echo
+  echo "expected STATUS=${expected}"
+  echo "  actual STATUS=${status}"
+  if [ "${status}" == "${expected}" ]; then
+    echo "PASSED"; echo
+    true
+  else
+    echo "FAILED"; echo
+    false
+  fi
+}
 
-echo "STATUS=${STATUS}"
-
-
-
+test_status_zero
+test_status_non_zero
