@@ -1,0 +1,48 @@
+
+Priorities                                    Tests
+FROM                   TO                     ALL-EVS   ONLY-REQ-EVS   MISSING-REQ-EVS
+put_artifact_image     log_artifact           yes       no             yes
+control_junit          log_test_results       no        no             no
+control_bitbucket_pr   log_bitbucket_pr       no        no             no
+create_deployment      log_deployment         yes       no             no
+create_release         log_approval           no        no             no
+                       log_evidence           yes       no             no
+                       declare_pipeline       yes       N/A            no
+
+
+Check when using pathed-filename to get sha for that
+cdb and merkely behave the same regarding only showing
+the basename of the pathed-filename.
+
+Should create a source/ dir and move everything into it.
+
+load_json() should be in context to allow easy stubbing.
+
+Context() ctor should have keyword args.
+
+Could look for unused env-vars starting with MERKELY_
+and report warnings...
+
+Command could start by printing list of environment variables and their type.
+
+Print 'success' at end of successful command run?
+
+Look into how Python recommended style for abstract-base-classes.
+
+Mock fingerprinters code in tests/utils could be collapsed using
+multiple inheritance.
+
+Commands should return the triple(method,url,payload)
+and a 2nd step is to do the http get/post/put.
+This would simplify the tests by not needing the
+dry_run() everywhere.
+
+As a general principle, for anything in a docstring,
+consider whether it should be part of the living documentation.
+
+Once living documentation is in place, warning/error messages can
+include targeted urls.
+
+properties/methods that exist in abstract-base-classes only to be
+overridden are marked # pragma: no cover
+Maybe add programmer-tests for these and remove the pragmas.
