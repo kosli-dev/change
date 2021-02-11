@@ -6,14 +6,14 @@ Loan-calculator
 
 Used in loan-calculator?
 YES----------------------------------------Makefile--Tests------------------------------------
-FROM                    TO                 Target    ALL-EVS   ONLY-REQ-EVS   MISSING-REQ-EVS
-put_pipeline            declare_pipeline   yes       yes       N/A            no
-create_release          log_approval       no        yes       no             no
-control_junit           log_test           no        no        no             no
-put_artifact_image      log_artifact       yes       yes       no             yes
-create_deployment       log_deployment     yes       yes       no             no
-put_evidence            log_evidence       no        yes       no             no
-nothing                 control_deployment no        no        no             no
+FROM                    TO                 Target    docs   ALL-EVS   ONLY-REQ-EVS   MISSING-REQ-EVS
+put_pipeline            declare_pipeline   yes       no     yes       N/A            no
+create_release          log_approval       no        no     yes       no             no
+control_junit           log_test           no        no     no        no             no
+put_artifact_image      log_artifact       yes       no     yes       no             yes
+create_deployment       log_deployment     yes       no     yes       no             no
+put_evidence            log_evidence       no        wip    yes       no             no
+nothing                 control_deployment no        wip    no        no             no
 control_latest_release  retire
 Not-------------------------------------------------------------------------------------------
 control_junit          log_test_results    no         no        no             no
