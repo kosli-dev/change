@@ -23,26 +23,24 @@ class LogApprovalCommand(Command):
 
     @property
     def release_description(self):
-        notes = "todo"
         default = "No description provided"
+        notes = f"A description for the approval. Defaults to `{default}`"
         return self._static_defaulted_env_var("RELEASE_DESCRIPTION", default, notes)
 
     @property
     def target_src_commitish(self):
         notes = "The source commit-ish for the oldest change in the approval."
-        default = None
-        return self._static_defaulted_env_var("TARGET_SRC_COMMITISH", default, notes)
+        return self._required_env_var("TARGET_SRC_COMMITISH", notes)
 
     @property
     def base_src_commitish(self):
         notes = "The source commit-ish for the oldest change in the approval."
-        default = None
-        return self._static_defaulted_env_var("BASE_SRC_COMMITISH", default, notes)
+        return self._required_env_var("BASE_SRC_COMMITISH", notes)
 
     @property
     def src_repo_root(self):
         default = "/src/"
-        notes = f"The path where the source git repository is volume-mounted. Default to `{default}`"
+        notes = f"The path where the source git repository is volume-mounted. Defaults to `{default}`"
         return self._static_defaulted_env_var("SRC_REPO_ROOT", default, notes)
 
     @property

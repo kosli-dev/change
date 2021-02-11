@@ -91,7 +91,4 @@ def new_log_approval_env():
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_TARGET_SRC_COMMITISH": "master",
         "MERKELY_BASE_SRC_COMMITISH": "production",
-
-        # "MERKELY_RELEASE_DESCRIPTION": defaults to "No description provided"
-        # "MERKELY_SRC_REPO_ROOT": defaults to  DEFAULT_REPO_ROOT
     }
