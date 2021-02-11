@@ -19,8 +19,6 @@ Eg  For github Actions, the invocation-string for log_artifact would scrape
     loan-calculator's merkely_reference.yml and look like this:
     (... ellipsis fleshed out further down)
 
-    - name: Publish docker-image artifact information to Merkely
-      run: |
         ...
 	    docker run \
 			--env MERKELY_COMMAND=log_artifact \
@@ -39,9 +37,11 @@ Eg  For github Actions, the invocation-string for log_artifact would scrape
 
 Notes:
 
-o) This means the invocation-string is not from docker-run perspective.
+o) This means the invocation-string is not just from docker-run perspective.
    It is from the .yml file perspective.
-   Eg it show the -name and run syntax
+   Eg it could show the -name and run syntax
+   Either way, an http-link would allow you to see the full yml file
+   for the current CI (eg Github-Actions)
    This feels right.
    More actual-use-centric.
 
@@ -93,6 +93,9 @@ Notes:
 o) There could different kinds of url://
    For example
      curled_url:// which curls the url to verify its existence
+   Problem with this is you'd end up with two protocols... url://https://
+   Maybe better to keep that one without a protocol
+   and include URL in the env-var name.
 
 o) env-vars that name a json file could now be:
      MERKELY_USER_DATA="file://${JSON_FILENAME}"
@@ -123,8 +126,8 @@ merkely_reference.yml file, and the living documentation page would be:
 
 	    docker run \
 			--env MERKELY_ARTIFACT="docker://${MY_IMAGE_AND_TAG}" \
-			--env MERKELY_GIT_URL="url://${MY_GIT_URL}" \
-			--env MERKELY_CI_URL="url://${MY_CI_URL} \
+			--env MERKELY_GIT_URL="${MY_GIT_URL}" \
+			--env MERKELY_CI_URL="${MY_CI_URL} \
 			--env MERKELY_IS_COMPLIANT=bool://TRUE \
 			\
 			--env MERKELY_GIT_COMMIT="string://${GITHUB_SHA}" \
