@@ -42,15 +42,16 @@ jobs:
 
     - name: Declare the pipeline and log docker-image artifact information to Merkely
       env:
-        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
-        MERKELY_IS_COMPLIANT: 'TRUE'
+        MERKELY_FINGERPRINT: docker://merkely/change:sha-${GITHUB_SHA:0:7}
         MERKELY_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
         MERKELY_ARTIFACT_GIT_COMMIT: ${GITHUB_SHA}
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_CI_BUILD_NUMBER: ${GITHUB_RUN_ID}
+        MERKELY_IS_COMPLIANT: 'TRUE'
+        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
-        export SHA7=$(git log -1 --pretty=%h)
-        export MERKELY_DOCKER_IMAGE=merkely/change:sha-${SHA7}
+        #export SHA7=$(git log -1 --pretty=%h)
+        #export MERKELY_DOCKER_IMAGE=merkely/change:sha-${SHA7}
         make branch merkely_declare_pipeline merkely_log_artifact
 
     - name: Log the deployment in Merkely
