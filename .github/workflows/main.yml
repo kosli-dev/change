@@ -39,10 +39,15 @@ jobs:
         tag_with_sha: TRUE
         add_git_labels: TRUE
 
+    - name: Get the sha7
+      id: github
+      run: |
+        echo ::set-output name=sha7::$(git rev-parse --short=7 ${{ github.sha }})
 
     - name: Declare the pipeline and log docker-image artifact information to Merkely
       env:
-        MERKELY_FINGERPRINT: docker://merkely/change:sha-${GITHUB_SHA:0:7}
+        SHA7=${{ steps.github.outputs.sha7 }}
+        MERKELY_FINGERPRINT: docker://merkely/change:sha-${SHA7}
         MERKELY_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
         MERKELY_ARTIFACT_GIT_COMMIT: ${GITHUB_SHA}
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
