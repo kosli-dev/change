@@ -42,7 +42,7 @@ class LogApprovalCommand(Command):
                                            self.base_src_commitish.value)
         payload = {
             "base_artifact": self.fingerprint.sha,
-            "description": self.release_description.value,
+            "description": self.description.value,
             "target_artifact": self.fingerprint.sha,
             "src_commit_list": commit_list,
         }
@@ -51,10 +51,9 @@ class LogApprovalCommand(Command):
         return 'Posting', url, payload
 
     @property
-    def release_description(self):
-        default = "No description provided"
-        notes = f"A description for the approval. Defaults to `{default}`"
-        return self._static_defaulted_env_var("RELEASE_DESCRIPTION", default, notes)
+    def description(self):
+        notes = f"A description for the approval."
+        return self._required_env_var("DESCRIPTION", notes)
 
     @property
     def target_src_commitish(self):
@@ -80,7 +79,7 @@ class LogApprovalCommand(Command):
             'fingerprint',
             'target_src_commitish',
             'base_src_commitish',
-            'release_description',
+            'description',
             'src_repo_root',
             'api_token',
             'host',

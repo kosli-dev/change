@@ -91,4 +91,5 @@ def new_log_approval_env():
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_TARGET_SRC_COMMITISH": "master",
         "MERKELY_BASE_SRC_COMMITISH": "production",
+        "MERKELY_DESCRIPTION": "No description provided"
     }
