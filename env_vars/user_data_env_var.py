@@ -17,8 +17,8 @@ class UserDataEnvVar(DefaultedEnvVar):
 
     @property
     def value(self):
-        if self._is_set:
-            filename = super().value
+        if self.is_set and not self.is_empty:
+            filename = self.string
             return load_json(filename)
         else:
             return DEFAULT

@@ -11,13 +11,3 @@ class DefaultedEnvVar(EnvVar):
     @property
     def is_required(self):
         return False
-
-    @property
-    def value(self):
-        return self.env.get(self.name, None)
-
-    @property
-    def _is_set(self):
-        # Careful to avoid recursion
-        value = self.env.get(self.name, None)
-        return value is not None and value != ""

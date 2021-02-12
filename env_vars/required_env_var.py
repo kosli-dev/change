@@ -19,10 +19,9 @@ class RequiredEnvVar(EnvVar):
         The OS env-var for name if present and non empty.
         Raises if not present or empty.
         """
-        result = self.env.get(self.name, None)
-        if result is None:
+        if not self.is_set:
             raise CommandError(f"{self.name} environment-variable is not set.")
-        elif result == "":
+        elif self.is_empty:
             raise CommandError(f"{self.name} environment-variable is empty string.")
         else:
-            return result
+            return self.string

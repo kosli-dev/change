@@ -8,11 +8,11 @@ class StaticDefaultedEnvVar(DefaultedEnvVar):
     """
     def __init__(self, env, name, default, notes):
         super().__init__(env, name, notes)
-        self._default = default
+        self.__default = default
 
     @property
     def value(self):
-        if self._is_set:
-            return super().value
+        if self.is_set and not self.is_empty:
+            return self.string
         else:
-            return self._default
+            return self.__default

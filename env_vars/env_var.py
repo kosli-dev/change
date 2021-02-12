@@ -1,5 +1,7 @@
+import abc
 
-class EnvVar:
+
+class EnvVar(abc.ABC):
     """
     An abstract base class for 'smart' OS env-vars.
     """
@@ -8,19 +10,27 @@ class EnvVar:
         assert name != ""
         assert notes is not None
         assert notes != ""
-        self._env = env
-        self._name = name
-        self._notes = notes
+        self.__env = env
+        self.__name = name
+        self.__notes = notes
         if example is None:
             example = "${...}"
-        self._example = example
+        self.__example = example
+
+    def __get(self, default):
+        return self.__env.get(self.name, default)
 
     @property
-    def env(self):
-        """
-        The underlying OS environment.
-        """
-        return self._env
+    def is_set(self):
+        return self.__get(None) is not None
+
+    @property
+    def string(self):
+        return self.__get("")
+
+    @property
+    def is_empty(self):
+        return self.string == ""
 
     @property
     def name(self):
@@ -29,7 +39,7 @@ class EnvVar:
         Used in living documentation.
         Never raises.
         """
-        return f"MERKELY_{self._name}"
+        return f"MERKELY_{self.__name}"
 
     @property
     def notes(self):
@@ -38,11 +48,11 @@ class EnvVar:
         Used in living documentation.
         Never raises.
         """
-        return self._notes
+        return self.__notes
 
     @property
     def example(self):
-        return self._example
+        return self.__example
 
     @property
     def is_required(self):  # pragma: no cover
