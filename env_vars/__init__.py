@@ -13,4 +13,3 @@ from .file_fingerprint_env_var import FileFingerprintEnvVar
 from .sha256_fingerprint_env_var import Sha256FingerprintEnvVar
 from .host_env_var import HostEnvVar
 from .user_data_env_var import UserDataEnvVar
-from .description_env_var import DescriptionEnvVar

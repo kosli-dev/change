@@ -55,7 +55,8 @@ class LogEvidenceCommand(Command):
 
     @property
     def description(self):
-        return DescriptionEnvVar(self.env)
+        notes = "..."
+        return self._required_env_var("DESCRIPTION", notes)
 
     @property
     def evidence_type(self):
