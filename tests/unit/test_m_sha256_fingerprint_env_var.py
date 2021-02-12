@@ -35,9 +35,9 @@ def test_sha256_protocol__bad_sha_raises():
         assert str(exc.value) == f"Invalid {SHA256_PROTOCOL} fingerprint: {bad_sha}{image_name}"
 
 
-def test_description_is_not_empty():
+def test_notes_is_not_empty():
     ev = Sha256FingerprintEnvVar(None, None, None)
-    assert len(ev.description) > 0
+    assert len(ev.notes) > 0
 
 
 def test_sha256_protocol__no_artifact_name_raises():

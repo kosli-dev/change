@@ -10,13 +10,13 @@ class Sha256FingerprintEnvVar:
         self._sha_and_artifact_name = sha_and_artifact_name
 
     @property
-    def description(self):
+    def notes(self):
         return "\n".join([
-            "3. If prefixed by sha256:// the artifact's 64 character sha256, then /, then it's non-empty name."
-            '   Example:',
-            '   docker run ... \\',
-            '     --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}/${YOUR_ARTIFACT_NAME}” \\',
-            '     ...',
+            "The string `sha256://` followed by the artifact's 64 character sha256, then `/`, then it's non-empty name."
+            'Example:',
+            'docker run ... \\',
+            '    --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}/${YOUR_ARTIFACT_NAME}” \\',
+            '    ...',
         ])
 
     @property
