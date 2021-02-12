@@ -15,19 +15,20 @@ class FingerprintEnvVar(RequiredEnvVar):
 
     def __init__(self, command):
         super().__init__(command.env, "FINGERPRINT", NOTES, EXAMPLE)
-        self._command = command
+        self.__command = command
 
     @property
     def value(self):
+        super().value
         self.protocol
         self.artifact_name
-        return self._raw_value
+        return self.string
 
     @property
     def protocol(self):
-        unknown_protocol_error = CommandError(f"Unknown protocol: {self._raw_value}")
+        unknown_protocol_error = CommandError(f"Unknown protocol: {self.string}")
         regex = re.compile(r'(?P<protocol>[0-9a-z]+:\/\/).*')
-        match = regex.match(self._raw_value)
+        match = regex.match(self.string)
         if match is None:
             raise unknown_protocol_error
         protocol = match.group('protocol')
@@ -37,24 +38,20 @@ class FingerprintEnvVar(RequiredEnvVar):
 
     @property
     def artifact_name(self):
-        return self._fingerprint.artifact_name
+        return self.__fingerprint.artifact_name
 
     @property
     def artifact_basename(self):
-        return self._fingerprint.artifact_basename
+        return self.__fingerprint.artifact_basename
 
     @property
     def sha(self):
-        return self._fingerprint.sha
+        return self.__fingerprint.sha
 
     @property
-    def _fingerprint(self):
+    def __fingerprint(self):
         cls = fingerprint_env_var_cls_for(self.protocol)
-        after_protocol = self._raw_value[len(self.protocol):]
+        after_protocol = self.string[len(self.protocol):]
         if after_protocol == "":
             raise CommandError(f"Empty {self.protocol} fingerprint")
-        return cls(self._command, self.protocol, after_protocol)
-
-    @property
-    def _raw_value(self):
-        return super().value
+        return cls(self.__command, self.protocol, after_protocol)
