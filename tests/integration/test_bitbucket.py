@@ -22,7 +22,7 @@ mocked_bitbucket_pull_requests_api_response = {
     }
 }
 
-#@pytest.mark.skip
+@pytest.mark.skip
 def test_only_required_env_vars(capsys, mocker):
     env = {
         "CDB_API_TOKEN": "1239831f4ee3b79e7c5b7e0ebe75d67aa66e7aab",
