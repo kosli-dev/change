@@ -10,7 +10,7 @@ FROM                    TO                 Target    docs   ALL-EVS   ONLY-REQ-E
 put_pipeline            declare_pipeline   yes       no     yes       N/A            no
 create_release          log_approval       no        wip    yes       no             no
 control_junit           log_test           no        no     no        no             no
-put_artifact_image      log_artifact       yes       no     yes       no             yes
+put_artifact_image      log_artifact       yes       wip    yes       no             yes
 create_deployment       log_deployment     yes       wip    yes       no             no
 put_evidence            log_evidence       no        wip    yes       no             no
 nothing                 control_deployment no        wip    no        no             no
