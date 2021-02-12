@@ -58,23 +58,13 @@ rebuild_bb: delete_base_image_bb
 		--no-cache \
 		--tag ${IMAGE_BBPIPE} .
 
-delete_base_image: build
-    # Get the ID of the image
-	$(eval IMAGE_ID = $(shell docker image list --format "table {{.ID}} {{.Repository}}:{{.Tag}}" | grep "${IMAGE}" | awk '{print $$1}'))
-	# Get the Dockerfile layers of the image
-	$(eval IMAGE_LAYERS = $(shell docker run -v /var/run/docker.sock:/var/run/docker.sock --rm chenzj/dfimage ${IMAGE_ID}))
-	# Get the base FROM image
-	$(eval BASE_IMAGE = $(shell echo "${IMAGE_LAYERS}" | head -n 1 | awk '{print $$2}'))
-	@docker image rm ${BASE_IMAGE}
+delete_base_image:
+	$(eval BASE_IMAGE = $(shell cat "${PWD}/Dockerfile" | head -n 1 | awk '{print $$2}'))
+	@docker image rm ${BASE_IMAGE} 2> /dev/null || true
 
-delete_base_image_bb: build_bb
-    # Get the ID of the image
-	$(eval IMAGE_ID = $(shell docker image list --format "table {{.ID}} {{.Repository}}:{{.Tag}}" | grep "${IMAGE_BBPIPE}" | awk '{print $$1}'))
-	# Get the Dockerfile layers of the image
-	$(eval IMAGE_LAYERS = $(shell docker run -v /var/run/docker.sock:/var/run/docker.sock --rm chenzj/dfimage ${IMAGE_ID}))
-	# Get the base FROM image
-	$(eval BASE_IMAGE = $(shell echo "${IMAGE_LAYERS}" | head -n 1 | awk '{print $$2}'))
-	@docker image rm ${BASE_IMAGE}
+delete_base_image_bb:
+	$(eval BASE_IMAGE = $(shell cat "${PWD}/Dockerfile.bb_pipe" | head -n 1 | awk '{print $$2}'))
+	@docker image rm ${BASE_IMAGE} 2> /dev/null || true
 
 # - - - - - - - - - - - - - - - - - - - -
 # image builds with Docker caching
