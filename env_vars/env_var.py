@@ -1,9 +1,9 @@
-import abc
+from abc import ABC
 
 
-class EnvVar(abc.ABC):
+class EnvVar(ABC):
     """
-    An abstract base class for 'smart' OS env-vars.
+    An abstract base class for 'smart' OS environment-variables.
     """
     def __init__(self, env, name, notes, example=None):
         assert name is not None
@@ -21,32 +21,44 @@ class EnvVar(abc.ABC):
         return self.__env.get(self.name, default)
 
     @property
-    def is_set(self):
-        return self.__get(None) is not None
+    def is_empty(self):
+        """
+        Returns true if the environment-variable is set to
+        the empty string. This can easily happen in a docker
+        command when you miss-type a --env option!
+        """
+        return self.string == ""
 
     @property
     def string(self):
+        """
+        Returns the string as set in the environment-variable,
+        or the empty-string if not set.
+        """
         return self.__get("")
 
     @property
-    def is_empty(self):
-        return self.string == ""
+    def is_set(self):
+        """
+        Returns true if this environment-variable is set.
+        Note: returns false if the environment-variable
+        is set, but to the empty string.
+        """
+        return self.__get(None) is not None
 
     @property
     def name(self):
         """
-        Non-empty string, as set in the ctor.
-        Used in living documentation.
-        Never raises.
+        Returns the name of the environment-variable, as set in the ctor.
+        Used in living documentation. Never raises.
         """
         return f"MERKELY_{self.__name}"
 
     @property
     def notes(self):
         """
-        Non-empty string as set in the ctor.
-        Used in living documentation.
-        Never raises.
+        Returns notes string as set in the ctor.
+        Used in living documentation. Never raises.
         """
         return self.__notes
 
@@ -57,17 +69,16 @@ class EnvVar(abc.ABC):
     @property
     def is_required(self):  # pragma: no cover
         """
-        True or False.
-        Used in living documentation.
-        Never raises.
+        Returns True or False.
+        Used in living documentation. Never raises.
         """
         raise NotImplementedError(self.name)
 
     @property
     def value(self):  # pragma: no cover
         """
+        Subclasses must raise if their value is invalid.
         run() validates its command by getting the value property
-        of each command's env-var. Each env-var's value raises
-        if it is invalid.
+        of each command's env-var.
         """
         raise NotImplementedError(self.name)

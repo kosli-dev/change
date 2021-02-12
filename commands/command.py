@@ -1,9 +1,10 @@
+from abc import ABC
 from collections import namedtuple
 from env_vars import *
 from commands import load_json
 
 
-class Command:
+class Command(ABC):
     """
     Abstract Base Class for all merkely/change commands.
     """
