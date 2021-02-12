@@ -5,25 +5,34 @@ from cdb.http import http_post_payload
 
 
 class LogDeploymentCommand(Command):
-    """
-    Logs a deployment in Merkely.
-    Invoked like this:
 
-    docker run \
-        --env MERKELY_COMMAND=log_deployment \
-        --env MERKELY_FINGERPRINT="docker://${...}" \
-        \
-        --env MERKELY_IS_COMPLIANT=${...} \
-        --env MERKELY_CI_BUILD_NUMBER=${...} \
-        --env MERKELY_DESCRIPTION=${...} \
-        --env MERKELY_ENVIRONMENT=${...} \
-        --env MERKELY_USER_DATA=${...} \
-        --rm \
-        --env MERKELY_API_TOKEN=${...} \
-        --volume /var/run/docker.sock:/var/run/docker.sock \
-        --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
-        merkely/change
-    """
+    @property
+    def summary(self):
+        return "Logs a deployment in Merkely."
+
+    def invocation(self, type):
+        def env(var):
+            if var.name == "MERKELY_COMMAND":
+                value = var.value
+            elif var.name == "MERKELY_FINGERPRINT":
+                value = var.example
+            else:
+                value = "${...}"
+            return f'    --env {var.name}="{value}" \\\n'
+
+        invocation_string = "docker run \\\n"
+        for name in self._env_var_names:
+            var = getattr(self, name)
+            if type == 'full':
+                invocation_string += env(var)
+            if type == 'minimum' and var.is_required:
+                invocation_string += env(var)
+
+        invocation_string += "    --rm \\\n"
+        invocation_string += "    --volume /var/run/docker.sock:/var/run/docker.sock \\\n"
+        invocation_string += "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\\n"
+        invocation_string += "    merkely/change"
+        return invocation_string
 
     def __call__(self):
         payload = {
