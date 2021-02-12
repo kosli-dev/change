@@ -37,7 +37,7 @@ class LogArtifactCommand(Command):
         self._print_compliance()
         payload = {
             "sha256": self.fingerprint.sha,
-            "filename": self.fingerprint.artifact_name,
+            "filename": self.fingerprint.artifact_basename,
             "description": f"Created by build {self.ci_build_number.value}",
             "git_commit": self.artifact_git_commit.value,
             "commit_url": self.artifact_git_url.value,

@@ -98,7 +98,9 @@ def test_all_env_vars_file(capsys, mocker):
     # input data
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
     sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
-    artifact_name = "app/tests/data/jam.jar"
+    directory = "app/tests/data"
+    filename = "jam.jar"
+    artifact_name = f"{directory}/{filename}"
     build_url = "https://gitlab/build/1456"
     build_number = '23'
 
@@ -153,6 +155,8 @@ def test_all_env_vars_file(capsys, mocker):
     # verify matching data
     assert method == expected_method
     assert url == expected_url
+
+    expected_payload['filename'] = filename # CHANGE IN BEHAVIOUR
     assert payload == expected_payload
 
     assert extract_blurb(capsys_read(capsys)) == [
