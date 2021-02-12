@@ -1,11 +1,11 @@
 Log Evidence
 ============
-.. describe_command:: log_evidence summary
+.. describe_command:: log_deployment summary
 
 Invocation
 ----------
-.. describe_command:: log_evidence invocation_full
+.. describe_command:: log_deployment invocation_full
 
 Parameters
 ----------
-.. describe_command:: log_evidence parameters
+.. describe_command:: log_deployment parameters
