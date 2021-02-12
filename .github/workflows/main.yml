@@ -39,38 +39,33 @@ jobs:
         tag_with_sha: TRUE
         add_git_labels: TRUE
 
-    - name: Get the sha7
-      id: shortsha
+    - name: Get the tagged image name
+      id: tagged_image
       run: |
-        echo ::set-output name=value::$(git log -1 --pretty=%h)
+        echo ::set-output name=value::merkely/change:sha-$(git log -1 --pretty=%h)
 
     - name: Declare the pipeline and log docker-image artifact information to Merkely
       env:
-        SHA7: ${{ steps.shortsha.outputs.value }}
-        MERKELY_FINGERPRINT: docker://merkely/change:sha-${SHA7}
-        MERKELY_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
-        MERKELY_ARTIFACT_GIT_COMMIT: ${GITHUB_SHA}
-        MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
-        MERKELY_CI_BUILD_NUMBER: ${GITHUB_RUN_ID}
+        TAGGED_IMAGE: ${{ steps.tagged_image.outputs.value }}
+        MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
         MERKELY_IS_COMPLIANT: 'TRUE'
+        MERKELY_ARTIFACT_GIT_COMMIT: ${GITHUB_SHA}
+        MERKELY_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
+        MERKELY_CI_BUILD_NUMBER: ${GITHUB_RUN_ID}
+        MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
-        #export SHA7=$(git log -1 --pretty=%h)
-        #export MERKELY_DOCKER_IMAGE=merkely/change:sha-${SHA7}
         make branch merkely_declare_pipeline merkely_log_artifact
 
     - name: Log the deployment in Merkely
       env:
-        MERKELY_DOCKER_IMAGE: merkely/change:sha-${SHA7}
+        TAGGED_IMAGE: ${{ steps.tagged_image.outputs.value }}
+        MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
-        MERKELY_IS_COMPLIANT: 'TRUE'
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
-        MERKELY_DESCRIPTION: "Deployment of ${MERKELY_DOCKER_IMAGE} to docker hub"
+        MERKELY_DESCRIPTION: "Deployment of ${TAGGED_IMAGE} to docker hub"
         MERKELY_ENVIRONMENT: 'docker_hub'
       run: |
-        export SHA7=$(git log -1 --pretty=%h)
-        #export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
-        #export CDB_DESCRIPTION="Deployment of ${CDB_ARTIFACT_DOCKER_IMAGE} to docker hub"
         make merkely_log_deployment
 
     - name: Run unit tests
@@ -123,11 +118,12 @@ jobs:
         CDB_BUILD_NUMBER: ${GITHUB_RUN_ID}
         CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
 
-        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
+        TAGGED_IMAGE: ${{ steps.tagged_image.outputs.value }}
+        MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
         MERKELY_IS_COMPLIANT: 'TRUE'
         MERKELY_EVIDENCE_TYPE: "coverage"
-        MERKELY_DOCKER_IMAGE: merkely/change:sha-${SHA7}
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
+        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
 
       run: |
         export SHA7=$(git log -1 --pretty=%h)
