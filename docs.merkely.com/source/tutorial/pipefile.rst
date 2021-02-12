@@ -3,21 +3,10 @@ Defining Your Pipeline
 
 Merkely uses a declarative Pipefile to define the DevOps Change Management needs of a pipeline.  It is a JSON file, typically stored in your source code repository that tells Merkely about your software delivery process and what process and control evidence to expect.
 
-.. code-block:: json
-    :linenos:
 
-    {
-        "name": "hadroncollider-simulator",
-        "description": "Accelerating particles then smashing them together",
-        "owner": "acme-cern",
-        "visibility": "public",
-        "template": [
-             "artifact",
-             "code_review",
-             "unit_test",
-             "my_custom_control"
-        ]
-    }
+.. literalinclude:: ../app/tests/unit/test-pipefile.json
+    :language: JSON
+    :linenos:
 
 
 To make integration with Merkely easy to implement in devops pipelines we provide a docker image [LINK TO GITHUB REPO] merkely/change.  Using commands in this image you can define, log and control different aspects of your software delivery process automatically.

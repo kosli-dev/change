@@ -164,6 +164,7 @@ build_docs:
 		--rm \
 		-v ${PWD}/docs.merkely.com:/docs \
 		-v ${PWD}:/app \
+		-v ${PWD}:/docs/source/app \
 		${DOCS_IMAGE} make clean html
 	@cp -RP docs.merkely.com/build/html/. docs/.
 

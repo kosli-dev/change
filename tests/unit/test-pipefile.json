@@ -1,11 +1,11 @@
 {
-    "name": "cdb-controls-test-pipeline",
-    "description": "Test Pipeline Controls for ComplianceDB",
-    "owner": "compliancedb",
-    "visibility": "public",
+    "name": "hadroncollider-game",
+    "description": "Accelerating particles then smashing them together",
+    "owner": "acme-cern",
+    "visibility": "private",
     "template": [
-        "artifact",
-        "unit_test",
-        "coverage"
+         "artifact",
+         "unit_test",
+         "coverage"
     ]
 }

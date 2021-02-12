@@ -38,7 +38,7 @@ html_show_sphinx = False
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['app']
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -46,7 +46,7 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+# html_theme = 'alabaster'
 # html_theme = "furo"
 html_theme = 'bootstrap'
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
@@ -68,6 +68,7 @@ html_css_files = [
     "merkely-custom.css",
 ]
 
+html_extra_path = ['CNAME', '.nojekyll']
 
 # This is a hack to get around a sphinx bug that does not
 # copy static files correctly on change

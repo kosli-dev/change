@@ -3,4 +3,6 @@
 
 	log_evidence
 	log_approval
+	log_artifact
+	log_deployment
 	control_deployment
