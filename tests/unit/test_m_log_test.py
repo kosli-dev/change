@@ -9,17 +9,18 @@ APPROVAL_FILE = "test_m_log_test"
 
 
 def test_docker_image(capsys, mocker):
+    image_name = "acme/widget:3.4"
+    sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
     env = {
         "CDB_API_TOKEN": "7199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "CDB_ARTIFACT_DOCKER_IMAGE": "acme/widget:3.4",
+        "CDB_ARTIFACT_DOCKER_IMAGE": image_name,
         "CDB_EVIDENCE_TYPE": evidence_type,
         "CDB_CI_BUILD_URL": build_url
     }
     set_env_vars = {}
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
-        sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
+    with dry_run(env, set_env_vars):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         control_junit("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
