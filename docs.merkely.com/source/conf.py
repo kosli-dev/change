@@ -15,7 +15,7 @@ import sys
 
 sys.path.append(os.path.abspath("./_ext"))
 sys.path.append(os.path.abspath("/app"))
-extensions = ['describe_command']
+extensions = ['describe_command', 'sphinx_copybutton']
 
 import sphinx_bootstrap_theme
 
