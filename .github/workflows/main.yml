@@ -116,10 +116,18 @@ jobs:
         CDB_EVIDENCE_TYPE: "coverage"
         CDB_BUILD_NUMBER: ${GITHUB_RUN_ID}
         CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
+
+        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
+        MERKELY_IS_COMPLIANT: 'TRUE'
+        MERKELY_EVIDENCE_TYPE: "coverage"
+        MERKELY_DOCKER_IMAGE: merkely/change:sha-${SHA7}
+        MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
+
       run: |
         export SHA7=$(git log -1 --pretty=%h)
         export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
         source tmp/coverage/unit/htmlcov/test_coverage.txt
         source tmp/coverage/unit/htmlcov/test_cases.txt
         export CDB_DESCRIPTION="$TEST_CASES tests passed with $COVERAGE coverage"
+        export MERKELY_DESCRIPTION="${TEST_CASES} tests passed with ${COVERAGE} coverage"
         make publish_test_results
