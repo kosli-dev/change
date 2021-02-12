@@ -6,15 +6,15 @@ class FileFingerprintEnvVar:
         self._artifact_name = artifact_name
 
     @property
-    def description(self):
+    def notes(self):
         return "\n".join([
-            '2. If prefixed by file:// the full path of the file to fingerprint.',
-            '   The full path must be volume-mounted.',
-            '   Example:',
-            '   docker run ... \\',
-            '     --env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH} \\',
-            '     --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \\',
-            '     ...',
+            'The string `file://` followed by the full path of the file to fingerprint.',
+            'The full path must be volume-mounted.',
+            'Example:',
+            'docker run ... \\',
+            '    --env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH} \\',
+            '    --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \\',
+            '    ...',
         ])
 
     @property

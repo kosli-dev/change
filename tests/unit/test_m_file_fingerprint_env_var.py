@@ -31,9 +31,9 @@ def test_file_protocol__empty_filename_raises():
     assert_raises('sha')
 
 
-def test_description_is_not_empty():
+def test_notes_is_not_empty():
     ev = FileFingerprintEnvVar(None, None, None)
-    assert len(ev.description) > 0
+    assert len(ev.notes) > 0
 
 
 def make_fingerprint_env_var(filename):

@@ -6,15 +6,15 @@ class DockerFingerprintEnvVar:
         self._artifact_name = artifact_name
 
     @property
-    def description(self):
+    def notes(self):
         return "\n".join([
-            '1. If prefixed by docker:// the name+tag of the docker image to fingerprint.',
-            '   The docker socket must be volume-mounted.',
-            '   Example:',
-            '   docker run ... \\',
-            '     --env MERKELY_FINGERPRINT=”docker://${YOUR_DOCKER_IMAGE_AND_TAG}" \\',
-            '     --volume /var/run/docker.sock:/var/run/docker.sock \\',
-            '     ...',
+            'The string `docker://` followed by the name+tag of the docker image to fingerprint.',
+            'The docker socket must be volume-mounted.',
+            'Example:',
+            'docker run ... \\',
+            '    --env MERKELY_FINGERPRINT=”docker://${YOUR_DOCKER_IMAGE_AND_TAG}" \\',
+            '    --volume /var/run/docker.sock:/var/run/docker.sock \\',
+            '    ...',
         ])
 
     @property
