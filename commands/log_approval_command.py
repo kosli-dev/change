@@ -9,7 +9,7 @@ class LogApprovalCommand(Command):
 
     @property
     def summary(self):
-        return "TODO"
+        return ""
 
     def invocation(self, type):
         def env(var):
@@ -30,6 +30,7 @@ class LogApprovalCommand(Command):
                 invocation_string += env(var)
 
         invocation_string += "    --rm \\\n"
+        invocation_string += "    --volume ${PWD}:/src \\\n"
         invocation_string += "    --volume /var/run/docker.sock:/var/run/docker.sock \\\n"
         invocation_string += "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\\n"
         invocation_string += "    merkely/change"
