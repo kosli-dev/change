@@ -40,6 +40,10 @@ class FingerprintEnvVar(RequiredEnvVar):
         return self._fingerprint.artifact_name
 
     @property
+    def artifact_basename(self):
+        return self._fingerprint.artifact_basename
+
+    @property
     def sha(self):
         return self._fingerprint.sha
 

@@ -8,11 +8,13 @@ SHA256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
 
 
 def test_file_protocol__non_empty_filename_properties():
-    filename = "/user/artifact/jam.jar"
-    ev, fingerprint = make_fingerprint_env_var(filename)
+    directory = "/user/artifact"
+    filename = "jam.jar"
+    ev, fingerprint = make_fingerprint_env_var(f"{directory}/{filename}")
     assert ev.protocol == FILE_PROTOCOL
     assert ev.value == fingerprint
-    assert ev.artifact_name == filename
+    assert ev.artifact_name == f"{directory}/{filename}"
+    assert ev.artifact_basename == filename
     assert ev.sha == SHA256
 
 

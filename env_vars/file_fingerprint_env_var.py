@@ -1,3 +1,6 @@
+import os
+
+
 class FileFingerprintEnvVar:
 
     def __init__(self, command, protocol, artifact_name):
@@ -20,6 +23,10 @@ class FileFingerprintEnvVar:
     @property
     def artifact_name(self):
         return self._artifact_name
+
+    @property
+    def artifact_basename(self):
+        return os.path.basename(self.artifact_name)
 
     @property
     def sha(self):

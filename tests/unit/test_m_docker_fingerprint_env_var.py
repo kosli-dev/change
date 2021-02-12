@@ -13,6 +13,7 @@ def test_docker_protocol__non_empty_image_name_properties():
     assert ev.protocol == DOCKER_PROTOCOL
     assert ev.value == fingerprint
     assert ev.artifact_name == image_name
+    assert ev.artifact_basename == image_name
     assert ev.sha == SHA256
 
 

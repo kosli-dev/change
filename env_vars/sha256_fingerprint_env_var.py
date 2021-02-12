@@ -24,6 +24,10 @@ class Sha256FingerprintEnvVar:
         return self._validated.artifact_name
 
     @property
+    def artifact_basename(self):
+        return self.artifact_name
+
+    @property
     def sha(self):
         return self._validated.sha
 
