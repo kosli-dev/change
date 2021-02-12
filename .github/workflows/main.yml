@@ -46,7 +46,7 @@ jobs:
 
     - name: Declare the pipeline and log docker-image artifact information to Merkely
       env:
-        SHA7=${{ steps.shortsha.outputs.value }}
+        export SHA7="${{ steps.shortsha.outputs.value }}"
         MERKELY_FINGERPRINT: docker://merkely/change:sha-${SHA7}
         MERKELY_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
         MERKELY_ARTIFACT_GIT_COMMIT: ${GITHUB_SHA}
