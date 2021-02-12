@@ -13,16 +13,6 @@ To make integration with Merkely easy to implement in devops pipelines we provid
 
 For example, to declare the pipeline definition in Merkely we can use the command declare_pipeline [LINK TO COMMAND DOCUMENTATION] like so:
 
-.. code-block:: bash
-    :linenos:
-
-    docker run \
-      --env MERKELY_COMMAND=declare_pipeline \
-      \
-      --env MERKELY_API_TOKEN=${YOUR_API_TOKEN} \
-      --rm \
-      --volume ${PWD}/${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
-      merkely/change
-
+.. describe_command:: declare_pipeline invocation_minimum
 
 You send this Pipefile at the start of every CI run.  This allows changes made in the pipefile to automatically propagate to Merkely; with the added benefit that these changes can go through your standard peer review process.

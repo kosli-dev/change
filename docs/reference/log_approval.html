@@ -118,7 +118,7 @@
     --env MERKELY_FINGERPRINT=&quot;docker://${YOUR_IMAGE_AND_TAG}&quot; \
     --env MERKELY_TARGET_SRC_COMMITISH=&quot;${...}&quot; \
     --env MERKELY_BASE_SRC_COMMITISH=&quot;${...}&quot; \
-    --env MERKELY_RELEASE_DESCRIPTION=&quot;${...}&quot; \
+    --env MERKELY_DESCRIPTION=&quot;${...}&quot; \
     --env MERKELY_SRC_REPO_ROOT=&quot;${...}&quot; \
     --env MERKELY_API_TOKEN=&quot;${...}&quot; \
     --env MERKELY_HOST=&quot;${...}&quot; \
@@ -156,9 +156,9 @@
 <td><p>yes</p></td>
 <td><p>The source commit-ish for the oldest change in the approval.</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_RELEASE_DESCRIPTION</p></td>
-<td><p>no</p></td>
-<td><p>A description for the approval. Defaults to `No description provided`</p></td>
+<tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
+<td><p>yes</p></td>
+<td><p>A description for the approval.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>

@@ -91,3 +91,4 @@ class Command(ABC):
     def _print_compliance(self):
         env_var = self.is_compliant
         print(f"{env_var.name}: {env_var.value == 'TRUE'}")
+

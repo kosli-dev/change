@@ -136,21 +136,14 @@
 </td></tr></table></div>
 <p>To make integration with Merkely easy to implement in devops pipelines we provide a docker image [LINK TO GITHUB REPO] merkely/change.  Using commands in this image you can define, log and control different aspects of your software delivery process automatically.</p>
 <p>For example, to declare the pipeline definition in Merkely we can use the command declare_pipeline [LINK TO COMMAND DOCUMENTATION] like so:</p>
-<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
-  --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>declare_pipeline <span class="se">\</span>
-  <span class="se">\</span>
-  --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_API_TOKEN</span><span class="si">}</span> <span class="se">\</span>
-  --rm <span class="se">\</span>
-  --volume <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/<span class="si">${</span><span class="nv">YOUR_MERKELY_PIPE</span><span class="si">}</span>:/data/Merkelypipe.json <span class="se">\</span>
-  merkely/change
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
+    --env MERKELY_API_TOKEN=&quot;${...}&quot; \
+    --env MERKELY_COMMAND=&quot;declare_pipeline&quot; \
+    --rm \
+    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
+    merkely/change
 </pre></div>
-</td></tr></table></div>
+</div>
 <p>You send this Pipefile at the start of every CI run.  This allows changes made in the pipefile to automatically propagate to Merkely; with the added benefit that these changes can go through your standard peer review process.</p>
 </div>
 

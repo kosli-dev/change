@@ -4,17 +4,32 @@ from cdb.http import http_put_payload
 
 
 class DeclarePipelineCommand(Command):
-    """
-    Declares a pipeline in Merkely.
-    Invoked like this:
+    @property
+    def summary(self):
+        return "Declares a pipeline in Merkely"
 
-    docker run \
-        --env MERKELY_COMMAND=declare_pipeline \
-        --rm \
-        --env MERKELY_API_TOKEN=${YOUR_API_TOKEN} \
-        --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
-        merkely/change
-    """
+    def invocation(self, type):
+        def env(var):
+            if var.name == "MERKELY_COMMAND":
+                value = var.value
+            elif var.name == "MERKELY_FINGERPRINT":
+                value = var.example
+            else:
+                value = "${...}"
+            return f'    --env {var.name}="{value}" \\\n'
+
+        invocation_string = "docker run \\\n"
+        for name in self._env_var_names:
+            var = getattr(self, name)
+            if type == 'full':
+                invocation_string += env(var)
+            if type == 'minimum' and var.is_required:
+                invocation_string += env(var)
+
+        invocation_string += "    --rm \\\n"
+        invocation_string += "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\\n"
+        invocation_string += "    merkely/change"
+        return invocation_string
 
     def __call__(self):
         url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
