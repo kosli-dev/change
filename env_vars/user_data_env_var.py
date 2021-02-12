@@ -13,7 +13,7 @@ NOTES = "\n".join([
 class UserDataEnvVar(DefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_USER_DATA", NOTES)
+        super().__init__(env, "USER_DATA", NOTES)
 
     @property
     def value(self):

@@ -10,4 +10,4 @@ NOTES = "\n".join([
 class DescriptionEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_DESCRIPTION", DEFAULT, NOTES)
+        super().__init__(env, "DESCRIPTION", DEFAULT, NOTES)

@@ -29,7 +29,7 @@ class EnvVar:
         Used in living documentation.
         Never raises.
         """
-        return self._name
+        return f"MERKELY_{self._name}"
 
     @property
     def notes(self):

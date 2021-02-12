@@ -2,13 +2,13 @@ from commands import CommandError
 from env_vars import EnvVar
 from pytest import raises
 
-NAME = "MERKELY_LEWIS"
+NAME = "LEWIS"
 NOTES = "A favourite Author"
 OS_ENV = {}
 
 def test_name_as_set_in_ctor():
     ev = EnvVar(OS_ENV, NAME, NOTES)
-    assert ev.name == NAME
+    assert ev.name == 'MERKELY_'+NAME
 
 
 def test_notes_as_set_in_ctor():

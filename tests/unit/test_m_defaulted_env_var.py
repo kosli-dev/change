@@ -1,7 +1,7 @@
 from commands import CommandError # avoid cyclic dependency
 from env_vars import DefaultedEnvVar
 
-NAME = "MERKELY_HOST"
+NAME = "HOST"
 NOTES = "The hostname of Merkely"
 
 
@@ -18,7 +18,7 @@ def test_value_is_None_when_not_set_in_os():
 def test_value_when_set_in_os():
     os_env, ev = make_test_variables()
     not_defaulted = "https://test.merkely.com"
-    os_env[NAME] = not_defaulted
+    os_env['MERKELY_'+NAME] = not_defaulted
     assert ev.value == not_defaulted
 
 
