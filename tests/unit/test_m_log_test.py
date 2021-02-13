@@ -64,8 +64,6 @@ def test_docker_image(capsys, mocker):
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_test',
         'MERKELY_IS_COMPLIANT: True',
-        f'Calculating fingerprint for {protocol}{image_name}',
-        f"Calculated fingerprint: {sha256}",
     ]
     """
 

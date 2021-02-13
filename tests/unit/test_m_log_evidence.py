@@ -15,15 +15,6 @@ APPROVAL_FILE = "test_m_log_evidence"
 
 
 def test_docker_protocol(capsys, mocker):
-    # This test passes when run individually
-    # but fails when run with all other unit tests.
-    # The output indicates that one of the other tests is
-    # setting the CDB_USER_DATA env-var to "/some/random/file.json"
-    # The seed for this was --random-order-seed=998046
-
-    # FROM integration/test_put_evidence.py
-    # FROM def test_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE
-
     # input data
     build_url = "https://gitlab/build/1956"
     sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
@@ -89,8 +80,6 @@ def test_docker_protocol(capsys, mocker):
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_evidence',
         'MERKELY_IS_COMPLIANT: True',
-        #f'Calculating fingerprint for {protocol}{image_name}',
-        #f"Calculated fingerprint: {sha256}",
     ]
 
 
