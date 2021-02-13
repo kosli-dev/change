@@ -11,9 +11,9 @@ EXAMPLE = "docker://${YOUR_IMAGE_AND_TAG}"
 
 class FingerprintEnvVar(RequiredEnvVar):
 
-    def __init__(self, command):
-        super().__init__(command.env, "FINGERPRINT", NOTES, EXAMPLE)
-        self.__command = command
+    def __init__(self, context):
+        super().__init__(context.env, "FINGERPRINT", NOTES, EXAMPLE)
+        self.__context = context
 
     @property
     def value(self):
@@ -40,4 +40,4 @@ class FingerprintEnvVar(RequiredEnvVar):
 
     @property
     def __fingerprinter(self):
-        return self.__command.fingerprinter_for(self.string)
+        return self.__context.fingerprinter_for(self.string)

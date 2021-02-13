@@ -1,4 +1,4 @@
-from commands import Command, CommandError, Context
+from commands import CommandError, Context
 from env_vars import FingerprintEnvVar
 from tests.utils import *
 from pytest import raises
@@ -55,5 +55,4 @@ def test_unknown_protocol__all_properties_raise():
 def make_fingerprint_env_var(fingerprint):
     env = {"MERKELY_FINGERPRINT": fingerprint}
     context = Context(env, None, None)
-    command = Command(context)
-    return FingerprintEnvVar(command)
+    return FingerprintEnvVar(context)

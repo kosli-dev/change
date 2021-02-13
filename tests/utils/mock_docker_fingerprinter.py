@@ -3,8 +3,8 @@ from fingerprinters import DockerFingerprinter
 
 class MockDockerFingerprinter(DockerFingerprinter):
 
-    def __init__(self, image_name, digest):
-        self.__expected = image_name
+    def __init__(self, string, digest):
+        self.__expected = string
         self.__digest = digest
         self.__called = False
 

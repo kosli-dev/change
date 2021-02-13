@@ -43,11 +43,11 @@ class Command(ABC):
 
     @property
     def fingerprint(self):
-        return FingerprintEnvVar(self)
+        return FingerprintEnvVar(self.__context)
 
     @property
     def host(self):
-        return HostEnvVar(self.env)
+        return HostEnvVar(self._env)
 
     @property
     def is_compliant(self):
@@ -61,25 +61,15 @@ class Command(ABC):
         return load_json("/Merkelypipe.json")
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # context objects
-
-    def fingerprinter_for(self, string):
-        return self.__context.fingerprinter_for(string)
-
-    @property
-    def env(self):
-        return self.__context.env
-
-    # - - - - - - - - - - - - - - - - - - - - -
 
     def _required_env_var(self, name, notes):
-        return RequiredEnvVar(self.env, name, notes)
+        return RequiredEnvVar(self._env, name, notes)
 
     def _static_defaulted_env_var(self, name, default, notes):
-        return StaticDefaultedEnvVar(self.env, name, default, notes)
+        return StaticDefaultedEnvVar(self._env, name, default, notes)
 
     def _defaulted_env_var(self, name, notes):
-        return DefaultedEnvVar(self.env, name, notes)
+        return DefaultedEnvVar(self._env, name, notes)
 
     # - - - - - - - - - - - - - - - - - - - - -
 
@@ -87,3 +77,6 @@ class Command(ABC):
         env_var = self.is_compliant
         print(f"{env_var.name}: {env_var.value == 'TRUE'}")
 
+    @property
+    def _env(self):
+        return self.__context.env
