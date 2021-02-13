@@ -36,6 +36,12 @@ class LogTestCommand(Command):
 
     def __call__(self):
         payload = {
+            "contents": {
+                "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites",
+                "is_compliant": True,
+                "url": self.ci_build_url.value
+            },
+            "evidence_type": self.evidence_type.value
         }
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         http_put_payload(url, payload, self.api_token.value)

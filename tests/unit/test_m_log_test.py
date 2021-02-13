@@ -58,7 +58,7 @@ def test_docker_image(capsys, mocker):
     # verify matching data
     assert method == expected_method
     assert url == expected_url
-    #assert payload == expected_payload
+    assert payload == expected_payload
 
     """
     assert extract_blurb(capsys_read(capsys)) == [
