@@ -47,13 +47,18 @@ class LogTestCommand(Command):
         is_compliant, message = is_compliant_tests_directory(junit_results_dir)
         description = "JUnit results xml verified by compliancedb/cdb_controls: " + message
         user_data = None  # cbd.cbd_utils.load_user_data()
-        payload = build_payload(
-            is_compliant,
-            self.evidence_type.value,
-            description,
-            self.ci_build_url.value,
-            user_data
-        )
+
+        payload = {
+            "evidence_type": self.evidence_type.value,
+            "contents": {
+                "is_compliant": is_compliant,
+                "url": self.ci_build_url.value,
+                "description": description
+            }
+        }
+        if user_data is not None:
+            payload["user_data"]: user_data
+
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         http_put_payload(url, payload, self.api_token.value)
         return 'Putting', url, payload
@@ -79,20 +84,6 @@ class LogTestCommand(Command):
             'api_token',
             'host',
         ]
-
-
-def build_payload(is_compliant, evidence_type, description, build_url, user_data=None):
-    evidence = {
-        "evidence_type": evidence_type,
-        "contents": {
-            "is_compliant": is_compliant,
-            "url": build_url,
-            "description": description
-        }
-    }
-    if user_data is not None:
-        evidence["user_data"]: user_data
-    return evidence
 
 
 def is_compliant_tests_directory(test_results_directory):
