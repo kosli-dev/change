@@ -25,29 +25,19 @@ class FingerprintEnvVar(RequiredEnvVar):
 
     @property
     def protocol(self):
-        f = self.__fingerprinter
-        return f.protocol
+        return self.__fingerprinter.protocol
 
     @property
     def artifact_name(self):
-        f = self.__fingerprinter
-        p = f.protocol
-        after = self.string[len(p):]
-        return f.artifact_name(after)
+        return self.__fingerprinter.artifact_name(self.after_protocol)
 
     @property
     def artifact_basename(self):
-        f = self.__fingerprinter
-        p = f.protocol
-        after = self.string[len(p):]
-        return f.artifact_basename(after)
+        return self.__fingerprinter.artifact_basename(self.after_protocol)
 
     @property
     def sha(self):
-        f = self.__fingerprinter
-        p = f.protocol
-        after = self.string[len(p):]
-        return f.sha(p, after)
+        return self.__fingerprinter.sha(self.protocol, self.after_protocol)
 
     @property
     def __fingerprinter(self):
@@ -62,3 +52,7 @@ class FingerprintEnvVar(RequiredEnvVar):
             return s
         else:
             raise CommandError(f"Unknown protocol: {self.string}")
+
+    @property
+    def after_protocol(self):
+        return self.string[len(self.__fingerprinter.protocol):]
