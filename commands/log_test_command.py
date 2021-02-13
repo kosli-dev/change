@@ -34,7 +34,6 @@ class LogTestCommand(Command):
         invocation_string += "    merkely/change"
         return invocation_string
 
-    """
     def __call__(self):
         payload = {
         }
@@ -48,11 +47,6 @@ class LogTestCommand(Command):
         return self._required_env_var('CI_BUILD_URL', notes)
 
     @property
-    def description(self):
-        notes = "..."
-        return self._required_env_var("DESCRIPTION", notes)
-
-    @property
     def evidence_type(self):
         notes = "The evidence type."
         return self._required_env_var("EVIDENCE_TYPE", notes)
@@ -64,11 +58,8 @@ class LogTestCommand(Command):
             'name',
             'fingerprint',
             'evidence_type',
-            'is_compliant',
-            'description',
             'ci_build_url',
             'api_token',
             'host',
         ]
-    """
 

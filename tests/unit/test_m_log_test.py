@@ -1,5 +1,5 @@
 from cdb.control_junit import control_junit
-import docker
+from commands import run
 
 from pytest import raises
 from tests.utils import *
@@ -11,6 +11,7 @@ CDB_DOMAIN = "app.compliancedb.com"
 
 
 def test_docker_image(capsys, mocker):
+    image_name = "acme/widget:4.67"
     sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
@@ -48,7 +49,25 @@ def test_docker_image(capsys, mocker):
     assert old_url == expected_url
     assert old_payload == expected_payload
 
-    env = new_log_test_env()
+    ev = new_log_test_env()
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+            method, url, payload = run(env, fingerprinter, None)
+
+    # verify matching data
+    assert method == expected_method
+    assert url == expected_url
+    #assert payload == expected_payload
+
+    """
+    assert extract_blurb(capsys_read(capsys)) == [
+        'MERKELY_COMMAND=log_test',
+        'MERKELY_IS_COMPLIANT: True',
+        f'Calculating fingerprint for {protocol}{image_name}',
+        f"Calculated fingerprint: {sha256}",
+    ]
+    """
 
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
@@ -59,25 +78,22 @@ def old_control_junit_env():
     image_name = "acme/widget:4.67"
     evidence_type = "coverage"
     return {
-        "CDB_API_TOKEN": "7199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_DOCKER_IMAGE": image_name,
         "CDB_EVIDENCE_TYPE": evidence_type,
-        "CDB_CI_BUILD_URL": BUILD_URL
+        "CDB_CI_BUILD_URL": BUILD_URL,
+        "CDB_API_TOKEN": API_TOKEN,
     }
 
 
 def new_log_test_env():
-    domain = CDB_DOMAIN
-    build_url = "https://gitlab/build/1457"
     protocol = "docker://"
     image_name = "acme/widget:4.67"
     evidence_type = "coverage"
     return {
         "MERKELY_COMMAND": "log_test",
-        "MERKELY_FINGERPRINT": f"{protocol}/{image_name}",
-        "MERKELY_API_TOKEN": API_TOKEN,
-        "MERKELY_HOST": f"https://{domain}",
-        "MERKELY_CI_BUILD_URL": BUILD_URL,
+        "MERKELY_FINGERPRINT": f"{protocol}{image_name}",
         "MERKELY_EVIDENCE_TYPE": evidence_type,
+        "MERKELY_CI_BUILD_URL": BUILD_URL,
+        "MERKELY_API_TOKEN": API_TOKEN,
     }
 

@@ -12,6 +12,7 @@ from .log_deployment_command import LogDeploymentCommand
 from .log_evidence_command import LogEvidenceCommand
 from .log_approval_command import LogApprovalCommand
 from .control_deployment_command import ControlDeploymentCommand
+from .log_test_command import LogTestCommand
 
 from .command_builder import build_command, COMMANDS
 from .runner import run, main

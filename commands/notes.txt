@@ -21,6 +21,9 @@ control_bitbucket_pr    log_bitbucket_pr   no        no     no        no        
 create_release          request_approval   no        no     no        no             no
 
 
+control_junit
+Makefile target=control_and_publish_junit_results
+cdb.control_junit
 
 Parked...
 
