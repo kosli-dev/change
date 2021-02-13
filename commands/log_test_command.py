@@ -1,4 +1,4 @@
-from commands import Command
+from commands import Command, CommandError
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 from cdb.control_junit import is_compliant_test_results
@@ -87,8 +87,6 @@ class LogTestCommand(Command):
 
 
 def is_compliant_tests_directory(test_results_directory):
-    #import pdb
-    #pdb.set_trace()
     results_files = ls_test_results(test_results_directory)
     for test_xml in results_files:
         is_compliant, message = is_compliant_test_results(test_xml)
@@ -98,6 +96,9 @@ def is_compliant_tests_directory(test_results_directory):
 
 
 def ls_test_results(root_directory):
+    import os
+    if not os.path.isdir(root_directory):
+        raise CommandError(f"no directory {root_directory}")
     import glob
     files = sorted(glob.glob(root_directory + "/*.xml"))
     excluded_files = ["failsafe-summary.xml"]

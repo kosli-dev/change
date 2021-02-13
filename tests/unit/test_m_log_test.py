@@ -1,5 +1,5 @@
 from cdb.control_junit import control_junit
-from commands import run
+from commands import main, run
 
 from pytest import raises
 from tests.utils import *
@@ -10,8 +10,8 @@ APPROVAL_FILE = "test_m_log_test"
 CDB_DOMAIN = "app.compliancedb.com"
 
 
-def test_docker_image(capsys, mocker):
-    image_name = "acme/widget:4.67"
+def test_non_zero_status_when_no_data_directory(capsys, mocker):
+    _image_name = "acme/widget:4.67"
     sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
@@ -23,7 +23,8 @@ def test_docker_image(capsys, mocker):
     verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
-    this_test = "test_docker_image"
+    import inspect
+    this_test = inspect.stack()[0].function
     approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
     with open(approved) as file:
         old_approval = file.read()
@@ -49,18 +50,58 @@ def test_docker_image(capsys, mocker):
     assert old_url == expected_url
     assert old_payload == expected_payload
 
+    # new behaviour is to fail with non-zero exit status
     ev = new_log_test_env()
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
-        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-            method, url, payload = run(env, fingerprinter, None)
+        status = main(env, None, None)
 
-    # verify matching data
+    assert status != 0
+    output = capsys_read(capsys)
+    lines = list(output.split("\n"))
+    assert lines == [
+        'MERKELY_COMMAND=log_test',
+        "Error: no directory /data/junit/",
+        ''
+    ]
+
+
+def test_zero_exit_status_when_there_is_a_data_directory(capsys):
+    image_name = "acme/widget:4.67"
+    sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
+    build_url = "https://gitlab/build/1457"
+    evidence_type = "coverage"
+
+    domain = "app.compliancedb.com"
+    owner = "compliancedb"
+    name = "cdb-controls-test-pipeline"
+
+    expected_method = "Putting"
+    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/{sha256}"
+    expected_payload = {
+        "contents": {
+            "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites",
+            "is_compliant": True,
+            "url": build_url
+        },
+        "evidence_type": evidence_type
+    }
+
+    ev = new_log_test_env()
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+        with ScopedDirCopier('/app/tests/data/control_junit/xml-with-passed-results', '/data/junit'):
+            with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+                status = main(env, fingerprinter, None)
+
+    assert status == 0
+    output = capsys_read(capsys)
+    blurb, method, payload, url = extract_blurb_method_payload_url(output)
+
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
-
-    assert extract_blurb(capsys_read(capsys)) == [
+    assert blurb == [
         'MERKELY_COMMAND=log_test',
     ]
 
