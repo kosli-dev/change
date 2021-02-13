@@ -1,7 +1,7 @@
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
-from cdb.control_junit import ls_test_results, is_compliant_test_results
+from cdb.control_junit import is_compliant_test_results
 
 
 class LogTestCommand(Command):
@@ -95,3 +95,12 @@ def is_compliant_tests_directory(test_results_directory):
         if not is_compliant:
             return is_compliant, message
     return True, f"All tests passed in {len(results_files)} test suites"
+
+
+def ls_test_results(root_directory):
+    import glob
+    files = sorted(glob.glob(root_directory + "/*.xml"))
+    excluded_files = ["failsafe-summary.xml"]
+    for exclude in excluded_files:
+        test_files = [file for file in files if not file.endswith(exclude)]
+    return test_files
