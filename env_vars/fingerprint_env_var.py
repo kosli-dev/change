@@ -29,11 +29,11 @@ class FingerprintEnvVar(RequiredEnvVar):
 
     @property
     def artifact_name(self):
-        return self.__fingerprinter.artifact_name(self.after_protocol)
+        return self.__fingerprinter.artifact_name(self.string)
 
     @property
     def artifact_basename(self):
-        return self.__fingerprinter.artifact_basename(self.after_protocol)
+        return self.__fingerprinter.artifact_basename(self.string)
 
     @property
     def sha(self):

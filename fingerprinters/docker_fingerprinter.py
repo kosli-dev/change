@@ -18,18 +18,19 @@ class DockerFingerprinter(Fingerprinter):
             '    ...',
         ])
 
-    def handles_protocol(self, s):
-        return s.startswith(PROTOCOL)
-
     @property
     def protocol(self):
         return PROTOCOL
 
-    def artifact_name(self, s):
-        return s
+    def handles_protocol(self, string):
+        return string.startswith(PROTOCOL)
 
-    def artifact_basename(self, s):
-        return s
+    def artifact_basename(self, string):
+        return self.artifact_name(string)
+
+    def artifact_name(self, string):
+        assert self.handles_protocol(string)
+        return string[len(PROTOCOL):]
 
     def sha(self, image_name):
         # Mocked in /tests/unit/utils/mock_docker_fingerprinter.py

@@ -24,11 +24,13 @@ class Sha256Fingerprinter(Fingerprinter):
     def handles_protocol(self, s):
         return s.startswith(PROTOCOL)
 
-    def artifact_name(self, sha_and_artifact_name):
-        return self.__validated(sha_and_artifact_name).artifact_name
+    def artifact_basename(self, string):
+        return self.artifact_name(string)
 
-    def artifact_basename(self, sha_and_artifact_name):
-        return self.artifact_name(sha_and_artifact_name)
+    def artifact_name(self, string):
+        assert self.handles_protocol(string)
+        sha_and_artifact_name = string[len(PROTOCOL):]
+        return self.__validated(sha_and_artifact_name).artifact_name
 
     def sha(self, sha_and_artifact_name):
         return self.__validated(sha_and_artifact_name).sha

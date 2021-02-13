@@ -19,18 +19,19 @@ class FileFingerprinter(Fingerprinter):
             '    ...',
         ])
 
-    def handles_protocol(self, s):
-        return s.startswith(PROTOCOL)
+    def handles_protocol(self, string):
+        return string.startswith(PROTOCOL)
 
     @property
     def protocol(self):
         return PROTOCOL
 
-    def artifact_name(self, s):
-        return s
+    def artifact_basename(self, string):
+        return os.path.basename(self.artifact_name(string))
 
-    def artifact_basename(self, s):
-        return os.path.basename(s)
+    def artifact_name(self, string):
+        assert self.handles_protocol(string)
+        return string[len(PROTOCOL):]
 
     def sha(self, pathed_filename):
         # Mocked in /tests/unit/utils/mock_file_fingerprinter.py
