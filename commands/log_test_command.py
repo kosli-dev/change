@@ -36,6 +36,11 @@ class LogTestCommand(Command):
         return invocation_string
 
     def __call__(self):
+        # Notes
+        # 1) junit_results_dir was read from ev CDB_TEST_RESULTS_DIR
+        #       with '/data/junit/' as a default
+        # 2) user_data was read from ev CDB_USER_DATA
+        #       as json with None as default
         junit_results_dir = '/data/junit/'
         is_compliant, message = is_compliant_tests_directory(junit_results_dir)
         description = "JUnit results xml verified by compliancedb/cdb_controls: " + message
@@ -47,7 +52,6 @@ class LogTestCommand(Command):
             self.ci_build_url.value,
             user_data
         )
-
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         http_put_payload(url, payload, self.api_token.value)
         return 'Putting', url, payload
