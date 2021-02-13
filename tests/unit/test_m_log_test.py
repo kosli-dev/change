@@ -60,12 +60,9 @@ def test_docker_image(capsys, mocker):
     assert url == expected_url
     assert payload == expected_payload
 
-    """
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_test',
-        'MERKELY_IS_COMPLIANT: True',
     ]
-    """
 
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"

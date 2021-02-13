@@ -1,7 +1,8 @@
 from commands import Command
-from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
+from cdb.control_junit import is_compliant_tests_directory
+from cdb.cdb_utils import build_evidence_dict
 
 
 class LogTestCommand(Command):
@@ -35,14 +36,18 @@ class LogTestCommand(Command):
         return invocation_string
 
     def __call__(self):
-        payload = {
-            "contents": {
-                "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites",
-                "is_compliant": True,
-                "url": self.ci_build_url.value
-            },
-            "evidence_type": self.evidence_type.value
-        }
+        junit_results_dir = '/data/junit/'
+        is_compliant, message = is_compliant_tests_directory(junit_results_dir)
+        description = "JUnit results xml verified by compliancedb/cdb_controls: " + message
+        user_data = None  # cbd.cbd_utils.load_user_data()
+        payload = build_evidence_dict(
+            is_compliant,
+            self.evidence_type.value,
+            description,
+            self.ci_build_url.value,
+            user_data
+        )
+
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         http_put_payload(url, payload, self.api_token.value)
         return 'Putting', url, payload
