@@ -1,8 +1,7 @@
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
-from cdb.control_junit import is_compliant_tests_directory
-from cdb.cdb_utils import build_evidence_dict
+from cdb.control_junit import ls_test_results, is_compliant_test_results
 
 
 class LogTestCommand(Command):
@@ -48,7 +47,7 @@ class LogTestCommand(Command):
         is_compliant, message = is_compliant_tests_directory(junit_results_dir)
         description = "JUnit results xml verified by compliancedb/cdb_controls: " + message
         user_data = None  # cbd.cbd_utils.load_user_data()
-        payload = build_evidence_dict(
+        payload = build_payload(
             is_compliant,
             self.evidence_type.value,
             description,
@@ -81,3 +80,27 @@ class LogTestCommand(Command):
             'host',
         ]
 
+
+def build_payload(is_compliant, evidence_type, description, build_url, user_data=None):
+    evidence = {
+        "evidence_type": evidence_type,
+        "contents": {
+            "is_compliant": is_compliant,
+            "url": build_url,
+            "description": description
+        }
+    }
+    if user_data is not None:
+        evidence["user_data"]: user_data
+    return evidence
+
+
+def is_compliant_tests_directory(test_results_directory):
+    #import pdb
+    #pdb.set_trace()
+    results_files = ls_test_results(test_results_directory)
+    for test_xml in results_files:
+        is_compliant, message = is_compliant_test_results(test_xml)
+        if not is_compliant:
+            return is_compliant, message
+    return True, f"All tests passed in {len(results_files)} test suites"
