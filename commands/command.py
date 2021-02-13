@@ -72,8 +72,8 @@ class Command(ABC):
         return self._context.file_fingerprinter
 
     @property
-    def sha_fingerprinter(self):
-        return self._context.sha_fingerprinter
+    def sha256_fingerprinter(self):
+        return self._context.sha256_fingerprinter
 
     @property
     def env(self):

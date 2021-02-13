@@ -1,4 +1,6 @@
 from fingerprinters import Fingerprinter
+from collections import namedtuple
+import re
 
 PROTOCOL = 'sha256://'
 
@@ -15,5 +17,16 @@ class Sha256Fingerprinter(Fingerprinter):
             '    ...',
         ])
 
-    def sha(self, _protocol, artifact_name):
-        pass
+    def sha(self, protocol, sha_and_artifact_name):
+        return self.__validated(sha_and_artifact_name).sha
+
+    __REGEX = re.compile(r'(?P<sha>[0-9a-f]{64})\/(?P<artifact_name>.+)')
+
+    def __validated(self, sha_and_artifact_name):
+        match = self.__REGEX.match(sha_and_artifact_name)
+        if match is None:
+            from commands import CommandError
+            raise CommandError(f"Invalid {PROTOCOL} fingerprint: {sha_and_artifact_name}")
+        names = ('sha', 'artifact_name')
+        args = (match.group('sha'), match.group('artifact_name'))
+        return namedtuple('Both', names)(*args)
