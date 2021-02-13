@@ -18,7 +18,7 @@ class MockFileFingerprinter(FileFingerprinter):
             print(exc_tb)
             self._failed(["Expected call did not happen"])
 
-    def sha(self, _protocol, image_name):
+    def sha(self, image_name):
         self._called = True
         if image_name == self._expected:
             return self._digest

@@ -37,7 +37,7 @@ class FingerprintEnvVar(RequiredEnvVar):
 
     @property
     def sha(self):
-        return self.__fingerprinter.sha(self.protocol, self.after_protocol)
+        return self.__fingerprinter.sha(self.after_protocol)
 
     @property
     def __fingerprinter(self):

@@ -30,7 +30,7 @@ class Sha256Fingerprinter(Fingerprinter):
     def artifact_basename(self, sha_and_artifact_name):
         return self.artifact_name(sha_and_artifact_name)
 
-    def sha(self, _protocol, sha_and_artifact_name):
+    def sha(self, sha_and_artifact_name):
         return self.__validated(sha_and_artifact_name).sha
 
     __REGEX = re.compile(r'(?P<sha>[0-9a-f]{64})\/(?P<artifact_name>.+)')
