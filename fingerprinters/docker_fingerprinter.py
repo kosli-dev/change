@@ -30,7 +30,11 @@ class DockerFingerprinter(Fingerprinter):
 
     def artifact_name(self, string):
         assert self.handles_protocol(string)
-        return string[len(PROTOCOL):]
+        result = string[len(PROTOCOL):]
+        if result == "":
+            from commands import CommandError
+            raise CommandError(f"Empty {PROTOCOL} fingerprint")
+        return result
 
     def sha(self, string):
         assert self.handles_protocol(string)
