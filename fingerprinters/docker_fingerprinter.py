@@ -18,6 +18,13 @@ class DockerFingerprinter(Fingerprinter):
             '    ...',
         ])
 
+    def handles_protocol(self, s):
+        return s.startswith(PROTOCOL)
+
+    @property
+    def protocol(self):
+        return PROTOCOL
+
     def artifact_name(self, s):
         return s
 

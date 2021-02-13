@@ -17,13 +17,20 @@ class Sha256Fingerprinter(Fingerprinter):
             '    ...',
         ])
 
+    def handles_protocol(self, s):
+        return s.startswith(PROTOCOL)
+
+    @property
+    def protocol(self):
+        return PROTOCOL
+
     def artifact_name(self, sha_and_artifact_name):
         return self.__validated(sha_and_artifact_name).artifact_name
 
     def artifact_basename(self, sha_and_artifact_name):
         return self.artifact_name(sha_and_artifact_name)
 
-    def sha(self, protocol, sha_and_artifact_name):
+    def sha(self, _protocol, sha_and_artifact_name):
         return self.__validated(sha_and_artifact_name).sha
 
     __REGEX = re.compile(r'(?P<sha>[0-9a-f]{64})\/(?P<artifact_name>.+)')

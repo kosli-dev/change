@@ -46,7 +46,10 @@ class FingerprintEnvVar(RequiredEnvVar):
 
     @property
     def sha(self):
-        return self.__fingerprint.sha
+        f = self.__fingerprinter
+        p = f.protocol
+        after = self.string[len(p):]
+        return f.sha(p, after)
 
     @property
     def __fingerprint(self):
@@ -55,3 +58,17 @@ class FingerprintEnvVar(RequiredEnvVar):
             raise CommandError(f"Empty {self.protocol} fingerprint")
         cls = fingerprint_env_var_cls_for(self.protocol)
         return cls(self.__command, self.protocol, after_protocol)
+
+    @property
+    def __fingerprinter(self):
+        d = self.__command.docker_fingerprinter
+        f = self.__command.file_fingerprinter
+        s = self.__command.sha256_fingerprinter
+        if d.handles_protocol(self.string):
+            return d
+        elif f.handles_protocol(self.string):
+            return f
+        elif s.handles_protocol(self.string):
+            return s
+        else:
+            raise CommandError(f"Unknown protocol: {self.string}")
