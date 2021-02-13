@@ -2,9 +2,9 @@
 class Fingerprinter:
 
     def __call__(self, protocol, artifact_name):
-        print(self._calculating_message(protocol, artifact_name))
+        #print(self._calculating_message(protocol, artifact_name))
         sha256 = self._fingerprint(artifact_name)
-        print(self._calculated_message(sha256))
+        #print(self._calculated_message(sha256))
         return sha256
 
     def _fingerprint(self, artifact_name):  # pragma: no cover

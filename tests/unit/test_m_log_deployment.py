@@ -71,8 +71,8 @@ def test_docker_image(capsys, mocker):
     assert payload == expected_payload
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_deployment',
-        f'Calculating fingerprint for {protocol}{IMAGE_NAME}',
-        f"Calculated fingerprint: {SHA256}",
+        #f'Calculating fingerprint for {protocol}{IMAGE_NAME}',
+        #f"Calculated fingerprint: {SHA256}",
     ]
 
 

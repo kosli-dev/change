@@ -82,8 +82,8 @@ def test_all_env_vars_image(capsys, mocker):
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         'MERKELY_IS_COMPLIANT: True',
-        f'Calculating fingerprint for {protocol}{image_name}',
-        f"Calculated fingerprint: {sha256}",
+        #f'Calculating fingerprint for {protocol}{image_name}',
+        #f"Calculated fingerprint: {sha256}",
     ]
 
 
@@ -162,8 +162,8 @@ def test_all_env_vars_file(capsys, mocker):
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
         'MERKELY_IS_COMPLIANT: True',
-        f'Calculating fingerprint for {protocol}{artifact_name}',
-        f"Calculated fingerprint: {sha256}",
+        #f'Calculating fingerprint for {protocol}{artifact_name}',
+        #f"Calculated fingerprint: {sha256}",
     ]
 
 
