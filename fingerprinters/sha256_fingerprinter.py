@@ -17,12 +17,12 @@ class Sha256Fingerprinter(Fingerprinter):
             '    ...',
         ])
 
-    def handles_protocol(self, s):
-        return s.startswith(PROTOCOL)
-
     @property
     def protocol(self):
         return PROTOCOL
+
+    def handles_protocol(self, s):
+        return s.startswith(PROTOCOL)
 
     def artifact_name(self, sha_and_artifact_name):
         return self.__validated(sha_and_artifact_name).artifact_name

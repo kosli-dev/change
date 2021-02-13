@@ -24,14 +24,14 @@ class MockDockerFingerprinter(DockerFingerprinter):
             return self._digest
         else:
             lines = [
-                f"Expected: artifact_name=={self._expected}",
-                f"  Actual: artifact_name=={image_name}",
+                f"Expected: image_name=={self._expected}",
+                f"  Actual: image_name=={image_name}",
             ]
             self._failed(lines)
 
     def _failed(self, lines):
         message = "\n".join([
-            f"{self.__class__.__name__}._fingerprint(artifact_name)",
+            f"{self.__class__.__name__}.sha(image_name)",
             "FAILED",
         ] + lines)
         raise RuntimeError(message)

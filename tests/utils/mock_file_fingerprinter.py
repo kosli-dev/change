@@ -18,20 +18,20 @@ class MockFileFingerprinter(FileFingerprinter):
             print(exc_tb)
             self._failed(["Expected call did not happen"])
 
-    def sha(self, image_name):
+    def sha(self, pathed_filename):
         self._called = True
-        if image_name == self._expected:
+        if pathed_filename == self._expected:
             return self._digest
         else:
             lines = [
-                f"Expected: artifact_name=={self._expected}",
-                f"  Actual: artifact_name=={image_name}",
+                f"Expected: pathed_filename=={self._expected}",
+                f"  Actual: pathed_filename=={pathed_filename}",
             ]
             self._failed(lines)
 
     def _failed(self, lines):
         message = "\n".join([
-            f"{self.__class__.__name__}._fingerprint(artifact_name)",
+            f"{self.__class__.__name__}.sha(pathed_filename)",
             "FAILED",
         ] + lines)
         raise RuntimeError(message)

@@ -156,7 +156,7 @@ def test_all_env_vars_file(capsys, mocker):
     assert method == expected_method
     assert url == expected_url
 
-    expected_payload['filename'] = filename # CHANGE IN BEHAVIOUR
+    expected_payload['filename'] = filename  # CHANGE IN BEHAVIOUR
     assert payload == expected_payload
 
     assert extract_blurb(capsys_read(capsys)) == [
