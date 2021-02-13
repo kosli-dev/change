@@ -278,6 +278,20 @@ merkely_log_evidence:
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
         ${IMAGE}
 
+
+merkely_log_test:
+	docker run \
+		--env MERKELY_COMMAND=log_test \
+        --env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
+		--env MERKELY_EVIDENCE_TYPE=${MERKELY_EVIDENCE_TYPE} \
+		--env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
+		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+		--rm \
+		--volume ${MERKELY_TEST_RESULTS_FILE}:/data/junit/junit.xml \
+		--volume=/var/run/docker.sock:/var/run/docker.sock \
+        --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+		${IMAGE}
+
 # - - - - - - - - - - - - - - - - - - - -
 # CDB Commands
 
