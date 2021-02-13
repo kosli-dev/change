@@ -17,6 +17,12 @@ class Sha256Fingerprinter(Fingerprinter):
             '    ...',
         ])
 
+    def artifact_name(self, sha_and_artifact_name):
+        return self.__validated(sha_and_artifact_name).artifact_name
+
+    def artifact_basename(self, sha_and_artifact_name):
+        return self.artifact_name(sha_and_artifact_name)
+
     def sha(self, protocol, sha_and_artifact_name):
         return self.__validated(sha_and_artifact_name).sha
 
