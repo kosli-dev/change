@@ -111,26 +111,13 @@ jobs:
 
     - name: Log coverage results to Merkely
       env:
-        #CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
-        #CDB_HOST: https://app.compliancedb.com
-        #CDB_IS_COMPLIANT: 'TRUE'
-        #CDB_EVIDENCE_TYPE: "coverage"
-        #CDB_BUILD_NUMBER: ${GITHUB_RUN_ID}
-        #CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
-
         TAGGED_IMAGE: ${{ steps.tagged_image.outputs.value }}
         MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
         MERKELY_EVIDENCE_TYPE: "coverage"
         MERKELY_IS_COMPLIANT: 'TRUE'
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
-
       run: |
-        #export SHA7=$(git log -1 --pretty=%h)
-        #export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
-        #export CDB_DESCRIPTION="$TEST_CASES tests passed with $COVERAGE coverage"
-        #make publish_test_results
-
         source tmp/coverage/unit/htmlcov/test_coverage.txt
         source tmp/coverage/unit/htmlcov/test_cases.txt
         export MERKELY_DESCRIPTION="${TEST_CASES} tests passed with ${COVERAGE} coverage"
