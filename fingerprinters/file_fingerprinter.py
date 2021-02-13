@@ -1,4 +1,5 @@
 from fingerprinters import Fingerprinter
+import os
 import subprocess
 
 PROTOCOL = 'file://'
@@ -17,6 +18,12 @@ class FileFingerprinter(Fingerprinter):
             '    --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \\',
             '    ...',
         ])
+
+    def artifact_name(self, s):
+        return s
+
+    def artifact_basename(self, s):
+        return os.path.basename(s)
 
     def sha(self, _protocol, pathed_filename):
         # Mocked in /tests/unit/utils/mock_file_fingerprinter.py

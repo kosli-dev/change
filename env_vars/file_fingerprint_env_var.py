@@ -10,13 +10,13 @@ class FileFingerprintEnvVar:
 
     @property
     def artifact_name(self):
-        return self.__artifact_name
+        return self.__command.file_fingerprinter.artifact_name(self.__artifact_name)
 
     @property
     def artifact_basename(self):
-        return os.path.basename(self.artifact_name)
+        return self.__command.file_fingerprinter.artifact_basename(self.__artifact_name)
 
     @property
     def sha(self):
-        return self.__command.file_fingerprinter.sha(self.__protocol, self.artifact_name)
+        return self.__command.file_fingerprinter.sha(self.__protocol, self.__artifact_name)
 
