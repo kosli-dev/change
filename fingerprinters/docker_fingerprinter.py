@@ -32,10 +32,12 @@ class DockerFingerprinter(Fingerprinter):
         assert self.handles_protocol(string)
         return string[len(PROTOCOL):]
 
-    def sha(self, image_name):
+    def sha(self, string):
+        assert self.handles_protocol(string)
         # Mocked in /tests/unit/utils/mock_docker_fingerprinter.py
         # docker is a Python package installed in requirements.txt
         client = docker.from_env()
+        image_name = self.artifact_name(string)
         image = client.images.get(image_name)
         return image.attrs["RepoDigests"][0].split(":")[1]
 

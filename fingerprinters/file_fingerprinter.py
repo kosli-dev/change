@@ -19,12 +19,12 @@ class FileFingerprinter(Fingerprinter):
             '    ...',
         ])
 
-    def handles_protocol(self, string):
-        return string.startswith(PROTOCOL)
-
     @property
     def protocol(self):
         return PROTOCOL
+
+    def handles_protocol(self, string):
+        return string.startswith(PROTOCOL)
 
     def artifact_basename(self, string):
         return os.path.basename(self.artifact_name(string))
@@ -33,9 +33,11 @@ class FileFingerprinter(Fingerprinter):
         assert self.handles_protocol(string)
         return string[len(PROTOCOL):]
 
-    def sha(self, pathed_filename):
+    def sha(self, string):
+        assert self.handles_protocol(string)
         # Mocked in /tests/unit/utils/mock_file_fingerprinter.py
         # openssl is an Alpine package installed in /Dockerfile
-        output = subprocess.check_output(["openssl", "dgst", "-sha256", '/'+pathed_filename])
+        unrooted_filename = self.artifact_name(string)
+        output = subprocess.check_output(["openssl", "dgst", "-sha256", '/'+unrooted_filename])
         digest_in_bytes = output.split()[1]
         return digest_in_bytes.decode('utf-8')
