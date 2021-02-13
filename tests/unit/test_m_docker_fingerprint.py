@@ -1,6 +1,5 @@
 from commands import CommandError
-from fingerprinters import *
-from tests.utils import *
+from fingerprinters import DockerFingerprinter
 from pytest import raises
 
 DOCKER_PROTOCOL = "docker://"
