@@ -39,8 +39,11 @@ class LogTestCommand(Command):
         # Notes
         # 1) junit_results_dir was read from ev CDB_TEST_RESULTS_DIR
         #       with '/data/junit/' as a default
+        #    The merkely_log_test makefile target now does this
+        # 		--volume ${MERKELY_TEST_RESULTS_FILE}:/data/junit/junit.xml \
         # 2) user_data was read from ev CDB_USER_DATA
         #       as json with None as default
+        #    No equivalent env-var for that yet.
         junit_results_dir = '/data/junit/'
         is_compliant, message = is_compliant_tests_directory(junit_results_dir)
         description = "JUnit results xml verified by compliancedb/cdb_controls: " + message

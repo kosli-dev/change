@@ -86,32 +86,17 @@ jobs:
 
     - name: Log test results to Merkely
       env:
-        CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
-        CDB_HOST: https://app.compliancedb.com
-        CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
-
         TAGGED_IMAGE: ${{ steps.tagged_image.outputs.value }}
         MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
 
       run: |
-        #export SHA7=$(git log -1 --pretty=%h)
-        #export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
-
-        #export CDB_TEST_RESULTS=${PWD}/tmp/coverage/unit/htmlcov/junit.xml
-        #export CDB_EVIDENCE_TYPE="unit_test"
-        #make control_and_publish_junit_results
-
-        #export CDB_TEST_RESULTS=${PWD}/tmp/coverage/integration/htmlcov/junit.xml
-        #export CDB_EVIDENCE_TYPE="integration_test"
-        #make control_and_publish_junit_results
-
         export MERKELY_TEST_RESULTS_FILE=${PWD}/tmp/coverage/unit/htmlcov/junit.xml
         export MERKELY_EVIDENCE_TYPE="unit_test"
         make merkely_log_test
 
-        export MERKELY_TEST_RESULTS=${PWD}/tmp/coverage/integration/htmlcov/junit.xml
+        export MERKELY_TEST_RESULTS_FILE=${PWD}/tmp/coverage/integration/htmlcov/junit.xml
         export MERKELY_EVIDENCE_TYPE="integration_test"
         make merkely_log_test
 
