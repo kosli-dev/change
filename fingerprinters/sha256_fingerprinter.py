@@ -15,5 +15,5 @@ class Sha256Fingerprinter(Fingerprinter):
             '    ...',
         ])
 
-    def _fingerprint(self, artifact_name):
+    def _fingerprint(self, protocol, artifact_name):
         pass
