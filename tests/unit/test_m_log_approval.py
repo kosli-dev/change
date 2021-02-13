@@ -67,7 +67,6 @@ def test_docker_image(capsys, mocker):
     # make merkely call
     protocol = "docker://"
     ev = new_log_approval_env()
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
     with dry_run(ev) as env:
         with ScopedDirCopier("/test_src", "/src"):
             with scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
@@ -86,7 +85,7 @@ def new_log_approval_env():
     domain = CDB_DOMAIN
     return {
         "MERKELY_COMMAND": "log_approval",
-        "MERKELY_FINGERPRINT": f"{protocol}/{image_name}",
+        "MERKELY_FINGERPRINT": f"{protocol}{image_name}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_TARGET_SRC_COMMITISH": "master",

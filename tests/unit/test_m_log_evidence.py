@@ -101,7 +101,7 @@ def new_log_evidence_env():
     image_name = "acme/widget:4.67"
     return {
         "MERKELY_COMMAND": "log_evidence",
-        "MERKELY_FINGERPRINT": f"{protocol}/{image_name}",
+        "MERKELY_FINGERPRINT": f"{protocol}{image_name}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_CI_BUILD_URL": build_url,

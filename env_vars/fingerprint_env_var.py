@@ -50,8 +50,8 @@ class FingerprintEnvVar(RequiredEnvVar):
 
     @property
     def __fingerprint(self):
-        cls = fingerprint_env_var_cls_for(self.protocol)
-        after_protocol = self.string[len(self.protocol)+1:]
+        after_protocol = self.string[len(self.protocol):]
         if after_protocol == "":
             raise CommandError(f"Empty {self.protocol} fingerprint")
+        cls = fingerprint_env_var_cls_for(self.protocol)
         return cls(self.__command, self.protocol, after_protocol)
