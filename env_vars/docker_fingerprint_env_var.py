@@ -7,13 +7,13 @@ class DockerFingerprintEnvVar:
 
     @property
     def artifact_name(self):
-        return self.__artifact_name
+        return self.__command.docker_fingerprinter.artifact_name(self.__artifact_name)
 
     @property
     def artifact_basename(self):
-        return self.artifact_name
+        return self.__command.docker_fingerprinter.artifact_basename(self.__artifact_name)
 
     @property
     def sha(self):
-        return self.__command.docker_fingerprinter.sha(self.__protocol, self.artifact_name)
+        return self.__command.docker_fingerprinter.sha(self.__protocol, self.__artifact_name)
 

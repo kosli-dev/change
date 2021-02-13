@@ -18,6 +18,12 @@ class DockerFingerprinter(Fingerprinter):
             '    ...',
         ])
 
+    def artifact_name(self, s):
+        return s
+
+    def artifact_basename(self, s):
+        return s
+
     def sha(self, _protocol, image_name):
         # Mocked in /tests/unit/utils/mock_docker_fingerprinter.py
         # docker is a Python package installed in requirements.txt
