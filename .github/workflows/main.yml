@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v2
 
         
-    - name: Build and push Docker images
+    - name: Build and push Docker image
       uses: docker/build-push-action@v1.1.0
       env:
         SUPER_SECRET: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
@@ -39,12 +39,21 @@ jobs:
         tag_with_sha: TRUE
         add_git_labels: TRUE
 
-    - name: Get the tagged image name
+
+    - name: Get tagged Docker image name
       id: tagged_image
       run: |
         echo ::set-output name=value::merkely/change:sha-$(git log -1 --pretty=%h)
 
-    - name: Declare the pipeline and log docker-image artifact information to Merkely
+
+    - name: Declare Merkely pipeline
+      env:
+        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
+      run: |
+        make branch merkely_declare_pipeline
+
+
+    - name: Log Docker image to Merkely
       env:
         TAGGED_IMAGE: ${{ steps.tagged_image.outputs.value }}
         MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
@@ -55,9 +64,10 @@ jobs:
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
-        make branch merkely_declare_pipeline merkely_log_artifact
+        make merkely_log_artifact
 
-    - name: Log the deployment in Merkely
+
+    - name: Log image deployment to Merkely
       env:
         TAGGED_IMAGE: ${{ steps.tagged_image.outputs.value }}
         MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
@@ -68,13 +78,13 @@ jobs:
       run: |
         make merkely_log_deployment
 
-    - name: Run unit tests
-      env:
-        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
-      run: |
-        make build_all test_all
 
-    - name: Merkely Control Unit Test Results
+    - name: Run tests
+      run: |
+        make test_all
+
+
+    - name: Log test results to Merkely
       env:
         CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
         CDB_HOST: https://app.compliancedb.com
@@ -91,17 +101,6 @@ jobs:
         export CDB_EVIDENCE_TYPE="integration_test"
         make control_and_publish_junit_results
 
-    - name: Merkely Control Unit Test Results
-      env:
-        CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
-        CDB_HOST: https://app.compliancedb.com
-        CDB_EVIDENCE_TYPE: "integration_test"
-        CDB_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
-      run: |
-        export SHA7=$(git log -1 --pretty=%h)
-        export CDB_ARTIFACT_DOCKER_IMAGE=merkely/change:sha-${SHA7}
-        make control_and_publish_junit_results
-
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v1
@@ -109,7 +108,8 @@ jobs:
         name: code-coverage-report
         path: tmp/coverage/
 
-    - name: Log coverage results to Merkely
+
+    - name: Log coverage evidence to Merkely
       env:
         TAGGED_IMAGE: ${{ steps.tagged_image.outputs.value }}
         MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}

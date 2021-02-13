@@ -24,6 +24,10 @@ create_release          request_approval   no        no     no        no        
 
 Parked...
 
+Should declare_merkely_pipeline go at very start of main.yml ?
+Even before building and pushing the image.
+
+
 main.yml has this (at the end)
 source tmp/coverage/unit/htmlcov/test_coverage.txt
 source tmp/coverage/unit/htmlcov/test_cases.txt
