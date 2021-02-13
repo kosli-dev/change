@@ -33,11 +33,6 @@ def test_file_protocol__empty_filename_raises():
     assert_raises('sha')
 
 
-def test_notes_is_not_empty():
-    ev = FileFingerprintEnvVar(None, None, None)
-    assert len(ev.notes) > 0
-
-
 def make_fingerprint_env_var(filename):
     fingerprint = f"{FILE_PROTOCOL}{filename}"
     env = {"MERKELY_FINGERPRINT": fingerprint}

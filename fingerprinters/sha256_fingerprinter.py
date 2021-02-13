@@ -1,20 +1,17 @@
 from fingerprinters import Fingerprinter
-import subprocess
 
-PROTOCOL = 'file://'
+PROTOCOL = 'sha256://'
 
 
-class FileFingerprinter(Fingerprinter):
+class Sha256Fingerprinter(Fingerprinter):
 
     @property
     def notes(self):
         return "\n".join([
-            f'The string `{PROTOCOL}` followed by the full path of the file to fingerprint.',
-            'The full path must be volume-mounted.',
+            f"The string `{PROTOCOL}` followed by the artifact's 64 character sha256, then `/`, then it's non-empty name."
             'Example:',
             'docker run ... \\',
-            f'    --env MERKELY_FINGERPRINT=”{PROTOCOL}${{YOUR_FILE_PATH}} \\',
-            '    --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \\',
+            f'    --env MERKELY_FINGERPRINT=”{PROTOCOL}${{YOUR_ARTIFACT_SHA256}}/${{YOUR_ARTIFACT_NAME}}” \\',
             '    ...',
         ])
 

@@ -32,10 +32,6 @@ def test_docker_protocol__empty_image_name_raises():
     assert_raises('sha')
 
 
-def test_notes_is_not_empty():
-    ev = DockerFingerprintEnvVar(None, None, None)
-    assert len(ev.notes) > 0
-
 
 def make_fingerprint_env_var(image_name):
     fingerprint = f"{DOCKER_PROTOCOL}{image_name}"
