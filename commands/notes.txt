@@ -24,6 +24,11 @@ create_release         request_approval    no         no        no             n
 
 Parked...
 
+main.yml has this (at the end)
+source tmp/coverage/unit/htmlcov/test_coverage.txt
+source tmp/coverage/unit/htmlcov/test_cases.txt
+These would be better as .sh files?
+
 Remove Command suffix from command names.
 Rename command abc base class as ABC?
 
