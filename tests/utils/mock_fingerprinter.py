@@ -12,7 +12,7 @@ class MockFingerprinter:
         if not self._called:
             self._failed(["Expected call did not happen"])
 
-    def _fingerprint(self, artifact_name):
+    def sha(self, _protocol, artifact_name):
         self._called = True
         if artifact_name == self._expected:
             return self._sha

@@ -18,5 +18,5 @@ class FileFingerprintEnvVar:
 
     @property
     def sha(self):
-        return self.__command.file_fingerprinter(self.__protocol, self.artifact_name)
+        return self.__command.file_fingerprinter.sha(self.__protocol, self.artifact_name)
 

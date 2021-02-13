@@ -15,5 +15,5 @@ class DockerFingerprintEnvVar:
 
     @property
     def sha(self):
-        return self.__command.docker_fingerprinter(self.__protocol, self.artifact_name)
+        return self.__command.docker_fingerprinter.sha(self.__protocol, self.artifact_name)
 

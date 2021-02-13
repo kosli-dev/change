@@ -18,7 +18,7 @@ class FileFingerprinter(Fingerprinter):
             '    ...',
         ])
 
-    def _fingerprint(self, protocol, pathed_filename):
+    def sha(self, _protocol, pathed_filename):
         # Mocked in /tests/unit/utils/mock_file_fingerprinter.py
         # openssl is an Alpine package installed in /Dockerfile
         output = subprocess.check_output(["openssl", "dgst", "-sha256", '/'+pathed_filename])
