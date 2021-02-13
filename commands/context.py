@@ -1,4 +1,5 @@
 import os
+from commands import CommandError
 from fingerprinters import *
 
 
@@ -10,35 +11,37 @@ class Context:
                  docker_fingerprinter=None,
                  file_fingerprinter=None,
                  sha256_fingerprinter=None):
-        self._env = env
-        self._docker_fingerprinter = docker_fingerprinter
-        self._file_fingerprinter = file_fingerprinter
-        self._sha256_fingerprinter = sha256_fingerprinter
+        self.__env = env
+        self.__docker_fingerprinter = docker_fingerprinter
+        self.__file_fingerprinter = file_fingerprinter
+        self.__sha256_fingerprinter = sha256_fingerprinter
 
-        if self._env is None:
-            self._env = os.environ
+        if self.__env is None:
+            self.__env = os.environ
 
-        if self._docker_fingerprinter is None:
-            self._docker_fingerprinter = DockerFingerprinter()
+        if self.__docker_fingerprinter is None:
+            self.__docker_fingerprinter = DockerFingerprinter()
 
-        if self._file_fingerprinter is None:
-            self._file_fingerprinter = FileFingerprinter()
+        if self.__file_fingerprinter is None:
+            self.__file_fingerprinter = FileFingerprinter()
 
-        if self._sha256_fingerprinter is None:
-            self._sha256_fingerprinter = Sha256Fingerprinter()
+        if self.__sha256_fingerprinter is None:
+            self.__sha256_fingerprinter = Sha256Fingerprinter()
 
     @property
     def env(self):
-        return self._env
+        return self.__env
 
-    @property
-    def docker_fingerprinter(self):
-        return self._docker_fingerprinter
+    def fingerprinter_for(self, string):
+        d = self.__docker_fingerprinter
+        f = self.__file_fingerprinter
+        s = self.__sha256_fingerprinter
+        if d.handles_protocol(string):
+            return d
+        elif f.handles_protocol(string):
+            return f
+        elif s.handles_protocol(string):
+            return s
+        else:
+            raise CommandError(f"Unknown protocol: {string}")
 
-    @property
-    def file_fingerprinter(self):
-        return self._file_fingerprinter
-
-    @property
-    def sha256_fingerprinter(self):
-        return self._sha256_fingerprinter

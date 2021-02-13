@@ -9,7 +9,7 @@ class Command(ABC):
     Abstract Base Class for all merkely/change commands.
     """
     def __init__(self, context):
-        self._context = context
+        self.__context = context
 
     def __call__(self):  # pragma: no cover
         raise NotImplementedError(self.name)
@@ -63,21 +63,12 @@ class Command(ABC):
     # - - - - - - - - - - - - - - - - - - - - -
     # context objects
 
-    @property
-    def docker_fingerprinter(self):
-        return self._context.docker_fingerprinter
-
-    @property
-    def file_fingerprinter(self):
-        return self._context.file_fingerprinter
-
-    @property
-    def sha256_fingerprinter(self):
-        return self._context.sha256_fingerprinter
+    def fingerprinter_for(self, string):
+        return self.__context.fingerprinter_for(string)
 
     @property
     def env(self):
-        return self._context.env
+        return self.__context.env
 
     # - - - - - - - - - - - - - - - - - - - - -
 

@@ -1,4 +1,3 @@
-from commands import CommandError
 from env_vars import RequiredEnvVar
 
 import re
@@ -41,14 +40,4 @@ class FingerprintEnvVar(RequiredEnvVar):
 
     @property
     def __fingerprinter(self):
-        d = self.__command.docker_fingerprinter
-        f = self.__command.file_fingerprinter
-        s = self.__command.sha256_fingerprinter
-        if d.handles_protocol(self.string):
-            return d
-        elif f.handles_protocol(self.string):
-            return f
-        elif s.handles_protocol(self.string):
-            return s
-        else:
-            raise CommandError(f"Unknown protocol: {self.string}")
+        return self.__command.fingerprinter_for(self.string)
