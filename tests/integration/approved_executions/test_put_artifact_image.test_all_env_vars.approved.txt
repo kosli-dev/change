@@ -6,7 +6,7 @@ Putting this payload:
 {
     "build_url": "https://gitlab/build/351",
     "commit_url": "http://github/me/project/commit/82037940e4e7503055d8a8eea87e177f04f14616",
-    "description": "Created by build UNDEFINED",
+    "description": "Created by build 1234",
     "filename": "NO_DOCKER_IMAGE_FOUND",
     "git_commit": "82037940e4e7503055d8a8eea87e177f04f14616",
     "is_compliant": true,

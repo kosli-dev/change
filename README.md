@@ -113,6 +113,7 @@ This command expects the following environment variables:
 | CDB_ARTIFACT_GIT_URL | Required | Link to the source git commit this build was based on |
 | CDB_ARTIFACT_GIT_COMMIT | Required | The sha of the git commit that produced this build |
 | CDB_CI_BUILD_URL | Required | Link to the build in the ci system |
+| CDB_BUILD_NUMBER | Optional | Build number |
 
 
 ## Publish generic evidence

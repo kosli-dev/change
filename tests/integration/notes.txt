@@ -55,7 +55,7 @@ put_artifact_image()
 1) CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_SHA, One must be provided.
 So you do not have to provide CDB_ARTIFACT_DOCKER_IMAGE
 despite the name of this command being put_artifact_image().
-
+2) CDB_BUILD_NUMBER is an optional env var used for description of artifact
 
 control_junit()
 ---------------

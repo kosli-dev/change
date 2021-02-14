@@ -4,7 +4,6 @@ import docker
 from pytest import raises
 from tests.utils import *
 
-
 APPROVAL_DIR = "tests/integration/approved_executions"
 APPROVAL_FILE = "test_put_artifact_image"
 
@@ -104,11 +103,13 @@ def test_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys, mocker):
     assert old_url == expected_url
     assert old_payload == expected_payload
 
+
 def test_all_env_vars(capsys):
     # artifact sha comes direct from CDB_ARTIFACT_SHA
     build_url = "https://gitlab/build/351"
     commit = "82037940e4e7503055d8a8eea87e177f04f14616"
-    sha256="b7cdaef69c676c2466571d9933380d559ccc2032b258fc5e73f99a103db462ef"
+    sha256 = "b7cdaef69c676c2466571d9933380d559ccc2032b258fc5e73f99a103db462ef"
+    build_number = "1234"
     env = {
         "CDB_HOST": "https://app.compliancedb.com",  # optional
         "CDB_API_TOKEN": "6599831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
@@ -117,6 +118,7 @@ def test_all_env_vars(capsys):
         "CDB_ARTIFACT_GIT_URL": f"http://github/me/project/commit/{commit}",
         "CDB_ARTIFACT_GIT_COMMIT": commit,
         "CDB_CI_BUILD_URL": build_url,  # optional
+        "CDB_BUILD_NUMBER": build_number  # optional
     }
     set_env_vars = {}
 
@@ -140,7 +142,7 @@ def test_all_env_vars(capsys):
     expected_payload = {
         "build_url": build_url,
         "commit_url": f"http://github/me/project/commit/{commit}",
-        "description": "Created by build UNDEFINED",
+        "description": f"Created by build {build_number}",
         "filename": "NO_DOCKER_IMAGE_FOUND",
         "git_commit": commit,
         "is_compliant": True,
@@ -162,5 +164,3 @@ def test_no_env_vars_raises_DockerException():
 
     with ScopedEnvVars(CDB_DRY_RUN, set_env_vars), raises(docker.errors.DockerException):
         put_artifact_image("tests/integration/test-pipefile.json")
-
-
