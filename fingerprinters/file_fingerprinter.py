@@ -4,20 +4,22 @@ import subprocess
 
 PROTOCOL = 'file://'
 
+NOTES = "".join([
+    f'The string `{PROTOCOL}` followed by the full path of the file to fingerprint.',
+    'The full path must be volume-mounted.',
+    'Example:',
+    'docker run ... \\',
+    f'    --env MERKELY_FINGERPRINT=”{PROTOCOL}${{YOUR_FILE_PATH}} \\',
+    '    --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \\',
+    '    ...',
+])
+
 
 class FileFingerprinter(Fingerprinter):
 
     @property
     def notes(self):
-        return "\n".join([
-            f'The string `{PROTOCOL}` followed by the full path of the file to fingerprint.',
-            'The full path must be volume-mounted.',
-            'Example:',
-            'docker run ... \\',
-            f'    --env MERKELY_FINGERPRINT=”{PROTOCOL}${{YOUR_FILE_PATH}} \\',
-            '    --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \\',
-            '    ...',
-        ])
+        return NOTES
 
     def handles_protocol(self, string):
         return string.startswith(PROTOCOL)

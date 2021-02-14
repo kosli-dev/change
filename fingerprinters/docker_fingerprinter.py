@@ -3,20 +3,22 @@ import docker
 
 PROTOCOL = 'docker://'
 
+NOTES = "".join([
+    f'The string `{PROTOCOL}` followed by the name+tag of the docker image to fingerprint.',
+    'The docker socket must be volume-mounted.',
+    'Example:',
+    'docker run ... \\',
+    f'    --env MERKELY_FINGERPRINT=”{PROTOCOL}${{YOUR_DOCKER_IMAGE_AND_TAG}}" \\',
+    '    --volume /var/run/docker.sock:/var/run/docker.sock \\',
+    '    ...',
+])
+
 
 class DockerFingerprinter(Fingerprinter):
 
     @property
     def notes(self):
-        return "\n".join([
-            f'The string `{PROTOCOL}` followed by the name+tag of the docker image to fingerprint.',
-            'The docker socket must be volume-mounted.',
-            'Example:',
-            'docker run ... \\',
-            f'    --env MERKELY_FINGERPRINT=”{PROTOCOL}${{YOUR_DOCKER_IMAGE_AND_TAG}}" \\',
-            '    --volume /var/run/docker.sock:/var/run/docker.sock \\',
-            '    ...',
-        ])
+        return NOTES
 
     def handles_protocol(self, string):
         return string.startswith(PROTOCOL)

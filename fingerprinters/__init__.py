@@ -2,3 +2,4 @@ from .fingerprinter import Fingerprinter
 from .docker_fingerprinter import DockerFingerprinter
 from .file_fingerprinter import FileFingerprinter
 from .sha256_fingerprinter import Sha256Fingerprinter
+from .fingerprint_builder import build_fingerprinter
