@@ -1,7 +1,6 @@
 from cdb.control_junit import control_junit
-from commands import main, run
+from commands import main
 
-from pytest import raises
 from tests.utils import *
 
 APPROVAL_DIR = "tests/unit/approved_executions"
@@ -66,11 +65,41 @@ def test_non_zero_status_when_no_data_directory(capsys, mocker):
     ]
 
 
-def test_zero_exit_status_when_there_is_a_data_directory(capsys):
+def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
+    """
+    The cdb code looks at CDB_USER_DATA but the crucial line to add
+    the json (in cdb_utils.py build_evidence_dict) is this:
+
+    if user_data is not None:
+        evidence["user_data"]: user_data
+
+    which should be
+
+    if user_data is not None:
+        evidence["user_data"] = user_data
+
+    Thus there is no need to test CDB_USER_DATA
+    And no urgent need to add it as new behaviour
+    """
     image_name = "acme/widget:4.67"
     sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
+    env = old_control_junit_env()
+    set_env_vars = {}
+    with dry_run(env, set_env_vars):
+        with ScopedDirCopier('/app/tests/data/control_junit/xml-with-passed-results', '/data/junit'):
+            mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
+            control_junit("tests/integration/test-pipefile.json")
+    verify_approval(capsys, ["out"])
+
+    # extract data from approved cdb text file
+    import inspect
+    this_test = inspect.stack()[0].function
+    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
+    with open(approved) as file:
+        old_approval = file.read()
+    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     domain = "app.compliancedb.com"
     owner = "compliancedb"
@@ -87,6 +116,12 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
         "evidence_type": evidence_type
     }
 
+    # verify data from approved cdb text file
+    assert old_method == expected_method
+    assert old_url == expected_url
+    assert old_payload == expected_payload
+
+    # make merkely call
     ev = new_log_test_env()
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):

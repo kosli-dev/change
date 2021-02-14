@@ -46,8 +46,6 @@ class LogTest(Command):
         junit_results_dir = '/data/junit/'
         is_compliant, message = is_compliant_tests_directory(junit_results_dir)
         description = "JUnit results xml verified by compliancedb/cdb_controls: " + message
-        user_data = None  # cbd.cbd_utils.load_user_data()
-
         payload = {
             "evidence_type": self.evidence_type.value,
             "contents": {
@@ -56,9 +54,6 @@ class LogTest(Command):
                 "description": description
             }
         }
-        if user_data is not None:
-            payload["user_data"] = user_data
-
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         http_put_payload(url, payload, self.api_token.value)
         return 'Putting', url, payload
@@ -105,3 +100,4 @@ def ls_test_results(root_directory):
     for exclude in excluded_files:
         test_files = [file for file in files if not file.endswith(exclude)]
     return test_files
+

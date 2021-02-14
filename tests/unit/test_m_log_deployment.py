@@ -35,7 +35,8 @@ def test_docker_image(capsys, mocker):
     verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
-    this_test = "test_docker_image"
+    import inspect
+    this_test = inspect.stack()[0].function
     approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
     with open(approved) as file:
         old_approval = file.read()

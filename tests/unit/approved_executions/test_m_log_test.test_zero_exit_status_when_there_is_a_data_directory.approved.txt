@@ -1,4 +1,6 @@
-MERKELY_COMMAND=log_test
+Publish evidence to ComplianceDB
+{'evidence_type': 'coverage', 'contents': {'is_compliant': True, 'url': 'https://gitlab/build/1457', 'description': 'JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites'}}
+IMAGE DIGEST: aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef
 Putting this payload:
 {
     "contents": {

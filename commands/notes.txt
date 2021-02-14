@@ -9,7 +9,7 @@ YES----------------------------------------Makefile---------Tests---------------
 FROM                    TO                 Target    docs   ALL-EVS   ONLY-REQ-EVS   MISSING-REQ-EVS
 put_pipeline            declare_pipeline   yes       wip    yes       N/A            no
 create_release          log_approval       yes       wip    yes       no             no
-control_junit           log_test           yes       wip    no        no             no
+control_junit           log_test           yes       wip    yes       no             no
 put_artifact_image      log_artifact       yes       wip    yes       no             yes
 create_deployment       log_deployment     yes       wip    yes       no             no
 put_evidence            log_evidence       yes       wip    yes       no             no
@@ -21,9 +21,13 @@ control_bitbucket_pr    log_bitbucket_pr   no        no     no        no        
 create_release          request_approval   no        no     no        no             no
 
 
-control_junit
-Makefile target=control_and_publish_junit_results
-cdb.control_junit
+log_approval:
+Has this
+		--env MERKELY_SRC_REPO_ROOT=${MERKELY_SRC_REPO_ROOT} \
+		--volume ${PWD}:/src \
+If MERKELY_SRC_REPO_ROOT is not /src/ then the volume-mount will be wrong...
+If we want the Makefile target to be reusable as is we could drop
+MERKELY_SRC_REPO_ROOT and require the volume-mount to always be /src
 
 
 Command Names:?
@@ -39,7 +43,6 @@ log_approval   ===> log_release_approval
      Will we want approval of different things/steps?  What exactly is this approving?
 control_deployment ==> ????
      Feels too generic ????
-
 
 
 

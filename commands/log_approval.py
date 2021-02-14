@@ -68,7 +68,11 @@ class LogApproval(Command):
     @property
     def src_repo_root(self):
         default = "/src/"
-        notes = f"The path where the source git repository is volume-mounted. Defaults to `{default}`"
+        notes = " ".join([
+            "The path where the source git repository is volume-mounted.",
+            f"Defaults to `{default}`",
+            ''
+         ])
         return self._static_defaulted_env_var("SRC_REPO_ROOT", default, notes)
 
     @property
