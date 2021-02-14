@@ -1,11 +1,11 @@
-Log Approval
+Log Artifact
 ============
-.. describe_command:: log_approval summary
+.. describe_command:: log_artifact summary
 
 Invocation
 ----------
-.. describe_command:: log_approval invocation_full
+.. describe_command:: log_artifact invocation_full
 
 Parameters
 ----------
-.. describe_command:: log_approval parameters
+.. describe_command:: log_artifact parameters

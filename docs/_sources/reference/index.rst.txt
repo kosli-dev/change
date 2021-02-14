@@ -5,5 +5,5 @@
 	log_approval
 	log_artifact
 	log_deployment
-    log_test
+	log_test
 	control_deployment

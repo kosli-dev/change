@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Log Approval &#8212; Merkely  documentation</title>
+    <title>Log Artifact &#8212; Merkely  documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -18,6 +18,8 @@
     <script src="../_static/copybutton.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Log Deployment" href="log_deployment.html" />
+    <link rel="prev" title="Log Approval" href="log_approval.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -71,8 +73,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../concepts/binary_provenance.html">Understanding Binary Provenance</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="log_test.html">Log Approval</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="log_evidence.html">Log Evidence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log_approval.html">Log Approval</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Log Artifact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log_deployment.html">Log Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log_test.html">Log Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control_deployment.html">Control Deployment</a></li>
 </ul>
 </ul>
 </li>
@@ -102,22 +109,22 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="log-approval">
-<h1>Log Approval<a class="headerlink" href="#log-approval" title="Permalink to this headline">¶</a></h1>
-<p></p>
+  <div class="section" id="log-artifact">
+<h1>Log Artifact<a class="headerlink" href="#log-artifact" title="Permalink to this headline">¶</a></h1>
+<p>Logs an artifact in Merkely.</p>
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=&quot;log_approval&quot; \
+    --env MERKELY_COMMAND=&quot;log_artifact&quot; \
     --env MERKELY_FINGERPRINT=&quot;docker://${YOUR_IMAGE_AND_TAG}&quot; \
-    --env MERKELY_TARGET_SRC_COMMITISH=&quot;${...}&quot; \
-    --env MERKELY_BASE_SRC_COMMITISH=&quot;${...}&quot; \
-    --env MERKELY_DESCRIPTION=&quot;${...}&quot; \
-    --env MERKELY_SRC_REPO_ROOT=&quot;${...}&quot; \
+    --env MERKELY_IS_COMPLIANT=&quot;${...}&quot; \
+    --env MERKELY_ARTIFACT_GIT_COMMIT=&quot;${...}&quot; \
+    --env MERKELY_ARTIFACT_GIT_URL=&quot;${...}&quot; \
+    --env MERKELY_CI_BUILD_NUMBER=&quot;${...}&quot; \
+    --env MERKELY_CI_BUILD_URL=&quot;${...}&quot; \
     --env MERKELY_API_TOKEN=&quot;${...}&quot; \
     --env MERKELY_HOST=&quot;${...}&quot; \
     --rm \
-    --volume ${PWD}:/src \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
     merkely/change
@@ -142,27 +149,31 @@
 <td><p>yes</p></td>
 <td><p>…</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_TARGET_SRC_COMMITISH</p></td>
+<tr class="row-even"><td><p>MERKELY_IS_COMPLIANT</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the oldest change in the approval.</p></td>
+<td><p>TRUE if the artifact is considered compliant from you build process.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_BASE_SRC_COMMITISH</p></td>
+<tr class="row-odd"><td><p>MERKELY_ARTIFACT_GIT_COMMIT</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the oldest change in the approval.</p></td>
+<td><p>The sha of the git commit that produced this build.</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
+<tr class="row-even"><td><p>MERKELY_ARTIFACT_GIT_URL</p></td>
 <td><p>yes</p></td>
-<td><p>A description for the approval.</p></td>
+<td><p>Link to the source git commit this build was based on.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
-<td><p>no</p></td>
-<td><p>The path where the source git repository is volume-mounted. Defaults to `/src/`</p></td>
+<tr class="row-odd"><td><p>MERKELY_CI_BUILD_NUMBER</p></td>
+<td><p>yes</p></td>
+<td><p>The ci build number.</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
+<tr class="row-even"><td><p>MERKELY_CI_BUILD_URL</p></td>
+<td><p>yes</p></td>
+<td><p>Link to the build in the ci system.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_HOST</p></td>
+<tr class="row-even"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
 <td><p>Defaults to https://app.compliancedb.com</p></td>
 </tr>
