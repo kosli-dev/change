@@ -71,6 +71,8 @@ Still need to create Merkelypipe.json file(s) in root dir.
 Parked...
 =========
 
+builders could be implemented using __init_subclass__
+
 Should declare_merkely_pipeline go at very start of main.yml
 Even before building and pushing the image?
 
