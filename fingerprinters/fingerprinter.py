@@ -1,16 +1,35 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class Fingerprinter(ABC):
 
-    def handles_protocol(self, string):  # pragma: no cover
-        raise NotImplementedError()
+    @abstractmethod
+    def handles_protocol(self, string):
+        """
+        Returns True iff string starts with the class's protocol.
+        """
+        pass
 
-    def artifact_name(self, string):  # pragma: no cover
-        raise NotImplementedError()
+    @abstractmethod
+    def artifact_name(self, string):
+        """
+        Returns the artifact_name from after the protocol string.
+        Raises if handles_protocol(string) is False.
+        """
+        pass
 
-    def artifact_basename(self, string):  # pragma: no cover
-        raise NotImplementedError()
+    @abstractmethod
+    def artifact_basename(self, string):
+        """
+        Returns the artifact_basename from after the protocol string.
+        Raises if handles_protocol(string) is False.
+        """
+        pass
 
-    def sha(self, protocol, artifact_name):  # pragma: no cover
-        raise NotImplementedError()
+    @abstractmethod
+    def sha(self, protocol, artifact_name):
+        """
+        Returns the sha for the artifact_name.
+        Raises if handles_protocol(string) is False.
+        """
+        pass
