@@ -57,7 +57,7 @@ class LogTest(Command):
             }
         }
         if user_data is not None:
-            payload["user_data"]: user_data
+            payload["user_data"] = user_data
 
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         http_put_payload(url, payload, self.api_token.value)

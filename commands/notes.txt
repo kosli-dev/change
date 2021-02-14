@@ -37,8 +37,9 @@ log_test       ===> log_junit_xml_evidence
 log_deployment ===> log_image_registry_push
      Words: deployment is something different to me, eg of an image to staging so its _runnable_ somewhere
 log_approval   ===> log_release_approval
-     We may want approval of different things/steps?
-control_deployment ==> ???? but feels too generic ????
+     Will we want approval of different things/steps?  What exactly is this approving?
+control_deployment ==> ????
+     Feels too generic ????
 
 
 In main.yml
@@ -49,13 +50,16 @@ In main.yml
 - name: Log image deployment to Merkely     - name: Merkely: Log Event: Docker image pushed to dockerhub registry.
 - name: Run tests                           - name: Run tests
 - name: Log test results to Merkely         - name: Merkely: Log Evidence: JUnit xml test summary.
-- name: Log coverage evidence to Merkely    - name: Merkely: Log Evidence: JUnit coverage
+- name: Log coverage evidence to Merkely    - name: Merkely: Log Evidence: JUnit coverage summary.
+
 
 It feels like this wants to be more interleaved but can't be at present
 because you have to build and push an image before you can gets its digest.
 Presumably if we created our own private image registry we could push images
 to it (temporarily?) and get their digest.
 
+Is there a difference (compliance wise) between the JUnit xml test summary
+and the JUnit coverage summary?
 
 Still need to create Merkelypipe.json file(s) in root dir.
 
