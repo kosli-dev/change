@@ -14,5 +14,5 @@ from .log_evidence import LogEvidence
 from .log_approval import LogApproval
 from .log_test import LogTest
 
-from .command_builder import build_command, COMMANDS
+from .builder import build_command, COMMANDS
 from .runner import run, main
