@@ -8,7 +8,7 @@ Used in loan-calculator?
 YES----------------------------------------Makefile---------Tests------------------------------------
 FROM                    TO                 Target    docs   ALL-EVS   ONLY-REQ-EVS   MISSING-REQ-EVS
 put_pipeline            declare_pipeline   yes       wip    yes       N/A            no
-create_release          log_approval       no        wip    yes       no             no
+create_release          log_approval       yes       wip    yes       no             no
 control_junit           log_test           yes       wip    no        no             no
 put_artifact_image      log_artifact       yes       wip    yes       no             yes
 create_deployment       log_deployment     yes       wip    yes       no             no
@@ -26,7 +26,6 @@ Makefile target=control_and_publish_junit_results
 cdb.control_junit
 
 
-
 Command Names:?
 ---------------
 log_evidence   ===> log_generic_evidence?
@@ -40,6 +39,8 @@ log_approval   ===> log_release_approval
      Will we want approval of different things/steps?  What exactly is this approving?
 control_deployment ==> ????
      Feels too generic ????
+
+
 
 
 In main.yml

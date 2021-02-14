@@ -292,6 +292,21 @@ merkely_log_test:
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 		${IMAGE}
 
+
+merkely_log_approval:
+	docker run \
+		--env MERKELY_COMMAND=log_approval \
+		--env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
+		--env MERKELY_TARGET_SRC_COMMITISH=${MERKELY_TARGET_SRC_COMMITISH} \
+		--env MERKELY_BASE_SRC_COMMITISH=${MERKELY_BASE_SRC_COMMITISH} \
+		--env MERKELY_DESCRIPTION=${MERKELY_DESCRIPTION} \
+		--env MERKELY_SRC_REPO_ROOT=${MERKELY_SRC_REPO_ROOT} \
+		--rm \
+		--volume=/var/run/docker.sock:/var/run/docker.sock \
+		--volume ${PWD}:/src \
+		--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+		${IMAGE}
+
 # - - - - - - - - - - - - - - - - - - - -
 # CDB Commands
 

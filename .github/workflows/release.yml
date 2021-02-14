@@ -16,26 +16,38 @@ jobs:
           # fetch full history
           fetch-depth: 0
 
-      - name: Get the tagged image name
-        id: tagged_image
-        run: |
-          echo ::set-output name=value::merkely/change:sha-$(git log -1 --pretty=%h)
-
       - name: Create approval in compliancedb, update latest docker image and git branch
         env:
-          CDB_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
-          CDB_ARTIFACT_DOCKER_IMAGE: merkely/change:latest
-          CDB_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
-          CDB_BASE_SRC_COMMITISH: "origin/latest"
-          CDB_RELEASE_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
+          #CDB_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
+          #CDB_ARTIFACT_DOCKER_IMAGE: merkely/change:latest
+          #CDB_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
+          #CDB_BASE_SRC_COMMITISH: "origin/latest"
+          #CDB_RELEASE_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
+
+          IMAGE: merkely/change
+          MERKELY_FINGERPRINT: docker://${IMAGE}:latest
+          MERKELY_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
+          MERKELY_BASE_SRC_COMMITISH: "origin/latest"
+          MERKELY_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
+          MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
+
         run: |
-          export DOCKER_TAG=sha-$(git rev-parse --short=7 HEAD)
-          docker pull merkely/change:$DOCKER_TAG
-          docker tag merkely/change:$DOCKER_TAG $CDB_ARTIFACT_DOCKER_IMAGE
+          #export DOCKER_TAG=sha-$(git rev-parse --short=7 HEAD)
+          #docker pull merkely/change:$DOCKER_TAG
+          #docker tag merkely/change:$DOCKER_TAG $CDB_ARTIFACT_DOCKER_IMAGE
+          #docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
+          #docker push $CDB_ARTIFACT_DOCKER_IMAGE
+          #git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
+          #make create_release
+
+          export TAG=sha-$(git rev-parse --short=7 HEAD)
+          docker pull ${IMAGE}:${TAG}
+          docker tag ${IMAGE}:${TAG} ${IMAGE}:latest
           docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
-          docker push $CDB_ARTIFACT_DOCKER_IMAGE
+          docker push ${IMAGE}:latest
           git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
-          make create_release
+          make log_approval
+
           # Merge latest -> master
           git checkout latest
           git merge --ff-only ${GITHUB_SHA}
@@ -43,11 +55,22 @@ jobs:
 
       - name: Create the deployment in ComplianceDB
         env:
-          CDB_HOST: https://app.compliancedb.com
-          CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
-          CDB_ARTIFACT_DOCKER_IMAGE: merkely/change:latest
-          CDB_CI_BUILD_URL: https://github.com/merkely/change/actions/runs/${GITHUB_RUN_ID}
-          CDB_ENVIRONMENT: "docker_hub"
-          CDB_DESCRIPTION: "Deployment of merkely/change:latest to docker hub"
+          #CDB_HOST: https://app.compliancedb.com
+          #CDB_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
+          #CDB_ARTIFACT_DOCKER_IMAGE: merkely/change:latest
+          #CDB_CI_BUILD_URL: https://github.com/merkely/change/actions/runs/${GITHUB_RUN_ID}
+          #CDB_ENVIRONMENT: "docker_hub"
+          #CDB_DESCRIPTION: "Deployment of merkely/change:latest to docker hub"
+
+          IMAGE: merkely/change
+          TAG: latest
+          MERKELY_COMMAND: log_deployment
+          MERKELY_FINGERPRINT: docker://${IMAGE}:${TAG}
+          MERKELY_CI_BUILD_URL: https://github.com/merkely/change/actions/runs/${GITHUB_RUN_ID}
+          MERKELY_DESCRIPTION: "Deployment of ${IMAGE}:${TAG} to docker hub"
+          MERKELY_ENVIRONMENT: "docker_hub"
+          MERKELY_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
+
         run: |
-          make create_deployment
+          #make create_deployment
+          make log_deployment
