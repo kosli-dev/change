@@ -18,13 +18,8 @@ class FingerprintEnvVar(RequiredEnvVar):
     @property
     def value(self):
         super().value
-        self.protocol
         self.artifact_name
         return self.string
-
-    @property
-    def protocol(self):
-        return self.__fingerprinter.protocol
 
     @property
     def artifact_name(self):

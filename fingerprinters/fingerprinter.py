@@ -3,10 +3,6 @@ from abc import ABC
 
 class Fingerprinter(ABC):
 
-    @property
-    def protocol(self):  # pragma: no cover
-        raise NotImplementedError()
-
     def handles_protocol(self, string):  # pragma: no cover
         raise NotImplementedError()
 

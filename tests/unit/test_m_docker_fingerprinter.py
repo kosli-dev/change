@@ -7,7 +7,6 @@ DOCKER_PROTOCOL = "docker://"
 
 def test_handles_only_its_own_protocol():
     fingerprinter = DockerFingerprinter()
-    assert fingerprinter.protocol == DOCKER_PROTOCOL
     assert fingerprinter.handles_protocol(DOCKER_PROTOCOL)
     assert not fingerprinter.handles_protocol('X'+DOCKER_PROTOCOL)
 

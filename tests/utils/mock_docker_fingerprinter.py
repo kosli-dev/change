@@ -13,8 +13,7 @@ class MockDockerFingerprinter(DockerFingerprinter):
 
     def sha(self, string):
         self.__called = True
-        assert self.handles_protocol(string)
-        image_name = string[len(self.protocol):]
+        image_name = self.artifact_name(string)
         if image_name == self.__expected:
             return self.__digest
         else:

@@ -7,7 +7,6 @@ FILE_PROTOCOL = "file://"
 
 def test_handles_only_its_own_protocol():
     fingerprinter = FileFingerprinter()
-    assert fingerprinter.protocol == FILE_PROTOCOL
     assert fingerprinter.handles_protocol(FILE_PROTOCOL)
     assert not fingerprinter.handles_protocol('X'+FILE_PROTOCOL)
 

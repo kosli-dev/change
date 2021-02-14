@@ -13,8 +13,7 @@ class MockFileFingerprinter(FileFingerprinter):
 
     def sha(self, string):
         self.__called = True
-        assert self.handles_protocol(string)
-        pathed_filename = string[len(self.protocol):]
+        pathed_filename = self.artifact_name(string)
         if pathed_filename == self.__expected:
             return self.__digest
         else:

@@ -11,7 +11,6 @@ def test_docker_protocol_properties():
     image_name = "acme/road-runner:4.5"
     fingerprint = f"{protocol}{image_name}"
     ev = make_fingerprint_env_var(fingerprint)
-    assert ev.protocol == protocol
     assert ev.artifact_name == image_name
     assert ev.artifact_basename == image_name
 
@@ -21,7 +20,6 @@ def test_file_protocol__file_in_root_dir_properties():
     filename = "jam.jar"
     fingerprint = f"{protocol}{filename}"
     ev = make_fingerprint_env_var(fingerprint)
-    assert ev.protocol == protocol
     assert ev.artifact_name == filename
     assert ev.artifact_basename == filename
 
@@ -32,7 +30,6 @@ def test_file_protocol__file_in_sub_dir_properties():
     directory = "/user/data"
     fingerprint = f"{protocol}{directory}/{filename}"
     ev = make_fingerprint_env_var(fingerprint)
-    assert ev.protocol == protocol
     assert ev.artifact_name == f"{directory}/{filename}"
     assert ev.artifact_basename == filename
 
@@ -47,7 +44,6 @@ def test_unknown_protocol__all_properties_raise():
 
     for protocol in ['ash256://', 'not_even_a_colon']:
         assert_raises(protocol, 'value')
-        assert_raises(protocol, 'protocol')
         assert_raises(protocol, 'sha')
         assert_raises(protocol, 'artifact_name')
 

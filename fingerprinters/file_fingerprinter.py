@@ -19,10 +19,6 @@ class FileFingerprinter(Fingerprinter):
             '    ...',
         ])
 
-    @property
-    def protocol(self):
-        return PROTOCOL
-
     def handles_protocol(self, string):
         return string.startswith(PROTOCOL)
 
