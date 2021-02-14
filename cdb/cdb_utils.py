@@ -160,7 +160,7 @@ def build_evidence_dict(is_compliant, evidence_type, description, build_url, use
         "description": ""
     }}
     if user_data is not None:
-        evidence["user_data"]: user_data
+        evidence["user_data"] = user_data
     evidence["contents"]["description"] = description
     evidence["contents"]["url"] = build_url
     return evidence
