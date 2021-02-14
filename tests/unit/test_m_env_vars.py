@@ -1,4 +1,4 @@
-from commands import LogEvidenceCommand, Context
+from commands import LogEvidence, Context
 from env_vars import RequiredEnvVar
 
 from collections import namedtuple
@@ -78,7 +78,7 @@ def test_env_vars():
         "MERKELY_IS_COMPLIANT": "TRUE",
     }
     context = Context(env)
-    command = LogEvidenceCommand(context)
+    command = LogEvidence(context)
     env_vars = command.env_vars
 
     assert env_vars.api_token.value == api_token

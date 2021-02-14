@@ -6,13 +6,13 @@ from .context import Context
 
 from .command import Command
 
-from .declare_pipeline_command import DeclarePipelineCommand
-from .log_artifact_command import LogArtifactCommand
-from .log_deployment_command import LogDeploymentCommand
-from .log_evidence_command import LogEvidenceCommand
-from .log_approval_command import LogApprovalCommand
-from .control_deployment_command import ControlDeploymentCommand
-from .log_test_command import LogTestCommand
+from .declare_pipeline import DeclarePipeline
+from .control_deployment import ControlDeployment
+from .log_artifact import LogArtifact
+from .log_deployment import LogDeployment
+from .log_evidence import LogEvidence
+from .log_approval import LogApproval
+from .log_test import LogTest
 
 from .command_builder import build_command, COMMANDS
 from .runner import run, main

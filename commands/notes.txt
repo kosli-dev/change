@@ -25,10 +25,35 @@ control_junit
 Makefile target=control_and_publish_junit_results
 cdb.control_junit
 
+
+
+Command Names:?
+---------------
+log_evidence   ===> log_generic_evidence?
+     I presume the evidence_type env-var must match Merkelypipe.json "template"
+     Could we find a name based on that?
+log_test       ===> log_junit_xml_evidence
+     Also has an evidence_type env-var. Same question.
+log_deployment ===> log_image_registry_push
+     main.yml says "Log image deployment to Merkely" but to me
+     deployment is something difference, eg of an image to staging so its _runnable_ somewhere
+     Change text to "Log image pushed to Registry in Merkely"
+log_approval   ===> log_release_approval
+     We may want approval of different things/steps?
+control_deployment ==> ???? but feels too generic ????
+
+
+Presumably if we created our own private image registry
+we could push images to it (temporarily?) so that we
+could get their digest. This would remove an ordering constraint.
+
+Still need to create Merkelypipe.json file(s) in root dir.
+
+
 Parked...
 
-Should declare_merkely_pipeline go at very start of main.yml ?
-Even before building and pushing the image.
+Should declare_merkely_pipeline go at very start of main.yml
+Even before building and pushing the image?
 
 
 main.yml has this (at the end)

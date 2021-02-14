@@ -3,7 +3,7 @@ from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
 
-class LogArtifactCommand(Command):
+class LogArtifact(Command):
 
     @property
     def summary(self):

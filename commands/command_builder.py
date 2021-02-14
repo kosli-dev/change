@@ -1,13 +1,13 @@
 from commands import *
 
 COMMANDS = {
-    "declare_pipeline": DeclarePipelineCommand,
-    "log_artifact": LogArtifactCommand,
-    "log_deployment": LogDeploymentCommand,
-    "log_evidence": LogEvidenceCommand,
-    "log_approval": LogApprovalCommand,
-    "log_test": LogTestCommand,
-    "control_deployment": ControlDeploymentCommand,
+    "declare_pipeline": DeclarePipeline,
+    "log_artifact": LogArtifact,
+    "log_deployment": LogDeployment,
+    "log_evidence": LogEvidence,
+    "log_approval": LogApproval,
+    "log_test": LogTest,
+    "control_deployment": ControlDeployment,
 }
 
 

@@ -1,14 +1,15 @@
-from commands import Command, load_json
-from env_vars import UserDataEnvVar
+from commands import Command
+from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
+from cdb.git import list_commits_between, repo_at
 
 
-class LogDeploymentCommand(Command):
+class LogApproval(Command):
 
     @property
     def summary(self):
-        return "Logs a deployment in Merkely."
+        return ""
 
     def invocation(self, type):
         def env(var):
@@ -29,41 +30,46 @@ class LogDeploymentCommand(Command):
                 invocation_string += env(var)
 
         invocation_string += "    --rm \\\n"
+        invocation_string += "    --volume ${PWD}:/src \\\n"
         invocation_string += "    --volume /var/run/docker.sock:/var/run/docker.sock \\\n"
         invocation_string += "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\\n"
         invocation_string += "    merkely/change"
         return invocation_string
 
     def __call__(self):
+        commit_list = list_commits_between(repo_at(self.src_repo_root.value),
+                                           self.target_src_commitish.value,
+                                           self.base_src_commitish.value)
         payload = {
-            "artifact_sha256": self.fingerprint.sha,
-            "build_url": self.ci_build_url.value,
+            "base_artifact": self.fingerprint.sha,
             "description": self.description.value,
-            "environment": self.environment.value,
-            "user_data": self.user_data.value
+            "target_artifact": self.fingerprint.sha,
+            "src_commit_list": commit_list,
         }
-        url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
+        url = ApiSchema.url_for_releases(self.host.value, self.merkelypipe)
         http_post_payload(url, payload, self.api_token.value)
         return 'Posting', url, payload
 
     @property
-    def ci_build_url(self):
-        notes = "A url for the deployment."
-        return self._required_env_var('CI_BUILD_URL', notes)
-
-    @property
     def description(self):
-        notes = "A description for the deployment."
-        return self._required_env_var('DESCRIPTION', notes)
+        notes = f"A description for the approval."
+        return self._required_env_var("DESCRIPTION", notes)
 
     @property
-    def environment(self):
-        notes = "The name of the environment the artifact is being deployed to."
-        return self._required_env_var('ENVIRONMENT', notes)
+    def target_src_commitish(self):
+        notes = "The source commit-ish for the oldest change in the approval."
+        return self._required_env_var("TARGET_SRC_COMMITISH", notes)
 
     @property
-    def user_data(self):
-        return UserDataEnvVar(self._env)
+    def base_src_commitish(self):
+        notes = "The source commit-ish for the oldest change in the approval."
+        return self._required_env_var("BASE_SRC_COMMITISH", notes)
+
+    @property
+    def src_repo_root(self):
+        default = "/src/"
+        notes = f"The path where the source git repository is volume-mounted. Defaults to `{default}`"
+        return self._static_defaulted_env_var("SRC_REPO_ROOT", default, notes)
 
     @property
     def _env_var_names(self):
@@ -71,10 +77,10 @@ class LogDeploymentCommand(Command):
         return [
             'name',
             'fingerprint',
-            'ci_build_url',
+            'target_src_commitish',
+            'base_src_commitish',
             'description',
-            'environment',
-            'user_data',
+            'src_repo_root',
             'api_token',
             'host',
         ]

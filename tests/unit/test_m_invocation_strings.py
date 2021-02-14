@@ -3,13 +3,13 @@ from commands import *
 
 def test_invocation_strings():
     command_klasses = [
-        DeclarePipelineCommand,
-        ControlDeploymentCommand,
-        LogApprovalCommand,
-        LogArtifactCommand,
-        LogDeploymentCommand,
-        LogEvidenceCommand,
-        LogTestCommand,
+        DeclarePipeline,
+        ControlDeployment,
+        LogApproval,
+        LogArtifact,
+        LogDeployment,
+        LogEvidence,
+        LogTest,
     ]
     for klass in command_klasses:
         context = Context(new_log_approval_env())
