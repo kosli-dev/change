@@ -237,6 +237,7 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_error_xml(capsys):
 
 
 def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys):
+    # Uses all optional env vars
     # Uses CDB_TEST_RESULTS_DIR == /app/tests/data/control_junit/xml-with-passed-results
     # which exists. Results in message
     # "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites"
@@ -249,7 +250,8 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys):
         "CDB_ARTIFACT_SHA": sha256,
         "CDB_TEST_RESULTS_DIR": "/app/tests/data/control_junit/xml-with-passed-results",
         "CDB_EVIDENCE_TYPE": evidence_type,
-        "CDB_CI_BUILD_URL": build_url
+        "CDB_CI_BUILD_URL": build_url,
+        "CDB_USER_DATA": "/app/tests/data/user_data.json"  # optional
     }
     set_env_vars = {}
     with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
