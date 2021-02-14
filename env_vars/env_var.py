@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class EnvVar(ABC):
@@ -67,18 +67,18 @@ class EnvVar(ABC):
         return self.__example
 
     @property
-    def is_required(self):  # pragma: no cover
+    @abstractmethod
+    def is_required(self):
         """
         Returns True or False.
         Used in living documentation. Never raises.
         """
-        raise NotImplementedError(self.name)
 
     @property
-    def value(self):  # pragma: no cover
+    @abstractmethod
+    def value(self):
         """
         Subclasses must raise if their value is invalid.
         run() validates its command by getting the value property
         of each command's env-var.
         """
-        raise NotImplementedError(self.name)

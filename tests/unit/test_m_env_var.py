@@ -7,30 +7,38 @@ NOTES = "A favourite Author"
 OS_ENV = {}
 
 def test_name_as_set_in_ctor():
-    ev = EnvVar(OS_ENV, NAME, NOTES)
+    ev = Example(OS_ENV, NAME, NOTES)
     assert ev.name == 'MERKELY_'+NAME
 
 
 def test_notes_as_set_in_ctor():
-    ev = EnvVar(OS_ENV, NAME, NOTES)
+    ev = Example(OS_ENV, NAME, NOTES)
     assert ev.notes == NOTES
 
 
 def test_no_name_is_programmer_error():
     with raises(AssertionError):
-        ev = EnvVar(OS_ENV, None, NOTES)
+        ev = Example(OS_ENV, None, NOTES)
 
 
 def test_empty_name_is_programmer_error():
     with raises(AssertionError):
-        ev = EnvVar(OS_ENV, "", NOTES)
+        ev = Example(OS_ENV, "", NOTES)
 
 
 def test_no_notes_is_programmer_error():
     with raises(AssertionError):
-        ev = EnvVar(OS_ENV, NAME, None)
+        ev = Example(OS_ENV, NAME, None)
 
 
 def test_empty_notes_is_programmer_error():
     with raises(AssertionError):
-        ev = EnvVar(OS_ENV, NAME, "")
+        ev = Example(OS_ENV, NAME, "")
+
+
+class Example(EnvVar):
+    def value(self):
+        pass
+
+    def is_required(self):
+        return True
