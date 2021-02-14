@@ -1,4 +1,10 @@
 Docker Fingerprint
 ==================
 
-.. describe_fingerprint:: docker_fingerprinter
+Notes
+-----
+.. describe_fingerprint:: docker_fingerprinter notes
+
+Example
+-------
+.. describe_fingerprint:: docker_fingerprinter example

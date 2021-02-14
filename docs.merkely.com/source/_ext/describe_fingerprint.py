@@ -10,7 +10,19 @@ class DescribeFingerprint(Directive):
     def run(self):
         args = self.content[0].split()
         name = args[0]
-        return [nodes.paragraph(text=build_fingerprinter(name).notes)]
+        description_type = args[1]
+        if description_type == "notes":
+            return notes(name)
+        if description_type == "example":
+            return example(name)
+
+
+def notes(name):
+    return [nodes.paragraph(text=build_fingerprinter(name).notes)]
+
+
+def example(name):
+    return [nodes.literal_block(text=build_fingerprinter(name).example)]
 
 
 def setup(app):

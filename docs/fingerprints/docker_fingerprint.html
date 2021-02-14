@@ -117,7 +117,19 @@
       
   <div class="section" id="docker-fingerprint">
 <h1>Docker Fingerprint<a class="headerlink" href="#docker-fingerprint" title="Permalink to this headline">¶</a></h1>
-<p>The string `docker://` followed by the name+tag of the docker image to fingerprint.The docker socket must be volume-mounted.Example:docker run … \    –env MERKELY_FINGERPRINT=”docker://${YOUR_DOCKER_IMAGE_AND_TAG}” \    –volume /var/run/docker.sock:/var/run/docker.sock \    …</p>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<p>The string `docker://` followed by the name+tag of the docker image to fingerprint. The docker socket must be volume-mounted. The image must have been pushed to a registry.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run ... \
+    --env MERKELY_FINGERPRINT=”docker://${YOUR_DOCKER_IMAGE_AND_TAG}&quot; \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    ...
+</pre></div>
+</div>
+</div>
 </div>
 
 

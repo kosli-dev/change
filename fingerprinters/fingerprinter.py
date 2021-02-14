@@ -3,6 +3,18 @@ from abc import ABC, abstractmethod
 
 class Fingerprinter(ABC):
 
+    @property
+    @abstractmethod
+    def notes(self):
+        """
+        """
+
+    @property
+    @abstractmethod
+    def example(self):
+        """
+        """
+
     @abstractmethod
     def handles_protocol(self, string):
         """

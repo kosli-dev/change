@@ -4,9 +4,12 @@ import re
 
 PROTOCOL = 'sha256://'
 
-NOTES = "".join([
-    f"The string `{PROTOCOL}` followed by the artifact's 64 character sha256, then `/`, then it's non-empty name."
-    'Example:',
+NOTES = " ".join([
+    f"The string `{PROTOCOL}` followed by the artifact's 64 character sha256, ',"
+    "then `/`, then it's non-empty name."
+])
+
+EXAMPLE = "\n".join([
     'docker run ... \\',
     f'    --env MERKELY_FINGERPRINT=”{PROTOCOL}${{YOUR_ARTIFACT_SHA256}}/${{YOUR_ARTIFACT_NAME}}” \\',
     '    ...',
@@ -18,6 +21,10 @@ class Sha256Fingerprinter(Fingerprinter):
     @property
     def notes(self):
         return NOTES
+
+    @property
+    def example(self):
+        return EXAMPLE
 
     def handles_protocol(self, string):
         return string.startswith(PROTOCOL)

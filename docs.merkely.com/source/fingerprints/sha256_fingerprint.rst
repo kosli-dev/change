@@ -1,4 +1,10 @@
 Sha256 Fingerprint
 ==================
 
-.. describe_fingerprint:: sha256_fingerprinter
+Notes
+-----
+.. describe_fingerprint:: sha256_fingerprinter notes
+
+Example
+-------
+.. describe_fingerprint:: sha256_fingerprinter example
