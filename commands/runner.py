@@ -1,10 +1,14 @@
-from commands import Context, build_command, CommandError
+from commands import build_command, Context, CommandError
 
 
 def run(env=None, docker_fingerprinter=None, file_fingerprinter=None):
+    name = env.get("MERKELY_COMMAND", None)
+    if name is None:
+        raise CommandError("MERKELY_COMMAND environment-variable is not set.")
+    print(f"MERKELY_COMMAND={name}")
+    klass = build_command(name)
     context = Context(env, docker_fingerprinter, file_fingerprinter)
-    command = build_command(context)
-    print(f"MERKELY_COMMAND={command.name.value}")
+    command = klass(context)
     command.check()
     return command()
 

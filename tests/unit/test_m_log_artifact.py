@@ -250,9 +250,10 @@ def test_each_required_env_var_missing(capsys):
 
 
 def make_command_env_vars():
+    klass = build_command('log_artifact')
     env = new_log_artifact_env()
     context = Context(env)
-    return build_command(context).env_vars
+    return klass(context).env_vars
 
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"

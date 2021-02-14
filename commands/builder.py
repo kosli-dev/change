@@ -11,10 +11,8 @@ COMMANDS = {
 }
 
 
-def build_command(context):
-    name = Command(context).name.value
+def build_command(name):
     klass = COMMANDS.get(name)
-    if klass is not None:
-        return klass(context)
-    else:
+    if klass is None:
         raise CommandError(f"Unknown command: {name}")
+    return klass
