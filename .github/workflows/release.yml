@@ -16,6 +16,11 @@ jobs:
           # fetch full history
           fetch-depth: 0
 
+    - name: Get untagged Docker image name
+      id: image
+      run: |
+        echo ::set-output name=value::merkely/change
+
       - name: Create approval in compliancedb, update latest docker image and git branch
         env:
           #CDB_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
@@ -24,8 +29,8 @@ jobs:
           #CDB_BASE_SRC_COMMITISH: "origin/latest"
           #CDB_RELEASE_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
 
-          IMAGE: merkely/change
-          MERKELY_FINGERPRINT: docker://${IMAGE}:latest
+          #IMAGE: merkely/change
+          MERKELY_FINGERPRINT: docker://${{ steps.image.outputs.value }}:latest
           MERKELY_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
           MERKELY_BASE_SRC_COMMITISH: "origin/latest"
           MERKELY_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
@@ -47,6 +52,7 @@ jobs:
           docker push ${IMAGE}:latest
           git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
           echo "MERKELY_FINGERPRINT=:${MERKELY_FINGERPRINT}:"
+
           make merkely_log_approval
 
           # Merge latest -> master
