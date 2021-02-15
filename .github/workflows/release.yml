@@ -32,6 +32,14 @@ jobs:
           MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
 
         run: |
+          #export DOCKER_TAG=sha-$(git rev-parse --short=7 HEAD)
+          #docker pull merkely/change:$DOCKER_TAG
+          #docker tag merkely/change:$DOCKER_TAG $CDB_ARTIFACT_DOCKER_IMAGE
+          #docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
+          #docker push $CDB_ARTIFACT_DOCKER_IMAGE
+          #git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
+          #make create_release
+
           export TAG=sha-$(git rev-parse --short=7 HEAD)
           docker pull ${IMAGE}:${TAG}
           docker tag ${IMAGE}:${TAG} ${IMAGE}:latest
