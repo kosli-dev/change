@@ -46,6 +46,7 @@ jobs:
           docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
           docker push ${IMAGE}:latest
           git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
+          echo "MERKELY_FINGERPRINT=:${MERKELY_FINGERPRINT}:"
           make merkely_log_approval
 
           # Merge latest -> master

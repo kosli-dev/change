@@ -8,7 +8,7 @@ Used in loan-calculator?
 YES----------------------------------------Makefile---------Tests------------------------------------
 FROM                    TO                 Target    docs   ALL-EVS   ONLY-REQ-EVS   MISSING-REQ-EVS
 put_pipeline            declare_pipeline   yes       wip    yes       N/A            no
-create_release          log_approval       yes       wip    yes       no             no
+create_release          log_approval       wip       wip    yes       no             no
 control_junit           log_test           yes       wip    yes       no             no
 put_artifact_image      log_artifact       yes       wip    yes       no             yes
 create_deployment       log_deployment     yes       wip    yes       no             no
