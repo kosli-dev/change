@@ -301,6 +301,7 @@ merkely_log_approval:
 		--env MERKELY_BASE_SRC_COMMITISH=${MERKELY_BASE_SRC_COMMITISH} \
 		--env MERKELY_DESCRIPTION="${MERKELY_DESCRIPTION}" \
 		--env MERKELY_SRC_REPO_ROOT=${MERKELY_SRC_REPO_ROOT} \
+		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--rm \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
 		--volume ${PWD}:/src \
