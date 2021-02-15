@@ -1,4 +1,5 @@
 from cdb.create_release import create_release
+from cdb.create_approval import create_approval
 from commands import run
 
 from tests.utils import *
@@ -28,12 +29,15 @@ def test_docker_image(capsys, mocker):
         "CDB_ARTIFACT_DOCKER_IMAGE": image_name,
         "CDB_BASE_SRC_COMMITISH": "production",
         "CDB_TARGET_SRC_COMMITISH": "master",
+        "CDB_DESCRIPTION": "The approval description here",
+        "CDB_IS_APPROVED_EXTERNALLY": "TRUE",
     }
     set_env_vars = {"CDB_ARTIFACT_SHA": sha256}
-    with dry_run(env, set_env_vars), ScopedDirCopier("/test_src", "/src"):
+    with dry_run(env, set_env_vars) as env, ScopedDirCopier("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         mocker.patch('cdb.create_release.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
-        create_release(f"{merkleypipe_dir}/{merkelypipe}")
+        create_approval(f"{merkleypipe_dir}/{merkelypipe}", env)
+
     verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
@@ -48,15 +52,15 @@ def test_docker_image(capsys, mocker):
     name = CDB_NAME
 
     expected_method = "Posting"
-    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/releases/"
+    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/approvals/"
     expected_payload = {
-        "base_artifact": sha256,
-        "description": "No description provided",
+        "artifact_sha256": sha256,
+        "description": "The approval description here",
+        "is_approved": True,
         "src_commit_list": [
             "8f5b384644eb83e7f2a6d9499539a077e7256b8b",
             "e0ad84e1a2464a9486e777c1ecde162edff930a9"
         ],
-        "target_artifact": sha256
     }
 
     # verify data from approved cdb text file
@@ -65,7 +69,6 @@ def test_docker_image(capsys, mocker):
     assert old_payload == expected_payload
 
     # make merkely call
-    protocol = "docker://"
     ev = new_log_approval_env()
     with dry_run(ev) as env:
         with ScopedDirCopier("/test_src", "/src"):
@@ -90,5 +93,5 @@ def new_log_approval_env():
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_TARGET_SRC_COMMITISH": "master",
         "MERKELY_BASE_SRC_COMMITISH": "production",
-        "MERKELY_DESCRIPTION": "No description provided"
+        "MERKELY_DESCRIPTION": "The approval description here",
     }

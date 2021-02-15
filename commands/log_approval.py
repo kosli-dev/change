@@ -1,5 +1,4 @@
 from commands import Command
-from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
 from cdb.git import list_commits_between, repo_at
@@ -41,12 +40,12 @@ class LogApproval(Command):
                                            self.target_src_commitish.value,
                                            self.base_src_commitish.value)
         payload = {
-            "base_artifact": self.fingerprint.sha,
+            "artifact_sha256": self.fingerprint.sha,
             "description": self.description.value,
-            "target_artifact": self.fingerprint.sha,
+            "is_approved": True,
             "src_commit_list": commit_list,
         }
-        url = ApiSchema.url_for_releases(self.host.value, self.merkelypipe)
+        url = ApiSchema.url_for_approvals(self.host.value, self.merkelypipe)
         http_post_payload(url, payload, self.api_token.value)
         return 'Posting', url, payload
 
