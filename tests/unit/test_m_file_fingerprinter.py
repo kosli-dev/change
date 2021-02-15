@@ -20,6 +20,12 @@ def test_non_empty_filename_properties():
     assert fingerprinter.artifact_basename(string) == basename
 
 
+def test_notes_and_example_docs_are_set():
+    fingerprinter = FileFingerprinter()
+    assert len(fingerprinter.notes) > 0
+    assert len(fingerprinter.example) > 0
+
+
 def test_empty_filename_raises():
     fingerprinter = FileFingerprinter()
     filename = ""
@@ -31,3 +37,4 @@ def test_empty_filename_raises():
 
     assert_raises('artifact_name')
     assert_raises('artifact_basename')
+    assert_raises('sha')

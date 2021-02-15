@@ -19,6 +19,12 @@ def test_non_empty_image_name_properties():
     assert fingerprinter.artifact_basename(string) == image_name
 
 
+def test_notes_and_example_docs_are_set():
+    fingerprinter = DockerFingerprinter()
+    assert len(fingerprinter.notes) > 0
+    assert len(fingerprinter.example) > 0
+
+
 def test_empty_image_name_raises():
     fingerprinter = DockerFingerprinter()
     image_name = ""
