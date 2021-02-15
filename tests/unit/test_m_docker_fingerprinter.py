@@ -30,3 +30,4 @@ def test_empty_image_name_raises():
 
     assert_raises('artifact_name')
     assert_raises('artifact_basename')
+    assert_raises('sha')
