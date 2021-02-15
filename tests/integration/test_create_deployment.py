@@ -133,11 +133,12 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys, mocker):
     build_url = "https://gitlab/build/1996"
     description = "branch coverage"
     user_data = {"x": 42}
+    cdb_env = "production"
     env = {
         "CDB_HOST": "https://app.compliancedb.com",  # optional
         "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
         "CDB_ARTIFACT_FILENAME": "some/artifact/file.txt",
-        "CDB_ENVIRONMENT": "production",
+        "CDB_ENVIRONMENT": cdb_env,
         "CDB_DESCRIPTION": description,  # optional
         "CDB_CI_BUILD_URL": build_url,  # optional
         "CDB_USER_DATA": "/some/file.json"  # optional
@@ -167,7 +168,7 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys, mocker):
         "artifact_sha256": sha256,
         "build_url": build_url,
         "description": description,
-        "environment": "production",
+        "environment": cdb_env,
         "user_data": user_data
     }
 

@@ -239,7 +239,7 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_error_xml(capsys):
     assert old_payload == expected_payload
 
 
-def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys):
+def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys, mocker):
     # Uses all optional env vars
     # Uses CDB_TEST_RESULTS_DIR == /app/tests/data/control_junit/xml-with-passed-results
     # which exists. Results in message
@@ -247,6 +247,7 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys):
     build_url = "https://gitlab/build/217"
     evidence_type = "coverage"
     sha256 = "b7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
+    user_data = {"username": "test_user"}
     env = {
         "CDB_HOST": "https://app.compliancedb.com",
         "CDB_API_TOKEN": "7100831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
@@ -254,10 +255,11 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys):
         "CDB_TEST_RESULTS_DIR": "/app/tests/data/control_junit/xml-with-passed-results",
         "CDB_EVIDENCE_TYPE": evidence_type,
         "CDB_CI_BUILD_URL": build_url,
-        "CDB_USER_DATA": "/app/tests/data/user_data.json"  # optional
+        "CDB_USER_DATA": "/some/file.json"  # optional
     }
     set_env_vars = {}
     with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+        mocker.patch('cdb.control_junit.load_user_data', return_value=user_data)
         control_junit("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -281,7 +283,7 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys):
             "url": build_url
         },
         "evidence_type": evidence_type,
-        "user_data": {"status": "deployed"}
+        "user_data": user_data
     }
 
     # verify data from approved cdb text file

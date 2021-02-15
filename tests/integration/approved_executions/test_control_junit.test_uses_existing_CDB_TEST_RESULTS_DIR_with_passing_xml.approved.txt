@@ -1,5 +1,5 @@
 Publish evidence to ComplianceDB
-{'evidence_type': 'coverage', 'contents': {'is_compliant': True, 'url': 'https://gitlab/build/217', 'description': 'JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites'}, 'user_data': {'status': 'deployed'}}
+{'evidence_type': 'coverage', 'contents': {'is_compliant': True, 'url': 'https://gitlab/build/217', 'description': 'JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites'}, 'user_data': {'username': 'test_user'}}
 Docker image digest found from environment variable
 IMAGE DIGEST: b7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef
 Putting this payload:
@@ -11,7 +11,7 @@ Putting this payload:
     },
     "evidence_type": "coverage",
     "user_data": {
-        "status": "deployed"
+        "username": "test_user"
     }
 }
 To this url: https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/b7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef
