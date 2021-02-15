@@ -16,10 +16,10 @@ jobs:
           # fetch full history
           fetch-depth: 0
 
-    - name: Get untagged Docker image name
-      id: image
-      run: |
-        echo ::set-output name=value::merkely/change
+      - name: Get untagged Docker image name
+        id: image
+        run: |
+          echo ::set-output name=value::merkely/change
 
       - name: Create approval in compliancedb, update latest docker image and git branch
         env:
