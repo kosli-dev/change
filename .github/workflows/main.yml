@@ -50,7 +50,11 @@ jobs:
       env:
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
-        make branch merkely_declare_pipeline
+        make --version
+        make --just-print branch
+        make branch
+        make --just-print merkely_declare_pipeline
+        make merkely_declare_pipeline
 
 
     - name: Log Docker image to Merkely
