@@ -71,6 +71,7 @@ It feels like this wants to be more interleaved but can't be because
 you have to build and push an image before you can gets its digest.
 Presumably if we created our own private image registry we could push images
 to it (temporarily?) and get their digest. Would this be an actual use case?
+Presumably not.
 
 Is there a difference (compliance wise) between the JUnit xml test summary
 and the JUnit coverage summary?
