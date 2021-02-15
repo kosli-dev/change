@@ -62,7 +62,7 @@ class LogApproval(Command):
 
     @property
     def base_src_commitish(self):
-        notes = "The source commit-ish for the oldest change in the approval."
+        notes = "The source commit-ish for the newest change in the approval."
         return self._required_env_var("BASE_SRC_COMMITISH", notes)
 
     @property
