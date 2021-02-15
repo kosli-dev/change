@@ -294,7 +294,6 @@ merkely_log_test:
 
 
 merkely_log_approval:
-	echo "MERKELY_FINGERPRINT=:${MERKELY_FINGERPRINT}:"
 	docker run \
 		--env MERKELY_COMMAND=log_approval \
 		--env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
