@@ -127,6 +127,7 @@
     --env MERKELY_TARGET_SRC_COMMITISH=&quot;${...}&quot; \
     --env MERKELY_BASE_SRC_COMMITISH=&quot;${...}&quot; \
     --env MERKELY_DESCRIPTION=&quot;${...}&quot; \
+    --env MERKELY_IS_APPROVED=&quot;${...}&quot; \
     --env MERKELY_SRC_REPO_ROOT=&quot;${...}&quot; \
     --env MERKELY_API_TOKEN=&quot;${...}&quot; \
     --env MERKELY_HOST=&quot;${...}&quot; \
@@ -168,15 +169,19 @@
 <td><p>yes</p></td>
 <td><p>A description for the approval.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
+<tr class="row-odd"><td><p>MERKELY_IS_APPROVED</p></td>
+<td><p>no</p></td>
+<td><p>Defaults to TRUE</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>
 <td><p>The path where the source git repository is volume-mounted. Defaults to `/src/` </p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
+<tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_HOST</p></td>
+<tr class="row-even"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
 <td><p>Defaults to https://app.compliancedb.com</p></td>
 </tr>

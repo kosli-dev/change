@@ -142,8 +142,9 @@
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
-<p>To make integration with Merkely easy to implement in devops pipelines we provide a docker image [LINK TO GITHUB REPO] merkely/change.  Using commands in this image you can define, log and control different aspects of your software delivery process automatically.</p>
-<p>For example, to declare the pipeline definition in Merkely we can use the command declare_pipeline [LINK TO COMMAND DOCUMENTATION] like so:</p>
+<p>To make integration with Merkely easy to implement in devops pipelines we provide a docker image <a class="reference external" href="https://github.com/merkely-development/change">merkely/change</a>.  Using commands in this image you can define, log and control different aspects of your software delivery process automatically.</p>
+<p>For example, to declare the pipeline definition in Merkely we can use the command <a class="reference internal" href="../reference/declare_pipeline.html#declare-pipeline"><span class="std std-ref">declare_pipeline</span></a>
+like so:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_API_TOKEN=&quot;${...}&quot; \
     --env MERKELY_COMMAND=&quot;declare_pipeline&quot; \
