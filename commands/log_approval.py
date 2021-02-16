@@ -1,7 +1,8 @@
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
-from cdb.git import list_commits_between, repo_at
+from cdb.git import list_commits_between
+from pygit2 import Repository, _pygit2
 
 
 class LogApproval(Command):
@@ -66,7 +67,7 @@ class LogApproval(Command):
 
     @property
     def src_repo_root(self):
-        default = "/src/"
+        default = "/src"
         notes = " ".join([
             "The path where the source git repository is volume-mounted.",
             f"Defaults to `{default}`",
@@ -94,3 +95,12 @@ class LogApproval(Command):
             'api_token',
             'host',
         ]
+
+
+def repo_at(root):
+    try:
+        repo = Repository(root + '/.git')
+    except _pygit2.GitError as err:
+        print("Error: " + str(err))
+        return None
+    return repo
