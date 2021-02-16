@@ -1,7 +1,8 @@
 Getting pull requests from https://api.bitbucket.org/2.0/repositories/test_project/test_repo/commit/12037940e4e7503055d8a8eea87e177f04f14616/pullrequests
-Pull requests response: {'values': [{'links': {'self': {'href': 'test_self_uri', 'name': 'test_self'}, 'html': {'href': 'test_html_uri', 'name': 'test_html'}}, 'id': '1', 'title': 'test pull request'}], 'state': 'OPEN', 'participants': [{'approved': True, 'state': 'approved', 'user': {'display_name': 'test_username'}}]}
-Found pull request info: [{'pullRequestMergeCommit': '12037940e4e7503055d8a8eea87e177f04f14616', 'pullRequestURL': 'test_html_uri', 'pullRequestState': 'OPEN', 'approvers': 'test_username'}]
-{'evidence_type': 'pull_request', 'contents': {'is_compliant': True, 'url': 'https://bitbucket.org/test_project/test_repo', 'description': 'Bitbucket pull request', 'source': [{'pullRequestMergeCommit': '12037940e4e7503055d8a8eea87e177f04f14616', 'pullRequestURL': 'test_html_uri', 'pullRequestState': 'OPEN', 'approvers': 'test_username'}]}}
+Pull requests response: {'values': [{'links': {'self': {'href': 'test_self_uri', 'name': 'test_self'}, 'html': {'href': 'test_html_uri', 'name': 'test_html'}}, 'id': '1', 'title': 'test pull request'}], 'state': 'OPEN', 'participants': []}
+No approvers found
+Found pull request info: [{'pullRequestMergeCommit': '12037940e4e7503055d8a8eea87e177f04f14616', 'pullRequestURL': 'test_html_uri', 'pullRequestState': 'OPEN'}]
+{'evidence_type': 'pull_request', 'contents': {'is_compliant': True, 'url': 'https://bitbucket.org/test_project/test_repo', 'description': 'Bitbucket pull request', 'source': [{'pullRequestMergeCommit': '12037940e4e7503055d8a8eea87e177f04f14616', 'pullRequestURL': 'test_html_uri', 'pullRequestState': 'OPEN'}]}}
 Docker image digest found from environment variable
 IMAGE DIGEST: b7cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef
 Putting this payload:
@@ -11,7 +12,6 @@ Putting this payload:
         "is_compliant": true,
         "source": [
             {
-                "approvers": "test_username",
                 "pullRequestMergeCommit": "12037940e4e7503055d8a8eea87e177f04f14616",
                 "pullRequestState": "OPEN",
                 "pullRequestURL": "test_html_uri"
