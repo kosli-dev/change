@@ -39,7 +39,7 @@ class LogTest(Command):
         # 1) junit_results_dir was read from ev CDB_TEST_RESULTS_DIR
         #       with '/data/junit/' as a default
         #    The merkely_log_test makefile target now does this
-        # 		--volume ${MERKELY_TEST_RESULTS_FILE}:/data/junit/junit.xml \
+        # 		--volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml \
         # 2) user_data was read from ev CDB_USER_DATA
         #       as json with None as default
         #    No equivalent env-var for that yet.
