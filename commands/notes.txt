@@ -23,7 +23,8 @@ create_release          request_approval   no        no     no        no        
 
 
 LogApproval() command
-Is it based on cdb.create_approval()
+---------------------
+Is it based on cdb.create_approval()?
 {
     "artifact_sha256": "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
     "description": "The approval description here",
@@ -33,7 +34,19 @@ Is it based on cdb.create_approval()
         "e0ad84e1a2464a9486e777c1ecde162edff930a9"
     ]
 }
-or based on cdb.create_release()
+or based on cdb.create_release()?
+{
+    "target_artifact": "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
+    "base_artifact": "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
+    "description": "No description provided",
+    "src_commit_list": [
+        "8f5b384644eb83e7f2a6d9499539a077e7256b8b",
+        "e0ad84e1a2464a9486e777c1ecde162edff930a9"
+    ],
+}
+Note: these shas are always the same?
+
+If the former, do we need a command for create_release()
 
 
 
