@@ -1,28 +1,54 @@
 from cdb.bitbucket import put_bitbucket_pull_request
-
-from tests.utils import ScopedEnvVars, CDB_DRY_RUN, verify_approval
+from tests.utils import *
 import pytest
 
+
+# This object is used to mock API response from Bitbucket API's GET/pullrequests endpoint
 mocked_bitbucket_pull_requests_api_response = {
-    "values": {
-        "links": {
-            "self": {"href": "test_self_uri", "name": "test_self"},
-            "html": {"href": "test_html_uri", "name": "test_html"},
-            "commits": {"href": "test_commit_uri", "name": "test_commits"},
-            "approve": {"href": "test_approve_uri", "name": "test_approve"},
-            "diff": {"href": "test_diff_uri", "name": "test_diff"},
-            "diffstat": {"href": "test_diffstat_uri", "name": "test_diffstat"},
-            "comments": {"href": "test_comments_uri", "name": "test_comments"},
-            "activity": {"href": "test_activity_uri", "name": "test_activity"},
-            "merge": {"href": "test_merge_uri", "name": "test_merge"},
-            "decline": {"href": "test_decline_uri", "name": "test_decline"}
-        },
-        "id": "1",
-        "title": "test pull request"
-    }
+    "values": [{
+            "links": {
+                "self": {"href": "test_self_uri", "name": "test_self"},
+                "html": {"href": "test_html_uri", "name": "test_html"},
+                "commits": {"href": "test_commit_uri", "name": "test_commits"},
+                "approve": {"href": "test_approve_uri", "name": "test_approve"},
+                "diff": {"href": "test_diff_uri", "name": "test_diff"},
+                "diffstat": {"href": "test_diffstat_uri", "name": "test_diffstat"},
+                "comments": {"href": "test_comments_uri", "name": "test_comments"},
+                "activity": {"href": "test_activity_uri", "name": "test_activity"},
+                "merge": {"href": "test_merge_uri", "name": "test_merge"},
+                "decline": {"href": "test_decline_uri", "name": "test_decline"}
+            },
+            "id": "1",
+            "title": "test pull request",
+    }],
+    "state": "OPEN",
+    "participants": [
+        {
+            "role": "PARTICIPANT",
+            "approved": True,
+            "state": "approved",
+            "user": {
+                "display_name": "test_username"
+            }
+        }
+    ]
 }
 
-@pytest.mark.skip
+# This dict is used to mock return value of cdb_utils.load_project_configuration()
+test_pipefile= {
+    "name": "cdb-controls-test-pipeline",
+    "description": "Test Pipeline Controls for ComplianceDB",
+    "owner": "compliancedb",
+    "visibility": "public",
+    "template": [
+        "artifact",
+        "unit_test",
+        "coverage"
+    ]
+}
+
+
+# CDB_FORCE_COMPLIANT  CDB_FAIL_PIPELINE  CDB_HOST - optional
 def test_only_required_env_vars(capsys, mocker):
     env = {
         "CDB_API_TOKEN": "1239831f4ee3b79e7c5b7e0ebe75d67aa66e7aab",
@@ -35,10 +61,14 @@ def test_only_required_env_vars(capsys, mocker):
     }
 
     with ScopedEnvVars({**CDB_DRY_RUN, **env}):
-        mocker.patch('requests.get',
+        mocker.patch('cdb.bitbucket.requests.get',
                      return_value=MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response))
+        mocker.patch('cdb.bitbucket.json.loads', return_value=mocked_bitbucket_pull_requests_api_response)
+        mocker.patch('cdb.cdb_utils.load_project_configuration', return_value=test_pipefile)
         put_bitbucket_pull_request("tests/integration/test-pipefile.json")
+        mocker.stopall()
     verify_approval(capsys, ["out"])
+
 
 def test_exception_for_incomplete_bitbucket_api_resposne(capsys, mocker):
     # Test exception message(1) for get_pull_requests_from_bitbucket_api()
