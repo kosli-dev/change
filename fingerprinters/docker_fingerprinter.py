@@ -49,4 +49,8 @@ class DockerFingerprinter(Fingerprinter):
         client = docker.from_env()
         image = client.images.get(image_name)
         return image.attrs["RepoDigests"][0].split(":")[1]
+        # If the image name is incorrect you get an
+        # exception and a diagnostic on the terminal.
+        # For example, see
+        # https://github.com/merkely-development/loan-calculator/runs/1903030144?check_suite_focus=true
 
