@@ -1,4 +1,4 @@
-from commands import Command
+from commands import Command, CommandError
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
 from pygit2 import Repository, _pygit2
@@ -57,13 +57,15 @@ class LogApproval(Command):
 
     @property
     def target_src_commitish(self):
-        notes = "The source commit-ish for the oldest change in the approval."
+        notes = "The source commit-ish for the newest change in the approval."
         return self._required_env_var("TARGET_SRC_COMMITISH", notes)
+        #return self._required_env_var("NEWEST_SRC_COMMITISH", notes)
 
     @property
     def base_src_commitish(self):
-        notes = "The source commit-ish for the newest change in the approval."
+        notes = "The source commit-ish for the oldest change in the approval."
         return self._required_env_var("BASE_SRC_COMMITISH", notes)
+        #return self._required_env_var("OLDEST_SRC_COMMITISH", notes)
 
     @property
     def src_repo_root(self):
@@ -101,8 +103,7 @@ def repo_at(root):
     try:
         repo = Repository(root + '/.git')
     except _pygit2.GitError as err:
-        print("Error: " + str(err))
-        return None
+        raise CommandError(f"Error: {str(err)}")
     return repo
 
 

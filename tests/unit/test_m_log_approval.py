@@ -1,10 +1,9 @@
-from cdb.create_release import create_release
 from cdb.create_approval import create_approval
-from commands import run
+from commands import run, CommandError
 
 from tests.utils import *
-from tests.unit.test_git import TEST_REPO_ROOT
-import pytest
+from pytest import raises
+
 
 CDB_DOMAIN = "app.compliancedb.com"
 CDB_OWNER = "compliancedb"
@@ -80,6 +79,21 @@ def test_docker_image(capsys, mocker):
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
+
+
+def test_raises_when_src_repo_root_does_not_exist(capsys):
+    merkleypipe_dir = "tests/data"
+    merkelypipe = "test-pipefile.json"
+
+    # make merkely call
+    ev = new_log_approval_env()
+    with dry_run(ev) as env:
+        with scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
+            with raises(CommandError) as exc:
+                run(env, None, None)
+
+    silent(capsys)
+    assert str(exc.value) == "Error: Repository not found at /src/.git"
 
 
 def new_log_approval_env():
