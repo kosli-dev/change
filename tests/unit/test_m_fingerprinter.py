@@ -1,7 +1,18 @@
-from fingerprinters import Sha256Fingerprinter
+from commands import CommandError
+from fingerprinters import build_fingerprinter
 from tests.utils import *
+from pytest import raises
 
 SHA256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+
+
+def test_builder__raises_when_name_is_unknown():
+    with raises(CommandError):
+        build_fingerprinter('unknown')
+
+
+def test_builder_does_not_raises_when_name_is_known():
+    build_fingerprinter('docker_fingerprinter')
 
 
 def test_fingerprinter__docker_image_sha():

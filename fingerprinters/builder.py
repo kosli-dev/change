@@ -11,6 +11,6 @@ FINGERPRINTERS = {
 def build_fingerprinter(name):
     klass = FINGERPRINTERS.get(name)
     if klass is None:
-        return CommandError(f"Unknown fingerprinter: {name}")
+        raise CommandError(f"Unknown fingerprinter: {name}")
     else:
         return klass()
