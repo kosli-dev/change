@@ -21,34 +21,8 @@ control_bitbucket_pr    log_bitbucket_pr   no        no     no        no        
 create_release          request_approval   no        no     no        no             no
 
 
-Questions for Mike
-==================
-
-LogApproval() command
----------------------
-Is it supposed to be cdb.create_approval()? YES
-
-payload = {
-    "artifact_sha256": "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
-    "description": "The approval description here",
-    "is_approved": true,
-    "src_commit_list": [
-        "8f5b384644eb83e7f2a6d9499539a077e7256b8b",
-        "e0ad84e1a2464a9486e777c1ecde162edff930a9"
-    ]
-}
-
-or cdb.create_release()?
-
-payload = {
-    "target_artifact": "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
-    "base_artifact": "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
-    "description": "No description provided",
-    "src_commit_list": [
-        "8f5b384644eb83e7f2a6d9499539a077e7256b8b",
-        "e0ad84e1a2464a9486e777c1ecde162edff930a9"
-    ],
-}
+log_approval needs MERKELY_IS_APPROVED env-var (defaulting to True at present)
+is_compliant env-var is in Command.py base class. What uses it? Convert to MERKELY_IS_APPROVED
 
 
 Loan-calculator

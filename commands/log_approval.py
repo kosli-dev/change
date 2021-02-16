@@ -42,7 +42,7 @@ class LogApproval(Command):
         payload = {
             "artifact_sha256": self.fingerprint.sha,
             "description": self.description.value,
-            "is_approved": True,
+            "is_approved": True, # TODO: MERKELY_IS_APPROVED env-var
             "src_commit_list": commit_list,
         }
         url = ApiSchema.url_for_approvals(self.host.value, self.merkelypipe)
