@@ -94,4 +94,5 @@ def new_log_approval_env():
         "MERKELY_TARGET_SRC_COMMITISH": "master",
         "MERKELY_BASE_SRC_COMMITISH": "production",
         "MERKELY_DESCRIPTION": "The approval description here",
+        'MERKELY_IS_APPROVED': 'TRUE',
     }

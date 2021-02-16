@@ -42,7 +42,7 @@ class LogApproval(Command):
         payload = {
             "artifact_sha256": self.fingerprint.sha,
             "description": self.description.value,
-            "is_approved": True, # TODO: MERKELY_IS_APPROVED env-var
+            "is_approved": self.is_approved.value == 'TRUE',
             "src_commit_list": commit_list,
         }
         url = ApiSchema.url_for_approvals(self.host.value, self.merkelypipe)
@@ -75,6 +75,12 @@ class LogApproval(Command):
         return self._static_defaulted_env_var("SRC_REPO_ROOT", default, notes)
 
     @property
+    def is_approved(self):
+        default = 'TRUE'
+        notes = f"Defaults to {default}"
+        return self._static_defaulted_env_var("IS_APPROVED", default, notes)
+
+    @property
     def _env_var_names(self):
         # Print according to this order
         return [
@@ -83,6 +89,7 @@ class LogApproval(Command):
             'target_src_commitish',
             'base_src_commitish',
             'description',
+            'is_approved',
             'src_repo_root',
             'api_token',
             'host',
