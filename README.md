@@ -1,6 +1,6 @@
 # Merkely Pipeline Controls
 
-![Continuous Integration Status](https://github.com/merkely_development/change/workflows/CI/badge.svg)
+![Continuous Integration Status](https://github.com/merkely-development/change/workflows/CI/badge.svg)
 
 This docker image provides some helpers for gathering the audit trail and performing controls in your devops pipelines.
 
