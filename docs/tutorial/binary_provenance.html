@@ -74,12 +74,13 @@
 </ul>
 <p class="caption"><span class="caption-text">Reference:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../reference/log_evidence.html">Log Evidence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/log_approval.html">Log Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/declare_pipeline.html">Declare Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_artifact.html">Log Artifact</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/log_deployment.html">Log Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/log_evidence.html">Log Evidence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_test.html">Log Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/log_approval.html">Log Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/control_deployment.html">Control Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/log_deployment.html">Log Deployment</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Fingerprints:</span></p>
 <ul>
@@ -122,20 +123,20 @@
 Provide the file, the command will calculate the sha digest
 Provide the docker image and access to the docker daemon, and the command will query the docker daemon to query the repoDigest of the docker image. This requires the image to be pushed to a registry first.</p>
 <p>Here is an example using a docker image:</p>
-<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
             --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_artifact <span class="se">\</span>
             <span class="se">\</span>
             --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_API_TOKEN</span><span class="si">}</span> <span class="se">\</span>

@@ -1,9 +1,10 @@
 .. toctree::
-	:maxdepth: 2
+	:maxdepth: 1
 
-	log_evidence
-	log_approval
+	declare_pipeline
 	log_artifact
-	log_deployment
+	log_evidence
 	log_test
+	log_approval
 	control_deployment
+	log_deployment

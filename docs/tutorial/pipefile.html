@@ -74,12 +74,13 @@
 </ul>
 <p class="caption"><span class="caption-text">Reference:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../reference/log_evidence.html">Log Evidence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/log_approval.html">Log Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/declare_pipeline.html">Declare Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_artifact.html">Log Artifact</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/log_deployment.html">Log Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/log_evidence.html">Log Evidence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_test.html">Log Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/log_approval.html">Log Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/control_deployment.html">Control Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/log_deployment.html">Log Deployment</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Fingerprints:</span></p>
 <ul>
@@ -118,17 +119,17 @@
   <div class="section" id="defining-your-pipeline">
 <h1>Defining Your Pipeline<a class="headerlink" href="#defining-your-pipeline" title="Permalink to this headline">¶</a></h1>
 <p>Merkely uses a declarative Pipefile to define the DevOps Change Management needs of a pipeline.  It is a JSON file, typically stored in your source code repository that tells Merkely about your software delivery process and what process and control evidence to expect.</p>
-<div class="highlight-JSON notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="highlight-JSON notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hadroncollider-game&quot;</span><span class="p">,</span>
     <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Accelerating particles then smashing them together&quot;</span><span class="p">,</span>
     <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;acme-cern&quot;</span><span class="p">,</span>
