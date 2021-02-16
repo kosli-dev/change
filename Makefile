@@ -287,7 +287,7 @@ merkely_log_test:
 		--env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--rm \
-		--volume ${MERKELY_TEST_RESULTS_FILE}:/data/junit/junit.xml \
+		--volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 		${IMAGE}
