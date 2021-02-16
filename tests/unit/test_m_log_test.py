@@ -1,5 +1,5 @@
 from cdb.control_junit import control_junit
-from commands import main
+from commands import main, LogTest
 
 from tests.utils import *
 
@@ -139,6 +139,12 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     assert blurb == [
         'MERKELY_COMMAND=log_test',
     ]
+
+
+def test_summary_is_not_empty():
+    context = {}
+    command = LogTest(context)
+    assert len(command.summary) > 0
 
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
