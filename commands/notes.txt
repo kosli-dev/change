@@ -27,9 +27,6 @@ is_compliant env-var is in Command.py base class. What uses it? Convert to MERKE
 
 Loan-calculator
 ===============
-1) Loan-calculator
-uses [make merkely_log_test] for bandit security analysis
-I presume bandit is producing junit xml output? YES
 
 2) Loan-calculator
 The test-entrypoint.sh file produces coverage report.
