@@ -21,41 +21,6 @@ control_bitbucket_pr    log_bitbucket_pr   no        no     no        no        
 create_release          request_approval   no        no     no        no             no
 
 
-log_approval needs MERKELY_IS_APPROVED env-var (defaulting to True at present)
-is_compliant env-var is in Command.py base class. What uses it? Convert to MERKELY_IS_APPROVED
-
-
-Loan-calculator
-===============
-
-2) Loan-calculator
-The test-entrypoint.sh file produces coverage report.
-Is that intended? Confusing? YES
-
-3) Loan-calculator
-The coverage-entrypoint.sh writes to two files
-...
-echo "{\"test_cases\": $TEST_CASES, \"coverage\": \"$COVERAGE\"}" > $OUTDIR/coverage_summary.json
-echo COVERAGE_SUMMARY="\"$TEST_CASES tests passed with $COVERAGE coverage\"" > $OUTDIR/coverage_summary.sh
-...
-The latter is used but the former doesn't seem to be.
-Intended? Confusing? Don't create json file? YES
-
-4) Rename .github/workflows/approval.yml to create_approval.yml ?
-5) Rename .github/workflows/production.yml to deploy_to_production.yml ?
-6) Rename .github/workflows/main.yml to master_pipeline.yml ?
-YES
-
-7) Move X-entrypoint.sh files into src/ ? YES
-8) Rename src/ to source/ YES
-9) Jenkinsfile is unused. Delete it ? YES
-10) Tidy Dockerfile and add .dockerignore ? YES
-11) Readme is currently empty
-
-12) MERKELY_TEST_RESULTS_FILE
-rename to TEST_RESULTS_FILE
-
-
 
 log_approval:
 Has this
