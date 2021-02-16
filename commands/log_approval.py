@@ -1,8 +1,8 @@
 from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
-from cdb.git import list_commits_between
 from pygit2 import Repository, _pygit2
+from pygit2._pygit2 import GIT_SORT_TIME
 
 
 class LogApproval(Command):
@@ -104,3 +104,17 @@ def repo_at(root):
         print("Error: " + str(err))
         return None
     return repo
+
+
+def list_commits_between(repo, target_commit, base_commit):
+    start = repo.revparse_single(target_commit)
+    stop = repo.revparse_single(base_commit)
+
+    commits = []
+
+    walker = repo.walk(start.id, GIT_SORT_TIME)
+    walker.hide(stop.id)
+    for commit in walker:
+        commits.append(str(commit.id))
+
+    return commits
