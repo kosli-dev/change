@@ -26,7 +26,7 @@ Questions for Mike
 LogApproval() command
 ---------------------
 Is it based on cdb.create_approval()?
-{
+payload = {
     "artifact_sha256": "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
     "description": "The approval description here",
     "is_approved": true,
@@ -36,7 +36,7 @@ Is it based on cdb.create_approval()?
     ]
 }
 or based on cdb.create_release()?
-{
+payload = {
     "target_artifact": "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
     "base_artifact": "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212",
     "description": "No description provided",
@@ -45,28 +45,38 @@ or based on cdb.create_release()?
         "e0ad84e1a2464a9486e777c1ecde162edff930a9"
     ],
 }
-Note: these shas are always the same?
-Is there some recommended text for the description?
-     "Approval created in github actions on git tag ${GITHUB_REF}"
-If the former, do we need a command for create_release()
+Note: the shas in create_release() are always the same...?
+
+
+Loan-calculator
+===============
+1) Loan-calculator
+uses [make merkely_log_test] for bandit security analysis
+Is this right?
+Does bandit produce junit xml output?
 
 2) Loan-calculator
-uses [make merkely_log_test] for bandit security analysis
-Is this right? Does bandit produce junit xml output?
+The test-entrypoint.sh file produces coverage report.
+Is that intended? Confusing?
 
 3) Loan-calculator
-The test-entrypoint.sh file produces coverage.
-Is that intended?
-
-4) Loan-calculator
 The coverage-entrypoint.sh writes to two files
 ...
 echo "{\"test_cases\": $TEST_CASES, \"coverage\": \"$COVERAGE\"}" > $OUTDIR/coverage_summary.json
 echo COVERAGE_SUMMARY="\"$TEST_CASES tests passed with $COVERAGE coverage\"" > $OUTDIR/coverage_summary.sh
 ...
 The latter is used but the former doesn't seem to be.
+Intended? Confusing? Don't create json file?
 
+4) Rename .github/workflows/approval.yml to create_approval.yml ?
+5) Rename .github/workflows/production.yml to deploy_to_production.yml ?
+6) Rename .github/workflows/main.yml to master_pipeline.yml ?
 
+7) Move entrypoint.sh files into src/
+8) Rename src/ to source/
+9) Jenkinsfile is unused. Delete it?
+10) Tidy Dockerfile and add .dockerignore ?
+11) Readme is empty
 
 
 
