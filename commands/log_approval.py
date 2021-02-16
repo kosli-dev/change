@@ -69,7 +69,7 @@ class LogApproval(Command):
     def src_repo_root(self):
         default = "/src"
         notes = " ".join([
-            "The path where the source git repository is volume-mounted.",
+            "The directory where the source git repository is volume-mounted.",
             f"Defaults to `{default}`",
             ''
          ])
