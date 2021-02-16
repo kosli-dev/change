@@ -1,5 +1,5 @@
 from cdb.create_deployment import create_deployment
-from commands import run
+from commands import run, LogDeployment
 from tests.utils import *
 
 APPROVAL_DIR = "tests/unit/approved_executions"
@@ -73,6 +73,12 @@ def test_docker_image(capsys, mocker):
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_deployment',
     ]
+
+
+def test_summary_is_not_empty():
+    context = {}
+    command = LogDeployment(context)
+    assert len(command.summary) > 0
 
 
 def create_new_deployment_env():

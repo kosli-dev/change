@@ -1,6 +1,6 @@
 from cdb.put_artifact       import put_artifact
 from cdb.put_artifact_image import put_artifact_image
-from commands import main, run, build_command, Context
+from commands import main, run, build_command, Context, LogArtifact
 
 from tests.utils import *
 
@@ -236,6 +236,12 @@ def test_all_env_vars_sha(capsys, mocker):
 
 
 # TODO: test when only required env-vars are supplied
+
+
+def test_summary_is_not_empty():
+    context = {}
+    command = LogArtifact(context)
+    assert len(command.summary) > 0
 
 
 def test_each_required_env_var_missing(capsys):

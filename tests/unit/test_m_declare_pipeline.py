@@ -1,4 +1,4 @@
-from commands import run
+from commands import run, DeclarePipeline
 from tests.utils import *
 
 
@@ -7,3 +7,9 @@ def test_green(capsys):
         run(env)
 
     verify_approval(capsys)
+
+
+def test_summary_is_not_empty():
+    context = {}
+    command = DeclarePipeline(context)
+    assert len(command.summary) > 0
