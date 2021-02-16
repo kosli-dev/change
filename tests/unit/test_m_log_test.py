@@ -1,5 +1,5 @@
 from cdb.control_junit import control_junit
-from commands import main, LogTest
+from commands import main, run, LogTest
 
 from tests.utils import *
 
@@ -127,18 +127,12 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with ScopedDirCopier('/app/tests/data/control_junit/xml-with-passed-results', '/data/junit'):
             with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-                status = main(env, fingerprinter, None)
+                method, url, payload = run(env, fingerprinter, None)
 
-    assert status == 0
-    output = capsys_read(capsys)
-    blurb, method, payload, url = extract_blurb_method_payload_url(output)
-
+    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
-    assert blurb == [
-        'MERKELY_COMMAND=log_test',
-    ]
 
 
 def test_summary_is_not_empty():

@@ -16,6 +16,7 @@ def run(env=None, docker_fingerprinter=None, file_fingerprinter=None):
 def main(env=None, docker_fingerprinter=None, file_fingerprinter=None):
     try:
         run(env, docker_fingerprinter, file_fingerprinter)
+        print('Success')
         return 0
     except CommandError as exc:
         print(f"Error: {str(exc)}")
