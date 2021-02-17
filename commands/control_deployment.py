@@ -48,5 +48,5 @@ class ControlDeployment(Command):
         approvals = http_get_json(url, self.api_token.value)
         is_approved = control_deployment_approved(approvals)
         if not is_approved:
-            raise CommandError()
+            raise CommandError(f"Artifact with sha {self.fingerprint.sha} is not approved for deployment")
         return 'Getting', url, approvals
