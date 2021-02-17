@@ -44,7 +44,7 @@ jobs:
     - name: Set tagged Docker image name in an env-var
       id: tagged_image
       run: |
-        echo "TAGGED_IMAGE=merkely/change:sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
+        echo "MERKELY_FINGERPRINT=docker://merkely/change:sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
 
 
     - name: Declare Merkely pipeline
@@ -57,7 +57,6 @@ jobs:
 
     - name: Log Docker image to Merkely
       env:
-        MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
         MERKELY_IS_COMPLIANT: 'TRUE'
         MERKELY_ARTIFACT_GIT_COMMIT: ${GITHUB_SHA}
         MERKELY_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
@@ -70,7 +69,6 @@ jobs:
 
     - name: Log image deployment to Merkely
       env:
-        MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_DESCRIPTION: "Deployment of ${TAGGED_IMAGE} to docker hub"
         MERKELY_ENVIRONMENT: 'docker_hub'
@@ -86,7 +84,6 @@ jobs:
 
     - name: Log test results to Merkely
       env:
-        MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
 
@@ -109,7 +106,6 @@ jobs:
 
     - name: Log coverage evidence to Merkely
       env:
-        MERKELY_FINGERPRINT: docker://${TAGGED_IMAGE}
         MERKELY_EVIDENCE_TYPE: "coverage"
         MERKELY_IS_COMPLIANT: 'TRUE'
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
