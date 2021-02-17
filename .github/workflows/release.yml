@@ -16,19 +16,20 @@ jobs:
           # fetch full history
           fetch-depth: 0
 
+
       - name: Set Docker image name and short sha as environment variables
         run: |
           echo "IMAGE=merkely/change"              >> ${GITHUB_ENV}
           echo "TAG=sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
 
-      - name: Create approval in compliancedb, update latest docker image and git branch
+
+      - name: Create approval in Merkely, update latest docker image and git branch
         env:
           MERKELY_FINGERPRINT: docker://${IMAGE}:latest
           MERKELY_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
           MERKELY_BASE_SRC_COMMITISH: "origin/latest"
           MERKELY_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
           MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
-
         run: |
           docker pull ${IMAGE}:${TAG}
           docker tag ${IMAGE}:${TAG} ${IMAGE}:latest
@@ -43,15 +44,13 @@ jobs:
           git merge --ff-only ${GITHUB_SHA}
           git push origin latest
 
+
       - name: Create the deployment in ComplianceDB
         env:
-
-          MERKELY_COMMAND: log_deployment
           MERKELY_FINGERPRINT: docker://${IMAGE}:latest
           MERKELY_CI_BUILD_URL: https://github.com/merkely/change/actions/runs/${GITHUB_RUN_ID}
           MERKELY_DESCRIPTION: "Deployment of ${IMAGE}:latest to docker hub"
           MERKELY_ENVIRONMENT: "docker_hub"
           MERKELY_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
-
         run: |
           make merkely_log_deployment
