@@ -1,0 +1,22 @@
+Command: put_artifact_image
+Pipeline: tests/data/pipefile.json
+API_TOKEN: SOME_RANDOM_TOKEN
+Getting SHA for docker image: acme/road-runner:4.67
+Calculated digest: aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee
+Docker image digest found from environment variable
+IMAGE DIGEST: aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee
+Publish artifact to ComplianceDB
+CDB_IS_COMPLIANT: False
+Putting this payload:
+{
+    "build_url": "https://bitbucket.org/acme/road-runner/addon/pipelines/home#!/results/1975",
+    "commit_url": "https://bitbucket.org/acme/road-runner/commits/abc50c8a53f79974d615df335669b59fb56a4ed3",
+    "description": "Created by build 1975",
+    "filename": "acme/road-runner:4.67",
+    "git_commit": "abc50c8a53f79974d615df335669b59fb56a4ed3",
+    "is_compliant": false,
+    "sha256": "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
+}
+To this url: https://app.compliancedb.com/api/v1/projects/merkely/test-pipefile/artifacts/
+DRY RUN: Put not sent
+[32m✔ Success![0m
