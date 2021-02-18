@@ -1,6 +1,6 @@
 from cdb.control_junit import control_junit
 import docker
-
+import requests
 from pytest import raises
 from tests.utils import *
 
@@ -295,5 +295,6 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys, mocker):
 def test_no_env_vars_raises_DockerException(capsys):
     env = CDB_DRY_RUN
     set_env_vars = {}
-    with ScopedEnvVars(env, set_env_vars), raises(docker.errors.DockerException), silent(capsys):
+    with ScopedEnvVars(env, set_env_vars), silent(capsys), \
+            raises((docker.errors.DockerException, requests.exceptions.ConnectionError)):
         control_junit("tests/integration/test-pipefile.json")
