@@ -1,3 +1,4 @@
+import re
 
 
 def extract_blurb(output):
@@ -28,4 +29,19 @@ def extract_blurb_method_payload_url(output):
     *blurb, method_line, to_url_line, _dry_run_line = other_lines
     method = method_line.split()[0]
     url = to_url_line.split()[-1]
+
+    """
+    URL_REGEX = re.compile(r'To this url: (?P<url>.*)')
+    for line in other_lines:
+        match = URL_REGEX.match(line)
+        if match is not None:
+            url = match.group('url')
+
+    for line in other_lines:
+        if line == 'Putting this payload:':
+            method = 'Putting'
+        if line == 'Posting this payload':
+            method = 'Posting'
+    """
+    
     return blurb, method, payload, url
