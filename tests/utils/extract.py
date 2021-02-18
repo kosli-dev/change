@@ -30,7 +30,6 @@ def extract_blurb_method_payload_url(output):
     method = method_line.split()[0]
     url = to_url_line.split()[-1]
 
-    """
     URL_REGEX = re.compile(r'To this url: (?P<url>.*)')
     for line in other_lines:
         match = URL_REGEX.match(line)
@@ -42,6 +41,7 @@ def extract_blurb_method_payload_url(output):
             method = 'Putting'
         if line == 'Posting this payload':
             method = 'Posting'
-    """
-    
+        if line == 'Getting json:':
+            method = 'Getting'
+
     return blurb, method, payload, url

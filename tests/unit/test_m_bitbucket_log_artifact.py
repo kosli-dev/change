@@ -42,7 +42,6 @@ def test_required_env_vars(mocker): #capsys, mocker):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
-    #expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{NAME}/deployments/"
     expected_url = "https://app.compliancedb.com/api/v1/projects/merkely/test-pipefile/artifacts/"
     expected_payload = {
         "build_url": "https://bitbucket.org/acme/road-runner/addon/pipelines/home#!/results/1975",
@@ -59,3 +58,5 @@ def test_required_env_vars(mocker): #capsys, mocker):
     assert old_method == expected_method
     assert old_url == expected_url
 
+    # make merkely call
+    # ...
