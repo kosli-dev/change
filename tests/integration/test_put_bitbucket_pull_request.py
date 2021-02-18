@@ -3,7 +3,7 @@ from tests.utils import *
 from pytest import raises
 
 APPROVAL_DIR = "tests/integration/approved_executions"
-APPROVAL_FILE = "test_bitbucket"
+APPROVAL_FILE = "test_put_bitbucket_pull_request"
 
 # This object is used to mock API response from Bitbucket API's GET/pullrequests endpoint
 mocked_bitbucket_pull_requests_api_response = {
