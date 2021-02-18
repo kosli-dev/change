@@ -10,3 +10,4 @@ pyfakefs
 git+git://github.com/approvals/ApprovalTests.Python.git@master#egg=approvaltests
 pytest-approvaltests
 pytest-random-order
+bitbucket-pipes-toolkit==1.6.4
