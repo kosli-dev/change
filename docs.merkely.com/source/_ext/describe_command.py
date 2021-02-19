@@ -70,7 +70,7 @@ def env_vars_to_table(env_vars):
         if env_var.notes == "<FINGERPRINT_LINK>":
             pass
         else:
-            row += nodes.entry("", nodes.paragraph(text=env_var.notes))
+            row += nodes.entry("", nodes.paragraph(text=env_var.notes('github')))
         tbody += row
     tgroup += tbody
     return table

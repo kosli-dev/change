@@ -1,17 +1,18 @@
 from env_vars import DefaultedEnvVar
 
-NOTES = "\n".join([
-    "The sha of the git commit that produced this build.",
-    "If explicitly set, no defaults are applied.",
-    "If not set, and the BitBucket BITBUCKET_COMMIT env-var exists, it is used.",
-    "If not set, and the Github, GITHUB_SHA env-var exists, it is used.",
-])
-
 
 class ArtifactGitCommitEnvVar(DefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "ARTIFACT_GIT_COMMIT", NOTES)
+        super().__init__(env, "ARTIFACT_GIT_COMMIT", '')
+
+    def notes(self, ci):
+        note = "The sha of the git commit that produced this build"
+        default = {
+            'bitbucket': 'BITBUCKET_COMMIT',
+            'github': 'GITHUB_SHA',
+        }[ci]
+        return f"{note}. Defaults to ${{{default}}}."
 
     @property
     def value(self):

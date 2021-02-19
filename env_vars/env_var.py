@@ -8,8 +8,6 @@ class EnvVar(ABC):
     def __init__(self, env, name, notes, example=None):
         assert name is not None
         assert name != ""
-        assert notes is not None
-        assert notes != ""
         self.__env = env
         self.__name = name
         self.__notes = notes
@@ -56,10 +54,11 @@ class EnvVar(ABC):
         """
         return f"MERKELY_{self.__name}"
 
-    @property
-    def notes(self):
+    def notes(self, ci=None):
         """
-        Returns notes string as set in the ctor.
+        Returns notes string.
+        Use the value set in the ctor,
+        or override can inspect ci parameter.
         Used in living documentation. Never raises.
         """
         return self.__notes
