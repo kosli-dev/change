@@ -1,12 +1,7 @@
-from env_vars import DefaultedEnvVar
+from env_vars import CompoundEnvVar, DefaultedEnvVar
 
 NAME = "MERKELY_CI_BUILD_NUMBER"
 NOTE = "The ci build number."
-
-CI_ENV_VAR_NAMES = {
-    'bitbucket': 'BITBUCKET_BUILD_NUMBER',
-    'github': 'GITHUB_RUN_ID',
-}
 
 
 class CIBuildNumberEnvVar(DefaultedEnvVar):
@@ -15,9 +10,7 @@ class CIBuildNumberEnvVar(DefaultedEnvVar):
         super().__init__(env, NAME, '')
 
     def notes(self, ci):
-        def bash(s):
-            return "${"+s+"}"
-        #return f"{NOTE}. Defaults to {bash(CI_ENV_VAR_NAMES[ci])}."
+        #return f"{NOTE}. Defaults to {self._ci_env_var.string}."
         return NOTE
 
     @property
@@ -28,8 +21,17 @@ class CIBuildNumberEnvVar(DefaultedEnvVar):
     def value(self):
         if self.is_set:
             return self.string
-        for env_var_name in CI_ENV_VAR_NAMES.values():
-            value = self._get(name=env_var_name, default=None)
-            if value is not None:
-                return value
-        # Error if both are set
+        else:
+            return self._ci_env_var.value
+
+    @property
+    def _ci_env_var(self):
+        return {
+            'bitbucket': CompoundEnvVar(self._env, self.name, '${BITBUCKET_BUILD_NUMBER}'),
+            'github': CompoundEnvVar(self._env, self.name, '${GITHUB_RUN_ID}'),
+        }[self._ci]
+
+    @property
+    def _ci(self):
+        # return 'github'
+        return 'bitbucket'
