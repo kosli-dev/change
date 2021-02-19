@@ -18,7 +18,7 @@ ORG = 'acme'
 REPO = 'road-runner'
 
 
-def test_required_env_vars(mocker):
+def test_required_env_vars(capsys, mocker):
 
     merkelypipe = "pipefile.json"
 
@@ -77,6 +77,8 @@ def test_required_env_vars(mocker):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             method, url, payload = run(env, fingerprinter, None)
 
+    capsys_read(capsys)
+
     # verify matching data
     assert method == expected_method
     assert url == expected_url
@@ -92,10 +94,12 @@ def new_log_artifact_env():
         "MERKELY_IS_COMPLIANT": "FALSE",
 
         "MERKELY_CI_BUILD_URL": f"{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
-        "MERKELY_CI_BUILD_NUMBER": BUILD_NUMBER,
 
         "MERKELY_ARTIFACT_GIT_URL": f"{BB}/{ORG}/{REPO}/commits/{COMMIT}",
 
         #"MERKELY_ARTIFACT_GIT_COMMIT": COMMIT,
         "BITBUCKET_COMMIT": COMMIT,
+
+        #"MERKELY_CI_BUILD_NUMBER": BUILD_NUMBER,
+        "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER
     }

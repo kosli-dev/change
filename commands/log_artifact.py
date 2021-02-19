@@ -1,5 +1,5 @@
 from commands import Command
-from env_vars import ArtifactGitCommitEnvVar
+from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
@@ -62,8 +62,9 @@ class LogArtifact(Command):
 
     @property
     def ci_build_number(self):
-        notes = "The ci build number."
-        return self._required_env_var('CI_BUILD_NUMBER', notes)
+        #notes = "The ci build number."
+        #return self._required_env_var('CI_BUILD_NUMBER', notes)
+        return CIBuildNumberEnvVar(self._env)
 
     @property
     def ci_build_url(self):
