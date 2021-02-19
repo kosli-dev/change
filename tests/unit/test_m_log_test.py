@@ -19,9 +19,10 @@ def test_non_zero_status_when_no_data_directory(capsys, mocker):
     with dry_run(env, set_env_vars):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         control_junit("tests/integration/test-pipefile.json")
+
     verify_approval(capsys, ["out"])
 
-    # extract data from approved cdb text file
+     # extract data from approved cdb text file
     import inspect
     this_test = inspect.stack()[0].function
     approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
@@ -91,6 +92,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
         with ScopedDirCopier('/app/tests/data/control_junit/xml-with-passed-results', '/data/junit'):
             mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
             control_junit("tests/integration/test-pipefile.json")
+
     verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
@@ -129,6 +131,8 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
             with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
                 method, url, payload = run(env, fingerprinter, None)
 
+    capsys_read(capsys)
+    
     # verify matching data
     assert method == expected_method
     assert url == expected_url
