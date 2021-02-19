@@ -1,16 +1,23 @@
-from env_vars import DefaultedEnvVar
+from env_vars import CompositeEnvVar, DefaultedEnvVar
 
 NOTE = "The link to the source git commit this build was based on."
 
-CI_ENV_VAR_NAMES = {
-    'bitbucket': ['${BITBUCKET_COMMIT}'],
-    'github': [
+CI_ENV_VARS = {
+    'bitbucket': CompositeEnvVar(
+        'https://bitbucket.org',
+        '/',
+        '${BITBUCKET_WORKSPACE}',
+        '/{BITBUCKET_REPO_SLUG}',
+        '/commits/',
+        '${BITBUCKET_COMMIT}'
+    ),
+    'github': CompositeEnvVar(
         '${GITHUB_SERVER_URL}',
         '/',
         '${GITHUB_REPOSITORY}',
         '/commits/',
         '${GITHUB_SHA}'
-    ]
+    )
 }
 
 
@@ -20,7 +27,7 @@ class ArtifactGitUrlEnvVar(DefaultedEnvVar):
         super().__init__(env, "ARTIFACT_GIT_URL", '')
 
     def notes(self, ci):
-        #return f"{NOTE}. Defaults to {"".join(CI_ENV_VAR_NAMES[ci]))}."
+        #return f"{NOTE}. Defaults to {CI_ENV_VARS[ci].string)}."
         return NOTE
 
     @property
@@ -31,8 +38,10 @@ class ArtifactGitUrlEnvVar(DefaultedEnvVar):
     def value(self):
         if self.is_set:
             return self.string
-        for env_var_name in CI_ENV_VAR_NAMES.values():
-            value = self._get(name=env_var_name, default=None)
-            if value is not None:
-                return value
-        # Error if both are set
+        else:
+            return CI_ENV_VARS[self.ci].value(self._env)
+
+    @property
+    def ci(self):
+        # TODO: Look at env-vars...?
+        return 'github'

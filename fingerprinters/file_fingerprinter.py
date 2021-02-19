@@ -1,3 +1,4 @@
+from errors import ChangeError
 from fingerprinters import Fingerprinter
 import os
 import subprocess
@@ -38,8 +39,7 @@ class FileFingerprinter(Fingerprinter):
         assert self.handles_protocol(string)
         result = string[len(PROTOCOL):]
         if result == "":
-            from commands import CommandError
-            raise CommandError(f"Empty {PROTOCOL} fingerprint")
+            raise ChangeError(f"Empty {PROTOCOL} fingerprint")
         return result
 
     def sha(self, string):

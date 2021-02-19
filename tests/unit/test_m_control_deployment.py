@@ -1,7 +1,7 @@
-import pytest
-from pytest import raises
+from commands import run
+from errors import ChangeError
 
-from commands import run, CommandError
+from pytest import raises
 from tests.utils import *
 
 DOMAIN = "app.compliancedb.com"
@@ -19,7 +19,7 @@ def test_when_no_approvals_then_raises(mocker):
 
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=MERKELY_PIPE):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            with raises(CommandError):
+            with raises(ChangeError):
                 run(env=env, docker_fingerprinter=fingerprinter)
 
     mocked_get.assert_called_once_with(

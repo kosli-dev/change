@@ -1,11 +1,12 @@
-from commands import build_command, Context, CommandError
+from errors import ChangeError
+from commands import build_command, Context
 
 
 def run(*, env=None, docker_fingerprinter=None, file_fingerprinter=None):
     context = Context(env, docker_fingerprinter, file_fingerprinter)
     name = context.env.get("MERKELY_COMMAND", None)
     if name is None:
-        raise CommandError("MERKELY_COMMAND environment-variable is not set.")
+        raise ChangeError("MERKELY_COMMAND environment-variable is not set.")
     print(f"MERKELY_COMMAND={name}")
     klass = build_command(name)
     command = klass(context)
@@ -18,7 +19,7 @@ def main(*, env=None, docker_fingerprinter=None, file_fingerprinter=None):
         run(env=env, docker_fingerprinter=docker_fingerprinter, file_fingerprinter=file_fingerprinter)
         print('Success')
         return 0
-    except CommandError as exc:
+    except ChangeError as exc:
         print(f"Error: {str(exc)}")
         return 144
 

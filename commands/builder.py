@@ -1,3 +1,4 @@
+from errors import ChangeError
 from commands import *
 
 COMMANDS = {
@@ -14,5 +15,5 @@ COMMANDS = {
 def build_command(name):
     klass = COMMANDS.get(name)
     if klass is None:
-        raise CommandError(f"Unknown command: {name}")
+        raise ChangeError(f"Unknown command: {name}")
     return klass

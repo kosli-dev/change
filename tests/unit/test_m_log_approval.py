@@ -1,5 +1,6 @@
 from cdb.create_approval import create_approval
-from commands import run, CommandError
+from commands import run
+from errors import ChangeError
 
 from tests.utils import *
 from pytest import raises
@@ -91,7 +92,7 @@ def test_raises_when_src_repo_root_does_not_exist(capsys):
     ev = new_log_approval_env()
     with dry_run(ev) as env:
         with scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
-            with raises(CommandError) as exc:
+            with raises(ChangeError) as exc:
                 run(env=env)
 
     silent(capsys)

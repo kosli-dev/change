@@ -1,4 +1,3 @@
-from commands import CommandError
 from env_vars import EnvVar
 from pytest import raises
 

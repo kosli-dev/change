@@ -1,7 +1,8 @@
+from errors import ChangeError
+from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.control_deployment import control_deployment_approved
 from cdb.http import http_get_json
-from commands import Command, CommandError
 
 
 class ControlDeployment(Command):
@@ -48,5 +49,5 @@ class ControlDeployment(Command):
         approvals = http_get_json(url, self.api_token.value)
         is_approved = control_deployment_approved(approvals)
         if not is_approved:
-            raise CommandError(f"Artifact with sha {self.fingerprint.sha} is not approved for deployment")
+            raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not approved for deployment")
         return 'Getting', url, approvals

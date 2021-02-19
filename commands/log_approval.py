@@ -1,4 +1,5 @@
-from commands import Command, CommandError
+from errors import ChangeError
+from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
 from pygit2 import Repository, _pygit2
@@ -103,7 +104,7 @@ def repo_at(root):
     try:
         repo = Repository(root + '/.git')
     except _pygit2.GitError as err:
-        raise CommandError(f"Error: {str(err)}")
+        raise ChangeError(f"Error: {str(err)}")
     return repo
 
 

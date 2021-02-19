@@ -1,4 +1,3 @@
-from .command_error import CommandError
 
 from .json_loader import load_json
 

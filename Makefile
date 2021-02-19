@@ -95,6 +95,7 @@ define SOURCE_VOLUME_MOUNTS
 	--volume ${ROOT_DIR}/cdb:/app/cdb \
 	--volume ${ROOT_DIR}/commands:/app/commands \
 	--volume ${ROOT_DIR}/env_vars:/app/env_vars \
+	--volume ${ROOT_DIR}/errors:/app/errors \
 	--volume ${ROOT_DIR}/fingerprinters:/app/fingerprinters
 endef
 

@@ -15,6 +15,9 @@ class EnvVar(ABC):
             example = "${...}"
         self.__example = example
 
+    def _env(self):
+        return self.__env
+
     def _get(self, *, name=None, default):
         if name is None:
             name = self.name

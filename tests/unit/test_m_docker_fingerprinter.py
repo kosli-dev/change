@@ -1,4 +1,4 @@
-from commands import CommandError
+from errors import ChangeError
 from fingerprinters import DockerFingerprinter
 from pytest import raises
 
@@ -30,7 +30,7 @@ def test_empty_image_name_raises():
     image_name = ""
     string = DOCKER_PROTOCOL + image_name
     def assert_raises(method_name):
-        with raises(CommandError) as exc:
+        with raises(ChangeError) as exc:
             getattr(fingerprinter, method_name)(string)
         assert str(exc.value) == f"Empty {DOCKER_PROTOCOL} fingerprint"
 

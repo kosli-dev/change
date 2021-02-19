@@ -1,4 +1,5 @@
-from commands import Command, CommandError
+from errors import ChangeError
+from commands import Command
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 from cdb.control_junit import is_compliant_test_results
@@ -93,7 +94,7 @@ def is_compliant_tests_directory(test_results_directory):
 def ls_test_results(root_directory):
     import os
     if not os.path.isdir(root_directory):
-        raise CommandError(f"no directory {root_directory}")
+        raise ChangeError(f"no directory {root_directory}")
     import glob
     files = sorted(glob.glob(root_directory + "/*.xml"))
     excluded_files = ["failsafe-summary.xml"]

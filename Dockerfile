@@ -21,6 +21,7 @@ COPY tests/ tests/
 ADD tests/data/test_source_repo.tar.gz /
 
 COPY cdb/ cdb/
+COPY errors errors/
 COPY commands commands/
 COPY env_vars env_vars/
 COPY fingerprinters fingerprinters/

@@ -1,4 +1,4 @@
-from commands import CommandError
+from errors import ChangeError
 from fingerprinters import *
 
 FINGERPRINTERS = {
@@ -11,6 +11,6 @@ FINGERPRINTERS = {
 def build_fingerprinter(name):
     klass = FINGERPRINTERS.get(name)
     if klass is None:
-        raise CommandError(f"Unknown fingerprinter: {name}")
+        raise ChangeError(f"Unknown fingerprinter: {name}")
     else:
         return klass()

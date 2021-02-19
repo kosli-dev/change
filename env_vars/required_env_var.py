@@ -1,4 +1,4 @@
-from commands import CommandError
+from errors import ChangeError
 from env_vars import EnvVar
 
 
@@ -20,8 +20,8 @@ class RequiredEnvVar(EnvVar):
         Raises if not present or empty.
         """
         if not self.is_set:
-            raise CommandError(f"{self.name} environment-variable is not set.")
+            raise ChangeError(f"{self.name} environment-variable is not set.")
         elif self.is_empty:
-            raise CommandError(f"{self.name} environment-variable is empty string.")
+            raise ChangeError(f"{self.name} environment-variable is empty string.")
         else:
             return self.string

@@ -1,4 +1,4 @@
-from commands import CommandError
+from errors import ChangeError
 from fingerprinters import FileFingerprinter
 from pytest import raises
 
@@ -31,7 +31,7 @@ def test_empty_filename_raises():
     filename = ""
     string = FILE_PROTOCOL + filename
     def assert_raises(method_name):
-        with raises(CommandError) as exc:
+        with raises(ChangeError) as exc:
             getattr(fingerprinter, method_name)(string)
         assert str(exc.value) == f"Empty {FILE_PROTOCOL} fingerprint"
 

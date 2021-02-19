@@ -1,4 +1,5 @@
-from commands import CommandError, Context
+from commands import Context
+from errors import ChangeError
 from env_vars import FingerprintEnvVar
 from tests.utils import *
 from pytest import raises
@@ -38,7 +39,7 @@ def test_unknown_protocol__all_properties_raise():
     def assert_raises(unknown_protocol, property_name):
         fingerprint = f"{unknown_protocol}{SHA256}/jam.jar"
         ev = make_fingerprint_env_var(fingerprint)
-        with raises(CommandError) as exc:
+        with raises(ChangeError) as exc:
             getattr(ev, property_name)
         assert str(exc.value) == f"Unknown protocol: {fingerprint}"
 

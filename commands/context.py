@@ -1,5 +1,5 @@
 import os
-from commands import CommandError
+from errors import ChangeError
 from fingerprinters import *
 
 
@@ -43,5 +43,5 @@ class Context:
         elif s.handles_protocol(string):
             return s
         else:
-            raise CommandError(f"Unknown protocol: {string}")
+            raise ChangeError(f"Unknown protocol: {string}")
 

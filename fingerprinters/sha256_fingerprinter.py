@@ -1,3 +1,4 @@
+from errors import ChangeError
 from fingerprinters import Fingerprinter
 from collections import namedtuple
 import re
@@ -45,8 +46,7 @@ class Sha256Fingerprinter(Fingerprinter):
         after_protocol = string[len(PROTOCOL):]
         match = self.__REGEX.match(after_protocol)
         if match is None:
-            from commands import CommandError
-            raise CommandError(f"Invalid {PROTOCOL} fingerprint: {after_protocol}")
+            raise ChangeError(f"Invalid {PROTOCOL} fingerprint: {after_protocol}")
         names = ('sha', 'artifact_name')
         args = (match.group('sha'), match.group('artifact_name'))
         return namedtuple('Both', names)(*args)

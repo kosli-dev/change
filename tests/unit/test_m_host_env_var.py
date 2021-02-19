@@ -1,4 +1,3 @@
-from commands import CommandError
 from env_vars import HostEnvVar
 
 NAME = "MERKELY_HOST"

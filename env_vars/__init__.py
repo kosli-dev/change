@@ -1,5 +1,7 @@
 from .env_var import EnvVar
 
+from .composite_env_var import CompositeEnvVar
+
 from .required_env_var import RequiredEnvVar
 from .defaulted_env_var import DefaultedEnvVar
 from .static_defaulted_env_var import StaticDefaultedEnvVar
