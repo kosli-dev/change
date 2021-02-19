@@ -59,6 +59,7 @@ class LogArtifact(Command):
     def artifact_git_url(self):
         notes = "Link to the source git commit this build was based on."
         return self._required_env_var('ARTIFACT_GIT_URL', notes)
+        #return ArtifactGitUrl(self._env)
 
     @property
     def ci_build_number(self):
