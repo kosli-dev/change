@@ -1,5 +1,11 @@
 from env_vars import DefaultedEnvVar
 
+NOTES = "\n".join([
+    "The sha of the git commit that produced this build.",
+    "On Github, defaults to ${GITHUB_SHA}.",
+    #"On BitBucket, defaults to ${BITBUCKET_COMMIT}."
+])
+
 
 class ArtifactGitCommitEnvVar(DefaultedEnvVar):
 
@@ -12,7 +18,10 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
             'bitbucket': 'BITBUCKET_COMMIT',
             'github': 'GITHUB_SHA',
         }[ci]
-        return f"{note}. Defaults to ${{{default}}}."
+        def bash(s):
+            return "${"+s+"}"
+        #return f"{note}. Defaults to {bash(default)}."
+        return NOTES
 
     @property
     def value(self):

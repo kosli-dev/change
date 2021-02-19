@@ -132,7 +132,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
                 method, url, payload = run(env, fingerprinter, None)
 
     capsys_read(capsys)
-    
+
     # verify matching data
     assert method == expected_method
     assert url == expected_url
