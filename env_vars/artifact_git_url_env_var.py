@@ -44,10 +44,9 @@ class ArtifactGitUrlEnvVar(DefaultedEnvVar):
             )
         }[self._ci]
 
-    #'bitbucket': CompoundEnvVar(self._env, self.name, '${BITBUCKET_COMMIT}'),
-    #'github': CompoundEnvVar(self._env, self.name, '${GITHUB_SHA}'),
-
     @property
     def _ci(self):
         # TODO
+        # count no of env-vars starting GITHUB_
+        # count no of env-vars starting BITBUCKET_
         return 'github'
