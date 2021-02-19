@@ -34,6 +34,16 @@ def test_empty_notes_allows_subclass_override():
     Example(OS_ENV, NAME, "")
 
 
+def test_string_is_empty_when_not_set():
+    env = {}
+    assert Example(env, NAME, NOTES).string == ""
+
+
+def test_string_is_empty_when_set_to_empty_string():
+    env = {NAME: ""}
+    assert Example(env, NAME, NOTES).string == ""
+
+
 class Example(EnvVar):
     def value(self):
         pass

@@ -19,7 +19,7 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
 
     @property
     def value(self):
-        if self.is_set:
+        if self.string != "":
             return self.string
         else:
             return self._ci_env_var.value
