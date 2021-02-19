@@ -109,7 +109,7 @@ jobs:
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
-        source tmp/coverage/unit/htmlcov/test_coverage.txt
-        source tmp/coverage/unit/htmlcov/test_cases.txt
+        source tmp/coverage/unit/htmlcov/test_coverage.sh
+        source tmp/coverage/unit/htmlcov/test_cases.sh
         export MERKELY_DESCRIPTION="${TEST_CASES} tests passed with ${COVERAGE} coverage"
         make merkely_log_evidence
