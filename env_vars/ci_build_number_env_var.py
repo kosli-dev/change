@@ -5,11 +5,6 @@ CI_ENV_VAR_NAMES = {
     'github': 'GITHUB_RUN_ID',
 }
 NOTE = "The ci build number."
-NOTES = "\n".join([
-    NOTE,
-    #"On Github, defaults to ${GITHUB_RUN_ID}.",
-    #"On BitBucket, defaults to ${BITBUCKET_BUILD_NUMBER}."
-])
 
 
 class CIBuildNumberEnvVar(DefaultedEnvVar):

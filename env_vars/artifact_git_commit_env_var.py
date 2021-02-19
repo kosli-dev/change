@@ -5,11 +5,6 @@ CI_ENV_VAR_NAMES = {
     'github': 'GITHUB_SHA',
 }
 NOTE = "The sha of the git commit that produced this build."
-NOTES = "\n".join([
-    NOTE,
-    #"On Github, defaults to ${GITHUB_SHA}.",
-    #"On BitBucket, defaults to ${BITBUCKET_COMMIT}."
-])
 
 
 class ArtifactGitCommitEnvVar(DefaultedEnvVar):
@@ -21,7 +16,7 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
         def bash(s):
             return "${"+s+"}"
         #return f"{NOTE}. Defaults to {bash(CI_ENV_VAR_NAMES[ci])}."
-        return NOTES
+        return NOTE
 
     @property
     def is_required(self):
