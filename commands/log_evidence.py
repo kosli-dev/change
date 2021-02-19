@@ -50,17 +50,17 @@ class LogEvidence(Command):
     @property
     def ci_build_url(self):
         notes = "Link to the build information."
-        return self._required_env_var('CI_BUILD_URL', notes)
+        return self._required_env_var('MERKELY_CI_BUILD_URL', notes)
 
     @property
     def description(self):
         notes = "..."
-        return self._required_env_var("DESCRIPTION", notes)
+        return self._required_env_var("MERKELY_DESCRIPTION", notes)
 
     @property
     def evidence_type(self):
         notes = "The evidence type."
-        return self._required_env_var("EVIDENCE_TYPE", notes)
+        return self._required_env_var("MERKELY_EVIDENCE_TYPE", notes)
 
     @property
     def _env_var_names(self):

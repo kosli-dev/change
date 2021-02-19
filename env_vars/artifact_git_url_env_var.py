@@ -24,7 +24,7 @@ CI_ENV_VARS = {
 class ArtifactGitUrlEnvVar(DefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "ARTIFACT_GIT_URL", '')
+        super().__init__(env, "MERKLEY_ARTIFACT_GIT_URL", '')
 
     def notes(self, ci):
         #return f"{NOTE}. Defaults to {CI_ENV_VARS[ci].string)}."

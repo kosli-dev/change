@@ -49,17 +49,17 @@ class LogDeployment(Command):
     @property
     def ci_build_url(self):
         notes = "A url for the deployment."
-        return self._required_env_var('CI_BUILD_URL', notes)
+        return self._required_env_var('MERKELY_CI_BUILD_URL', notes)
 
     @property
     def description(self):
         notes = "A description for the deployment."
-        return self._required_env_var('DESCRIPTION', notes)
+        return self._required_env_var('MERKELY_DESCRIPTION', notes)
 
     @property
     def environment(self):
         notes = "The name of the environment the artifact is being deployed to."
-        return self._required_env_var('ENVIRONMENT', notes)
+        return self._required_env_var('MERKELY_ENVIRONMENT', notes)
 
     @property
     def user_data(self):

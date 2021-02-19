@@ -42,18 +42,17 @@ class Example:
     @env_var
     def api_token(self):
         ev = {"MERKELY_API_TOKEN": "3455643212456"}
-        return RequiredEnvVar(ev, "API_TOKEN", "notes")
+        return RequiredEnvVar(ev, "MERKELY_API_TOKEN", "notes")
 
     @property
     @env_var
     def host(self):
         ev = {"MERKELY_HOST": "https://tests.compliancedb.com"}
-        return RequiredEnvVar(ev, "HOST", "notes")
+        return RequiredEnvVar(ev, "MERKELY_HOST", "notes")
 
 
 def test_env_vars_using_env_var_decorator():
     eg = Example()
-    env_vars = eg.env_vars
     assert len(eg.env_vars) == 2
     assert eg.env_vars.api_token.name == "MERKELY_API_TOKEN"
     assert eg.env_vars.api_token.value == "3455643212456"

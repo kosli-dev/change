@@ -7,7 +7,7 @@ NOTE = "The sha of the git commit that produced this build."
 class ArtifactGitCommitEnvVar(DefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "ARTIFACT_GIT_COMMIT", '')
+        super().__init__(env, NAME, '')
 
     def notes(self, ci):
         #return f"{NOTE}. Defaults to {self._ci_env_var.string}."
@@ -27,8 +27,8 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
     @property
     def _ci_env_var(self):
         return {
-            'bitbucket': CompoundEnvVar(self._env, NAME, '${BITBUCKET_COMMIT}'),
-            'github': CompoundEnvVar(self._env, NAME, '${GITHUB_SHA}'),
+            'bitbucket': CompoundEnvVar(self._env, self.name, '${BITBUCKET_COMMIT}'),
+            'github': CompoundEnvVar(self._env, self.name, '${GITHUB_SHA}'),
         }[self._ci]
 
     @property

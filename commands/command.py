@@ -34,12 +34,12 @@ class Command(ABC):
     @property
     def name(self):
         notes = "The Merkely command to execute."
-        return self._required_env_var("COMMAND", notes)
+        return self._required_env_var("MERKELY_COMMAND", notes)
 
     @property
     def api_token(self):
         notes = "Your API token for Merkely."
-        return self._required_env_var("API_TOKEN", notes)
+        return self._required_env_var("MERKELY_API_TOKEN", notes)
 
     @property
     def fingerprint(self):
@@ -52,7 +52,7 @@ class Command(ABC):
     @property
     def is_compliant(self):
         notes = "TRUE if the artifact is considered compliant from you build process."
-        return self._required_env_var('IS_COMPLIANT', notes)
+        return self._required_env_var('MERKELY_IS_COMPLIANT', notes)
 
     # - - - - - - - - - - - - - - - - - - - - -
 

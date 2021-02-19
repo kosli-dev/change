@@ -12,7 +12,7 @@ EXAMPLE = "docker://${YOUR_IMAGE_AND_TAG}"
 class FingerprintEnvVar(RequiredEnvVar):
 
     def __init__(self, context):
-        super().__init__(context.env, "FINGERPRINT", NOTES, EXAMPLE)
+        super().__init__(context.env, "MERKELY_FINGERPRINT", NOTES, EXAMPLE)
         self.__context = context
 
     @property

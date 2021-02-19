@@ -54,19 +54,19 @@ class LogApproval(Command):
     @property
     def description(self):
         notes = f"A description for the approval."
-        return self._required_env_var("DESCRIPTION", notes)
+        return self._required_env_var("MERKELY_DESCRIPTION", notes)
 
     @property
     def target_src_commitish(self):
         notes = "The source commit-ish for the newest change in the approval."
-        return self._required_env_var("TARGET_SRC_COMMITISH", notes)
-        #return self._required_env_var("NEWEST_SRC_COMMITISH", notes)
+        return self._required_env_var("MERKELY_TARGET_SRC_COMMITISH", notes)
+        #return self._required_env_var("MERKELY_NEWEST_SRC_COMMITISH", notes)
 
     @property
     def base_src_commitish(self):
         notes = "The source commit-ish for the oldest change in the approval."
-        return self._required_env_var("BASE_SRC_COMMITISH", notes)
-        #return self._required_env_var("OLDEST_SRC_COMMITISH", notes)
+        return self._required_env_var("MERKELY_BASE_SRC_COMMITISH", notes)
+        #return self._required_env_var("MERKELY_OLDEST_SRC_COMMITISH", notes)
 
     @property
     def src_repo_root(self):
@@ -76,13 +76,13 @@ class LogApproval(Command):
             f"Defaults to `{default}`",
             ''
          ])
-        return self._static_defaulted_env_var("SRC_REPO_ROOT", default, notes)
+        return self._static_defaulted_env_var("MERKELY_SRC_REPO_ROOT", default, notes)
 
     @property
     def is_approved(self):
         default = 'TRUE'
         notes = f"Defaults to {default}"
-        return self._static_defaulted_env_var("IS_APPROVED", default, notes)
+        return self._static_defaulted_env_var("MERKELY_IS_APPROVED", default, notes)
 
     @property
     def _env_var_names(self):

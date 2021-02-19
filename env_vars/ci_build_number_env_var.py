@@ -1,16 +1,18 @@
 from env_vars import DefaultedEnvVar
 
+NAME = "MERKELY_CI_BUILD_NUMBER"
+NOTE = "The ci build number."
+
 CI_ENV_VAR_NAMES = {
     'bitbucket': 'BITBUCKET_BUILD_NUMBER',
     'github': 'GITHUB_RUN_ID',
 }
-NOTE = "The ci build number."
 
 
 class CIBuildNumberEnvVar(DefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "CI_BUILD_NUMBER", '')
+        super().__init__(env, NAME, '')
 
     def notes(self, ci):
         def bash(s):

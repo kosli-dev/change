@@ -56,7 +56,7 @@ class EnvVar(ABC):
         Returns the name of the environment-variable, as set in the ctor.
         Used in living documentation. Never raises.
         """
-        return f"MERKELY_{self.__name}"
+        return self.__name
 
     def notes(self, ci):
         """
