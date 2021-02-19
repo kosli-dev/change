@@ -1,5 +1,5 @@
 from cdb.put_evidence import put_evidence
-
+import requests
 import docker
 from pytest import raises
 from tests.utils import *
@@ -212,6 +212,6 @@ def test_neither_image_nor_sha_env_var_defined_raises_DockerException(capsys):
     set_env_vars = {}
 
     with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), \
-            raises(docker.errors.DockerException), \
+            raises((docker.errors.DockerException, requests.exceptions.ConnectionError)), \
             silent(capsys):
         put_evidence("tests/integration/test-pipefile.json")

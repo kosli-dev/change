@@ -1,6 +1,6 @@
 from cdb.put_artifact_image import put_artifact_image
 import docker
-
+import requests
 from pytest import raises
 from tests.utils import *
 
@@ -162,5 +162,6 @@ def test_no_env_vars_raises_DockerException():
     """
     set_env_vars = {}
 
-    with ScopedEnvVars(CDB_DRY_RUN, set_env_vars), raises(docker.errors.DockerException):
+    with ScopedEnvVars(CDB_DRY_RUN, set_env_vars), \
+            raises((docker.errors.DockerException, requests.exceptions.ConnectionError)):
         put_artifact_image("tests/integration/test-pipefile.json")
