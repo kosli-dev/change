@@ -1,4 +1,5 @@
 from commands import Command
+from env_vars import ArtifactGitCommitEnvVar
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
@@ -50,8 +51,9 @@ class LogArtifact(Command):
 
     @property
     def artifact_git_commit(self):
-        notes = "The sha of the git commit that produced this build."
-        return self._required_env_var('ARTIFACT_GIT_COMMIT', notes)
+        #notes = "The sha of the git commit that produced this build."
+        #return self._required_env_var('ARTIFACT_GIT_COMMIT', notes)
+        return ArtifactGitCommitEnvVar(self._env)
 
     @property
     def artifact_git_url(self):

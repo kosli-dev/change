@@ -17,8 +17,10 @@ class EnvVar(ABC):
             example = "${...}"
         self.__example = example
 
-    def __get(self, default):
-        return self.__env.get(self.name, default)
+    def _get(self, *, name=None, default):
+        if name is None:
+            name = self.name
+        return self.__env.get(name, default)
 
     @property
     def is_empty(self):
@@ -35,7 +37,7 @@ class EnvVar(ABC):
         Returns the string as set in the environment-variable,
         or the empty-string if not set.
         """
-        return self.__get("")
+        return self._get(default="")
 
     @property
     def is_set(self):
@@ -44,7 +46,7 @@ class EnvVar(ABC):
         Note: returns false if the environment-variable
         is set, but to the empty string.
         """
-        return self.__get(None) is not None
+        return self._get(default=None) is not None
 
     @property
     def name(self):

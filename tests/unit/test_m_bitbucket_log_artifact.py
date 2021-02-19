@@ -17,7 +17,8 @@ BB = "https://bitbucket.org"
 ORG = 'acme'
 REPO = 'road-runner'
 
-def test_required_env_vars(mocker): #capsys, mocker):
+
+def test_required_env_vars(mocker):
 
     merkelypipe = "pipefile.json"
 
@@ -42,8 +43,6 @@ def test_required_env_vars(mocker): #capsys, mocker):
         pipe = BitbucketPipe(pipe_metadata='/pipe.yml', schema=schema)
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=SHA256)
         pipe.run()
-
-    #verify_approval(capsys)
 
     # extract data from approved cdb text file
     import inspect
@@ -96,7 +95,7 @@ def new_log_artifact_env():
         "MERKELY_CI_BUILD_NUMBER": BUILD_NUMBER,
 
         "MERKELY_ARTIFACT_GIT_URL": f"{BB}/{ORG}/{REPO}/commits/{COMMIT}",
-        "MERKELY_ARTIFACT_GIT_COMMIT": COMMIT,
 
-        #"BITBUCKET_COMMIT": COMMIT,
+        #"MERKELY_ARTIFACT_GIT_COMMIT": COMMIT,
+        "BITBUCKET_COMMIT": COMMIT,
     }
