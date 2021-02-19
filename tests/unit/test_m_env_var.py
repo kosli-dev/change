@@ -14,7 +14,7 @@ def test_name_as_set_in_ctor():
 
 def test_notes_as_set_in_ctor():
     ev = Example(OS_ENV, NAME, NOTES)
-    assert ev.notes() == NOTES
+    assert ev.notes('github') == NOTES
 
 
 def test_no_name_is_programmer_error():

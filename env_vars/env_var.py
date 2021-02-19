@@ -54,7 +54,7 @@ class EnvVar(ABC):
         """
         return f"MERKELY_{self.__name}"
 
-    def notes(self, ci=None):
+    def notes(self, ci):
         """
         Returns notes string.
         Use the value set in the ctor,
