@@ -75,6 +75,8 @@ def test_docker_image(capsys, mocker):
                 with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
                     method, url, payload = run(env, fingerprinter, None)
 
+    capsys_read(capsys)
+    
     # verify matching data
     assert method == expected_method
     assert url == expected_url

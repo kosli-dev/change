@@ -1,15 +1,16 @@
 from env_vars import DefaultedEnvVar
 
+CI_ENV_VAR_NAMES = {
+    'bitbucket': 'BITBUCKET_COMMIT',
+    'github': 'GITHUB_SHA',
+}
+NOTE = "The sha of the git commit that produced this build."
 NOTES = "\n".join([
-    "The sha of the git commit that produced this build.",
+    NOTE,
     #"On Github, defaults to ${GITHUB_SHA}.",
     #"On BitBucket, defaults to ${BITBUCKET_COMMIT}."
 ])
 
-DEFAULTS = {
-    'bitbucket': 'BITBUCKET_COMMIT',
-    'github': 'GITHUB_SHA',
-}
 
 class ArtifactGitCommitEnvVar(DefaultedEnvVar):
 
@@ -19,7 +20,7 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
     def notes(self, ci):
         def bash(s):
             return "${"+s+"}"
-        #return f"{note}. Defaults to {bash(DEFAULTS[ci])}."
+        #return f"{NOTE}. Defaults to {bash(CI_ENV_VAR_NAMES[ci])}."
         return NOTES
 
     @property
@@ -30,10 +31,8 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
     def value(self):
         if self.is_set:
             return self.string
-        bit_bucket = self._get(name="BITBUCKET_COMMIT", default=None)
-        if bit_bucket is not None:
-            return bit_bucket
-        github = self._get(name="GITHUB_SHA", default=None)
-        if github is not None:
-            return github
+        for env_var_name in CI_ENV_VAR_NAMES.values():
+            value = self._get(name=env_var_name, default=None)
+            if value is not None:
+                return value
         # Error if both are set

@@ -1,15 +1,16 @@
 from env_vars import DefaultedEnvVar
 
+CI_ENV_VAR_NAMES = {
+    'bitbucket': 'BITBUCKET_BUILD_NUMBER',
+    'github': 'GITHUB_RUN_ID',
+}
+NOTE = "The ci build number."
 NOTES = "\n".join([
-    "The ci build number."
+    NOTE,
     #"On Github, defaults to ${GITHUB_RUN_ID}.",
     #"On BitBucket, defaults to ${BITBUCKET_BUILD_NUMBER}."
 ])
 
-DEFAULTS = {
-    'bitbucket': 'BITBUCKET_BUILD_NUMBER',
-    'github': 'GITHUB_RUN_ID',
-}
 
 class CIBuildNumberEnvVar(DefaultedEnvVar):
 
@@ -19,8 +20,8 @@ class CIBuildNumberEnvVar(DefaultedEnvVar):
     def notes(self, ci):
         def bash(s):
             return "${"+s+"}"
-        #return f"{note}. Defaults to {bash(DEFAULTS[ci])}."
-        return NOTES
+        #return f"{NOTE}. Defaults to {bash(CI_ENV_VAR_NAMES[ci])}."
+        return NOTE
 
     @property
     def is_required(self):
@@ -30,10 +31,8 @@ class CIBuildNumberEnvVar(DefaultedEnvVar):
     def value(self):
         if self.is_set:
             return self.string
-        bit_bucket = self._get(name="BITBUCKET_BUILD_NUMBER", default=None)
-        if bit_bucket is not None:
-            return bit_bucket
-        github = self._get(name="GITHUB_RUN_ID", default=None)
-        if github is not None:
-            return github
+        for env_var_name in CI_ENV_VAR_NAMES.values():
+            value = self._get(name=env_var_name, default=None)
+            if value is not None:
+                return value
         # Error if both are set
