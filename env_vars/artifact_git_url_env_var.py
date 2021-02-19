@@ -1,9 +1,9 @@
-from env_vars import CompositeEnvVar, DefaultedEnvVar
+from env_vars import CompoundEnvVar, DefaultedEnvVar
 
 NOTE = "The link to the source git commit this build was based on."
 
 CI_ENV_VARS = {
-    'bitbucket': CompositeEnvVar(
+    'bitbucket': CompoundEnvVar(
         'https://bitbucket.org',
         '/',
         '${BITBUCKET_WORKSPACE}',
@@ -11,7 +11,7 @@ CI_ENV_VARS = {
         '/commits/',
         '${BITBUCKET_COMMIT}'
     ),
-    'github': CompositeEnvVar(
+    'github': CompoundEnvVar(
         '${GITHUB_SERVER_URL}',
         '/',
         '${GITHUB_REPOSITORY}',

@@ -1,5 +1,5 @@
 
-class CompositeEnvVar:
+class CompoundEnvVar:
     def __init__(self, *parts):
         self._parts = parts
 

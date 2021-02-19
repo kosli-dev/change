@@ -1,6 +1,6 @@
 from .env_var import EnvVar
 
-from .composite_env_var import CompositeEnvVar
+from .compound_env_var import CompoundEnvVar
 
 from .required_env_var import RequiredEnvVar
 from .defaulted_env_var import DefaultedEnvVar
