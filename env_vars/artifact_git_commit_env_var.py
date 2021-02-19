@@ -33,5 +33,5 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
 
     @property
     def _ci(self):
-        #return 'github'
-        return 'bitbucket'
+        return 'github'
+        #return 'bitbucket'

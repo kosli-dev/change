@@ -163,7 +163,7 @@ def test_all_env_vars_file(capsys, mocker):
     ]
 
 
-def test_all_env_vars_sha(capsys, mocker):
+def test_all_env_vars_sha(capsys):
     """
     New: MERKELY_COMMAND=log_evidence
          MERKELY_FINGERPRINT="sha256://${SHA256}/${FILE_PATH}"

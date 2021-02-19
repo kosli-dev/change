@@ -1,33 +1,16 @@
 from env_vars import CompoundEnvVar, DefaultedEnvVar
 
+NAME = "MERKELY_ARTIFACT_GIT_URL"
 NOTE = "The link to the source git commit this build was based on."
-
-CI_ENV_VARS = {
-    'bitbucket': CompoundEnvVar(
-        'https://bitbucket.org',
-        '/',
-        '${BITBUCKET_WORKSPACE}',
-        '/{BITBUCKET_REPO_SLUG}',
-        '/commits/',
-        '${BITBUCKET_COMMIT}'
-    ),
-    'github': CompoundEnvVar(
-        '${GITHUB_SERVER_URL}',
-        '/',
-        '${GITHUB_REPOSITORY}',
-        '/commits/',
-        '${GITHUB_SHA}'
-    )
-}
 
 
 class ArtifactGitUrlEnvVar(DefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKLEY_ARTIFACT_GIT_URL", '')
+        super().__init__(env, NAME, '')
 
     def notes(self, ci):
-        #return f"{NOTE}. Defaults to {CI_ENV_VARS[ci].string)}."
+        #return f"{NOTE}. Defaults to {self.ci_env_var.string}."
         return NOTE
 
     @property
@@ -39,9 +22,32 @@ class ArtifactGitUrlEnvVar(DefaultedEnvVar):
         if self.is_set:
             return self.string
         else:
-            return CI_ENV_VARS[self.ci].value(self._env)
+            return self._ci_env_var.value
 
     @property
-    def ci(self):
-        # TODO: Look at env-vars...?
+    def _ci_env_var(self):
+        return {
+            'bitbucket': CompoundEnvVar(self._env, self.name,
+                'https://bitbucket.org',
+                '/',
+                '${BITBUCKET_WORKSPACE}',
+                '/{BITBUCKET_REPO_SLUG}',
+                '/commits/',
+                '${BITBUCKET_COMMIT}'
+            ),
+            'github': CompoundEnvVar(self._env, self.name,
+                '${GITHUB_SERVER_URL}',
+                '/',
+                '${GITHUB_REPOSITORY}',
+                '/commits/',
+                '${GITHUB_SHA}'
+            )
+        }[self._ci]
+
+    #'bitbucket': CompoundEnvVar(self._env, self.name, '${BITBUCKET_COMMIT}'),
+    #'github': CompoundEnvVar(self._env, self.name, '${GITHUB_SHA}'),
+
+    @property
+    def _ci(self):
+        # TODO
         return 'github'

@@ -33,5 +33,5 @@ class CIBuildNumberEnvVar(DefaultedEnvVar):
 
     @property
     def _ci(self):
-        # return 'github'
-        return 'bitbucket'
+        #return 'bitbucket'
+        return 'github'
