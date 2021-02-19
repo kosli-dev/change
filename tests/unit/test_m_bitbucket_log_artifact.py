@@ -96,7 +96,9 @@ def new_log_artifact_env(commit=None):
         "MERKELY_CI_BUILD_NUMBER": BUILD_NUMBER,
         "MERKELY_ARTIFACT_GIT_URL": commit_url(commit),
         "MERKELY_ARTIFACT_GIT_COMMIT": commit,
-        "MERKELY_IS_COMPLIANT": "TRUE"
+        "MERKELY_IS_COMPLIANT": "TRUE",
+
+        "BITBUCKET_COMMIT": commit,
     }
 
 
