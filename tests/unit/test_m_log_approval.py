@@ -73,7 +73,7 @@ def test_docker_image(capsys, mocker):
         with ScopedDirCopier("/test_src", "/src"):
             with scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
                 with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-                    method, url, payload = run(env, fingerprinter, None)
+                    method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
 
     capsys_read(capsys)
 
@@ -92,7 +92,7 @@ def test_raises_when_src_repo_root_does_not_exist(capsys):
     with dry_run(ev) as env:
         with scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
             with raises(CommandError) as exc:
-                run(env, None, None)
+                run(env=env)
 
     silent(capsys)
     assert str(exc.value) == "Error: Repository not found at /src/.git"

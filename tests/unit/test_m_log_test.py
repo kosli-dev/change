@@ -54,7 +54,7 @@ def test_non_zero_status_when_no_data_directory(capsys, mocker):
     ev = new_log_test_env()
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
-        status = main(env, None, None)
+        status = main(env=env)
 
     assert status != 0
     output = capsys_read(capsys)
@@ -129,7 +129,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with ScopedDirCopier('/app/tests/data/control_junit/xml-with-passed-results', '/data/junit'):
             with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-                method, url, payload = run(env, fingerprinter, None)
+                method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
 
     capsys_read(capsys)
 

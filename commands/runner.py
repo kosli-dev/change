@@ -1,7 +1,7 @@
 from commands import build_command, Context, CommandError
 
 
-def run(env=None, docker_fingerprinter=None, file_fingerprinter=None):
+def run(*, env=None, docker_fingerprinter=None, file_fingerprinter=None):
     context = Context(env, docker_fingerprinter, file_fingerprinter)
     name = context.env.get("MERKELY_COMMAND", None)
     if name is None:
@@ -13,9 +13,9 @@ def run(env=None, docker_fingerprinter=None, file_fingerprinter=None):
     return command()
 
 
-def main(env=None, docker_fingerprinter=None, file_fingerprinter=None):
+def main(*, env=None, docker_fingerprinter=None, file_fingerprinter=None):
     try:
-        run(env, docker_fingerprinter, file_fingerprinter)
+        run(env=env, docker_fingerprinter=docker_fingerprinter, file_fingerprinter=file_fingerprinter)
         print('Success')
         return 0
     except CommandError as exc:

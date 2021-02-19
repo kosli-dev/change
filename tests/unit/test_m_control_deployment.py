@@ -20,7 +20,7 @@ def test_when_no_approvals_then_raises(mocker):
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=MERKELY_PIPE):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             with raises(CommandError):
-                method, url, payload = run(env, fingerprinter, None)
+                run(env=env, docker_fingerprinter=fingerprinter)
 
     mocked_get.assert_called_once_with(
         "https://app.compliancedb.com/api/v1/projects/compliancedb/cdb-controls-test-pipeline/artifacts/efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212/approvals/",
@@ -37,7 +37,7 @@ def test_when_approved_then_does_not_raise(mocker):
 
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=MERKELY_PIPE):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            method, url, payload = run(env, fingerprinter, None)
+            method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
             assert mock_payload == payload
 
     mocked_get.assert_called_once_with(

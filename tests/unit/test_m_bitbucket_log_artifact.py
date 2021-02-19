@@ -75,7 +75,7 @@ def test_required_env_vars(capsys, mocker):
     merkelypipe = "pipefile.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            method, url, payload = run(env, fingerprinter, None)
+            method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
 
     capsys_read(capsys)
 
