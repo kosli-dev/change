@@ -1,9 +1,6 @@
-from env_vars import DefaultedEnvVar
+from env_vars import CompoundEnvVar, DefaultedEnvVar
 
-CI_ENV_VAR_NAMES = {
-    'bitbucket': 'BITBUCKET_COMMIT',
-    'github': 'GITHUB_SHA',
-}
+NAME = "MERKELY_ARTIFACT_GIT_COMMIT"
 NOTE = "The sha of the git commit that produced this build."
 
 
@@ -13,9 +10,7 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
         super().__init__(env, "ARTIFACT_GIT_COMMIT", '')
 
     def notes(self, ci):
-        def bash(s):
-            return "${"+s+"}"
-        #return f"{NOTE}. Defaults to {bash(CI_ENV_VAR_NAMES[ci])}."
+        #return f"{NOTE}. Defaults to {self._ci_env_var.string}."
         return NOTE
 
     @property
@@ -26,8 +21,17 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
     def value(self):
         if self.is_set:
             return self.string
-        for env_var_name in CI_ENV_VAR_NAMES.values():
-            value = self._get(name=env_var_name, default=None)
-            if value is not None:
-                return value
-        # Error if both are set
+        else:
+            return self._ci_env_var.value
+
+    @property
+    def _ci_env_var(self):
+        return {
+            'bitbucket': CompoundEnvVar(self._env, NAME, '${BITBUCKET_COMMIT}'),
+            'github': CompoundEnvVar(self._env, NAME, '${GITHUB_SHA}'),
+        }[self._ci]
+
+    @property
+    def _ci(self):
+        #return 'github'
+        return 'bitbucket'

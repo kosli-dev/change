@@ -15,6 +15,7 @@ class EnvVar(ABC):
             example = "${...}"
         self.__example = example
 
+    @property
     def _env(self):
         return self.__env
 
