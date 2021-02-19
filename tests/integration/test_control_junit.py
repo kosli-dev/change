@@ -292,7 +292,7 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys, mocker):
     assert old_payload == expected_payload
 
 
-def test_no_env_vars_raises_DockerException(capsys):
+def test_no_env_vars_raises(capsys):
     env = CDB_DRY_RUN
     set_env_vars = {}
     with ScopedEnvVars(env, set_env_vars), silent(capsys), \

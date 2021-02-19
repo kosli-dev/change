@@ -155,7 +155,7 @@ def test_all_env_vars(capsys):
     assert old_payload == expected_payload
 
 
-def test_no_env_vars_raises_DockerException():
+def test_no_env_vars_raises():
     """
     This is not the desired behaviour, but until more tests are
     in place we are not refactoring.

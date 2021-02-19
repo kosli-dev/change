@@ -202,7 +202,7 @@ def test_all_env_vars(capsys):
     assert old_payload == expected_payload
 
 
-def test_neither_image_nor_sha_env_var_defined_raises_DockerException(capsys):
+def test_neither_image_nor_sha_env_var_defined_raises(capsys):
     env = {
         "CDB_EVIDENCE_TYPE": "test",
         "CDB_DESCRIPTION": "integration test",
