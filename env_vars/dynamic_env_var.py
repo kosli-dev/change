@@ -1,9 +1,7 @@
-from abc import ABC, abstractmethod
+from errors import ChangeError
 from env_vars import EnvVar
+from abc import ABC, abstractmethod
 import os
-
-NAME = "MERKELY_ARTIFACT_GIT_COMMIT"
-NOTE = "The sha of the git commit that produced this build."
 
 
 class DynamicEnvVar(EnvVar, ABC):
@@ -40,6 +38,12 @@ class DynamicEnvVar(EnvVar, ABC):
         on_bitbucket = len(list(key for key in os.environ.keys() if key.startswith('BITBUCKET_'))) > 0
         if on_bitbucket:
             return 'bitbucket'
+        message = \
+            "Error: " \
+            f"{self.name} env-var is not set " \
+            "and cannot be default-expanded as the CI system " \
+            "cannot be determined (there are no BITBUCKET_ or GITHUB_ env-var)."
+        raise ChangeError(message)
 
     @abstractmethod
     def _ci_env_vars(self):

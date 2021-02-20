@@ -1,4 +1,3 @@
-from commands import load_json
 from env_vars import DefaultedEnvVar
 
 DEFAULT = {}
@@ -18,6 +17,7 @@ class UserDataEnvVar(DefaultedEnvVar):
     @property
     def value(self):
         if self.string != "":
+            from commands import load_json
             filename = self.string
             return load_json(filename)
         else:
