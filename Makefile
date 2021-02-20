@@ -245,7 +245,7 @@ merkely_log_artifact:
         --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
         --env MERKELY_HOST=${MERKELY_HOST} \
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
-        --env-file "${PWD}/github.env" \
+        --env-file "${PWD}/merkely.github.env" \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
