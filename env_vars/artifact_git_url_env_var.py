@@ -17,7 +17,7 @@ class ArtifactGitUrlEnvVar(DefaultedEnvVar):
             return f"{NOTE}. Defaults to {self._ci_env_vars[ci].string}."
 
     def is_required(self, ci):
-        return True  # To keep Docs the same for now
+        return ci == 'docker'
 
     @property
     def value(self):
