@@ -15,13 +15,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-        
+
+    - name: Set long sha env-var
+      run: |
+        echo "LONG_SHA=$(git log -1 --pretty=%H)" >> ${GITHUB_ENV}
+
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v1.1.0
       env:
         SUPER_SECRET: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
       with:
-        build_args: IMAGE_COMMIT_SHA=${{ env.GITHUB_SHA }}
+        build_args: IMAGE_COMMIT_SHA=${{ env.LONG_SHA }}
         username: meekrosoft
         password: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
         repository: merkely/change
@@ -31,7 +36,6 @@ jobs:
 
 
     - name: Set tagged Docker image name in an env-var
-      id: tagged_image
       run: |
         echo "TAGGED_IMAGE=merkely/change:sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
         echo "MERKELY_FINGERPRINT=docker://merkely/change:sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
