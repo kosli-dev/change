@@ -12,8 +12,9 @@ class DynamicEnvVar(EnvVar, ABC):
     def notes(self, ci):
         if ci is 'docker':
             return self._notes
-        else:
-            return f"{self._notes}. Defaults to {self._ci_env_vars[ci].string}."
+        if ci not in self._ci_env_vars.keys():
+            raise RuntimeError(f"{ci} is unknown CI")
+        return f"{self._notes} Defaults to {self._ci_env_vars[ci].string}."
 
     def is_required(self, ci):
         return ci == 'docker'
