@@ -70,7 +70,8 @@ class LogArtifact(Command):
     @property
     def ci_build_url(self):
         notes = "Link to the build in the ci system."
-        return self._required_env_var('MERKELY_CI_BUILD_URL', notes)
+        #return self._required_env_var('MERKELY_CI_BUILD_URL', notes)
+        return CIBuildUrlEnvVar(self._env)
 
     @property
     def _env_var_names(self):

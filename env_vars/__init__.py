@@ -13,3 +13,4 @@ from .user_data_env_var import UserDataEnvVar
 from .artifact_git_commit_env_var import ArtifactGitCommitEnvVar
 from .artifact_git_url_env_var import ArtifactGitUrlEnvVar
 from .ci_build_number_env_var import CIBuildNumberEnvVar
+from .ci_build_url_env_var import CIBuildUrlEnvVar

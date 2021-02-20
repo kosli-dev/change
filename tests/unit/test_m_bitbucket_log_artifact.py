@@ -93,7 +93,7 @@ def new_log_artifact_env():
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
         "MERKELY_IS_COMPLIANT": "FALSE",
 
-        "MERKELY_CI_BUILD_URL": f"{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
+        #"MERKELY_CI_BUILD_URL": f"{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
 
         #"MERKELY_ARTIFACT_GIT_URL": f"{BB}/{ORG}/{REPO}/commits/{COMMIT}",
         "BITBUCKET_WORKSPACE": ORG,
