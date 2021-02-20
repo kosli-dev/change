@@ -47,7 +47,6 @@ jobs:
     - name: Log Docker image to Merkely
       env:
         MERKELY_IS_COMPLIANT: 'TRUE'
-        X_MERKELY_ARTIFACT_GIT_URL: https://github.com/compliancedb/cdb_controls/commit/${GITHUB_SHA}
         MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
