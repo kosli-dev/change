@@ -12,7 +12,7 @@ class StaticDefaultedEnvVar(DefaultedEnvVar):
 
     @property
     def value(self):
-        if self.is_set and not self.is_empty:
+        if self.string != "":
             return self.string
         else:
             return self.__default
