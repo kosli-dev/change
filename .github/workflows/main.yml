@@ -18,6 +18,12 @@ jobs:
 
     - name: Set long sha env-var
       run: echo "LONG_SHA=$(git log -1 --pretty=%H)" >> ${GITHUB_ENV}
+    - name: Set short sha env-var
+      run: echo "SHORT_SHA=${LONG_SHA:0:7}" >> ${GITHUB_ENV}
+    - name: Set tagged-image sha env-var
+      run: echo "TAGGED_IMAGE=merkely/change:sha-${SHORT_SHA}" >> ${GITHUB_ENV}
+    - name: Set merkely-fingerprint env-var
+      run: echo "MERKELY_FINGERPRINT=docker://${TAGGED_IMAGE}" >> ${GITHUB_ENV}
 
 
     - name: Build and push Docker image
@@ -32,12 +38,6 @@ jobs:
         tags: master
         tag_with_sha: TRUE
         add_git_labels: TRUE
-
-
-    - name: Set tagged Docker image name in an env-var
-      run: |
-        echo "TAGGED_IMAGE=merkely/change:sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
-        echo "MERKELY_FINGERPRINT=docker://merkely/change:sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
 
 
     - name: Declare Merkely pipeline
