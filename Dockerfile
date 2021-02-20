@@ -14,9 +14,6 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
-ARG IMAGE_COMMIT_SHA
-ENV IMAGE_SHA=${IMAGE_COMMIT_SHA}
-
 COPY tests/ tests/
 ADD tests/data/test_source_repo.tar.gz /
 

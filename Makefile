@@ -45,7 +45,6 @@ rebuild_all: rebuild rebuild_bb
 
 rebuild: delete_base_image
 	@docker build \
-		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile \
 		--no-cache \
 		--tag ${IMAGE} .
@@ -53,7 +52,6 @@ rebuild: delete_base_image
 
 rebuild_bb: delete_base_image_bb
 	@docker build \
-		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile.bb_pipe \
 		--no-cache \
 		--tag ${IMAGE_BBPIPE} .
@@ -74,7 +72,6 @@ build_all: build build_bb
 build:
 	@echo ${IMAGE}
 	@docker build \
-		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile \
 		--tag ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
@@ -82,7 +79,6 @@ build:
 build_bb:
 	@echo ${IMAGE_BBPIPE}
 	@docker build \
-		--build-arg IMAGE_COMMIT_SHA=${SHA} \
 		--file Dockerfile.bb_pipe \
 		--tag ${IMAGE_BBPIPE} .
 
