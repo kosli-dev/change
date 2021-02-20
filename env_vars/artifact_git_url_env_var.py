@@ -1,4 +1,5 @@
 from env_vars import CompoundEnvVar, DefaultedEnvVar
+import os
 
 NAME = "MERKELY_ARTIFACT_GIT_URL"
 NOTE = "The link to the source git commit this build was based on."
@@ -31,7 +32,8 @@ class ArtifactGitUrlEnvVar(DefaultedEnvVar):
                 'https://bitbucket.org',
                 '/',
                 '${BITBUCKET_WORKSPACE}',
-                '/{BITBUCKET_REPO_SLUG}',
+                '/',
+                '${BITBUCKET_REPO_SLUG}',
                 '/commits/',
                 '${BITBUCKET_COMMIT}'
             ),
@@ -46,7 +48,9 @@ class ArtifactGitUrlEnvVar(DefaultedEnvVar):
 
     @property
     def _ci(self):
-        # TODO
-        # count no of env-vars starting GITHUB_
-        # count no of env-vars starting BITBUCKET_
-        return 'github'
+        on_github = len(list(key for key in os.environ.keys() if key.startswith('GITHUB_'))) > 0
+        if on_github:
+            return 'github'
+        on_bitbucket = len(list(key for key in os.environ.keys() if key.startswith('BITBUCKET_'))) > 0
+        if on_bitbucket:
+            return 'bitbucket'

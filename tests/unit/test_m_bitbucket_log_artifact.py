@@ -95,8 +95,9 @@ def new_log_artifact_env():
 
         "MERKELY_CI_BUILD_URL": f"{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
 
-        "MERKELY_ARTIFACT_GIT_URL": f"{BB}/{ORG}/{REPO}/commits/{COMMIT}",
-
+        #"MERKELY_ARTIFACT_GIT_URL": f"{BB}/{ORG}/{REPO}/commits/{COMMIT}",
+        "BITBUCKET_WORKSPACE": ORG,
+        "BITBUCKET_REPO_SLUG": REPO,
         #"MERKELY_ARTIFACT_GIT_COMMIT": COMMIT,
         "BITBUCKET_COMMIT": COMMIT,
 
