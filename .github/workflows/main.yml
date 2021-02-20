@@ -20,8 +20,8 @@ jobs:
       uses: docker/build-push-action@v1.1.0
       env:
         SUPER_SECRET: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
+        IMAGE_COMMIT_SHA: ${{ env.GITHUB_SHA }}
       with:
-        build_args: IMAGE_COMMIT_SHA=${GITHUB_SHA}
         username: meekrosoft
         password: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
         repository: merkely/change
