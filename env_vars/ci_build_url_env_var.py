@@ -41,7 +41,7 @@ class CIBuildUrlEnvVar(DefaultedEnvVar):
                 "${GITHUB_SERVER_URL}",
                 "/",
                 "${GITHUB_REPOSITORY}",
-                "/actions/runs/"
+                "/actions/runs/",
                 '${GITHUB_RUN_ID}'
             ),
         }[self._ci]
