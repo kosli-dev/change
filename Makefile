@@ -239,8 +239,11 @@ merkely_log_artifact:
         --env MERKELY_COMMAND=log_artifact \
         --env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
         --env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
+        --env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
         --env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
+        --env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
         --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
+        --env MERKELY_HOST=${MERKELY_HOST} \
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env-file "${PWD}/github.env" \
         --rm \
