@@ -58,11 +58,13 @@ def env_vars_to_table(env_vars):
     row += nodes.entry("", nodes.paragraph(text="Notes"))
     thead += row
 
+    ci = 'docker'  # 'github' 'bitbucket'
+
     tbody = nodes.tbody()
     for env_var in env_vars:
         row = nodes.row()
         row += nodes.entry("", nodes.paragraph(text=env_var.name))
-        if env_var.is_required:
+        if env_var.is_required(ci):
             required = 'yes'
         else:
             required = 'no'
@@ -70,7 +72,7 @@ def env_vars_to_table(env_vars):
         if env_var.notes == "<FINGERPRINT_LINK>":
             pass
         else:
-            row += nodes.entry("", nodes.paragraph(text=env_var.notes('github')))
+            row += nodes.entry("", nodes.paragraph(text=env_var.notes(ci)))
         tbody += row
     tgroup += tbody
     return table

@@ -8,6 +8,5 @@ class DefaultedEnvVar(EnvVar):
     def __init__(self, env, name, notes):
         super().__init__(env, name, notes)
 
-    @property
-    def is_required(self):
+    def is_required(self, ci):
         return False

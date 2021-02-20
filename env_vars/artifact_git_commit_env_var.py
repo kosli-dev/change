@@ -14,8 +14,7 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
         #return f"{NOTE}. Defaults to {self._ci_env_var.string}."
         return NOTE
 
-    @property
-    def is_required(self):
+    def is_required(self, ci):
         return True  # To keep Docs the same for now
 
     @property

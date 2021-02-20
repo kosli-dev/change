@@ -61,7 +61,7 @@ class EnvVar(ABC):
     def notes(self, ci):
         """
         Returns notes string.
-        Use the value set in the ctor,
+        Uses either the value set in the ctor,
         or override can inspect ci parameter.
         Used in living documentation. Never raises.
         """

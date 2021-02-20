@@ -4,10 +4,10 @@ NAME = "HOST"
 NOTES = "The hostname of Merkely"
 
 
-def test_is_not_required():
+def test_is_required_is_false_for_raw_docker():
     os_env = {}
     ev = Example(os_env, NAME, NOTES)
-    assert not ev.is_required
+    assert not ev.is_required('docker')
 
 
 class Example(DefaultedEnvVar):

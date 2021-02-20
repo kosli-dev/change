@@ -11,11 +11,12 @@ class ArtifactGitUrlEnvVar(DefaultedEnvVar):
         super().__init__(env, NAME, '')
 
     def notes(self, ci):
-        #return f"{NOTE}. Defaults to {self.ci_env_var.string}."
-        return NOTE
+        if ci is 'docker':
+            return NOTE
+        else:
+            return f"{NOTE}. Defaults to {self._ci_env_vars[ci].string}."
 
-    @property
-    def is_required(self):
+    def is_required(self, ci):
         return True  # To keep Docs the same for now
 
     @property
@@ -27,6 +28,10 @@ class ArtifactGitUrlEnvVar(DefaultedEnvVar):
 
     @property
     def _ci_env_var(self):
+        return self._ci_env_vars[self._ci]
+
+    @property
+    def _ci_env_vars(self):
         return {
             'bitbucket': CompoundEnvVar(self._env, self.name,
                 'https://bitbucket.org',
@@ -44,7 +49,7 @@ class ArtifactGitUrlEnvVar(DefaultedEnvVar):
                 '/commits/',
                 '${GITHUB_SHA}'
             )
-        }[self._ci]
+        }
 
     @property
     def _ci(self):

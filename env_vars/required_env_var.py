@@ -9,8 +9,7 @@ class RequiredEnvVar(EnvVar):
     def __init__(self, env, name, notes, example=None):
         super().__init__(env, name, notes, example)
 
-    @property
-    def is_required(self):
+    def is_required(self, ci):
         return True
 
     @property
