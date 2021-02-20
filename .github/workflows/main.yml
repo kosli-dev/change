@@ -17,17 +17,17 @@ jobs:
 
         
     - name: Build and push Docker image
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v1.1.0
       env:
         SUPER_SECRET: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
       with:
-        build-args: IMAGE_COMMIT_SHA=${{ env.GITHUB_SHA }}
+        build_args: IMAGE_COMMIT_SHA=${{GITHUB_SHA}}
         username: meekrosoft
         password: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
         repository: merkely/change
         tags: master
-        tag_with_sha: true
-        add_git_labels: true
+        tag_with_sha: TRUE
+        add_git_labels: TRUE
 
 
     - name: Set tagged Docker image name in an env-var
