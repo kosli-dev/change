@@ -1,7 +1,6 @@
 from errors import ChangeError
 from env_vars import EnvVar
 from abc import ABC, abstractmethod
-import os
 
 
 class DynamicEnvVar(EnvVar, ABC):
@@ -12,9 +11,9 @@ class DynamicEnvVar(EnvVar, ABC):
 
     def notes(self, ci):
         if ci is 'docker':
-            return NOTE
+            return self._notes
         else:
-            return f"{NOTE}. Defaults to {self._ci_env_vars[ci].string}."
+            return f"{self._notes}. Defaults to {self._ci_env_vars[ci].string}."
 
     def is_required(self, ci):
         return ci == 'docker'
@@ -32,18 +31,35 @@ class DynamicEnvVar(EnvVar, ABC):
 
     @property
     def _ci(self):
-        on_github = len(list(key for key in os.environ.keys() if key.startswith('GITHUB_'))) > 0
-        if on_github:
+        if self.on_bitbucket and self.on_github:
+            raise self._cannot_expand_error("there are BITBUCKET_ and GITHUB_ env-vars")
+        if not self.on_bitbucket and not self.on_github:
+            raise self._cannot_expand_error("there are no BITBUCKET_ or GITHUB_ env-vars")
+        if self.on_github:
             return 'github'
-        on_bitbucket = len(list(key for key in os.environ.keys() if key.startswith('BITBUCKET_'))) > 0
-        if on_bitbucket:
+        if self.on_bitbucket:
             return 'bitbucket'
-        message = \
-            "Error: " \
-            f"{self.name} env-var is not set " \
-            "and cannot be default-expanded as the CI system " \
-            "cannot be determined (there are no BITBUCKET_ or GITHUB_ env-var)."
-        raise ChangeError(message)
+
+    @property
+    def on_github(self):
+        r =  self._on_ci('GITHUB_')
+        return r
+
+    @property
+    def on_bitbucket(self):
+        r = self._on_ci('BITBUCKET_')
+        return r
+
+    def _on_ci(self, name):
+        return len(list(key for key in self._env.keys() if key.startswith(name))) > 0
+
+    def _cannot_expand_error(self, ending):
+        return ChangeError(
+            "Error: "
+            f"{self.name} env-var is not set "
+            "and cannot be default-expanded as the CI system "
+            f"cannot be determined ({ending})."
+        )
 
     @abstractmethod
     def _ci_env_vars(self):
