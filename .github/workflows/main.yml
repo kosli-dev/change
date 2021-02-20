@@ -17,8 +17,7 @@ jobs:
 
 
     - name: Set long sha env-var
-      run: |
-        echo "LONG_SHA=$(git log -1 --pretty=%H)" >> ${GITHUB_ENV}
+      run: echo "LONG_SHA=$(git log -1 --pretty=%H)" >> ${GITHUB_ENV}
 
 
     - name: Build and push Docker image
