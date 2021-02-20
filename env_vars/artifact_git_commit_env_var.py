@@ -1,3 +1,4 @@
+import os
 from env_vars import CompoundEnvVar, DefaultedEnvVar
 
 NAME = "MERKELY_ARTIFACT_GIT_COMMIT"
@@ -37,4 +38,5 @@ class ArtifactGitCommitEnvVar(DefaultedEnvVar):
         if on_github:
             return 'github'
         on_bitbucket = len(list(key for key in os.environ.keys() if key.startswith('BITBUCKET_'))) > 0
-        #return 'bitbucket'
+        if on_bitbucket:
+            return 'bitbucket'

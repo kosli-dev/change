@@ -18,7 +18,7 @@ ORG = 'acme'
 REPO = 'road-runner'
 
 
-def X_test_required_env_vars(capsys, mocker):
+def test_required_env_vars(capsys, mocker):
 
     merkelypipe = "pipefile.json"
 

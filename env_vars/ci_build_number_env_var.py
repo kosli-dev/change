@@ -1,3 +1,4 @@
+import os
 from env_vars import CompoundEnvVar, DefaultedEnvVar
 
 NAME = "MERKELY_CI_BUILD_NUMBER"
@@ -33,5 +34,9 @@ class CIBuildNumberEnvVar(DefaultedEnvVar):
 
     @property
     def _ci(self):
-        #return 'bitbucket'
-        return 'github'
+        on_github = len(list(key for key in os.environ.keys() if key.startswith('GITHUB_'))) > 0
+        if on_github:
+            return 'github'
+        on_bitbucket = len(list(key for key in os.environ.keys() if key.startswith('BITBUCKET_'))) > 0
+        if on_bitbucket:
+            return 'bitbucket'
