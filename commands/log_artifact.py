@@ -51,26 +51,18 @@ class LogArtifact(Command):
 
     @property
     def artifact_git_commit(self):
-        #notes = "The sha of the git commit that produced this build."
-        #return self._required_env_var('ARTIFACT_GIT_COMMIT', notes)
         return ArtifactGitCommitEnvVar(self._env)
 
     @property
     def artifact_git_url(self):
-        #notes = "Link to the source git commit this build was based on."
-        #return self._required_env_var('MERKELY_ARTIFACT_GIT_URL', notes)
         return ArtifactGitUrlEnvVar(self._env)
 
     @property
     def ci_build_number(self):
-        #notes = "The ci build number."
-        #return self._required_env_var('CI_BUILD_NUMBER', notes)
         return CIBuildNumberEnvVar(self._env)
 
     @property
     def ci_build_url(self):
-        notes = "Link to the build in the ci system."
-        #return self._required_env_var('MERKELY_CI_BUILD_URL', notes)
         return CIBuildUrlEnvVar(self._env)
 
     @property
