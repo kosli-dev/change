@@ -22,6 +22,7 @@ jobs:
         SUPER_SECRET: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
         IMAGE_COMMIT_SHA: ${{ env.GITHUB_SHA }}
       with:
+        build_args: IMAGE_COMMIT_SHA=
         username: meekrosoft
         password: ${{ secrets.DOCKER_DEPLOY_TOKEN }}
         repository: merkely/change
