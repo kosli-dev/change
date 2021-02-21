@@ -239,8 +239,8 @@ merkely_log_artifact:
         --env MERKELY_ARTIFACT_GIT_URL=${MERKELY_ARTIFACT_GIT_URL} \
         --env MERKELY_CI_BUILD_NUMBER=${MERKELY_CI_BUILD_NUMBER} \
         --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
-        --env MERKELY_HOST=${MERKELY_HOST} \
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+        --env MERKELY_HOST=${MERKELY_HOST} \
         --env-file "${PWD}/merkely.github.env" \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
@@ -257,6 +257,7 @@ merkely_log_deployment:
         --env MERKELY_ENVIRONMENT=${MERKELY_ENVIRONMENT} \
         --env MERKELY_USER_DATA=${MERKELY_USER_DATA} \
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+        --env MERKELY_HOST=${MERKELY_HOST} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
@@ -272,6 +273,7 @@ merkely_log_evidence:
         --env MERKELY_DESCRIPTION="${MERKELY_DESCRIPTION}" \
         --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+        --env MERKELY_HOST=${MERKELY_HOST} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
@@ -285,6 +287,7 @@ merkely_log_test:
 		--env MERKELY_EVIDENCE_TYPE=${MERKELY_EVIDENCE_TYPE} \
 		--env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+		--env MERKELY_HOST=${MERKELY_HOST} \
 		--rm \
 		--volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
@@ -302,6 +305,7 @@ merkely_log_approval:
 		--env MERKELY_IS_APPROVED="${MERKELY_IS_APPROVED}" \
 		--env MERKELY_SRC_REPO_ROOT=${MERKELY_SRC_REPO_ROOT} \
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+		--env MERKELY_HOST=${MERKELY_HOST} \
 		--rm \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
 		--volume ${PWD}:/src \
