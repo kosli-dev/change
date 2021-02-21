@@ -43,4 +43,6 @@ def test_expansion_of_env_var_not_set_raises():
     with raises(ChangeError) as exc:
         target.value
 
-    assert str(exc.value) == f"Error: environment-variable {NAME} defaults to `{target.string}` but `{not_set}` is not set."
+    assert str(exc.value) == \
+        f"environment-variable {NAME} defaults to `{target.string}` " \
+        f"but `{not_set}` is not set."

@@ -35,6 +35,6 @@ class CompoundEnvVar:
         name = part[2:-1]
         expanded = self._env.get(name, None)
         if expanded is None:
-            message = f"Error: environment-variable {self.name} defaults to `{self.string}` but `{name}` is not set."
+            message = f"environment-variable {self.name} defaults to `{self.string}` but `{name}` is not set."
             raise ChangeError(message)
         return expanded

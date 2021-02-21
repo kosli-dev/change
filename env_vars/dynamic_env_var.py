@@ -56,7 +56,6 @@ class DynamicEnvVar(EnvVar, ABC):
 
     def _cannot_expand_error(self, ending):
         return ChangeError(
-            "Error: "
             f"{self.name} env-var is not set "
             "and cannot be default-expanded as the CI system "
             f"cannot be determined ({ending})."
