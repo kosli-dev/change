@@ -1,0 +1,19 @@
+Command: control_junit
+Pipeline: tests/data/pipefile.json
+API_TOKEN: 5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4
+Publish evidence to ComplianceDB
+{'evidence_type': 'junit', 'contents': {'is_compliant': False, 'url': 'https://bitbucket.org/acme/beep-beep/addon/pipelines/home#!/results/703', 'description': 'JUnit results xml verified by compliancedb/cdb_controls: Tests contain failures'}}
+Docker image digest found from environment variable
+IMAGE DIGEST: aacdaef69c676c2466571d3277770d559ccc2032b258fc5e73f99a103db462ee
+Putting this payload:
+{
+    "contents": {
+        "description": "JUnit results xml verified by compliancedb/cdb_controls: Tests contain failures",
+        "is_compliant": false,
+        "url": "https://bitbucket.org/acme/beep-beep/addon/pipelines/home#!/results/703"
+    },
+    "evidence_type": "junit"
+}
+To this url: https://app.compliancedb.com/api/v1/projects/merkely/test-pipefile/artifacts/aacdaef69c676c2466571d3277770d559ccc2032b258fc5e73f99a103db462ee
+DRY RUN: Put not sent
+[32m✔ Success![0m

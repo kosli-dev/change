@@ -7,10 +7,12 @@ class Context:
     """
     Holds (some) external dependencies to make Classic style testing easier.
     """
-    def __init__(self, env=None,
+    def __init__(self,
+                 env=None,
                  docker_fingerprinter=None,
                  file_fingerprinter=None,
                  sha256_fingerprinter=None):
+
         self.__env = env
         self.__docker_fingerprinter = docker_fingerprinter
         self.__file_fingerprinter = file_fingerprinter

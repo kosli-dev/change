@@ -1,5 +1,6 @@
 from errors import ChangeError
 from commands import Command
+from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 from cdb.control_junit import is_compliant_test_results
@@ -9,7 +10,10 @@ class LogTest(Command):
 
     @property
     def summary(self):
-        return "Logs JUnit xml test summary evidence in Merkely."
+        return "".join([
+            "Logs JUnit xml test summary evidence in Merkely.",
+            "The JUnit xml file must be volume-mounted to /data/junit/junit.xml"
+        ])
 
     def invocation(self, type):
         def env(var):
@@ -30,6 +34,7 @@ class LogTest(Command):
                 invocation_string += env(var)
 
         invocation_string += "    --rm \\\n"
+        invocation_string += "    --volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml \\\n"
         invocation_string += "    --volume /var/run/docker.sock:/var/run/docker.sock \\\n"
         invocation_string += "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\\n"
         invocation_string += "    merkely/change"
@@ -61,8 +66,7 @@ class LogTest(Command):
 
     @property
     def ci_build_url(self):
-        notes = "Link to the build information."
-        return self._required_env_var('MERKELY_CI_BUILD_URL', notes)
+        return CIBuildUrlEnvVar(self.env)
 
     @property
     def evidence_type(self):
