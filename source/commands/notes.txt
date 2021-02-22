@@ -16,9 +16,9 @@ put_evidence            log_evidence       yes       wip    yes       yes       
 nothing                 control_deployment yes       wip    no        no        no             no
 control_latest_release  retire
 Not-------------------------------------------------------------------------------------------
-control_junit           log_test_results   no        no     no        no             no
-control_bitbucket_pr    log_bitbucket_pr   no        no     no        no             no
-create_release          request_approval   no        no     no        no             no
+control_junit           log_test_results   no        no     no        no        no             no
+control_bitbucket_pr    log_bitbucket_pr   no        no     no        no        no             no
+create_release          request_approval   no        no     no        no        no             no
 
 
 

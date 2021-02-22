@@ -1,8 +1,11 @@
 tmp/
 .coverage
 __pycache__/
-cdb/__pycache__/
-commands/__pycache__/
+source/cdb/__pycache__/
+source/commands/__pycache__/
+source/env_vars/__pycache__/
+source/errors/__pycache__/
+source/fingerprinters/__pycache__/
 tests/__pycache__/
 tests/bb_integration/__pycache__/
 tests/integration/__pycache__/
