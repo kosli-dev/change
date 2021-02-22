@@ -1,0 +1,14 @@
+Getting SHA for docker image: acme/runner:4.56
+Calculated digest: aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee
+Posting this payload:
+{
+    "artifact_sha256": "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee",
+    "build_url": "https://bitbucket.org/acme/road-runner/addon/pipelines/home#!/results/1975",
+    "description": "Deployment of acme/road-runner:4.67:aacdaef to docker hub",
+    "environment": "dockerhub",
+    "user_data": {
+        "status": "deployed"
+    }
+}
+To this url: https://app.compliancedb.com/api/v1/projects/acme/road-runner/deployments/
+DRY RUN: Post not sent
