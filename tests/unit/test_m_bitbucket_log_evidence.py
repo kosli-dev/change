@@ -24,6 +24,7 @@ EVIDENCE_TYPE = "unit_test"
 
 def test_bitbucket(capsys):
     # The original bitbucket code did not do a translation for put_evidence
+    # TODO: call directly into source/cdb/put_evidence.py
 
     expected_method = "Putting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{ORG}/{REPO}/artifacts/{SHA256}"

@@ -26,6 +26,7 @@ USER_DATA = "/app/tests/data/user_data.json"
 
 def test_bitbucket(capsys):
     # The original bitbucket code did not do a BitBucket translation for create_deployment
+    # TODO: call directly into source/cdb/create_deployment.py
 
     expected_method = "Posting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{ORG}/{REPO}/deployments/"
