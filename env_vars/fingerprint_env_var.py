@@ -1,7 +1,5 @@
 from env_vars import RequiredEnvVar
 
-import re
-
 NOTES = "\n".join([
     "...",
 ])
