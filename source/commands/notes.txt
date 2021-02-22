@@ -11,14 +11,13 @@ put_pipeline            declare_pipeline   yes       wip    no        yes       
 create_approval         log_approval       yes       wip    no        yes       no             no
 control_junit           log_test           yes       wip    yes       yes       no             no
 put_artifact_image      log_artifact       yes       wip    yes       yes       no             yes
-create_deployment       log_deployment     yes       wip    wip       yes       no             no
+create_deployment       log_deployment     yes       wip    yes       yes       no             no
 put_evidence            log_evidence       yes       wip    yes       yes       no             no
 nothing                 control_deployment yes       wip    no        no        no             no
 control_latest_release  retire
 Not-------------------------------------------------------------------------------------------
-control_junit           log_test_results   no        no     no        no        no             no
-control_bitbucket_pr    log_bitbucket_pr   no        no     no        no        no             no
-create_release          request_approval   no        no     no        no        no             no
+control_bitbucket_pr  control_pull_request no        no     no        no        no             no
+create_release        request_approval     no        no     no        no        no             no
 
 
 
