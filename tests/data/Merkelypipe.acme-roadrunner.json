@@ -1,0 +1,11 @@
+{
+    "description": "Test Pipeline for merkely/change",
+    "owner": "acme",
+    "name": "road-runner",
+    "template": [
+        "artifact",
+        "unit_test",
+        "coverage"
+    ],
+    "visibility": "public"
+}

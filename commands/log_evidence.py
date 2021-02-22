@@ -1,4 +1,5 @@
 from commands import Command
+from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
@@ -49,8 +50,7 @@ class LogEvidence(Command):
 
     @property
     def ci_build_url(self):
-        notes = "Link to the build information."
-        return self._required_env_var('MERKELY_CI_BUILD_URL', notes)
+        return CIBuildUrlEnvVar(self.env)
 
     @property
     def description(self):
