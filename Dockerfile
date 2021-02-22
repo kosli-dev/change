@@ -18,6 +18,6 @@ COPY source/ source/
 COPY tests/ tests/
 ADD tests/data/test_source_repo.tar.gz /
 
-ENV PYTHONPATH="/app"
+ENV PYTHONPATH="/app/source"
 ENTRYPOINT [""]
 CMD ["python", "source/main.py"]

@@ -41,7 +41,7 @@ pip_list:
 # - - - - - - - - - - - - - - - - - - - -
 # full image rebuilds, with fresh base image, and no Docker caching
 
-rebuild_all: rebuild rebuild_bb
+rebuild_all: rebuild
 
 rebuild: delete_base_image
 	@docker build \
@@ -67,7 +67,7 @@ delete_base_image_bb:
 # - - - - - - - - - - - - - - - - - - - -
 # image builds with Docker caching
 
-build_all: build build_bb
+build_all: build
 
 build:
 	@echo ${IMAGE}
@@ -85,14 +85,10 @@ build_bb:
 # - - - - - - - - - - - - - - - - - - - -
 # run tests without building by volume-mounting
 
-test_all: test_unit test_integration test_bb_integration
+test_all: test_unit test_integration
 
 define SOURCE_VOLUME_MOUNTS
-	--volume ${ROOT_DIR}/cdb:/app/cdb \
-	--volume ${ROOT_DIR}/commands:/app/commands \
-	--volume ${ROOT_DIR}/env_vars:/app/env_vars \
-	--volume ${ROOT_DIR}/errors:/app/errors \
-	--volume ${ROOT_DIR}/fingerprinters:/app/fingerprinters
+	--volume ${ROOT_DIR}/source:/app/source
 endef
 
 define TESTS_VOLUME_MOUNT
