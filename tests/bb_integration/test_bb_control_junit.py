@@ -1,6 +1,6 @@
 from pipe import BitbucketPipe, schema
 
-from tests.utils import ScopedEnvVars, CDB_DRY_RUN, verify_approval
+from tests.utils import *
 
 
 def test_required_env_vars(capsys, mocker):
@@ -26,7 +26,7 @@ def test_required_env_vars(capsys, mocker):
         'CDB_BUILD_NUMBER': '127',
         'CDB_CI_BUILD_URL': 'https://bitbucket.org/None/None/addon/pipelines/home#!/results/127'
     }
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         pipe = BitbucketPipe(pipe_metadata='/pipe.yml', schema=schema)
         pipe.run()
     verify_approval(capsys)
@@ -51,7 +51,7 @@ def test_all_env_vars(capsys, mocker):
         'CDB_BUILD_NUMBER': '703',
         'CDB_CI_BUILD_URL': 'https://bitbucket.org/acme/beep-beep/addon/pipelines/home#!/results/703'
      }
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         pipe = BitbucketPipe(pipe_metadata='/pipe.yml', schema=schema)
         pipe.run()
     verify_approval(capsys)

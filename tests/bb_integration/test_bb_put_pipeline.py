@@ -1,6 +1,6 @@
 from pipe import BitbucketPipe, schema
 
-from tests.utils import ScopedEnvVars, CDB_DRY_RUN, verify_approval
+from tests.utils import *
 
 
 def test_required_env_vars(capsys):
@@ -10,7 +10,7 @@ def test_required_env_vars(capsys):
         "CDB_API_TOKEN": "SOME_RANDOM_TOKEN",
     }
     set_env_vars = {}
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         pipe = BitbucketPipe(pipe_metadata='/pipe.yml', schema=schema)
         pipe.run()
     verify_approval(capsys)

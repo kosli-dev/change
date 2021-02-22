@@ -29,7 +29,7 @@ def test_all_env_vars_uses_FILENAME_and_SHA(capsys):
     }
     set_env_vars = {}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         put_artifact("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -81,7 +81,7 @@ def test_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
     sha256 = "ddcdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
     set_env_vars = {'CDB_ARTIFACT_SHA': sha256}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_file', return_value=sha256)
         put_artifact("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
@@ -116,9 +116,7 @@ def test_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
 
 
 def test_CDB_ARTIFACT_FILENAME_is_missing(capsys):
-    set_env_vars = {}
-
-    with ScopedEnvVars(CDB_DRY_RUN, set_env_vars), silent(capsys):
+    with dry_run({}), silent(capsys):
         put_artifact("tests/integration/test-pipefile.json")
 
 
@@ -127,9 +125,7 @@ def test_CDB_ARTIFACT_SHA_is_UNDEFINED(capsys):
         "CDB_ARTIFACT_FILENAME": "tests/data/coverage.txt",
         "CDB_ARTIFACT_SHA": "UNDEFINED"
     }
-    set_env_vars = {}
-
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), silent(capsys):
+    with dry_run(env, {}), silent(capsys):
         put_artifact("tests/integration/test-pipefile.json")
 
 
@@ -140,8 +136,7 @@ def test_CDB_ARTIFACT_SHA_is_not_defined(capsys):
     set_env_vars = {
         "CDB_ARTIFACT_SHA": "ccee89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     }
-
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), silent(capsys):
+    with dry_run(env, set_env_vars), silent(capsys):
         put_artifact("tests/integration/test-pipefile.json")
 
 
@@ -150,7 +145,5 @@ def test_CDB_ARTIFACT_SHA_is_defined(capsys):
         "CDB_ARTIFACT_FILENAME": "tests/data/coverage.txt",
         "CDB_ARTIFACT_SHA": "ccee89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
     }
-    set_env_vars = {}
-
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), silent(capsys):
+    with dry_run(env, {}), silent(capsys):
         put_artifact("tests/integration/test-pipefile.json")

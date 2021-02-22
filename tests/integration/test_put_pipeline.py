@@ -9,8 +9,7 @@ def test_required_env_vars(capsys):
     env = {
         "CDB_API_TOKEN": "SOME_RANDOM_TOKEN",
     }
-
-    with ScopedEnvVars(CDB_DRY_RUN):
+    with dry_run({}):
         put_pipeline("tests/integration/test-pipefile.json", env)
     verify_approval(capsys)
 
@@ -50,7 +49,7 @@ def test_all_env_vars(capsys):
         "CDB_API_TOKEN": "SOME_RANDOM_TOKEN",
     }
 
-    with ScopedEnvVars(CDB_DRY_RUN):
+    with dry_run({}):
         put_pipeline("tests/integration/test-pipefile.json", env)
     verify_approval(capsys)
 

@@ -19,7 +19,7 @@ def test_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
         "CDB_CI_BUILD_URL": build_url,
     }
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}):
+    with dry_run(env):
         control_junit("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -61,7 +61,7 @@ def test_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
         "CDB_CI_BUILD_URL": build_url
     }
     set_env_vars = {}
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         control_junit("tests/integration/test-pipefile.json")
@@ -111,7 +111,7 @@ def test_uses_non_existent_CDB_TEST_RESULTS_DIR(capsys, mocker):
         "CDB_CI_BUILD_URL": build_url
     }
     set_env_vars = {}
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         control_junit("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -159,7 +159,7 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_failing_xml(capsys):
         "CDB_CI_BUILD_URL": build_url,
     }
     set_env_vars = {}
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         control_junit("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -207,7 +207,7 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_error_xml(capsys):
         "CDB_CI_BUILD_URL": build_url
     }
     set_env_vars = {}
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         control_junit("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -258,7 +258,7 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys, mocker):
         "CDB_USER_DATA": "/some/file.json"  # optional
     }
     set_env_vars = {}
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         mocker.patch('cdb.control_junit.load_user_data', return_value=user_data)
         control_junit("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
@@ -293,8 +293,6 @@ def test_uses_existing_CDB_TEST_RESULTS_DIR_with_passing_xml(capsys, mocker):
 
 
 def test_no_env_vars_raises(capsys):
-    env = CDB_DRY_RUN
-    set_env_vars = {}
-    with ScopedEnvVars(env, set_env_vars), silent(capsys), \
+    with dry_run({}), silent(capsys), \
             raises((docker.errors.DockerException, requests.exceptions.ConnectionError)):
         control_junit("tests/integration/test-pipefile.json")

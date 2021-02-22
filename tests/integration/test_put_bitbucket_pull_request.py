@@ -54,7 +54,7 @@ def test_only_required_env_vars(capsys, mocker):
         "BITBUCKET_API_USER": "test_user",
     }
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}):
+    with dry_run(env):
         mocker.patch('cdb.bitbucket.requests.get',
                      return_value=MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response))
         mocker.patch('cdb.bitbucket.json.loads', return_value=mocked_bitbucket_pull_requests_api_response)
@@ -115,7 +115,7 @@ def test_all_env_vars(capsys, mocker):
         "CDB_HOST": "https://app.compliancedb.com"  # optional
     }
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}):
+    with dry_run(env):
         mocker.patch('cdb.bitbucket.requests.get',
                      return_value=MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response))
         mocker.patch('cdb.bitbucket.json.loads', return_value=mocked_bitbucket_pull_requests_api_response)
@@ -184,7 +184,7 @@ def test_put_bitbucket_pull_request_with_no_approvers_in_pr(capsys, mocker):
         "BITBUCKET_API_USER": "test_user",
     }
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}):
+    with dry_run(env):
         mocker.patch('cdb.bitbucket.requests.get',
                      return_value=MockedAPIResponse(200, bitbucket_pr_response_without_participants))
         mocker.patch('cdb.bitbucket.json.loads', return_value=bitbucket_pr_response_without_participants)

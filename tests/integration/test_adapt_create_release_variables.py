@@ -21,5 +21,5 @@ def test_only_required_env_vars():
                             f"/pipelines/home#!/results/{env['BITBUCKET_BUILD_NUMBER']}",
         "CDB_SRC_REPO_ROOT": f"{env['BITBUCKET_CLONE_DIR']}/"
     }
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         adapt_create_release_variables()

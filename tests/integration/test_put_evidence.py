@@ -23,7 +23,7 @@ def test_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
     }
     set_env_vars = {}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         put_evidence("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
@@ -72,7 +72,7 @@ def test_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
     }
     set_env_vars = {}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         put_evidence("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -121,7 +121,7 @@ def test_both_required_env_vars(capsys):
     }
     set_env_vars = {}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         put_evidence("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -170,7 +170,7 @@ def test_all_env_vars(capsys):
     }
     set_env_vars = {}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         put_evidence("tests/integration/test-pipefile.json")
     verify_approval(capsys, ["out"])
 
@@ -211,7 +211,7 @@ def test_neither_image_nor_sha_env_var_defined_raises(capsys):
     }
     set_env_vars = {}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), \
+    with dry_run(env, set_env_vars), \
             raises((docker.errors.DockerException, requests.exceptions.ConnectionError)), \
             silent(capsys):
         put_evidence("tests/integration/test-pipefile.json")

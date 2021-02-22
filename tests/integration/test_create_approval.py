@@ -17,7 +17,7 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
     }
     set_env_vars = {}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), ScopedDirCopier("/test_src", "/src"):
+    with dry_run(env, set_env_vars), ScopedDirCopier("/test_src", "/src"):
         create_approval("tests/integration/test-pipefile.json", env)
     verify_approval(capsys, ["out"])
 
@@ -63,7 +63,7 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_DOCKER_IMAGE(capsys, mocker):
     }
     set_env_vars = {'CDB_ARTIFACT_SHA': sha256}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), ScopedDirCopier("/test_src", "/src"):
+    with dry_run(env, set_env_vars), ScopedDirCopier("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
         mocker.patch('cdb.create_approval.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
         create_approval("tests/integration/test-pipefile.json", env)
@@ -111,7 +111,7 @@ def test_only_required_env_vars_uses_CDB_ARTIFACT_FILENAME(capsys, mocker):
     }
     set_env_vars = {'CDB_ARTIFACT_SHA': sha256}
 
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars), ScopedDirCopier("/test_src", "/src"):
+    with dry_run(env, set_env_vars), ScopedDirCopier("/test_src", "/src"):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_file', return_value=sha256)
         mocker.patch('cdb.create_approval.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
         create_approval("tests/integration/test-pipefile.json", env)
@@ -159,7 +159,7 @@ def test_all_env_vars_uses_CDB_ARTIFACT_SHA(capsys):
         "CDB_SRC_REPO_ROOT": TEST_REPO_ROOT,  # optional
     }
     set_env_vars = {}
-    with ScopedEnvVars({**CDB_DRY_RUN, **env}, set_env_vars):
+    with dry_run(env, set_env_vars):
         create_approval("tests/integration/test-pipefile.json", env)
     verify_approval(capsys, ["out"])
 
