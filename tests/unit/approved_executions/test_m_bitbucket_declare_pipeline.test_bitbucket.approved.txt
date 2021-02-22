@@ -1,0 +1,16 @@
+Ensure Project - loading tests/data/Merkelypipe.acme-roadrunner.json
+Put pipeline
+Putting this payload:
+{
+    "description": "Test Pipeline for merkely/change",
+    "name": "road-runner",
+    "owner": "acme",
+    "template": [
+        "artifact",
+        "unit_test",
+        "coverage"
+    ],
+    "visibility": "public"
+}
+To this url: https://app.compliancedb.com/api/v1/projects/acme/
+DRY RUN: Put not sent

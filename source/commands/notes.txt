@@ -7,7 +7,7 @@ Loan-calculator
 Used in loan-calculator?
 YES----------------------------------------Makefile---------Tests------------------------------------
 FROM                    TO                 Target    docs   BB        ALL-EVS   ONLY-REQ-EVS   MISSING-REQ-EVS
-put_pipeline            declare_pipeline   yes       wip    no        yes       N/A            no
+put_pipeline            declare_pipeline   yes       wip    yes       yes       N/A            no
 create_approval         log_approval       yes       wip    no        yes       no             no
 control_junit           log_test           yes       wip    yes       yes       no             no
 put_artifact_image      log_artifact       yes       wip    yes       yes       no             yes
