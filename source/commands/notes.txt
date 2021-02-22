@@ -12,7 +12,7 @@ create_approval         log_approval       yes       wip    no        yes       
 control_junit           log_test           yes       wip    yes       yes       no             no
 put_artifact_image      log_artifact       yes       wip    yes       yes       no             yes
 create_deployment       log_deployment     yes       wip    wip       yes       no             no
-put_evidence            log_evidence       yes       wip    wip       yes       no             no
+put_evidence            log_evidence       yes       wip    yes       yes       no             no
 nothing                 control_deployment yes       wip    no        no        no             no
 control_latest_release  retire
 Not-------------------------------------------------------------------------------------------

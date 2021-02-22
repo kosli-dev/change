@@ -1,0 +1,14 @@
+Publish evidence to ComplianceDB
+{'evidence_type': 'unit_test', 'contents': {'is_compliant': True, 'url': 'https://bitbucket.org/acme/road-runner/addon/pipelines/home#!/results/1975', 'description': 'branch coverage'}}
+IMAGE DIGEST: aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee
+Putting this payload:
+{
+    "contents": {
+        "description": "branch coverage",
+        "is_compliant": true,
+        "url": "https://bitbucket.org/acme/road-runner/addon/pipelines/home#!/results/1975"
+    },
+    "evidence_type": "unit_test"
+}
+To this url: https://app.compliancedb.com/api/v1/projects/acme/road-runner/artifacts/aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee
+DRY RUN: Put not sent
