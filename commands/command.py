@@ -14,10 +14,6 @@ class Command(ABC):
     def __call__(self):  # pragma: no cover
         raise NotImplementedError(self.name)
 
-    def check(self):
-        for env_var in self.env_vars:
-            env_var.value
-
     @property
     def env(self):
         return self.__context.env
