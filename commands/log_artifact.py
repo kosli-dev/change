@@ -51,19 +51,19 @@ class LogArtifact(Command):
 
     @property
     def artifact_git_commit(self):
-        return ArtifactGitCommitEnvVar(self._env)
+        return ArtifactGitCommitEnvVar(self.env)
 
     @property
     def artifact_git_url(self):
-        return ArtifactGitUrlEnvVar(self._env)
+        return ArtifactGitUrlEnvVar(self.env)
 
     @property
     def ci_build_number(self):
-        return CIBuildNumberEnvVar(self._env)
+        return CIBuildNumberEnvVar(self.env)
 
     @property
     def ci_build_url(self):
-        return CIBuildUrlEnvVar(self._env)
+        return CIBuildUrlEnvVar(self.env)
 
     @property
     def _env_var_names(self):

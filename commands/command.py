@@ -19,6 +19,10 @@ class Command(ABC):
             env_var.value
 
     @property
+    def env(self):
+        return self.__context.env
+
+    @property
     def env_vars(self):
         names = self._env_var_names
         objects = [getattr(self, name) for name in names]
@@ -47,7 +51,7 @@ class Command(ABC):
 
     @property
     def host(self):
-        return HostEnvVar(self._env)
+        return HostEnvVar(self.env)
 
     @property
     def is_compliant(self):
@@ -63,20 +67,16 @@ class Command(ABC):
     # - - - - - - - - - - - - - - - - - - - - -
 
     def _required_env_var(self, name, notes):
-        return RequiredEnvVar(self._env, name, notes)
+        return RequiredEnvVar(self.env, name, notes)
 
     def _static_defaulted_env_var(self, name, default, notes):
-        return StaticDefaultedEnvVar(self._env, name, default, notes)
+        return StaticDefaultedEnvVar(self.env, name, default, notes)
 
     def _defaulted_env_var(self, name, notes):
-        return DefaultedEnvVar(self._env, name, notes)
+        return DefaultedEnvVar(self.env, name, notes)
 
     # - - - - - - - - - - - - - - - - - - - - -
 
     def _print_compliance(self):
         env_var = self.is_compliant
         print(f"{env_var.name}: {env_var.value == 'TRUE'}")
-
-    @property
-    def _env(self):
-        return self.__context.env
