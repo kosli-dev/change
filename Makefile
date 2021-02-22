@@ -312,6 +312,17 @@ merkely_log_approval:
 		--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 		${IMAGE}
 
+
+merkely_control_deployment:
+	docker run \
+		--env MERKELY_COMMAND=control_deployment \
+		--env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
+		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+		--rm \
+		--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
+		--volume /var/run/docker.sock:/var/run/docker.sock \
+		merkely/change
+
 # - - - - - - - - - - - - - - - - - - - -
 # CDB Commands
 
