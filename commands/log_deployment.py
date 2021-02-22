@@ -1,5 +1,5 @@
-from commands import Command, load_json
-from env_vars import UserDataEnvVar
+from commands import Command
+from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
 
@@ -48,8 +48,7 @@ class LogDeployment(Command):
 
     @property
     def ci_build_url(self):
-        notes = "A url for the deployment."
-        return self._required_env_var('MERKELY_CI_BUILD_URL', notes)
+        return CIBuildUrlEnvVar(self.env)
 
     @property
     def description(self):
