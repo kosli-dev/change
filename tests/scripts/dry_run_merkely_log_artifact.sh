@@ -18,7 +18,7 @@ function merkely_log_artifact()
   docker run \
         --interactive \
         --tty \
-        --env CDB_DRY_RUN=TRUE \
+        --env MERKELY_DRY_RUN=TRUE \
         --env MERKELY_COMMAND=log_artifact \
         \
         --env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
