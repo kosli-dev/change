@@ -5,15 +5,21 @@ from tests.utils import *
 APPROVAL_DIR = "tests/unit/approved_executions"
 APPROVAL_FILE = "test_m_log_evidence"
 
-DOMAIN = 'bitbucket.org'
+DOMAIN = "app.compliancedb.com"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
+
+BB = 'bitbucket.org'
 ORG = 'acme'
 REPO = 'road-runner'
-BUILD_NUMBER = '1975'
 COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
-SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
+BUILD_NUMBER = '1975'
+
 PROTOCOL = "docker://"
 IMAGE_NAME = "acme/road-runner:4.67"
+SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
+
+DESCRIPTION = "branch coverage"
+EVIDENCE_TYPE = "unit_test"
 
 
 def test_bitbucket(capsys):
@@ -23,11 +29,11 @@ def test_bitbucket(capsys):
     expected_url = f"https://{DOMAIN}/api/v1/projects/{ORG}/{REPO}/artifacts/{SHA256}"
     expected_payload = {
         "contents": {
-            "description": "branch coverage",
+            "description": DESCRIPTION,
             "is_compliant": True,
-            "url": f"https://{DOMAIN}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
+            "url": f"https://{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
         },
-        "evidence_type": "unit_test"
+        "evidence_type": EVIDENCE_TYPE
     }
 
     # make merkely call
@@ -49,14 +55,15 @@ def test_bitbucket(capsys):
 
 
 def new_log_evidence_env():
+    domain = 'app.compliancedb.com'
     return {
         "MERKELY_COMMAND": "log_evidence",
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
         "MERKELY_API_TOKEN": API_TOKEN,
-        "MERKELY_HOST": f"https://{DOMAIN}",
+        "MERKELY_HOST": f"https://{domain}",
         "MERKELY_IS_COMPLIANT": "TRUE",
-        "MERKELY_EVIDENCE_TYPE": "unit_test",
-        "MERKELY_DESCRIPTION": "branch coverage",
+        "MERKELY_EVIDENCE_TYPE": EVIDENCE_TYPE,
+        "MERKELY_DESCRIPTION": DESCRIPTION,
 
         "BITBUCKET_WORKSPACE": ORG,
         "BITBUCKET_REPO_SLUG": REPO,

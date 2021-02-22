@@ -8,20 +8,20 @@ APPROVAL_FILE = "test_m_bitbucket_log_test"
 
 DOMAIN = "app.compliancedb.com"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
-BUILD_NUMBER = '703'
-COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
-PROTOCOL = "docker://"
-IMAGE_NAME = "acme/road-runner:4.67"
-SHA256 = "aacdaef69c676c2466571d3277770d559ccc2032b258fc5e73f99a103db462ee"
+
 BB = "bitbucket.org"
 ORG = 'acme'
 REPO = 'beep-beep'
+COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
+BUILD_NUMBER = '703'
+
+PROTOCOL = "docker://"
+IMAGE_NAME = "acme/road-runner:4.67"
+SHA256 = "aacdaef69c676c2466571d3277770d559ccc2032b258fc5e73f99a103db462ee"
 EVIDENCE_TYPE = "junit"
 
 
-def test_bitbucket(capsys, mocker):
-
-    commit = "dad50c8a53f79974d615df335669b59fb56a4ed3"
+def test_bitbucket(capsys):
 
     env = {
         "CDB_COMMAND": "control_junit",
@@ -29,14 +29,14 @@ def test_bitbucket(capsys, mocker):
         "CDB_API_TOKEN": API_TOKEN,
         "CDB_ARTIFACT_SHA": SHA256,
         "CDB_TEST_RESULTS_DIR": "/app/tests/data/control_junit/xml-with-fails",
-        "BITBUCKET_COMMIT": commit,
+        "BITBUCKET_COMMIT": COMMIT,
         "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
         "BITBUCKET_WORKSPACE": ORG,
         "BITBUCKET_REPO_SLUG": REPO,
     }
     set_env_vars = {
-        'CDB_ARTIFACT_GIT_URL': f'https://{BB}/{ORG}/{REPO}/commits/{commit}',
-        'CDB_ARTIFACT_GIT_COMMIT': commit,
+        'CDB_ARTIFACT_GIT_URL': f'https://{BB}/{ORG}/{REPO}/commits/{COMMIT}',
+        'CDB_ARTIFACT_GIT_COMMIT': COMMIT,
         'CDB_BUILD_NUMBER': BUILD_NUMBER,
         'CDB_CI_BUILD_URL': f'https://{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}'
      }

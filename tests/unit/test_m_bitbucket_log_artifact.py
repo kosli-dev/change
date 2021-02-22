@@ -8,20 +8,20 @@ APPROVAL_FILE = "test_m_bitbucket_log_artifact"
 
 DOMAIN = "app.compliancedb.com"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
-BUILD_NUMBER = '1975'
-COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
-PROTOCOL = "docker://"
-IMAGE_NAME = "acme/road-runner:4.67"
-SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
+
 BB = "https://bitbucket.org"
 ORG = 'acme'
 REPO = 'road-runner'
+COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
+BUILD_NUMBER = '1975'
+
+PROTOCOL = "docker://"
+IMAGE_NAME = "acme/road-runner:4.67"
+SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 
 
 def test_required_env_vars(capsys, mocker):
-
     merkelypipe = "pipefile.json"
-
     env = {
         "CDB_COMMAND": "put_artifact_image",
         "CDB_PIPELINE_DEFINITION": f"tests/data/{merkelypipe}",
@@ -54,7 +54,6 @@ def test_required_env_vars(capsys, mocker):
 
     expected_method = "Putting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/merkely/test-pipefile/artifacts/"
-
     expected_payload = {
         "build_url": f"{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
         "commit_url": f"{BB}/{ORG}/{REPO}/commits/{COMMIT}",
