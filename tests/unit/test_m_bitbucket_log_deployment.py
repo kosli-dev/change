@@ -18,26 +18,27 @@ PROTOCOL = "docker://"
 IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 
+USER_DATA = "/app/tests/data/user_data.json"
 DESCRIPTION = "branch coverage"
-EVIDENCE_TYPE = "unit_test"
+ENVIRONMENT = "production"
+USER_DATA = "/app/tests/data/user_data.json"
 
 
 def test_bitbucket(capsys):
-    # The original bitbucket code did not do a translation for put_evidence
+    # The original bitbucket code did not do a BitBucket translation for create_deployment
 
-    expected_method = "Putting"
-    expected_url = f"https://{DOMAIN}/api/v1/projects/{ORG}/{REPO}/artifacts/{SHA256}"
+    expected_method = "Posting"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{ORG}/{REPO}/deployments/"
     expected_payload = {
-        "contents": {
-            "description": DESCRIPTION,
-            "is_compliant": True,
-            "url": f"https://{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
-        },
-        "evidence_type": EVIDENCE_TYPE
+        "artifact_sha256": SHA256,
+        "build_url": f"https://{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
+        "description": DESCRIPTION,
+        "environment": ENVIRONMENT,
+        "user_data": {'status': 'deployed'},
     }
 
     # make merkely call
-    ev = new_log_evidence_env()
+    ev = new_log_deployment_env()
     merkelypipe = "Merkelypipe.acme-roadrunner.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -49,20 +50,20 @@ def test_bitbucket(capsys):
     assert payload == expected_payload
 
     assert extract_blurb(capsys_read(capsys)) == [
-        'MERKELY_COMMAND=log_evidence',
-        'MERKELY_IS_COMPLIANT: True',
+        'MERKELY_COMMAND=log_deployment',
     ]
 
 
-def new_log_evidence_env():
+def new_log_deployment_env():
     return {
-        "MERKELY_COMMAND": "log_evidence",
+        "MERKELY_COMMAND": "log_deployment",
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
-        "MERKELY_IS_COMPLIANT": "TRUE",
-        "MERKELY_EVIDENCE_TYPE": EVIDENCE_TYPE,
+
         "MERKELY_DESCRIPTION": DESCRIPTION,
+        "MERKELY_ENVIRONMENT": ENVIRONMENT,
+        "MERKELY_USER_DATA": USER_DATA,
 
         "BITBUCKET_WORKSPACE": ORG,
         "BITBUCKET_REPO_SLUG": REPO,
