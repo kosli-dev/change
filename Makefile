@@ -42,8 +42,6 @@ pip_list:
 # - - - - - - - - - - - - - - - - - - - -
 # full image rebuilds, with fresh base image, and no Docker caching
 
-rebuild_all: rebuild
-
 rebuild: delete_base_image
 	@docker build \
 		--file Dockerfile \
@@ -51,24 +49,12 @@ rebuild: delete_base_image
 		--tag ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
 
-rebuild_bb: delete_base_image_bb
-	@docker build \
-		--file Dockerfile.bb_pipe \
-		--no-cache \
-		--tag ${IMAGE_BBPIPE} .
-
 delete_base_image:
 	$(eval BASE_IMAGE = $(shell cat "${PWD}/Dockerfile" | head -n 1 | awk '{print $$2}'))
 	@docker image rm ${BASE_IMAGE} 2> /dev/null || true
 
-delete_base_image_bb:
-	$(eval BASE_IMAGE = $(shell cat "${PWD}/Dockerfile.bb_pipe" | head -n 1 | awk '{print $$2}'))
-	@docker image rm ${BASE_IMAGE} 2> /dev/null || true
-
 # - - - - - - - - - - - - - - - - - - - -
 # image builds with Docker caching
-
-build_all: build
 
 build:
 	@echo ${IMAGE}
@@ -76,12 +62,6 @@ build:
 		--file Dockerfile \
 		--tag ${IMAGE} .
 	@docker tag ${IMAGE} ${LATEST}
-
-build_bb:
-	@echo ${IMAGE_BBPIPE}
-	@docker build \
-		--file Dockerfile.bb_pipe \
-		--tag ${IMAGE_BBPIPE} .
 
 # - - - - - - - - - - - - - - - - - - - -
 # run tests without building by volume-mounting
@@ -123,21 +103,6 @@ test_integration:
 		--volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/integration/coverage_entrypoint.sh \
 			${IMAGE} tests/integration/${TARGET}
-
-test_bb_integration:
-	@docker rm --force ${CONTAINER} 2> /dev/null || true
-	$(eval COVERAGE_DIR = tmp/coverage/bb_integration)
-	@rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
-	@docker run \
-		--name ${CONTAINER} \
-		${DOCKER_RUN_TTY} \
-		${DOCKER_RUN_INTERACTIVE} \
-		${SOURCE_VOLUME_MOUNTS} \
-		--volume ${ROOT_DIR}/bitbucket_pipe/pipe.py:/app/pipe.py \
-		${TESTS_VOLUME_MOUNT} \
-		--volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
-		--entrypoint ./tests/bb_integration/coverage_entrypoint.sh \
-			${IMAGE_BBPIPE} tests/bb_integration/${TARGET}
 
 pytest_help:
 	@docker run \
