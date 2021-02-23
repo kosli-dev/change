@@ -41,16 +41,10 @@ log_evidence   ===> log_X_evidence ?
      Could we find a name based on that?
 
 log_test       ===> log_junit_xml_evidence ?
-     Again the name feels very generic.
-     Also has an evidence_type env-var.
 
 log_deployment ===> log_image_registry_push
-     Words: deployment is something different to me, eg of an image to staging so its _runnable_ somewhere
 
 log_approval   ===> log_release_approval
-     Again the name feels very generic.
-     Will we want approval of different things/steps?
-     What exactly is this approving?
 
 nothing        ===> control_deployment ==> ????
      Feels too generic ????
@@ -87,13 +81,11 @@ Check when using pathed-filename to get sha for that
 cdb and merkely behave the same regarding only showing
 the basename of the pathed-filename.
 
-Create a source/ dir and move everything into it.
-
 load_json() should be in context to allow easy stubbing.
 
 Context() should be named Externals.
 
-Context() should have keyword args?
+Context() should have keyword args? Simpifies run() and main()
 
 Provide Log in External, get Commands to return (method,url,payload)
 and do http as separate step.
