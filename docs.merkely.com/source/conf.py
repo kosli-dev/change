@@ -14,7 +14,7 @@ import os
 import sys
 
 sys.path.append(os.path.abspath("./_ext"))
-sys.path.append(os.path.abspath("/app"))
+sys.path.append(os.path.abspath("/app/source"))
 extensions = [
     'describe_command',
     'describe_fingerprint',
