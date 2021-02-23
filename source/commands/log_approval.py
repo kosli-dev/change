@@ -39,8 +39,8 @@ class LogApproval(Command):
 
     def __call__(self):
         commit_list = list_commits_between(repo_at(self.src_repo_root.value),
-                                           self.target_src_commitish.value,
-                                           self.base_src_commitish.value)
+                                           self.newest_src_commitish.value,
+                                           self.oldest_src_commitish.value)
         payload = {
             "artifact_sha256": self.fingerprint.sha,
             "description": self.description.value,
@@ -57,16 +57,14 @@ class LogApproval(Command):
         return self._required_env_var("MERKELY_DESCRIPTION", notes)
 
     @property
-    def target_src_commitish(self):
+    def newest_src_commitish(self):
         notes = "The source commit-ish for the newest change in the approval."
-        return self._required_env_var("MERKELY_TARGET_SRC_COMMITISH", notes)
-        #return self._required_env_var("MERKELY_NEWEST_SRC_COMMITISH", notes)
+        return self._required_env_var("MERKELY_NEWEST_SRC_COMMITISH", notes)
 
     @property
-    def base_src_commitish(self):
+    def oldest_src_commitish(self):
         notes = "The source commit-ish for the oldest change in the approval."
-        return self._required_env_var("MERKELY_BASE_SRC_COMMITISH", notes)
-        #return self._required_env_var("MERKELY_OLDEST_SRC_COMMITISH", notes)
+        return self._required_env_var("MERKELY_OLDEST_SRC_COMMITISH", notes)
 
     @property
     def src_repo_root(self):
@@ -90,8 +88,8 @@ class LogApproval(Command):
         return [
             'name',
             'fingerprint',
-            'target_src_commitish',
-            'base_src_commitish',
+            'newest_src_commitish',
+            'oldest_src_commitish',
             'description',
             'is_approved',
             'src_repo_root',

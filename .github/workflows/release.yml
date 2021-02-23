@@ -25,8 +25,8 @@ jobs:
       - name: Create approval in Merkely, update latest docker image and git branch
         env:
           MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:latest
-          MERKELY_TARGET_SRC_COMMITISH: ${GITHUB_SHA}
-          MERKELY_BASE_SRC_COMMITISH: "origin/latest"
+          MERKELY_NEWEST_SRC_COMMITISH: ${GITHUB_SHA}
+          MERKELY_OLDEST_SRC_COMMITISH: "origin/latest"
           MERKELY_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
           MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
         run: |

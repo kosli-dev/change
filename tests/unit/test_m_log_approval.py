@@ -108,8 +108,8 @@ def new_log_approval_env():
         "MERKELY_FINGERPRINT": f"{protocol}{image_name}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{domain}",
-        "MERKELY_TARGET_SRC_COMMITISH": "master",
-        "MERKELY_BASE_SRC_COMMITISH": "production",
+        "MERKELY_NEWEST_SRC_COMMITISH": "master",
+        "MERKELY_OLDEST_SRC_COMMITISH": "production",
         "MERKELY_DESCRIPTION": "The approval description here",
         'MERKELY_IS_APPROVED': 'TRUE',
     }
