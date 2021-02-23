@@ -1,8 +1,3 @@
-Loan-calculator
- - main.yml
- - production.yml
- - approval.yml
-
 
 Used in loan-calculator?
 YES----------------------------------------Makefile---------Tests------------------------------------
@@ -19,6 +14,9 @@ Not-----------------------------------------------------------------------------
 control_bitbucket_pr  control_pull_request no        no     no        no        no             no
 create_release        request_approval     no        no     no        no        no             no
 
+
+HttpRetry needs updating to throw a ChangeError exception
+so handled in main's catch-handler.
 
 
 log_approval:
@@ -42,7 +40,7 @@ log_evidence   ===> log_X_evidence ?
 
 log_test       ===> log_junit_xml_evidence ?
 
-log_deployment ===> log_image_registry_push
+log_deployment ===> log_image_registry_push ?
 
 log_approval   ===> log_release_approval
 

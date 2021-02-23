@@ -43,7 +43,6 @@ jobs:
       env:
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
-        make branch
         make merkely_declare_pipeline
 
 
