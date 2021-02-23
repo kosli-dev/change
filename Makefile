@@ -166,6 +166,7 @@ merkely_declare_pipeline:
 		\
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--env MERKELY_HOST=${MERKELY_HOST} \
+		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
 		--rm \
 		--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 		${IMAGE}
@@ -182,6 +183,7 @@ merkely_log_artifact:
         --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env MERKELY_HOST=${MERKELY_HOST} \
+        --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
         --env-file "${PWD}/source/dot-env-files/merkely.github.env" \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
@@ -199,6 +201,7 @@ merkely_log_deployment:
         --env MERKELY_USER_DATA=${MERKELY_USER_DATA} \
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env MERKELY_HOST=${MERKELY_HOST} \
+        --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
@@ -215,6 +218,7 @@ merkely_log_evidence:
         --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env MERKELY_HOST=${MERKELY_HOST} \
+        --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
@@ -229,6 +233,7 @@ merkely_log_test:
 		--env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--env MERKELY_HOST=${MERKELY_HOST} \
+		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
 		--rm \
 		--volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
@@ -247,6 +252,7 @@ merkely_log_approval:
 		--env MERKELY_SRC_REPO_ROOT=${MERKELY_SRC_REPO_ROOT} \
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--env MERKELY_HOST=${MERKELY_HOST} \
+		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
 		--rm \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
 		--volume ${PWD}:/src \
@@ -259,6 +265,8 @@ merkely_control_deployment:
 		--env MERKELY_COMMAND=control_deployment \
 		--env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+		--env MERKELY_HOST=${MERKELY_HOST} \
+		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
 		--rm \
 		--volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
 		--volume /var/run/docker.sock:/var/run/docker.sock \
