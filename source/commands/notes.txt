@@ -15,8 +15,14 @@ control_bitbucket_pr  control_pull_request no        no     no        no        
 create_release        request_approval     no        no     no        no        no             no
 
 
+Http calls need to be checked.
+Eg, declare_pipeline's HTTP Put could name an incorrect org/owner
+Eg See https://github.com/merkely-development/change/runs/1961998055?check_suite_focus=true
+
+
 HttpRetry needs updating to throw a ChangeError exception
 so handled in main's catch-handler.
+
 
 
 log_approval:
