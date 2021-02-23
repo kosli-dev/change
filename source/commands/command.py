@@ -58,7 +58,13 @@ class Command(ABC):
 
     @property
     def merkelypipe(self):
-        return load_json("/Merkelypipe.json")
+        import os
+        if os.path.exists("/Merkelypipe.json"):
+            return load_json("/Merkelypipe.json")
+        if os.path.exists("/data/Merkelypipe.json"):
+            return load_json("/data/Merkelypipe.json")
+        from errors import ChangeError
+        raise ChangeError("Merkelypipe.json file not found.")
 
     # - - - - - - - - - - - - - - - - - - - - -
 
