@@ -1,18 +1,18 @@
 FROM python:3.7-alpine
 
-RUN apk update
-#Needed for libgit2-dev
-RUN apk add build-base cmake libffi-dev
-RUN apk add libgit2-dev=1.1.0-r1
-
-# Needed for file based sha
-RUN apk add openssl
-# Needed to install approval tests from git egg. See requirements.txt
-RUN apk add git
-
 WORKDIR /app
 COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+
+RUN apk update
+
+# openssl is needed for file based sha
+# git is needed to install approval tests from git egg. See requirements.txt
+RUN apk add openssl git libffi-dev libgit2-dev=1.1.0-r1
+
+RUN apk add --no-cache --virtual .build-deps \
+  build-base cmake \
+  && pip3 install -r requirements.txt \
+  && apk del --no-cache .build-deps
 
 COPY source/ source/
 COPY tests/ tests/
