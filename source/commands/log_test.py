@@ -12,7 +12,7 @@ class LogTest(Command):
     def summary(self):
         return "".join([
             "Logs JUnit xml test summary evidence in Merkely.",
-            "The JUnit xml file must be volume-mounted to /data/junit/junit.xml"
+            "The JUnit xml file(s) must be volume-mounted to /data/junit/*.xml"
         ])
 
     def invocation(self, type):
