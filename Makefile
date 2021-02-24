@@ -17,6 +17,16 @@ IMAGES := $(shell docker image ls --format '{{.Repository}}:{{.Tag}}' $(NAME) | 
 
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
+ifeq ($(CI),true)
+	# no tty on CI
+	DOCKER_RUN_TTY=
+	DOCKER_RUN_INTERACTIVE=
+else
+	# colour on terminal needs tty
+	DOCKER_RUN_TTY=--tty
+	# pdb needs interactive
+	DOCKER_RUN_INTERACTIVE=--interactive
+endif
 
 # list the targets: from https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
 .PHONY: list
@@ -62,16 +72,6 @@ define TESTS_VOLUME_MOUNT
     --volume ${ROOT_DIR}/tests:/app/tests
 endef
 
-ifeq ($(CI),true)
-	# no tty on CI
-	DOCKER_RUN_TTY=
-	DOCKER_RUN_INTERACTIVE=
-else
-	# colour on terminal needs tty
-	DOCKER_RUN_TTY=--tty
-	# pdb needs interactive
-	DOCKER_RUN_INTERACTIVE=--interactive
-endif
 
 test_all: test_unit test_integration
 
