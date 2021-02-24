@@ -1,9 +1,9 @@
 from errors import ChangeError
-from commands import build_command, Context
+from commands import build_command, External
 
 
 def run(*, env=None, docker_fingerprinter=None, file_fingerprinter=None):
-    context = Context(env, docker_fingerprinter, file_fingerprinter)
+    context = External(env, docker_fingerprinter, file_fingerprinter)
     name = context.env.get("MERKELY_COMMAND", None)
     if name is None:
         raise ChangeError("MERKELY_COMMAND environment-variable is not set.")

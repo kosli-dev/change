@@ -4,7 +4,7 @@ from errors import ChangeError
 from fingerprinters import *
 
 
-class Context:
+class External:
     """
     Holds (some) external dependencies to make Classic style testing easier.
     """

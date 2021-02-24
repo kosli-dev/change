@@ -1,4 +1,4 @@
-from commands import Context
+from commands import External
 from errors import ChangeError
 from env_vars import FingerprintEnvVar
 from tests.utils import *
@@ -51,5 +51,5 @@ def test_unknown_protocol__all_properties_raise():
 
 def make_fingerprint_env_var(fingerprint):
     env = {"MERKELY_FINGERPRINT": fingerprint}
-    context = Context(env, None, None)
+    context = External(env, None, None)
     return FingerprintEnvVar(context)

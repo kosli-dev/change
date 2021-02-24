@@ -1,6 +1,6 @@
 from cdb.put_artifact       import put_artifact
 from cdb.put_artifact_image import put_artifact_image
-from commands import main, run, build_command, Context, LogArtifact
+from commands import main, run, build_command, External, LogArtifact
 
 from tests.utils import *
 
@@ -258,7 +258,7 @@ def X_test_each_required_env_var_missing(capsys):
 def make_command_env_vars():
     klass = build_command('log_artifact')
     env = new_log_artifact_env()
-    context = Context(env)
+    context = External(env)
     return klass(context).env_vars
 
 

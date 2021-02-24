@@ -1,4 +1,4 @@
-from commands import LogEvidence, Context
+from commands import LogEvidence, External
 from env_vars import RequiredEnvVar
 
 from collections import namedtuple
@@ -76,7 +76,7 @@ def test_env_vars():
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_IS_COMPLIANT": "TRUE",
     }
-    context = Context(env)
+    context = External(env)
     command = LogEvidence(context)
     env_vars = command.env_vars
 

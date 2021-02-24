@@ -12,7 +12,7 @@ def test_invocation_strings():
         LogTest,
     ]
     for klass in command_klasses:
-        context = Context(new_log_approval_env())
+        context = External(new_log_approval_env())
         command = klass(context)
         assert len(command.invocation('full')) > 0
         assert len(command.invocation('minimum')) > 0
