@@ -1,6 +1,7 @@
 import os
 from errors import ChangeError
 from fingerprinters import *
+from commands import load_json
 
 
 class Context:
@@ -29,6 +30,16 @@ class Context:
 
         if self.__sha256_fingerprinter is None:
             self.__sha256_fingerprinter = Sha256Fingerprinter()
+
+    @property
+    def merkelypipe(self):
+        import os
+        if os.path.exists("/Merkelypipe.json"):
+            return load_json("/Merkelypipe.json")
+        if os.path.exists("/data/Merkelypipe.json"):
+            return load_json("/data/Merkelypipe.json")
+        from errors import ChangeError
+        raise ChangeError("Merkelypipe.json file not found.")
 
     @property
     def env(self):

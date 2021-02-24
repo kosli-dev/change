@@ -1,7 +1,6 @@
 from abc import ABC
 from collections import namedtuple
 from env_vars import *
-from commands import load_json
 
 
 class Command(ABC):
@@ -14,9 +13,15 @@ class Command(ABC):
     def __call__(self):  # pragma: no cover
         raise NotImplementedError(self.name)
 
+    # - - - - - - - - - - - - - - - - - - - - -
+    # Merkelypipe.json
+
     @property
-    def env(self):
-        return self.__context.env
+    def merkelypipe(self):
+        return self.__context.merkelypipe
+
+    # - - - - - - - - - - - - - - - - - - - - -
+    # All env-vars
 
     @property
     def env_vars(self):
@@ -29,7 +34,7 @@ class Command(ABC):
         raise NotImplementedError(self.name)
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # common env-vars
+    # Individual common env-vars
 
     @property
     def name(self):
@@ -57,16 +62,8 @@ class Command(ABC):
     # - - - - - - - - - - - - - - - - - - - - -
 
     @property
-    def merkelypipe(self):
-        import os
-        if os.path.exists("/Merkelypipe.json"):
-            return load_json("/Merkelypipe.json")
-        if os.path.exists("/data/Merkelypipe.json"):
-            return load_json("/data/Merkelypipe.json")
-        from errors import ChangeError
-        raise ChangeError("Merkelypipe.json file not found.")
-
-    # - - - - - - - - - - - - - - - - - - - - -
+    def env(self):
+        return self.__context.env
 
     def _required_env_var(self, name, notes):
         return RequiredEnvVar(self.env, name, notes)
