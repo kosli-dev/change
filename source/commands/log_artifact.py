@@ -14,11 +14,9 @@ class LogArtifact(Command):
         def env(var):
             if var.name == "MERKELY_COMMAND":
                 value = var.value
-            elif var.name == "MERKELY_FINGERPRINT":
-                value = var.example
             else:
-                value = "${...}"
-            return f'    --env {var.name}="{value}" \\\n'
+                value = '"' + "${" + var.name + "}" + '"'
+            return f'    --env {var.name}={value} \\\n'
 
         invocation_string = "docker run \\\n"
         for name in self._env_var_names:

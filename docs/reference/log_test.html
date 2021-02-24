@@ -122,13 +122,13 @@
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=&quot;log_test&quot; \
-    --env MERKELY_FINGERPRINT=&quot;docker://${YOUR_IMAGE_AND_TAG}&quot; \
-    --env MERKELY_EVIDENCE_TYPE=&quot;${...}&quot; \
-    --env MERKELY_CI_BUILD_URL=&quot;${...}&quot; \
-    --env MERKELY_USER_DATA=&quot;${...}&quot; \
-    --env MERKELY_API_TOKEN=&quot;${...}&quot; \
-    --env MERKELY_HOST=&quot;${...}&quot; \
+    --env MERKELY_COMMAND=log_test \
+    --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
+    --env MERKELY_EVIDENCE_TYPE=&quot;${MERKELY_EVIDENCE_TYPE}&quot; \
+    --env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \
+    --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
+    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
+    --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
     --rm \
     --volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml \
     --volume /var/run/docker.sock:/var/run/docker.sock \

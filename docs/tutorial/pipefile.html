@@ -146,9 +146,9 @@
 <p>For example, to declare the pipeline definition in Merkely we can use the command <a class="reference internal" href="../reference/declare_pipeline.html#declare-pipeline"><span class="std std-ref">declare_pipeline</span></a>
 like so:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_API_TOKEN=&quot;${...}&quot; \
-    --env MERKELY_HOST=&quot;${...}&quot; \
-    --env MERKELY_COMMAND=&quot;declare_pipeline&quot; \
+    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
+    --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
+    --env MERKELY_COMMAND=declare_pipeline \
     --rm \
     --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
     merkely/change
