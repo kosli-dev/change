@@ -4,6 +4,7 @@ from cdb.http import http_put_payload
 
 
 class DeclarePipeline(Command):
+    
     @property
     def summary(self):
         return "Declares a pipeline in Merkely"
@@ -15,7 +16,7 @@ class DeclarePipeline(Command):
     def __call__(self):
         url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
         payload = self.merkelypipe
-        http_put_payload(url, payload, api_token=self.api_token.value)
+        http_put_payload(url, payload, self.api_token.value)
         return 'Putting', url, payload
 
     @property
