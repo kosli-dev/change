@@ -70,7 +70,6 @@ jobs:
 
     - name: Log test results to Merkely
       env:
-        MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
 
       run: |
@@ -94,7 +93,6 @@ jobs:
       env:
         MERKELY_EVIDENCE_TYPE: "coverage"
         MERKELY_IS_COMPLIANT: 'TRUE'
-        MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
         source tmp/coverage/unit/htmlcov/test_coverage.sh

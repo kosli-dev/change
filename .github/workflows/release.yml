@@ -47,7 +47,6 @@ jobs:
       - name: Create the deployment in ComplianceDB
         env:
           MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:latest
-          MERKELY_CI_BUILD_URL: https://github.com/merkely/change/actions/runs/${GITHUB_RUN_ID}
           MERKELY_DESCRIPTION: "Deployment of ${UNTAGGED_IMAGE}:latest to docker hub"
           MERKELY_ENVIRONMENT: "docker_hub"
           MERKELY_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}

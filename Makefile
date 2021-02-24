@@ -222,6 +222,7 @@ merkely_log_evidence:
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env MERKELY_HOST=${MERKELY_HOST} \
         --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
+        --env-file ${MERKELY_ENV_FILE} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
@@ -237,6 +238,7 @@ merkely_log_test:
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--env MERKELY_HOST=${MERKELY_HOST} \
 		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
+		--env-file ${MERKELY_ENV_FILE} \
 		--rm \
 		--volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
