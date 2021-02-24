@@ -15,12 +15,6 @@ control_bitbucket_pr  control_pull_request no        no     yes       no        
 create_release        request_approval     no        no     no        no        no             no
 
 
-Http calls need to be checked.
-Eg, declare_pipeline's HTTP Put could name an incorrect org/owner
-Eg See https://github.com/merkely-development/change/runs/1961998055?check_suite_focus=true
-
-
-
 log_approval:
 Has this
 		--env MERKELY_SRC_REPO_ROOT=${MERKELY_SRC_REPO_ROOT} \
@@ -31,24 +25,14 @@ MERKELY_SRC_REPO_ROOT (which defaults to /src) and require the
 volume-mount to always be /src ?
 
 
-
-
 Command Names:?
 ---------------
+Names feels very generic?
+log_test       ===> log_junit_xml_evidence ?
+nothing        ===> control_deployment ==> ?
 log_evidence   ===> log_X_evidence ?
-     The name feels very generic?
      I presume the evidence_type env-var must match Merkelypipe.json "template"
      Could we find a name based on that?
-
-log_test       ===> log_junit_xml_evidence ?
-
-log_deployment ===> log_image_registry_push ?
-
-log_approval   ===> log_release_approval
-
-nothing        ===> control_deployment ==> ????
-     Feels too generic ????
-
 
 
 In main.yml
@@ -81,10 +65,6 @@ Check when using pathed-filename to get sha for that
 cdb and merkely behave the same regarding only showing
 the basename of the pathed-filename.
 
-load_json() should be in context to allow easy stubbing.
-
-Context() should be named Externals.
-
 Context() should have keyword args? Simpifies run() and main()
 
 Provide Log in External, get Commands to return (method,url,payload)
@@ -109,5 +89,5 @@ As a general principle, for anything in a docstring,
 consider whether it should be part of the living documentation.
 
 Once living documentation is in place, warning/error messages can
-include targeted urls.
+include targeted urls?
 
