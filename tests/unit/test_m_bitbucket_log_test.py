@@ -20,6 +20,8 @@ IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3277770d559ccc2032b258fc5e73f99a103db462ee"
 EVIDENCE_TYPE = "junit"
 
+USER_DATA = "/app/tests/data/user_data.json"
+
 
 def test_bitbucket(capsys):
 
@@ -84,9 +86,13 @@ def test_bitbucket(capsys):
     assert method == expected_method
     assert url == expected_url
 
+    # image name has changed
     old_description = expected_payload['contents']['description']
     new_description = old_description.replace('compliancedb/cdb_controls', 'merkely/change')
     expected_payload['contents']['description'] = new_description
+
+    # user_data works did not work in cdb code
+    expected_payload["user_data"] = {'status': 'deployed'}
 
     assert payload == expected_payload
 
@@ -98,6 +104,7 @@ def new_log_test_env():
         "MERKELY_HOST": f"https://{DOMAIN}",
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
         "MERKELY_EVIDENCE_TYPE": EVIDENCE_TYPE,
+        "MERKELY_USER_DATA": USER_DATA,
 
         "BITBUCKET_WORKSPACE": ORG,
         "BITBUCKET_REPO_SLUG": REPO,

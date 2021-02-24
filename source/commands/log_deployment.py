@@ -61,10 +61,6 @@ class LogDeployment(Command):
         return self._required_env_var('MERKELY_ENVIRONMENT', notes)
 
     @property
-    def user_data(self):
-        return UserDataEnvVar(self._external)
-
-    @property
     def _env_var_names(self):
         # Print according to this order
         return [

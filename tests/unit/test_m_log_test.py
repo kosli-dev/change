@@ -8,6 +8,8 @@ APPROVAL_FILE = "test_m_log_test"
 
 CDB_DOMAIN = "app.compliancedb.com"
 
+USER_DATA = "/app/tests/data/user_data.json"
+
 
 def test_non_zero_status_when_no_data_directory(capsys, mocker):
     _image_name = "acme/widget:4.67"
@@ -52,6 +54,7 @@ def test_non_zero_status_when_no_data_directory(capsys, mocker):
 
     # new behaviour is to fail with non-zero exit status
     ev = new_log_test_env()
+    ev.pop('MERKELY_USER_DATA')
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         status = main(env=env)
@@ -68,7 +71,7 @@ def test_non_zero_status_when_no_data_directory(capsys, mocker):
 
 def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     """
-    The cdb code looks at CDB_USER_DATA but the crucial line to add
+    The cdb code looks at CDB_USER_DATA but the line to add
     the json (in cdb_utils.py build_evidence_dict) is this:
 
     if user_data is not None:
@@ -79,8 +82,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     if user_data is not None:
         evidence["user_data"] = user_data
 
-    Thus there is no need to test CDB_USER_DATA
-    And no urgent need to add it as new behaviour
+    So that functionality does not exist in the old cdb code.
     """
     image_name = "acme/widget:4.67"
     sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
@@ -142,6 +144,9 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     string = string.replace('compliancedb/cdb_controls', 'merkely/change')
     expected_payload['contents']['description'] = string
 
+    # user_data works in new code
+    expected_payload["user_data"] = {'status': 'deployed'}
+
     assert payload == expected_payload
 
 
@@ -175,6 +180,7 @@ def new_log_test_env():
         "MERKELY_FINGERPRINT": f"{protocol}{image_name}",
         "MERKELY_EVIDENCE_TYPE": evidence_type,
         "MERKELY_CI_BUILD_URL": BUILD_URL,
+        "MERKELY_USER_DATA": USER_DATA,
         "MERKELY_API_TOKEN": API_TOKEN,
     }
 

@@ -51,6 +51,10 @@ class Command(ABC):
         return FingerprintEnvVar(self._external)
 
     @property
+    def user_data(self):
+        return UserDataEnvVar(self._external)
+
+    @property
     def host(self):
         return HostEnvVar(self.env)
 

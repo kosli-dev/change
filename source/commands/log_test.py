@@ -49,6 +49,7 @@ class LogTest(Command):
         description = "JUnit results xml verified by merkely/change: " + message
         payload = {
             "evidence_type": self.evidence_type.value,
+            "user_data": self.user_data.value,
             "contents": {
                 "is_compliant": is_compliant,
                 "url": self.ci_build_url.value,
@@ -76,6 +77,7 @@ class LogTest(Command):
             'fingerprint',
             'evidence_type',
             'ci_build_url',
+            'user_data',
             'api_token',
             'host',
         ]
