@@ -1,6 +1,6 @@
 tmp/
 .coverage
-.idea/
+.idea/*
 __pycache__/
 source/cdb/__pycache__/
 source/commands/__pycache__/
@@ -12,6 +12,5 @@ tests/bb_integration/__pycache__/
 tests/integration/__pycache__/
 tests/unit/__pycache__/
 tests/utils/__pycache__/
-.idea/dictionaries/*
 docs/.buildinfo
 docs.merkely.com/build
