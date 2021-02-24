@@ -1,6 +1,4 @@
 
-from .json_loader import load_json
-
 from .context import Context
 
 from .command import Command

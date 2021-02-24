@@ -1,7 +1,7 @@
+import json
 import os
 from errors import ChangeError
 from fingerprinters import *
-from commands import load_json
 
 
 class Context:
@@ -35,9 +35,9 @@ class Context:
     def merkelypipe(self):
         import os
         if os.path.exists("/Merkelypipe.json"):
-            return load_json("/Merkelypipe.json")
+            return self.load_json("/Merkelypipe.json")
         if os.path.exists("/data/Merkelypipe.json"):
-            return load_json("/data/Merkelypipe.json")
+            return self.load_json("/data/Merkelypipe.json")
         from errors import ChangeError
         raise ChangeError("Merkelypipe.json file not found.")
 
@@ -58,3 +58,18 @@ class Context:
         else:
             raise ChangeError(f"Unknown protocol: {string}")
 
+    def load_json(self, filename):
+        try:
+            with open(filename) as file:
+                return json.load(file)
+        except FileNotFoundError:
+            raise ChangeError(f"{filename} file not found.")
+        except IsADirectoryError:
+            # Note: If you do this...
+            # --volume ${MERKELYPIPE}:/Merkelypipe.json
+            # And ${MERKELYPIPE} does not exist on the client
+            # volume-mount weirdness can happen and you
+            # get an empty dir created on the client!
+            raise ChangeError(f"{filename} is a directory.")
+        except json.decoder.JSONDecodeError as exc:
+            raise ChangeError(f"{filename} invalid json - {str(exc)}")

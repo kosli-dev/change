@@ -62,7 +62,7 @@ class LogDeployment(Command):
 
     @property
     def user_data(self):
-        return UserDataEnvVar(self.env)
+        return UserDataEnvVar(self._external)
 
     @property
     def _env_var_names(self):

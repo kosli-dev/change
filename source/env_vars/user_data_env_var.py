@@ -11,14 +11,14 @@ NOTES = "\n".join([
 
 class UserDataEnvVar(DefaultedEnvVar):
 
-    def __init__(self, env):
-        super().__init__(env, "MERKELY_USER_DATA", NOTES)
+    def __init__(self, external):
+        super().__init__(external.env, "MERKELY_USER_DATA", NOTES)
+        self._external = external
 
     @property
     def value(self):
         if self.string != "":
-            from commands import load_json
             filename = self.string
-            return load_json(filename)
+            return self._external.load_json(filename)
         else:
             return DEFAULT
