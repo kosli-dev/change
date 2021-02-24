@@ -24,8 +24,7 @@ class ControlPullRequest(Command):
             "contents": {
                 "is_compliant": is_compliant,
                 "description": self.description.value,
-                #"url": self.ci_build_url.value,
-                "url": "https://bitbucket.org/acme/road-runner",
+                "url": self.ci_build_url.value,
                 "source": pull_requests,
             }
         }

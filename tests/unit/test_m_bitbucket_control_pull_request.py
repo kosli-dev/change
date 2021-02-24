@@ -92,6 +92,9 @@ def test_bitbucket(capsys, mocker):
 
     capsys_read(capsys)
 
+    # Change of behaviour
+    expected_payload['contents']['url'] = f"https://{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}"
+
     # verify matching data
     assert method == expected_method
     assert url == expected_url
