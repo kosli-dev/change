@@ -74,6 +74,9 @@ def test_all_env_vars_image(capsys, mocker):
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
 
+    # CHANGE IN BEHAVIOUR
+    expected_payload['user_data'] = {}
+
     # verify matching data
     assert method == expected_method
     assert url == expected_url
@@ -154,7 +157,9 @@ def test_all_env_vars_file(capsys, mocker):
     assert method == expected_method
     assert url == expected_url
 
-    expected_payload['filename'] = filename  # CHANGE IN BEHAVIOUR
+    # CHANGE IN BEHAVIOUR
+    expected_payload['user_data'] = {}
+    expected_payload['filename'] = filename
     assert payload == expected_payload
 
     assert extract_blurb(capsys_read(capsys)) == [
@@ -223,6 +228,9 @@ def test_all_env_vars_sha(capsys):
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         method, url, payload = run(env=env)
+
+    # CHANGE IN BEHAVIOUR
+    expected_payload['user_data'] = {}
 
     # verify matching data
     assert method == expected_method

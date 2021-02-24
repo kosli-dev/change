@@ -72,6 +72,9 @@ def test_bitbucket(capsys, mocker):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
 
+    # CHANGE IN BEHAVIOUR
+    expected_payload['user_data'] = {}
+
     # verify matching data
     assert method == expected_method
     assert url == expected_url

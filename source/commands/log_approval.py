@@ -46,6 +46,7 @@ class LogApproval(Command):
             "description": self.description.value,
             "is_approved": self.is_approved.value == 'TRUE',
             "src_commit_list": commit_list,
+            "user_data": self.user_data.value
         }
         url = ApiSchema.url_for_approvals(self.host.value, self.merkelypipe)
         http_post_payload(url, payload, self.api_token.value)
@@ -93,6 +94,7 @@ class LogApproval(Command):
             'description',
             'is_approved',
             'src_repo_root',
+            'user_data',
             'api_token',
             'host',
         ]

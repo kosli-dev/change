@@ -78,6 +78,9 @@ def test_docker_image(capsys, mocker):
 
     capsys_read(capsys)
 
+    # CHANGE IN BEHAVIOUR
+    expected_payload['user_data'] = {}
+
     # verify matching data
     assert method == expected_method
     assert url == expected_url

@@ -43,7 +43,8 @@ class LogArtifact(Command):
             "git_commit": self.artifact_git_commit.value,
             "commit_url": self.artifact_git_url.value,
             "build_url": self.ci_build_url.value,
-            "is_compliant": self.is_compliant.value == 'TRUE'
+            "is_compliant": self.is_compliant.value == 'TRUE',
+            "user_data": self.user_data.value
         }
         url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)
         http_put_payload(url, payload, self.api_token.value)
@@ -72,6 +73,7 @@ class LogArtifact(Command):
             'artifact_git_url',
             'ci_build_number',
             'ci_build_url',
+            'user_data',
             'api_token',
             'host',
         ]

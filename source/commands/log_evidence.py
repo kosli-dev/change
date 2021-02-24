@@ -38,6 +38,7 @@ class LogEvidence(Command):
         self._print_compliance()
         payload = {
             "evidence_type": self.evidence_type.value,
+            "user_data": self.user_data.value,
             "contents": {
                 "is_compliant": self.is_compliant.value == "TRUE",
                 "url": self.ci_build_url.value,
@@ -68,6 +69,7 @@ class LogEvidence(Command):
             'is_compliant',
             'description',
             'ci_build_url',
+            'user_data',
             'api_token',
             'host',
         ]
