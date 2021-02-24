@@ -1,6 +1,7 @@
 from errors import ChangeError
 from fingerprinters import Fingerprinter
 import docker
+import requests
 
 PROTOCOL = 'docker://'
 
@@ -47,11 +48,18 @@ class DockerFingerprinter(Fingerprinter):
         image_name = self.artifact_name(string)
         # Mocked in /tests/unit/utils/mock_docker_fingerprinter.py
         # docker is a Python package installed in requirements.txt
-        client = docker.from_env()
-        image = client.images.get(image_name)
-        return image.attrs["RepoDigests"][0].split(":")[1]
-        # If the image name is incorrect you get an
-        # exception and a diagnostic on the terminal.
-        # For example, see
-        # https://github.com/merkely-development/loan-calculator/runs/1903030144?check_suite_focus=true
+        try:
+            client = docker.from_env()
+            image = client.images.get(image_name)
+            return image.attrs["RepoDigests"][0].split(":")[1]
+        except (docker.errors.ImageNotFound, requests.exceptions.HTTPError):
+            # For example, see
+            # https://github.com/merkely-development/loan-calculator/runs/1903030144?check_suite_focus=true
+            message = " ".join([
+                f"Cannot determine digest for image: {string}.",
+                "Check the image name is correct.",
+                "Check the image has been pushed to a registry."
+            ])
+            raise ChangeError(message)
+
 
