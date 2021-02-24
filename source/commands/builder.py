@@ -9,6 +9,7 @@ COMMANDS = {
     "log_approval": LogApproval,
     "log_test": LogTest,
     "control_deployment": ControlDeployment,
+    "control_pull_request": ControlPullRequest,
 }
 
 

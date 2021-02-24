@@ -1,5 +1,5 @@
 Getting pull requests from https://api.bitbucket.org/2.0/repositories/acme/road-runner/commit/abc50c8a53f79974d615df335669b59fb56a4ed3/pullrequests
-Pull requests response: {'values': [{'links': {'self': {'href': 'test_self_uri', 'name': 'test_self'}, 'html': {'href': 'test_html_uri', 'name': 'test_html'}}, 'id': '1', 'title': 'test pull request'}], 'state': 'OPEN', 'participants': [{'approved': True, 'state': 'approved', 'user': {'display_name': 'test_username'}}]}
+Pull requests response: {"values": [{"links": {"self": {"href": "test_self_uri", "name": "test_self"}, "html": {"href": "test_html_uri", "name": "test_html"}}, "id": "1", "title": "test pull request"}], "state": "OPEN", "participants": [{"approved": true, "state": "approved", "user": {"display_name": "test_username"}}]}
 Found pull request info: [{'pullRequestMergeCommit': 'abc50c8a53f79974d615df335669b59fb56a4ed3', 'pullRequestURL': 'test_html_uri', 'pullRequestState': 'OPEN', 'approvers': 'test_username'}]
 {'evidence_type': 'pull_request', 'contents': {'is_compliant': True, 'url': 'https://bitbucket.org/acme/road-runner', 'description': 'Bitbucket pull request', 'source': [{'pullRequestMergeCommit': 'abc50c8a53f79974d615df335669b59fb56a4ed3', 'pullRequestURL': 'test_html_uri', 'pullRequestState': 'OPEN', 'approvers': 'test_username'}]}}
 Docker image digest found from environment variable

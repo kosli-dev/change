@@ -9,6 +9,9 @@ APPROVAL_FILE = "test_m_bitbucket_control_pull_request"
 DOMAIN = "app.compliancedb.com"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
+BITBUCKET_API_TOKEN = "6199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
+BITBUCKET_API_USER = "test_user"
+
 BB = 'bitbucket.org'
 ORG = 'acme'
 REPO = 'road-runner'
@@ -19,8 +22,8 @@ PROTOCOL = "docker://"
 IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 
-DESCRIPTION = "branch coverage"
-EVIDENCE_TYPE = "unit_test"
+DESCRIPTION = "Bitbucket pull request"
+EVIDENCE_TYPE = "pull_request"
 
 
 def test_bitbucket(capsys, mocker):
@@ -29,8 +32,8 @@ def test_bitbucket(capsys, mocker):
         "CDB_API_TOKEN": API_TOKEN,
         "CDB_ARTIFACT_SHA": SHA256,
 
-        "BITBUCKET_API_TOKEN": "6199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "BITBUCKET_API_USER": "test_user",
+        "BITBUCKET_API_TOKEN": BITBUCKET_API_TOKEN,
+        "BITBUCKET_API_USER": BITBUCKET_API_USER,
 
         "BITBUCKET_WORKSPACE": ORG,
         "BITBUCKET_REPO_SLUG": REPO,
@@ -38,9 +41,8 @@ def test_bitbucket(capsys, mocker):
     }
 
     with dry_run(env):
-        mocker.patch('cdb.bitbucket.requests.get',
-                     return_value=MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response))
-        mocker.patch('cdb.bitbucket.json.loads', return_value=mocked_bitbucket_pull_requests_api_response)
+        rv = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response)
+        mocker.patch('cdb.bitbucket.requests.get', return_value=rv)
         mocker.patch('cdb.cdb_utils.load_project_configuration', return_value=test_pipefile)
         put_bitbucket_pull_request("tests/integration/test-pipefile.json")
         mocker.stopall()
@@ -59,7 +61,7 @@ def test_bitbucket(capsys, mocker):
     expected_url = f"https://{DOMAIN}/api/v1/projects/{ORG}/{REPO}/artifacts/{SHA256}"
     expected_payload = {
         "contents": {
-            "description": "Bitbucket pull request",
+            "description": DESCRIPTION,
             "is_compliant": True,
             "source": [
                 {
@@ -71,7 +73,7 @@ def test_bitbucket(capsys, mocker):
             ],
             "url": f"https://{BB}/{ORG}/{REPO}"
         },
-        "evidence_type": "pull_request"
+        "evidence_type": EVIDENCE_TYPE
     }
 
     # verify data from approved cdb text file
@@ -80,19 +82,31 @@ def test_bitbucket(capsys, mocker):
     assert old_payload == expected_payload
 
     # make merkely call
-    #...
+    ev = new_control_pull_request_env()
+    merkelypipe = "Merkelypipe.acme-roadrunner.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+            rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response)
+            mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+            method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
 
+    capsys_read(capsys)
 
+    # verify matching data
+    assert method == expected_method
+    assert url == expected_url
+    assert payload == expected_payload
 
 
 class MockedAPIResponse:
-    def __init__(self, status_code, response_body=None):
+    def __init__(self, status_code, response_body):
         self.status_code = status_code
         self.response_body = response_body
 
     @property
     def text(self):
-        return str(self.response_body)
+        import json
+        return json.dumps(self.response_body)
 
 
 mocked_bitbucket_pull_requests_api_response = {
@@ -136,12 +150,11 @@ def new_control_pull_request_env():
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
-        "MERKELY_IS_COMPLIANT": "TRUE",
         "MERKELY_EVIDENCE_TYPE": EVIDENCE_TYPE,
         "MERKELY_DESCRIPTION": DESCRIPTION,
 
-        "BITBUCKET_API_TOKEN": "6199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "BITBUCKET_API_USER": "test_user",
+        "BITBUCKET_API_TOKEN": BITBUCKET_API_TOKEN,
+        "BITBUCKET_API_USER": BITBUCKET_API_USER,
 
         "BITBUCKET_WORKSPACE": ORG,
         "BITBUCKET_REPO_SLUG": REPO,
