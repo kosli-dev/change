@@ -10,14 +10,15 @@ That would require a [docker run -it] which would fail in the
 target environment, a CI pipeline, which invariably has no tty.
 """
 
-from os import sys
+from errors import ChangeError
 import requests as http
 from time import sleep
 
 RETRY_BACKOFF_FACTOR = 1
 MAX_RETRY_COUNT = 5
 
-class HttpRetryExhausted(http.exceptions.RequestException):
+
+class HttpRetryExhausted(ChangeError):
     def __init__(self, url):
         self._url = url
 

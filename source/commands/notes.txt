@@ -20,10 +20,6 @@ Eg, declare_pipeline's HTTP Put could name an incorrect org/owner
 Eg See https://github.com/merkely-development/change/runs/1961998055?check_suite_focus=true
 
 
-HttpRetry needs updating to throw a ChangeError exception
-so handled in main's catch-handler.
-
-
 
 log_approval:
 Has this
