@@ -41,9 +41,6 @@ class LogTest(Command):
         return invocation_string
 
     def __call__(self):
-        # Note: user_data was read from ev CDB_USER_DATA
-        #       as json with None as default
-        #    No equivalent env-var for that yet.
         junit_results_dir = '/data/junit/'
         is_compliant, message = is_compliant_tests_directory(junit_results_dir)
         description = "JUnit results xml verified by merkely/change: " + message
