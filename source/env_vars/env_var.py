@@ -42,15 +42,6 @@ class EnvVar(ABC):
         return self._get(default="")
 
     @property
-    def is_set(self):
-        """
-        Returns true if this environment-variable is set.
-        Note: returns false if the environment-variable
-        is set, but to the empty string.
-        """
-        return self._get(default=None) is not None
-
-    @property
     def name(self):
         """
         Returns the name of the environment-variable, as set in the ctor.
