@@ -29,10 +29,6 @@ class Command(ABC):
         objects = [getattr(self, name) for name in names]
         return namedtuple('EnvVars', tuple(names))(*objects)
 
-    @property
-    def _env_var_names(self):  # pragma: no cover
-        raise NotImplementedError(self.name)
-
     # - - - - - - - - - - - - - - - - - - - - -
     # Common env-vars
 
@@ -88,3 +84,35 @@ class Command(ABC):
     def _defaulted_env_var(self, name, notes):
         return DefaultedEnvVar(self.env, name, notes)
 
+    # - - - - - - - - - - - - - - - - - - - - -
+
+    def invocation(self, type):
+        def env(var):
+            if var.name == "MERKELY_COMMAND":
+                value = var.value
+            else:
+                value = '"' + "${" + var.name + "}" + '"'
+            return f'    --env {var.name}={value} \\\n'
+
+        invocation_string = "docker run \\\n"
+        for name in self._env_var_names:
+            var = getattr(self, name)
+            if type == 'full':
+                invocation_string += env(var)
+            if type == 'minimum' and var.is_required:
+                invocation_string += env(var)
+
+        invocation_string += "    --rm \\\n"
+        for mount in self._volume_mounts:
+            invocation_string += f"    --volume {mount} \\\n"
+        invocation_string += "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\\n"
+        invocation_string += "    merkely/change"
+        return invocation_string
+
+    @property
+    def _env_var_names(self):  # pragma: no cover
+        raise NotImplementedError(self.name)
+
+    @property
+    def _volume_mounts(self):  # pragma: no cover
+        raise NotImplementedError(self.name)

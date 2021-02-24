@@ -130,8 +130,7 @@
     --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
     --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
     --rm \
-    --volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml \
-    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml/var/run/docker.sock:/var/run/docker.sock \
     --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
     merkely/change
 </pre></div>

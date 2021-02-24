@@ -13,8 +13,9 @@ class ControlPullRequest(Command):
     def summary(self):
         return ""
 
-    def invocation(self, _type):
-        return ""
+    @property
+    def _volume_mounts(self):
+        return ["/var/run/docker.sock:/var/run/docker.sock"]
 
     def __call__(self):
         is_compliant, pull_requests = get_pull_request_for_current_commit(self.env)
