@@ -7,8 +7,8 @@ class Command(ABC):
     """
     Abstract Base Class for all merkely/change commands.
     """
-    def __init__(self, context):
-        self.__context = context
+    def __init__(self, external):
+        self.__external = external
 
     def __call__(self):  # pragma: no cover
         raise NotImplementedError(self.name)
@@ -18,7 +18,7 @@ class Command(ABC):
 
     @property
     def merkelypipe(self):
-        return self.__context.merkelypipe
+        return self.__external.merkelypipe
 
     # - - - - - - - - - - - - - - - - - - - - -
     # All env-vars
@@ -48,7 +48,7 @@ class Command(ABC):
 
     @property
     def fingerprint(self):
-        return FingerprintEnvVar(self.__context)
+        return FingerprintEnvVar(self.__external)
 
     @property
     def host(self):
@@ -63,7 +63,7 @@ class Command(ABC):
 
     @property
     def env(self):
-        return self.__context.env
+        return self.__external.env
 
     def _required_env_var(self, name, notes):
         return RequiredEnvVar(self.env, name, notes)
