@@ -87,14 +87,19 @@ class Command(ABC):
     # - - - - - - - - - - - - - - - - - - - - -
 
     def invocation(self, type):
+        tab = "    "
+        def lcnl(string):
+            line_continuation = "\\"
+            newline = "\n"
+            return f"{string} {line_continuation}{newline}"
         def env(var):
             if var.name == "MERKELY_COMMAND":
                 value = var.value
             else:
                 value = '"' + "${" + var.name + "}" + '"'
-            return f'    --env {var.name}={value} \\\n'
+            return lcnl(f'{tab}--env {var.name}={value}')
 
-        invocation_string = "docker run \\\n"
+        invocation_string = lcnl("docker run")
         for name in self._env_var_names:
             var = getattr(self, name)
             if type == 'full':
@@ -102,11 +107,11 @@ class Command(ABC):
             if type == 'minimum' and var.is_required:
                 invocation_string += env(var)
 
-        invocation_string += "    --rm \\\n"
+        invocation_string += lcnl(f"{tab}--rm")
         for mount in self._volume_mounts:
-            invocation_string += f"    --volume {mount} \\\n"
-        invocation_string += "    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \\\n"
-        invocation_string += "    merkely/change"
+            invocation_string += lcnl(f"{tab}--volume {mount}")
+        invocation_string += lcnl(tab+"--volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json")
+        invocation_string += f"{tab}merkely/change"
         return invocation_string
 
     @property

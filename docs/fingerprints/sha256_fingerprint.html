@@ -119,11 +119,12 @@
 <h1>Sha256 Fingerprint<a class="headerlink" href="#sha256-fingerprint" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
-<p>The string `sha256://` followed by the artifact’s 64 character sha256, ‘,then `/`, then it’s non-empty name.</p>
+<p>The string `sha256://` followed by the artifact’s 64 character sha256, then `/`, then it’s non-empty name.</p>
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run ... \
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
+    ...
     --env MERKELY_FINGERPRINT=”sha256://${YOUR_ARTIFACT_SHA256}/${YOUR_ARTIFACT_NAME}” \
     ...
 </pre></div>

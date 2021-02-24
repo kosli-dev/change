@@ -21,7 +21,7 @@ class DeclarePipeline(Command):
     @property
     def _env_var_names(self):
         return [
+            'name',
             'api_token',
             'host',
-            'name',
         ]

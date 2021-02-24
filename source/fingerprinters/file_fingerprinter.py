@@ -12,7 +12,8 @@ NOTES = " ".join([
 
 
 EXAMPLE = "\n".join([
-    'docker run ... \\',
+    'docker run \\',
+    '    ...',
     f'    --env MERKELY_FINGERPRINT=”{PROTOCOL}${{YOUR_FILE_PATH}} \\',
     '    --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \\',
     '    ...',

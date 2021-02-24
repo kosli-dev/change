@@ -11,7 +11,8 @@ NOTES = " ".join([
 ])
 
 EXAMPLE = "\n".join([
-    'docker run ... \\',
+    'docker run \\',
+    '    ...',
     f'    --env MERKELY_FINGERPRINT=”{PROTOCOL}${{YOUR_DOCKER_IMAGE_AND_TAG}}" \\',
     '    --volume /var/run/docker.sock:/var/run/docker.sock \\',
     '    ...',

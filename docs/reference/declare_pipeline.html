@@ -122,9 +122,9 @@
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
+    --env MERKELY_COMMAND=declare_pipeline \
     --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
     --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
-    --env MERKELY_COMMAND=declare_pipeline \
     --rm \
     --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
     merkely/change
@@ -141,17 +141,17 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
-<td><p>yes</p></td>
-<td><p>Your API token for Merkely.</p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_HOST</p></td>
-<td><p>no</p></td>
-<td><p>Defaults to https://app.compliancedb.com</p></td>
-</tr>
 <tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
 <td><p>yes</p></td>
 <td><p>The Merkely command to execute.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
+<td><p>yes</p></td>
+<td><p>Your API token for Merkely.</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_HOST</p></td>
+<td><p>no</p></td>
+<td><p>Defaults to https://app.compliancedb.com</p></td>
 </tr>
 </tbody>
 </table>
