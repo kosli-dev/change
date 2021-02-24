@@ -1,8 +1,8 @@
 import json
 import requests
-import sys
 
 from commands import Command
+from errors import ChangeError
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
@@ -79,26 +79,32 @@ def get_pull_requests_from_bitbucket_api(workspace, repository, commit, username
 
     url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repository}/commit/{commit}/pullrequests"
     print("Getting pull requests from " + url)
-    r = requests.get(url, auth=(username, password))
-    if r.status_code == 200:
-        is_compliant = parse_response(commit, password, pull_requests_evidence, r, username)
-    elif r.status_code == 202:
-        print("Repository pull requests are still being indexed, please retry.")
-        sys.exit(1)
-    elif r.status_code == 404:
-        print("Repository does not exists or pull requests are not indexed. Please make sure Pull Request Commit Links app is installed")
-        sys.exit(2)
+    response = requests.get(url, auth=(username, password))
+    if response.status_code == 200:
+        is_compliant = parse_response(commit, password, pull_requests_evidence, response, username)
+    elif response.status_code == 202:
+        message = "Repository pull requests are still being indexed, please retry."
+        raise ChangeError(message)
+    elif response.status_code == 404:
+        message = " ".join([
+            "Repository does not exists or pull requests are not indexed.",
+            "Please make sure Pull Request Commit Links app is installed"
+        ])
+        raise ChangeError(message)
     else:
-        print(f"Exception occurred in fetching pull requests. Http return code is {r.status_code}")
-        print("    " + r.text)
-        sys.exit(3)
+        message = " ".join([
+            "Exception occurred in fetching pull requests.",
+            f"Http return code is {response.status_code}"
+        ])
+        message += f"\n    {response.text}"
+        raise ChangeError(message)
 
     return is_compliant, pull_requests_evidence
 
 
-def parse_response(commit, password, pull_requests_evidence, r, username):
-    print("Pull requests response: " + r.text)
-    pull_requests_json = json.loads(r.text)
+def parse_response(commit, password, pull_requests_evidence, response, username):
+    print("Pull requests response: " + response.text)
+    pull_requests_json = json.loads(response.text)
     pull_requests = pull_requests_json["values"]
     for pr in pull_requests:
         pr_evidence = {}
