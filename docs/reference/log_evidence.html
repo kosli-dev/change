@@ -128,6 +128,7 @@
     --env MERKELY_IS_COMPLIANT=&quot;${...}&quot; \
     --env MERKELY_DESCRIPTION=&quot;${...}&quot; \
     --env MERKELY_CI_BUILD_URL=&quot;${...}&quot; \
+    --env MERKELY_USER_DATA=&quot;${...}&quot; \
     --env MERKELY_API_TOKEN=&quot;${...}&quot; \
     --env MERKELY_HOST=&quot;${...}&quot; \
     --rm \
@@ -171,11 +172,17 @@
 <td><p>yes</p></td>
 <td><p>Link to the build in the ci system.</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
+<tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
+<td><p>no</p></td>
+<td><p>A pathed filename containing json content to embed in the data logged to Merkely.
+The pathed filename must be volume-mounted in the container.
+If not provided, the json content defaults to {}</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_HOST</p></td>
+<tr class="row-even"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
 <td><p>Defaults to https://app.compliancedb.com</p></td>
 </tr>
