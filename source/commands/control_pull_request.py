@@ -68,16 +68,14 @@ def get_pull_request_for_current_commit(env):
     user = env.get('BITBUCKET_API_USER', None)
     password = env.get('BITBUCKET_API_TOKEN', None)
 
-    fail_pipeline = os.getenv('CDB_FAIL_PIPELINE', "TRUE") == "TRUE"
-
     is_compliant, pull_requests = get_pull_requests_from_bitbucket_api(
         workspace=workspace, repository=repository, commit=commit,
-        username=user, password=password,
-        fail_pipeline=fail_pipeline)
+        username=user, password=password)
+
     return is_compliant, pull_requests
 
 
-def get_pull_requests_from_bitbucket_api(workspace, repository, commit, username, password, fail_pipeline):
+def get_pull_requests_from_bitbucket_api(workspace, repository, commit, username, password):
     is_compliant = False
     pull_requests_evidence = []
 
@@ -88,17 +86,14 @@ def get_pull_requests_from_bitbucket_api(workspace, repository, commit, username
         is_compliant = parse_response(commit, password, pull_requests_evidence, r, username)
     elif r.status_code == 202:
         print("Repository pull requests are still being indexed, please retry.")
-        if fail_pipeline:
-            sys.exit(1)
+        sys.exit(1)
     elif r.status_code == 404:
         print("Repository does not exists or pull requests are not indexed. Please make sure Pull Request Commit Links app is installed")
-        if fail_pipeline:
-            sys.exit(2)
+        sys.exit(2)
     else:
         print(f"Exception occurred in fetching pull requests. Http return code is {r.status_code}")
         print("    " + r.text)
-        if fail_pipeline:
-            sys.exit(3)
+        sys.exit(3)
 
     return is_compliant, pull_requests_evidence
 
