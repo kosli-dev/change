@@ -5,15 +5,12 @@ class EnvVar(ABC):
     """
     An abstract base class for 'smart' OS environment-variables.
     """
-    def __init__(self, env, name, notes, example=None):
+    def __init__(self, env, name, notes):
         assert name is not None
         assert name != ""
         self.__env = env
         self.__name = name
         self.__notes = notes
-        if example is None:
-            example = "${...}"
-        self.__example = example
 
     @property
     def _env(self):
@@ -57,10 +54,6 @@ class EnvVar(ABC):
         Used in living documentation. Never raises.
         """
         return self.__notes
-
-    @property
-    def example(self):
-        return self.__example
 
     @property
     @abstractmethod

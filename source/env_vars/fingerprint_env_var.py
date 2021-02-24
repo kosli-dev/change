@@ -4,13 +4,11 @@ NOTES = "\n".join([
     "...",
 ])
 
-EXAMPLE = "docker://${YOUR_IMAGE_AND_TAG}"
-
 
 class FingerprintEnvVar(RequiredEnvVar):
 
     def __init__(self, external):
-        super().__init__(external.env, "MERKELY_FINGERPRINT", NOTES, EXAMPLE)
+        super().__init__(external.env, "MERKELY_FINGERPRINT", NOTES)
         self.__external = external
 
     @property
