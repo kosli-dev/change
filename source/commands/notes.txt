@@ -15,15 +15,6 @@ control_bitbucket_pr  control_pull_request no        no     yes       no        
 create_release        request_approval     no        no     no        no        no             no
 
 
-log_approval:
-Has this
-		--env MERKELY_SRC_REPO_ROOT=${MERKELY_SRC_REPO_ROOT} \
-		--volume ${PWD}:/src \
-If MERKELY_SRC_REPO_ROOT is not /src/ then the volume-mount will be wrong...
-If we want the Makefile target to be reusable 'as-is' we could drop
-MERKELY_SRC_REPO_ROOT (which defaults to /src) and require the
-volume-mount to always be /src ?
-
 
 Command Names:?
 ---------------
