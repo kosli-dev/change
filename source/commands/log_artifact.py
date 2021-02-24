@@ -62,10 +62,6 @@ class LogArtifact(Command):
         return CIBuildNumberEnvVar(self.env)
 
     @property
-    def ci_build_url(self):
-        return CIBuildUrlEnvVar(self.env)
-
-    @property
     def _env_var_names(self):
         # Print according to this order
         return [

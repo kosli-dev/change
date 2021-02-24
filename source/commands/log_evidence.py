@@ -49,10 +49,6 @@ class LogEvidence(Command):
         return 'Putting', url, payload
 
     @property
-    def ci_build_url(self):
-        return CIBuildUrlEnvVar(self.env)
-
-    @property
     def description(self):
         notes = "..."
         return self._required_env_var("MERKELY_DESCRIPTION", notes)

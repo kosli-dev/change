@@ -34,12 +34,7 @@ class Command(ABC):
         raise NotImplementedError(self.name)
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # Individual common env-vars
-
-    @property
-    def name(self):
-        notes = "The Merkely command to execute."
-        return self._required_env_var("MERKELY_COMMAND", notes)
+    # Common env-vars
 
     @property
     def api_token(self):
@@ -47,21 +42,36 @@ class Command(ABC):
         return self._required_env_var("MERKELY_API_TOKEN", notes)
 
     @property
-    def fingerprint(self):
-        return FingerprintEnvVar(self._external)
+    def ci_build_url(self):
+        return CIBuildUrlEnvVar(self.env)
 
     @property
-    def user_data(self):
-        return UserDataEnvVar(self._external)
+    def fingerprint(self):
+        return FingerprintEnvVar(self._external)
 
     @property
     def host(self):
         return HostEnvVar(self.env)
 
     @property
+    def name(self):
+        notes = "The Merkely command to execute."
+        return self._required_env_var("MERKELY_COMMAND", notes)
+
+    @property
+    def user_data(self):
+        return UserDataEnvVar(self._external)
+
+    # - - - - - - - - - - - - - - - - - - - - -
+
+    @property
     def is_compliant(self):
         notes = "TRUE if the artifact is considered compliant from you build process."
         return self._required_env_var('MERKELY_IS_COMPLIANT', notes)
+
+    def _print_compliance(self):
+        env_var = self.is_compliant
+        print(f"{env_var.name}: {env_var.value == 'TRUE'}")
 
     # - - - - - - - - - - - - - - - - - - - - -
 
@@ -78,8 +88,3 @@ class Command(ABC):
     def _defaulted_env_var(self, name, notes):
         return DefaultedEnvVar(self.env, name, notes)
 
-    # - - - - - - - - - - - - - - - - - - - - -
-
-    def _print_compliance(self):
-        env_var = self.is_compliant
-        print(f"{env_var.name}: {env_var.value == 'TRUE'}")

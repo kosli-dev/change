@@ -61,10 +61,6 @@ class LogTest(Command):
         return 'Putting', url, payload
 
     @property
-    def ci_build_url(self):
-        return CIBuildUrlEnvVar(self.env)
-
-    @property
     def evidence_type(self):
         notes = "The evidence type."
         return self._required_env_var("MERKELY_EVIDENCE_TYPE", notes)

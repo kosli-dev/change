@@ -47,10 +47,6 @@ class LogDeployment(Command):
         return 'Posting', url, payload
 
     @property
-    def ci_build_url(self):
-        return CIBuildUrlEnvVar(self.env)
-
-    @property
     def description(self):
         notes = "A description for the deployment."
         return self._required_env_var('MERKELY_DESCRIPTION', notes)
