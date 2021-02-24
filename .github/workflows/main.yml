@@ -56,7 +56,6 @@ jobs:
 
     - name: Log image deployment to Merkely
       env:
-        MERKELY_CI_BUILD_URL: https://github.com/compliancedb/cdb_controls/actions/runs/${GITHUB_RUN_ID}
         MERKELY_DESCRIPTION: "Deployment of ${TAGGED_IMAGE} to docker hub"
         MERKELY_ENVIRONMENT: 'docker_hub'
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}

@@ -8,26 +8,14 @@ IMAGE  := merkely/${APP}:master
 LATEST := ${NAME}:latest
 CONTAINER := ${NAME}
 
-CDB_HOST=https://app.compliancedb.com
-MERKELY_HOST=https://app.compliancedb.com
-MERKELYPIPE=Merkelypipe.json
+CDB_HOST = https://app.compliancedb.com
+MERKELY_HOST = https://app.compliancedb.com
+MERKELYPIPE = Merkelypipe.json
 
 # all non-latest images - for prune target
 IMAGES := $(shell docker image ls --format '{{.Repository}}:{{.Tag}}' $(NAME) | grep -v latest)
 
-ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-
-
-ifeq ($(CI),true)
-	# no tty on CI
-	DOCKER_RUN_TTY=
-	DOCKER_RUN_INTERACTIVE=
-else
-	# colour on terminal needs tty
-	DOCKER_RUN_TTY=--tty
-	# pdb needs interactive
-	DOCKER_RUN_INTERACTIVE=--interactive
-endif
+ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 
 # list the targets: from https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
@@ -66,8 +54,6 @@ build:
 # - - - - - - - - - - - - - - - - - - - -
 # run tests without building by volume-mounting
 
-test_all: test_unit test_integration
-
 define SOURCE_VOLUME_MOUNTS
 	--volume ${ROOT_DIR}/source:/app/source
 endef
@@ -75,6 +61,19 @@ endef
 define TESTS_VOLUME_MOUNT
     --volume ${ROOT_DIR}/tests:/app/tests
 endef
+
+ifeq ($(CI),true)
+	# no tty on CI
+	DOCKER_RUN_TTY=
+	DOCKER_RUN_INTERACTIVE=
+else
+	# colour on terminal needs tty
+	DOCKER_RUN_TTY=--tty
+	# pdb needs interactive
+	DOCKER_RUN_INTERACTIVE=--interactive
+endif
+
+test_all: test_unit test_integration
 
 test_unit:
 	docker rm --force ${CONTAINER} 2> /dev/null || true
@@ -160,6 +159,9 @@ stats:
 # - - - - - - - - - - - - - - - - - - - -
 # Merkely commands
 
+MERKELY_ENV_FILE := ${PWD}/merkely.github.env
+
+
 merkely_declare_pipeline:
 	docker run \
 		--env MERKELY_COMMAND=declare_pipeline \
@@ -184,7 +186,7 @@ merkely_log_artifact:
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env MERKELY_HOST=${MERKELY_HOST} \
         --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
-        --env-file "${PWD}/source/dot-env-files/merkely.github.env" \
+        --env-file ${MERKELY_ENV_FILE} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
@@ -202,6 +204,7 @@ merkely_log_deployment:
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env MERKELY_HOST=${MERKELY_HOST} \
         --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
+        --env-file ${MERKELY_ENV_FILE} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/Merkelypipe.json \
