@@ -11,6 +11,10 @@ class DescribeCommand(Directive):
         args = self.content[0].split()
         name = args[0]
         description_type = args[1]
+        if len(args) <= 2:
+            ci = 'docker'  # 'github', 'bitbucket'
+        else:
+            ci = args[2]
         if description_type == "summary":
             return summary(name)
         if description_type == "invocation_full":
@@ -18,7 +22,7 @@ class DescribeCommand(Directive):
         if description_type == "invocation_minimum":
             return invocation(name, 'minimum')
         if description_type == "parameters":
-            return parameters(name)
+            return parameters(name, ci)
         return []
 
 
@@ -30,8 +34,8 @@ def invocation(name, kind):
     return [nodes.literal_block(text=command_for(name).invocation(kind))]
 
 
-def parameters(name):
-    return [env_vars_to_table(command_for(name).env_vars)]
+def parameters(name, ci):
+    return [env_vars_to_table(command_for(name).env_vars, ci)]
 
 
 def command_for(name):
@@ -40,7 +44,7 @@ def command_for(name):
     return COMMANDS[name](context)
 
 
-def env_vars_to_table(env_vars):
+def env_vars_to_table(env_vars, ci):
     table = nodes.table()
     tgroup = nodes.tgroup(cols=3)
     table += tgroup
@@ -57,8 +61,6 @@ def env_vars_to_table(env_vars):
     row += nodes.entry("", nodes.paragraph(text="Required?"))
     row += nodes.entry("", nodes.paragraph(text="Notes"))
     thead += row
-
-    ci = 'docker'  # 'github' 'bitbucket'
 
     tbody = nodes.tbody()
     for env_var in env_vars:

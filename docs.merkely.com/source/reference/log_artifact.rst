@@ -8,4 +8,4 @@ Invocation
 
 Parameters
 ----------
-.. describe_command:: log_artifact parameters
+.. describe_command:: log_artifact parameters docker

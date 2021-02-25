@@ -10,7 +10,7 @@ class DynamicEnvVar(EnvVar, ABC):
         self._notes = notes
 
     def notes(self, ci):
-        if ci is 'docker':
+        if ci == 'docker':
             return self._notes
         if ci not in self._ci_env_vars.keys():
             raise RuntimeError(f"{ci} is unknown CI")
