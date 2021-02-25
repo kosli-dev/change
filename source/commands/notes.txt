@@ -15,6 +15,19 @@ control_bitbucket_pr  control_pull_request no        no     yes       no        
 create_release        request_approval     no        no     no        no        no             no
 
 
+Living-Documentation
+--------------------
+some commands are missing their summary:
+  ControlPullRequest
+  LogApproval
+Need hyperlink for Fingerprint in parameters table.
+Need three doc-trees
+  generic docker
+  bitbucket pipelines
+  github actions
+
+
+
 
 Command Names:?
 ---------------
