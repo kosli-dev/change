@@ -73,7 +73,10 @@ def env_vars_to_table(env_vars, ci):
         row += nodes.entry("", nodes.paragraph(text=required))
         notes = env_var.notes(ci)
         if notes == "<FINGERPRINT_LINK>":
-            row += nodes.entry("", nodes.paragraph(text="..."))
+            ref = "../../fingerprints/docker_fingerprint.html"
+            para = nodes.paragraph(text="")
+            para += nodes.reference('', 'Fingerprint', internal=False, refuri=ref)
+            row += nodes.entry("", para)
         else:
             row += nodes.entry("", nodes.paragraph(text=notes))
         tbody += row
