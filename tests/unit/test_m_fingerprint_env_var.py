@@ -51,5 +51,4 @@ def test_unknown_protocol__all_properties_raise():
 
 def make_fingerprint_env_var(fingerprint):
     env = {"MERKELY_FINGERPRINT": fingerprint}
-    context = External(env, None, None)
-    return FingerprintEnvVar(context)
+    return FingerprintEnvVar(External(env=env))

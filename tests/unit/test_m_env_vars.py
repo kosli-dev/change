@@ -76,8 +76,7 @@ def test_env_vars():
         "MERKELY_HOST": f"https://{domain}",
         "MERKELY_IS_COMPLIANT": "TRUE",
     }
-    context = External(env)
-    command = LogEvidence(context)
+    command = LogEvidence(External(env=env))
     env_vars = command.env_vars
 
     assert env_vars.api_token.value == api_token

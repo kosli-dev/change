@@ -9,6 +9,7 @@ class External:
     Holds (some) external dependencies to make Classic style testing easier.
     """
     def __init__(self,
+                 *,
                  env=None,
                  docker_fingerprinter=None,
                  file_fingerprinter=None,

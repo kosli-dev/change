@@ -13,8 +13,8 @@ def test_invocation_strings():
         ControlPullRequest
     ]
     for klass in command_klasses:
-        ev = {"MERKELY_COMMAND": "unused"}
-        external = External(ev)
+        env = {"MERKELY_COMMAND": "unused"}
+        external = External(env=env)
         assert len(klass(external).invocation('full')) > 0
         assert len(klass(external).invocation('minimum')) > 0
 
