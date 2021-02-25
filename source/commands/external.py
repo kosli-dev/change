@@ -33,12 +33,10 @@ class External:
 
     @property
     def merkelypipe(self):
-        import os
         if os.path.exists("/Merkelypipe.json"):
             return self.load_json("/Merkelypipe.json")
         if os.path.exists("/data/Merkelypipe.json"):
             return self.load_json("/data/Merkelypipe.json")
-        from errors import ChangeError
         raise ChangeError("Merkelypipe.json file not found.")
 
     @property
