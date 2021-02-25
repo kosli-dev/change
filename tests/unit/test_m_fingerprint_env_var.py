@@ -1,10 +1,17 @@
 from commands import External
 from errors import ChangeError
 from env_vars import FingerprintEnvVar
-from tests.utils import *
 from pytest import raises
 
 SHA256 = "ddee5566dc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f51dc"
+
+
+def test_notes_living_documentation():
+    protocol = "docker://"
+    image_name = "acme/road-runner:4.5"
+    fingerprint = f"{protocol}{image_name}"
+    ev = make_fingerprint_env_var(fingerprint)
+    assert ev.notes(None) == "<FINGERPRINT_LINK>"
 
 
 def test_docker_protocol_properties():

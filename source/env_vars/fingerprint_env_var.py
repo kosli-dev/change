@@ -1,15 +1,15 @@
 from env_vars import RequiredEnvVar
 
-NOTES = "\n".join([
-    "...",
-])
-
 
 class FingerprintEnvVar(RequiredEnvVar):
 
     def __init__(self, external):
-        super().__init__(external.env, "MERKELY_FINGERPRINT", NOTES)
+        super().__init__(external.env, "MERKELY_FINGERPRINT", '')
         self.__external = external
+
+    def notes(self, _ci):
+        # See docs.merkely.com/source/_ext/describe_command.py
+        return "<FINGERPRINT_LINK>"
 
     @property
     def value(self):

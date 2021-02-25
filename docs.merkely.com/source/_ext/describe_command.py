@@ -36,7 +36,7 @@ def parameters(name):
 
 def command_for(name):
     env = {"MERKELY_COMMAND": name}
-    context = External(env, None, None)
+    context = External(env=env)
     return COMMANDS[name](context)
 
 
@@ -69,10 +69,11 @@ def env_vars_to_table(env_vars):
         else:
             required = 'no'
         row += nodes.entry("", nodes.paragraph(text=required))
-        if env_var.notes == "<FINGERPRINT_LINK>":
-            pass
+        notes = env_var.notes(ci)
+        if notes == "<FINGERPRINT_LINK>":
+            row += nodes.entry("", nodes.paragraph(text="..."))
         else:
-            row += nodes.entry("", nodes.paragraph(text=env_var.notes(ci)))
+            row += nodes.entry("", nodes.paragraph(text=notes))
         tbody += row
     tgroup += tbody
     return table

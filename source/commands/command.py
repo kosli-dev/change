@@ -10,9 +10,6 @@ class Command(ABC):
     def __init__(self, external):
         self._external = external
 
-    def __call__(self):  # pragma: no cover
-        raise NotImplementedError(self.name)
-
     # - - - - - - - - - - - - - - - - - - - - -
     # Merkelypipe.json
 
@@ -85,6 +82,11 @@ class Command(ABC):
         return DefaultedEnvVar(self.env, name, notes)
 
     # - - - - - - - - - - - - - - - - - - - - -
+    # Living documentation
+
+    @property
+    def summary(self):  # pragma: no cover
+        raise NotImplementedError(self.name)
 
     def invocation(self, type):
         tab = "    "
@@ -115,9 +117,16 @@ class Command(ABC):
         return invocation_string
 
     @property
-    def _env_var_names(self):  # pragma: no cover
+    def _volume_mounts(self):  # pragma: no cover
+        raise NotImplementedError(self.name)
+
+    # - - - - - - - - - - - - - - - - - - - - -
+    # Subclass implementations
+
+    def __call__(self):  # pragma: no cover
         raise NotImplementedError(self.name)
 
     @property
-    def _volume_mounts(self):  # pragma: no cover
+    def _env_var_names(self):  # pragma: no cover
         raise NotImplementedError(self.name)
+
