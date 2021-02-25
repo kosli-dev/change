@@ -8,4 +8,4 @@ Invocation
 
 Parameters
 ----------
-.. describe_command:: control_deployment parameters
+.. describe_command:: control_deployment parameters bitbucket

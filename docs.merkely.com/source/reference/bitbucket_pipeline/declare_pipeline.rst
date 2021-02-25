@@ -1,4 +1,3 @@
-.. _declare_pipeline:
 Declare Pipeline
 ================
 .. describe_command:: declare_pipeline summary
@@ -9,4 +8,4 @@ Invocation
 
 Parameters
 ----------
-.. describe_command:: declare_pipeline parameters
+.. describe_command:: declare_pipeline parameters bitbucket

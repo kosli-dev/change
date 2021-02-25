@@ -8,4 +8,4 @@ Invocation
 
 Parameters
 ----------
-.. describe_command:: log_approval parameters
+.. describe_command:: log_approval parameters bitbucket

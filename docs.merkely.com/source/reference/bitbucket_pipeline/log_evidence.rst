@@ -8,4 +8,4 @@ Invocation
 
 Parameters
 ----------
-.. describe_command:: log_evidence parameters
+.. describe_command:: log_evidence parameters bitbucket

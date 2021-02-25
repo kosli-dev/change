@@ -162,20 +162,20 @@
 <td><p>TRUE if the artifact is considered compliant from you build process.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_ARTIFACT_GIT_COMMIT</p></td>
-<td><p>yes</p></td>
-<td><p>The sha of the git commit that produced this build.</p></td>
+<td><p>no</p></td>
+<td><p>The sha of the git commit that produced this build. Defaults to ${GITHUB_SHA}.</p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_ARTIFACT_GIT_URL</p></td>
-<td><p>yes</p></td>
-<td><p>The link to the source git commit this build was based on.</p></td>
+<td><p>no</p></td>
+<td><p>The link to the source git commit this build was based on. Defaults to ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_CI_BUILD_NUMBER</p></td>
-<td><p>yes</p></td>
-<td><p>The ci build number.</p></td>
+<td><p>no</p></td>
+<td><p>The ci build number. Defaults to ${GITHUB_RUN_ID}.</p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_CI_BUILD_URL</p></td>
-<td><p>yes</p></td>
-<td><p>Link to the build in the ci system.</p></td>
+<td><p>no</p></td>
+<td><p>Link to the build in the ci system. Defaults to ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>

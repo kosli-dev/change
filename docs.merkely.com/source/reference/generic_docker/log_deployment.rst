@@ -8,4 +8,4 @@ Invocation
 
 Parameters
 ----------
-.. describe_command:: log_deployment parameters
+.. describe_command:: log_deployment parameters docker
