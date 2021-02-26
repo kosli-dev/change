@@ -14,11 +14,12 @@ APPROVAL_FILE = "test_m_log_artifact"
 
 def test_all_env_vars_image(capsys, mocker):
     """
+    Old: CDB_ARTIFACT_DOCKER_IMAGE=${IMAGE_NAME}
+         docker run ... cdb.put_artifact_image ...
+
     New: MERKELY_COMMAND=log_evidence
          MERKELY_FINGERPRINT="docker://${IMAGE_NAME}"
          docker run ... merkely/change
-    Old: CDB_ARTIFACT_DOCKER_IMAGE=${IMAGE_NAME}
-         docker run ... cdb.put_artifact_image ...
     """
     # input data
     sha256 = "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"

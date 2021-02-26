@@ -34,9 +34,9 @@ class External:
 
     @property
     def merkelypipe(self):
-        # On CIs that cannot use the --volume docker run option.
+        # On some CIs you cannot use the --volume docker run option.
         # A work-around is to create a volume, copy Merkelypipe.json into
-        # the volume, and then use the --volumes-from option.
+        # the volume (in /data dir), and then use the --volumes-from option.
         # For example:
         #   docker container run --detach --name eg --volume /data alpine /bin/true
         #   docker container cp Merkelypipe.json eg:/data
@@ -44,11 +44,10 @@ class External:
         #   docker container remove --volumes eg
         # When using this workaround you must use a data/ directory
         # (you cannot use / as a --volume target)
-        if os.path.exists("/Merkelypipe.json"):
-            return self.load_json("/Merkelypipe.json")
         if os.path.exists("/data/Merkelypipe.json"):
             return self.load_json("/data/Merkelypipe.json")
-        raise ChangeError("Merkelypipe.json file not found.")
+        else:
+            raise ChangeError("/data/Merkelypipe.json file not found.")
 
     @property
     def env(self):
@@ -75,10 +74,10 @@ class External:
             raise ChangeError(f"{filename} file not found.")
         except IsADirectoryError:
             # Note: If you do this...
-            # --volume ${MERKELYPIPE}:/Merkelypipe.json
-            # And ${MERKELYPIPE} does not exist on the client
-            # volume-mount weirdness can happen and you
-            # get an empty dir created on the client!
+            # --volume ${MERKELYPIPE}:/data/Merkelypipe.json
+            # And ${MERKELYPIPE} does not exist (on the client)
+            # then it is created as an empty directory on the
+            # client and inside the container.
             raise ChangeError(f"{filename} is a directory.")
         except json.decoder.JSONDecodeError as exc:
             raise ChangeError(f"{filename} invalid json - {str(exc)}")

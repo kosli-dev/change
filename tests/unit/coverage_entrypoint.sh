@@ -15,6 +15,8 @@ readonly TARGET="${1}"
 # pytest-cov command line options are documented here
 # https://pytest-cov.readthedocs.io/en/latest/config.html
 
+mkdir /data || true  # for Merkelypipe.json to be copied into
+
 pytest \
        --random-order-bucket=global \
        --capture=no \
