@@ -125,6 +125,9 @@
     --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
     --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
     --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
+    --env GITHUB_REPOSITORY \
+    --env GITHUB_RUN_ID \
+    --env GITHUB_SERVER_URL \
     --rm \
     --volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml/var/run/docker.sock:/var/run/docker.sock \
     --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \

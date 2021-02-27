@@ -128,6 +128,10 @@
     --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
     --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
     --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
+    --env BITBUCKET_BUILD_NUMBER \
+    --env BITBUCKET_COMMIT \
+    --env BITBUCKET_REPO_SLUG \
+    --env BITBUCKET_WORKSPACE \
     --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \

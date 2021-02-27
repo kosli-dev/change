@@ -11,9 +11,6 @@ class DescribeCommand(Directive):
         args = self.content[0].split()
         name = args[0]
         description_type = args[1]
-        #if len(args) <= 2:
-        #    ci = 'docker'  # 'github', 'bitbucket'
-        #else:
         ci = args[2]
         if description_type == "summary":
             return summary(name, ci)

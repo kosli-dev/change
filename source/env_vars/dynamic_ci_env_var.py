@@ -1,5 +1,5 @@
 from errors import ChangeError
-from env_vars import EnvVar
+from env_vars import EnvVar, CiEnvVar
 from abc import ABC, abstractmethod
 
 
@@ -8,6 +8,9 @@ class DynamicCiEnvVar(EnvVar, ABC):
     def __init__(self, env, name, notes):
         super().__init__(env, name, '')
         self._notes = notes
+
+    # - - - - - - - - - - - - - - - - - - - - -
+    # Living documentation
 
     def notes(self, ci):
         if ci == 'docker':
@@ -19,23 +22,24 @@ class DynamicCiEnvVar(EnvVar, ABC):
     def is_required(self, ci):
         return ci == 'docker'
 
+    def ci_env_var_names(self, ci):
+        return self._ci_env_vars[ci].names
+
+    # - - - - - - - - - - - - - - - - - - - - -
+
     @property
     def value(self):
         if self.string != "":
             return self.string
         else:
-            return self._ci_env_var.value
+            return self.ci_env_var.value
 
     @property
-    def ci_names(self):
-        pass
+    def ci_env_var(self):
+        return self._ci_env_vars[self.ci]
 
     @property
-    def _ci_env_var(self):
-        return self._ci_env_vars[self._ci]
-
-    @property
-    def _ci(self):
+    def ci(self):
         if self.on_bitbucket and self.on_github:
             raise self._cannot_expand_error("there are BITBUCKET_ and GITHUB_ env-vars")
         if not self.on_bitbucket and not self.on_github:

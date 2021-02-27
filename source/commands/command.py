@@ -104,7 +104,7 @@ class Command(ABC):
     def summary(self, _ci):  # pragma: no cover
         raise NotImplementedError(self.name)
 
-    def invocation(self, type, _ci):
+    def invocation(self, type, ci):
         tab = "    "
         def lcnl(string):
             line_continuation = "\\"
@@ -117,6 +117,7 @@ class Command(ABC):
                 value = '"' + "${" + var.name + "}" + '"'
             return lcnl(f'{tab}--env {var.name}={value}')
 
+        ci_env_var_names = []
         invocation_string = lcnl("docker run")
         for name in self._merkely_env_var_names:
             var = getattr(self, name)
@@ -124,6 +125,11 @@ class Command(ABC):
                 invocation_string += env(var)
             if type == 'minimum' and var.is_required:
                 invocation_string += env(var)
+            if isinstance(var, DynamicCiEnvVar) and ci != 'docker':
+                ci_env_var_names.extend(var.ci_env_var_names(ci))
+
+        for name in sorted(set(ci_env_var_names)):
+            invocation_string += lcnl(f"{tab}--env {name}")
 
         invocation_string += lcnl(f"{tab}--rm")
         for mount in self._volume_mounts:

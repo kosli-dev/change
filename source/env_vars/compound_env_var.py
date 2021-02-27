@@ -26,6 +26,10 @@ class CompoundEnvVar:
     def value(self):
         return "".join(self._expand(part) for part in self._parts)
 
+    @property
+    def names(self):
+        return list(part.string for part in self._parts if isinstance(part, CiEnvVar))
+
     def _expand(self, part):
         if isinstance(part, CiEnvVar):
             return self._expanded(part)
