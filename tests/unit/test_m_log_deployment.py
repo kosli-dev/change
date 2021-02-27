@@ -77,8 +77,8 @@ def test_docker_image(capsys, mocker):
 
 
 def test_summary_is_not_empty():
-    context = {}
-    command = LogDeployment(context)
+    external = {}
+    command = LogDeployment(external)
     assert len(command.summary) > 0
 
 

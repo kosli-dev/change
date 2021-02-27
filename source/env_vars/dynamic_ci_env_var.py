@@ -3,7 +3,7 @@ from env_vars import EnvVar
 from abc import ABC, abstractmethod
 
 
-class DynamicEnvVar(EnvVar, ABC):
+class DynamicCiEnvVar(EnvVar, ABC):
 
     def __init__(self, env, name, notes):
         super().__init__(env, name, '')
@@ -43,13 +43,11 @@ class DynamicEnvVar(EnvVar, ABC):
 
     @property
     def on_github(self):
-        r = self._on_ci('GITHUB_')
-        return r
+        return self._on_ci('GITHUB_')
 
     @property
     def on_bitbucket(self):
-        r = self._on_ci('BITBUCKET_')
-        return r
+        return self._on_ci('BITBUCKET_')
 
     def _on_ci(self, name):
         return len(list(key for key in self._env.keys() if key.startswith(name))) > 0

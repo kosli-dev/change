@@ -1,5 +1,5 @@
 from errors import ChangeError
-from env_vars import CompoundEnvVar
+from env_vars import CompoundEnvVar, CiEnvVar
 from pytest import raises
 
 NAME = "MERKELY_ARTIFACT_GIT_URL"
@@ -29,31 +29,22 @@ def test_plain_string_is_not_expanded():
     assert target.value == 'NOT_AN_ENV_VAR'
 
 
-def test_env_var_string_is_expanded():
+def test_ci_env_var_string_is_expanded():
     ev = {'SOME_ENV_VAR': 'hello world'}
-    target = CompoundEnvVar(ev, NAME, '${SOME_ENV_VAR}')
+    target = CompoundEnvVar(ev, NAME, CiEnvVar('SOME_ENV_VAR'))
     assert target.value == 'hello world'
 
 
-def test_expansion_of_env_var_not_set_raises():
+def test_expansion_of_ci_env_var_not_set_raises():
     ev = {}
     not_set = 'SOME_ENV_VAR'
-    part = '${' + not_set + '}'
-    target = CompoundEnvVar(ev, NAME, '/path/', part)
+    target = CompoundEnvVar(ev, NAME, '/path/', CiEnvVar(not_set))
     with raises(ChangeError) as exc:
         target.value
 
     assert str(exc.value) == \
         f"environment-variable {NAME} defaults to `{target.string}` " \
         f"but `{not_set}` is not set."
-
-
-class CiEnvVar:
-    def __init__(self, name):
-        self._name = name
-
-    def __str__(self):
-        return '${' + self._name + '}'
 
 
 def test_ci_env_var_value_class():

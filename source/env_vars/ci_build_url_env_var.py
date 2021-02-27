@@ -1,10 +1,10 @@
-from env_vars import CompoundEnvVar, DynamicEnvVar
+from env_vars import CompoundEnvVar, DynamicCiEnvVar, CiEnvVar
 
 NAME = "MERKELY_CI_BUILD_URL"
 NOTE = "Link to the build in the ci system."
 
 
-class CIBuildUrlEnvVar(DynamicEnvVar):
+class CIBuildUrlEnvVar(DynamicCiEnvVar):
 
     def __init__(self, env):
         super().__init__(env, NAME, NOTE)
@@ -12,20 +12,24 @@ class CIBuildUrlEnvVar(DynamicEnvVar):
     @property
     def _ci_env_vars(self):
         return {
-            'bitbucket': CompoundEnvVar(self._env, self.name,
+            'bitbucket': CompoundEnvVar(
+                self._env,
+                self.name,
                 "https://bitbucket.org" ,
                 "/",
-                "${BITBUCKET_WORKSPACE}",
+                CiEnvVar("BITBUCKET_WORKSPACE"),
                 "/",
-                '${BITBUCKET_REPO_SLUG}',
+                CiEnvVar('BITBUCKET_REPO_SLUG'),
                 "/addon/pipelines/home#!/results/",
-                "${BITBUCKET_BUILD_NUMBER}"
+                CiEnvVar("BITBUCKET_BUILD_NUMBER")
             ),
-            'github': CompoundEnvVar(self._env, self.name,
-                "${GITHUB_SERVER_URL}",
+            'github': CompoundEnvVar(
+                self._env,
+                self.name,
+                CiEnvVar("GITHUB_SERVER_URL"),
                 "/",
-                "${GITHUB_REPOSITORY}",
+                CiEnvVar("GITHUB_REPOSITORY"),
                 "/actions/runs/",
-                '${GITHUB_RUN_ID}'
+                CiEnvVar('GITHUB_RUN_ID')
             ),
         }
