@@ -134,7 +134,7 @@ class Command(ABC):
         invocation_string += lcnl(f"{tab}--rm")
         for mount in self._volume_mounts:
             invocation_string += lcnl(f"{tab}--volume {mount}")
-        invocation_string += lcnl(tab+"--volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json")
+        invocation_string += lcnl(tab+"--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json")
         invocation_string += f"{tab}merkely/change"
         return invocation_string
 
