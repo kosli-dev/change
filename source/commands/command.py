@@ -12,7 +12,11 @@ class Command(ABC):
         self._external = external
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # Class Factory method
+    # Class methods
+
+    @classmethod
+    def all(cls):
+        return Command.__classes
 
     @classmethod
     def named(_cls, string):

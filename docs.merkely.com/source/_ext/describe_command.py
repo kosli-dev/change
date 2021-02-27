@@ -1,6 +1,6 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
-from commands import COMMANDS, External
+from commands import Command, External
 
 
 class DescribeCommand(Directive):
@@ -39,9 +39,10 @@ def parameters(name, ci):
 
 
 def command_for(name):
+    cls = Command.named(name)
     env = {"MERKELY_COMMAND": name}
-    context = External(env=env)
-    return COMMANDS[name](context)
+    external = External(env=env)
+    return cls(external)
 
 
 def env_vars_to_table(env_vars, ci):
