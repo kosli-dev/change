@@ -1,6 +1,5 @@
 from errors import ChangeError
 from commands import Command
-from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 from cdb.control_junit import is_compliant_test_results
