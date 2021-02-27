@@ -17,7 +17,7 @@ class LogTest(Command):
     @property
     def _volume_mounts(self):
         return [
-            "${TEST_RESULTS_FILE}:/data/junit/junit.xml"
+            "${YOUR_TEST_RESULTS_FILE}:/data/junit/junit.xml",
             "/var/run/docker.sock:/var/run/docker.sock"
         ]
 

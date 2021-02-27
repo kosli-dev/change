@@ -129,8 +129,9 @@
     --env BITBUCKET_REPO_SLUG \
     --env BITBUCKET_WORKSPACE \
     --rm \
-    --volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml/var/run/docker.sock:/var/run/docker.sock \
-    --volume ${YOUR_MERKELY_PIPE}:/Merkelypipe.json \
+    --volume ${YOUR_TEST_RESULTS_FILE}:/data/junit/junit.xml \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
     merkely/change
 </pre></div>
 </div>
