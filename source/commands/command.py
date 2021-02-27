@@ -1,6 +1,7 @@
 from abc import ABC
 from collections import namedtuple
 from env_vars import *
+from errors import ChangeError
 
 
 class Command(ABC):
@@ -9,6 +10,23 @@ class Command(ABC):
     """
     def __init__(self, external):
         self._external = external
+
+    # - - - - - - - - - - - - - - - - - - - - -
+    # Factory method
+    
+    @classmethod
+    def create(_cls, string):
+        name = "".join(list(s.capitalize() for s in string.split('_')))
+        try:
+            return Command.__classes[name]
+        except KeyError:
+            raise ChangeError(f"Unknown command: {string}")
+
+    def __init_subclass__(cls):
+        super().__init_subclass__()
+        Command.__classes[cls.__name__] = cls
+
+    __classes = {}
 
     # - - - - - - - - - - - - - - - - - - - - -
     # Merkelypipe.json
