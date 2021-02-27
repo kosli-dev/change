@@ -12,7 +12,7 @@ def run(*, env=None, docker_fingerprinter=None, file_fingerprinter=None):
     print(f"MERKELY_COMMAND={name}")
     klass = build_command(name)
     command = klass(context)
-    for env_var in command.env_vars:
+    for env_var in command.merkely_env_vars:
         env_var.value
     return command()
 

@@ -20,7 +20,7 @@ class DeclarePipeline(Command):
         return 'Putting', url, payload
 
     @property
-    def _env_var_names(self):
+    def _merkely_env_var_names(self):
         return [
             'name',
             'api_token',

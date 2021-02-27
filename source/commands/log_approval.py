@@ -66,7 +66,7 @@ class LogApproval(Command):
         return self._static_defaulted_env_var("MERKELY_IS_APPROVED", default, notes)
 
     @property
-    def _env_var_names(self):
+    def _merkely_env_var_names(self):
         # Print according to this order
         return [
             'name',

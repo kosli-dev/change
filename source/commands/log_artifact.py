@@ -43,7 +43,7 @@ class LogArtifact(Command):
         return CIBuildNumberEnvVar(self.env)
 
     @property
-    def _env_var_names(self):
+    def _merkely_env_var_names(self):
         # Print according to this order
         return [
             'name',

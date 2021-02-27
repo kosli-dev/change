@@ -77,7 +77,7 @@ def test_env_vars():
         "MERKELY_IS_COMPLIANT": "TRUE",
     }
     command = LogEvidence(External(env=env))
-    env_vars = command.env_vars
+    env_vars = command.merkely_env_vars
 
     assert env_vars.api_token.value == api_token
     assert env_vars.ci_build_url.value == build_url

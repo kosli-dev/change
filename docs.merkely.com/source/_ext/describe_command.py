@@ -35,7 +35,7 @@ def invocation(name, kind):
 
 
 def parameters(name, ci):
-    return [env_vars_to_table(command_for(name).env_vars, ci)]
+    return [env_vars_to_table(command_for(name).merkely_env_vars, ci)]
 
 
 def command_for(name):

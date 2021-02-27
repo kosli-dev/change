@@ -40,7 +40,7 @@ class LogEvidence(Command):
         return self._required_env_var("MERKELY_EVIDENCE_TYPE", notes)
 
     @property
-    def _env_var_names(self):
+    def _merkely_env_var_names(self):
         # Print according to this order
         return [
             'name',

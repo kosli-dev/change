@@ -18,16 +18,16 @@ class Command(ABC):
         return self._external.merkelypipe
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # All env-vars
+    # All merkely env-vars
 
     @property
-    def env_vars(self):
-        names = self._env_var_names
+    def merkely_env_vars(self):
+        names = self._merkely_env_var_names
         objects = [getattr(self, name) for name in names]
-        return namedtuple('EnvVars', tuple(names))(*objects)
+        return namedtuple('MerkelyEnvVars', tuple(names))(*objects)
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # Common env-vars
+    # Common merkely env-vars
 
     @property
     def api_token(self):
@@ -54,8 +54,6 @@ class Command(ABC):
     @property
     def user_data(self):
         return UserDataEnvVar(self._external)
-
-    # - - - - - - - - - - - - - - - - - - - - -
 
     @property
     def is_compliant(self):
@@ -102,7 +100,7 @@ class Command(ABC):
             return lcnl(f'{tab}--env {var.name}={value}')
 
         invocation_string = lcnl("docker run")
-        for name in self._env_var_names:
+        for name in self._merkely_env_var_names:
             var = getattr(self, name)
             if type == 'full':
                 invocation_string += env(var)
@@ -127,6 +125,6 @@ class Command(ABC):
         raise NotImplementedError(self.name)
 
     @property
-    def _env_var_names(self):  # pragma: no cover
+    def _merkely_env_var_names(self):  # pragma: no cover
         raise NotImplementedError(self.name)
 

@@ -16,7 +16,7 @@ class ControlDeployment(Command):
         return ["/var/run/docker.sock:/var/run/docker.sock"]
 
     @property
-    def _env_var_names(self):
+    def _merkely_env_var_names(self):
         return [
             'name',
             'fingerprint',

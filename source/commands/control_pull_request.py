@@ -47,7 +47,7 @@ class ControlPullRequest(Command):
         return self._static_defaulted_env_var(name, default, notes)
 
     @property
-    def _env_var_names(self):
+    def _merkely_env_var_names(self):
         # Print according to this order
         return [
             'name',
