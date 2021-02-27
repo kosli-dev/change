@@ -19,7 +19,7 @@ class CompoundEnvVar:
 
     @property
     def string(self):
-        return "".join(self._parts)
+        return "".join(str(part) for part in self._parts)
 
     @property
     def value(self):

@@ -43,7 +43,7 @@ class DynamicEnvVar(EnvVar, ABC):
 
     @property
     def on_github(self):
-        r =  self._on_ci('GITHUB_')
+        r = self._on_ci('GITHUB_')
         return r
 
     @property

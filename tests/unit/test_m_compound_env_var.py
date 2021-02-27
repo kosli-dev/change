@@ -46,3 +46,18 @@ def test_expansion_of_env_var_not_set_raises():
     assert str(exc.value) == \
         f"environment-variable {NAME} defaults to `{target.string}` " \
         f"but `{not_set}` is not set."
+
+
+class CiEnvVar:
+    def __init__(self, name):
+        self._name = name
+
+    def __str__(self):
+        return '${' + self._name + '}'
+
+
+def test_ci_env_var_value_class():
+    ev = {}
+    part = CiEnvVar('WIBBLE')
+    target = CompoundEnvVar(ev, NAME, part)
+    assert target.string == "${WIBBLE}"
