@@ -1,21 +1,12 @@
-from commands import *
+from commands import Command, External
 
 
 def test_invocation_strings():
-    command_klasses = [
-        DeclarePipeline,
-        LogApproval,
-        LogArtifact,
-        LogDeployment,
-        LogEvidence,
-        LogTest,
-        ControlDeployment,
-        ControlPullRequest
-    ]
-    for klass in command_klasses:
-        env = {"MERKELY_COMMAND": "unused"}
-        external = External(env=env)
-        assert len(klass(external).invocation('full', 'github')) > 0
-        assert len(klass(external).invocation('minimum', 'bitbucket')) > 0
+    env = {"MERKELY_COMMAND": "unused"}
+    external = External(env=env)
+    for klass in Command.all().values():
+        command = klass(external)
+        assert len(command.invocation('full', 'github')) > 0
+        assert len(command.invocation('minimum', 'bitbucket')) > 0
 
 
