@@ -73,7 +73,8 @@ def test_all_env_vars_image(capsys, mocker):
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-            method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
 
     # CHANGE IN BEHAVIOUR
     expected_payload['user_data'] = {}
@@ -152,7 +153,8 @@ def test_all_env_vars_file(capsys, mocker):
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockFileFingerprinter(artifact_name, sha256) as fingerprinter:
-            method, url, payload = run(env=env, file_fingerprinter=fingerprinter)
+            external = External(env=env, file_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
 
     # verify matching data
     assert method == expected_method
@@ -228,7 +230,7 @@ def test_all_env_vars_sha(capsys):
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{artifact_name}"
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
-        method, url, payload = run(env=env)
+        method, url, payload = run(External(env=env))
 
     # CHANGE IN BEHAVIOUR
     expected_payload['user_data'] = {}
@@ -248,8 +250,8 @@ def test_all_env_vars_sha(capsys):
 
 
 def test_summary_is_not_empty():
-    context = {}
-    command = LogArtifact(context)
+    external = {}
+    command = LogArtifact(external)
     assert len(command.summary) > 0
 
 
@@ -259,7 +261,7 @@ def X_test_each_required_env_var_missing(capsys):
             ev = new_log_artifact_env()
             ev.pop(env_var.name)
             with dry_run(ev) as env, scoped_merkelypipe_json():
-                status = main(env)
+                status = main(External(env=env))
                 assert status != 0
     verify_approval(capsys)
 
@@ -267,7 +269,7 @@ def X_test_each_required_env_var_missing(capsys):
 def make_command_env_vars():
     klass = Command.named('log_artifact')
     env = new_log_artifact_env()
-    external = External(env)
+    external = External(env=env)
     return klass(external).merkely_env_vars
 
 

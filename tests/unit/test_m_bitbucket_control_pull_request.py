@@ -1,5 +1,5 @@
 from cdb.bitbucket import put_bitbucket_pull_request
-from commands import run
+from commands import run, External
 
 from tests.utils import *
 
@@ -88,7 +88,8 @@ def test_bitbucket(capsys, mocker):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response)
             mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
-            method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
 
     capsys_read(capsys)
 

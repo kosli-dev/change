@@ -1,4 +1,4 @@
-from commands import run
+from commands import run, External
 from commands.bitbucket import BitbucketPipe, schema
 
 from tests.utils import *
@@ -24,7 +24,6 @@ USER_DATA = "/app/tests/data/user_data.json"
 
 
 def test_bitbucket(capsys):
-
     env = {
         "CDB_COMMAND": "control_junit",
         "CDB_PIPELINE_DEFINITION": "tests/data/pipefile.json",
@@ -78,7 +77,8 @@ def test_bitbucket(capsys):
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with ScopedDirCopier('/app/tests/data/control_junit/xml-with-fails', '/data/junit'):
             with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-                method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
+                external = External(env=env, docker_fingerprinter=fingerprinter)
+                method, url, payload = run(external)
 
     capsys_read(capsys)
 

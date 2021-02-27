@@ -1,5 +1,5 @@
 from cdb.control_junit import control_junit
-from commands import main, run, LogTest
+from commands import main, run, External, LogTest
 
 from tests.utils import *
 
@@ -57,7 +57,7 @@ def test_non_zero_status_when_no_data_directory(capsys, mocker):
     ev.pop('MERKELY_USER_DATA')
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
-        status = main(env=env)
+        status = main(External(env=env))
 
     assert status != 0
     output = capsys_read(capsys)
@@ -129,9 +129,10 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     ev = new_log_test_env()
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
-        with ScopedDirCopier('/app/tests/data/control_junit/xml-with-passed-results', '/data/junit'):
-            with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-                method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
+        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+            with ScopedDirCopier('/app/tests/data/control_junit/xml-with-passed-results', '/data/junit'):
+                external = External(env=env, docker_fingerprinter=fingerprinter)
+                method, url, payload = run(external)
 
     capsys_read(capsys)
 
@@ -151,8 +152,8 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
 
 
 def test_summary_is_not_empty():
-    context = {}
-    command = LogTest(context)
+    external = {}
+    command = LogTest(external)
     assert len(command.summary) > 0
 
 

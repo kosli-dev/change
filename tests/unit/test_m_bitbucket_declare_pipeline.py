@@ -1,5 +1,5 @@
 from cdb.put_pipeline import put_pipeline
-from commands import run
+from commands import run, External
 
 from tests.utils import *
 
@@ -51,7 +51,7 @@ def test_bitbucket(capsys):
     ev = new_declare_pipeline_env()
     merkelypipe = "Merkelypipe.acme-roadrunner.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
-        method, url, payload = run(env=env)
+        method, url, payload = run(External(env=env))
 
     capsys_read(capsys)
 

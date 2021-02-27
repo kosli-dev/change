@@ -1,5 +1,5 @@
 from cdb.create_deployment import create_deployment
-from commands import run
+from commands import run, External
 
 from tests.utils import *
 
@@ -72,7 +72,8 @@ def test_bitbucket(capsys, mocker):
     merkelypipe = "Merkelypipe.acme-roadrunner.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
 
     # verify matching data
     assert method == expected_method

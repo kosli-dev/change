@@ -1,5 +1,5 @@
 from cdb.put_evidence import put_evidence
-from commands import run, LogEvidence
+from commands import run, External, LogEvidence
 
 from tests.utils import *
 
@@ -70,7 +70,8 @@ def test_docker_protocol(capsys, mocker):
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-            method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
 
     # CHANGE IN BEHAVIOUR
     expected_payload['user_data'] = {}
@@ -87,8 +88,8 @@ def test_docker_protocol(capsys, mocker):
 
 
 def test_summary_is_not_empty():
-    context = {}
-    command = LogEvidence(context)
+    external = {}
+    command = LogEvidence(external)
     assert len(command.summary) > 0
 
 

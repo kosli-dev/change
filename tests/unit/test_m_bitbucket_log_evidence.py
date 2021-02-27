@@ -1,5 +1,5 @@
 from cdb.put_evidence import put_evidence
-from commands import run
+from commands import run, External
 
 from tests.utils import *
 
@@ -39,6 +39,7 @@ def test_bitbucket(capsys, mocker):
     with dry_run(env, set_env_vars):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=SHA256)
         put_evidence("tests/data/Merkelypipe.acme-roadrunner.json")
+
     verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
@@ -70,7 +71,8 @@ def test_bitbucket(capsys, mocker):
     merkelypipe = "Merkelypipe.acme-roadrunner.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
 
     # CHANGE IN BEHAVIOUR
     expected_payload['user_data'] = {}

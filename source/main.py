@@ -1,5 +1,6 @@
-from commands import main
+from commands import External, main
 import sys
 
 if __name__ == '__main__':
-    sys.exit(main())
+    external = External()
+    sys.exit(main(external))

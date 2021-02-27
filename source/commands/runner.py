@@ -1,11 +1,8 @@
 from errors import ChangeError
-from commands import Command, External
+from commands import Command
 
 
-def run(*, env=None, docker_fingerprinter=None, file_fingerprinter=None):
-    external = External(env=env,
-                       docker_fingerprinter=docker_fingerprinter,
-                       file_fingerprinter=file_fingerprinter)
+def run(external):
     name = external.env.get("MERKELY_COMMAND", None)
     if name is None:
         raise ChangeError("MERKELY_COMMAND environment-variable is not set.")
@@ -17,9 +14,9 @@ def run(*, env=None, docker_fingerprinter=None, file_fingerprinter=None):
     return command()
 
 
-def main(*, env=None, docker_fingerprinter=None, file_fingerprinter=None):
+def main(external):
     try:
-        run(env=env, docker_fingerprinter=docker_fingerprinter, file_fingerprinter=file_fingerprinter)
+        run(external)
         print('Success')
         return 0
     except ChangeError as exc:

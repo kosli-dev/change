@@ -1,5 +1,5 @@
 from cdb.create_approval import create_approval
-from commands import run
+from commands import run, External
 from errors import ChangeError
 
 from tests.utils import *
@@ -74,7 +74,8 @@ def test_docker_image(capsys, mocker):
         with ScopedDirCopier("/test_src", "/src"):
             with scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
                 with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-                    method, url, payload = run(env=env, docker_fingerprinter=fingerprinter)
+                    external = External(env=env, docker_fingerprinter=fingerprinter)
+                    method, url, payload = run(external)
 
     capsys_read(capsys)
 
@@ -96,7 +97,7 @@ def test_raises_when_src_repo_root_does_not_exist(capsys):
     with dry_run(ev) as env:
         with scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
             with raises(ChangeError) as exc:
-                run(env=env)
+                run(External(env=env))
 
     silent(capsys)
     assert str(exc.value) == "Error: Repository not found at /src/.git"
