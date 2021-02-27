@@ -12,10 +12,10 @@ class Command(ABC):
         self._external = external
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # Factory method
-    
+    # Class Factory method
+
     @classmethod
-    def create(_cls, string):
+    def named(_cls, string):
         name = "".join(list(s.capitalize() for s in string.split('_')))
         try:
             return Command.__classes[name]

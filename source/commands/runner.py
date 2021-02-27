@@ -1,17 +1,17 @@
 from errors import ChangeError
-from commands import build_command, External
+from commands import Command, External
 
 
 def run(*, env=None, docker_fingerprinter=None, file_fingerprinter=None):
-    context = External(env=env,
+    external = External(env=env,
                        docker_fingerprinter=docker_fingerprinter,
                        file_fingerprinter=file_fingerprinter)
-    name = context.env.get("MERKELY_COMMAND", None)
+    name = external.env.get("MERKELY_COMMAND", None)
     if name is None:
         raise ChangeError("MERKELY_COMMAND environment-variable is not set.")
     print(f"MERKELY_COMMAND={name}")
-    klass = build_command(name)
-    command = klass(context)
+    klass = Command.named(name)
+    command = klass(external)
     for env_var in command.merkely_env_vars:
         env_var.value
     return command()

@@ -1,4 +1,3 @@
-from errors import ChangeError
 from commands import *
 
 COMMANDS = {
@@ -11,10 +10,3 @@ COMMANDS = {
     "control_deployment": ControlDeployment,
     "control_pull_request": ControlPullRequest,
 }
-
-
-def build_command(name):
-    klass = COMMANDS.get(name)
-    if klass is None:
-        raise ChangeError(f"Unknown command: {name}")
-    return klass

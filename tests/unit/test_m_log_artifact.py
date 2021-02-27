@@ -1,6 +1,6 @@
 from cdb.put_artifact       import put_artifact
 from cdb.put_artifact_image import put_artifact_image
-from commands import main, run, build_command, External, LogArtifact
+from commands import main, run, Command, External, LogArtifact
 
 from tests.utils import *
 
@@ -265,10 +265,10 @@ def X_test_each_required_env_var_missing(capsys):
 
 
 def make_command_env_vars():
-    klass = build_command('log_artifact')
+    klass = Command.named('log_artifact')
     env = new_log_artifact_env()
-    context = External(env)
-    return klass(context).merkely_env_vars
+    external = External(env)
+    return klass(external).merkely_env_vars
 
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
