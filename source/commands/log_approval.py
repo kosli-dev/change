@@ -8,8 +8,7 @@ from pygit2._pygit2 import GIT_SORT_TIME
 
 class LogApproval(Command):
 
-    @property
-    def summary(self):
+    def summary(self, _ci):
         return ""
 
     @property

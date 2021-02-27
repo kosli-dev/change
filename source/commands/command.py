@@ -101,11 +101,10 @@ class Command(ABC):
     # - - - - - - - - - - - - - - - - - - - - -
     # Living documentation
 
-    @property
-    def summary(self):  # pragma: no cover
+    def summary(self, _ci):  # pragma: no cover
         raise NotImplementedError(self.name)
 
-    def invocation(self, type):
+    def invocation(self, type, _ci):
         tab = "    "
         def lcnl(string):
             line_continuation = "\\"

@@ -1,10 +1,10 @@
 Log Test
 ========
-.. describe_command:: log_test summary
+.. describe_command:: log_test summary github
 
 Invocation
 ----------
-.. describe_command:: log_test invocation_full
+.. describe_command:: log_test invocation_full github
 
 Parameters
 ----------

@@ -1,10 +1,10 @@
 Log Deployment
 ==============
-.. describe_command:: log_deployment summary
+.. describe_command:: log_deployment summary bitbucket
 
 Invocation
 ----------
-.. describe_command:: log_deployment invocation_full
+.. describe_command:: log_deployment invocation_full bitbucket
 
 Parameters
 ----------

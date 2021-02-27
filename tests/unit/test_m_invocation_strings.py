@@ -15,7 +15,7 @@ def test_invocation_strings():
     for klass in command_klasses:
         env = {"MERKELY_COMMAND": "unused"}
         external = External(env=env)
-        assert len(klass(external).invocation('full')) > 0
-        assert len(klass(external).invocation('minimum')) > 0
+        assert len(klass(external).invocation('full', 'github')) > 0
+        assert len(klass(external).invocation('minimum', 'bitbucket')) > 0
 
 

@@ -5,8 +5,7 @@ from cdb.http import http_put_payload
 
 class DeclarePipeline(Command):
 
-    @property
-    def summary(self):
+    def summary(self, _ci):
         return "Declares a pipeline in Merkely"
 
     @property

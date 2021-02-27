@@ -115,7 +115,7 @@ pytest_help:
 DOCS_IMAGE := merkely/docs
 
 build_docs_dockerfile:
-	docker build -t ${DOCS_IMAGE} docs.merkely.com/
+	docker build --tag ${DOCS_IMAGE} docs.merkely.com/
 
 build_docs:
 	@docker run \

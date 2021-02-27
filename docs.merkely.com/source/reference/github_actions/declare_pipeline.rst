@@ -1,10 +1,10 @@
 Declare Pipeline
 ================
-.. describe_command:: declare_pipeline summary
+.. describe_command:: declare_pipeline summary github
 
 Invocation
 ----------
-.. describe_command:: declare_pipeline invocation_full
+.. describe_command:: declare_pipeline invocation_full github
 
 Parameters
 ----------

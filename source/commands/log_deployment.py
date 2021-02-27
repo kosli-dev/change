@@ -6,8 +6,7 @@ from cdb.http import http_post_payload
 
 class LogDeployment(Command):
 
-    @property
-    def summary(self):
+    def summary(self, _ci):
         return "Logs a deployment in Merkely."
 
     @property

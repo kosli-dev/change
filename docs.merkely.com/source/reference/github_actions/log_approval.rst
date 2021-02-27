@@ -1,10 +1,10 @@
 Log Approval
 ============
-.. describe_command:: log_approval summary
+.. describe_command:: log_approval summary github
 
 Invocation
 ----------
-.. describe_command:: log_approval invocation_full
+.. describe_command:: log_approval invocation_full github
 
 Parameters
 ----------

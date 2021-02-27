@@ -9,8 +9,7 @@ from cdb.http import http_put_payload
 
 class ControlPullRequest(Command):
 
-    @property
-    def summary(self):
+    def summary(self, _ci):
         return ""
 
     @property

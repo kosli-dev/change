@@ -12,4 +12,4 @@ def test_green(capsys):
 def test_summary_is_not_empty():
     external = {}
     command = DeclarePipeline(external)
-    assert len(command.summary) > 0
+    assert len(command.summary('github')) > 0

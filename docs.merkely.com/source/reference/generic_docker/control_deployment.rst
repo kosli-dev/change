@@ -1,10 +1,10 @@
 Control Deployment
 ==================
-.. describe_command:: control_deployment summary
+.. describe_command:: control_deployment summary docker
 
 Invocation
 ----------
-.. describe_command:: control_deployment invocation_full
+.. describe_command:: control_deployment invocation_full docker
 
 Parameters
 ----------

@@ -27,6 +27,10 @@ class DynamicCiEnvVar(EnvVar, ABC):
             return self._ci_env_var.value
 
     @property
+    def ci_names(self):
+        pass
+
+    @property
     def _ci_env_var(self):
         return self._ci_env_vars[self._ci]
 

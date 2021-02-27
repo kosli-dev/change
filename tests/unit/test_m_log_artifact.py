@@ -252,7 +252,7 @@ def test_all_env_vars_sha(capsys):
 def test_summary_is_not_empty():
     external = {}
     command = LogArtifact(external)
-    assert len(command.summary) > 0
+    assert len(command.summary('docker')) > 0
 
 
 def X_test_each_required_env_var_missing(capsys):

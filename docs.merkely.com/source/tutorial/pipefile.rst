@@ -15,6 +15,6 @@ To make integration with Merkely easy to implement in devops pipelines we provid
 For example, to declare the pipeline definition in Merkely we can use the command :ref:`declare_pipeline <declare_pipeline>`
 like so:
 
-.. describe_command:: declare_pipeline invocation_minimum
+.. describe_command:: declare_pipeline invocation_minimum docker
 
 You send this Pipefile at the start of every CI run.  This allows changes made in the pipefile to automatically propagate to Merkely; with the added benefit that these changes can go through your standard peer review process.

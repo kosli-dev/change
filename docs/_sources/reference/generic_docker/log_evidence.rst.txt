@@ -1,10 +1,10 @@
 Log Evidence
 ============
-.. describe_command:: log_evidence summary
+.. describe_command:: log_evidence summary docker
 
 Invocation
 ----------
-.. describe_command:: log_evidence invocation_full
+.. describe_command:: log_evidence invocation_full docker
 
 Parameters
 ----------

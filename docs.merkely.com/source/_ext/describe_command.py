@@ -11,27 +11,27 @@ class DescribeCommand(Directive):
         args = self.content[0].split()
         name = args[0]
         description_type = args[1]
-        if len(args) <= 2:
-            ci = 'docker'  # 'github', 'bitbucket'
-        else:
-            ci = args[2]
+        #if len(args) <= 2:
+        #    ci = 'docker'  # 'github', 'bitbucket'
+        #else:
+        ci = args[2]
         if description_type == "summary":
-            return summary(name)
+            return summary(name, ci)
         if description_type == "invocation_full":
-            return invocation(name, 'full')
+            return invocation(name, 'full', ci)
         if description_type == "invocation_minimum":
-            return invocation(name, 'minimum')
+            return invocation(name, 'minimum', ci)
         if description_type == "parameters":
             return parameters(name, ci)
         return []
 
 
-def summary(name):
-    return [nodes.paragraph(text=command_for(name).summary)]
+def summary(name, ci):
+    return [nodes.paragraph(text=command_for(name).summary(ci))]
 
 
-def invocation(name, kind):
-    return [nodes.literal_block(text=command_for(name).invocation(kind))]
+def invocation(name, kind, ci):
+    return [nodes.literal_block(text=command_for(name).invocation(kind, ci))]
 
 
 def parameters(name, ci):

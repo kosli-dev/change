@@ -7,8 +7,7 @@ from cdb.http import http_get_json
 
 class ControlDeployment(Command):
 
-    @property
-    def summary(self):
+    def summary(self, _ci):
         return "Controls Deployments by short-circuiting pipelines if artifact not approved for release"
 
     @property

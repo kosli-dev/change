@@ -79,7 +79,7 @@ def test_docker_image(capsys, mocker):
 def test_summary_is_not_empty():
     external = {}
     command = LogDeployment(external)
-    assert len(command.summary) > 0
+    assert len(command.summary('bitbucket')) > 0
 
 
 def create_new_deployment_env():
