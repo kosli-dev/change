@@ -7,7 +7,7 @@ RUN apk update
 
 # openssl is needed for file based sha
 # git is needed to install approval tests from git egg. See requirements.txt
-RUN apk add openssl git libffi-dev libgit2-dev=1.1.0-r1
+RUN apk add openssl libffi-dev libgit2-dev=1.1.0-r1
 
 RUN apk add --no-cache --virtual .build-deps \
   build-base cmake \
