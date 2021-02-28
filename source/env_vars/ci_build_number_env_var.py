@@ -1,10 +1,10 @@
-from env_vars import CompoundEnvVar, DynamicCiEnvVar, CiEnvVar
+from env_vars import CompoundEnvVar, CompoundCiEnvVar, CiEnvVar
 
 NAME = "MERKELY_CI_BUILD_NUMBER"
 NOTE = "The ci build number."
 
 
-class CIBuildNumberEnvVar(DynamicCiEnvVar):
+class CIBuildNumberEnvVar(CompoundCiEnvVar):
 
     def __init__(self, env):
         super().__init__(env, NAME, NOTE)

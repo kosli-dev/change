@@ -1,10 +1,10 @@
-from env_vars import CompoundEnvVar, DynamicCiEnvVar, CiEnvVar
+from env_vars import CompoundEnvVar, CompoundCiEnvVar, CiEnvVar
 
 NAME = "MERKELY_ARTIFACT_GIT_URL"
 NOTE = "The link to the source git commit this build was based on."
 
 
-class ArtifactGitUrlEnvVar(DynamicCiEnvVar):
+class ArtifactGitUrlEnvVar(CompoundCiEnvVar):
 
     def __init__(self, env):
         super().__init__(env, NAME, NOTE)

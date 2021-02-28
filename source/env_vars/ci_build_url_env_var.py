@@ -1,10 +1,10 @@
-from env_vars import CompoundEnvVar, DynamicCiEnvVar, CiEnvVar
+from env_vars import CompoundEnvVar, CompoundCiEnvVar, CiEnvVar
 
 NAME = "MERKELY_CI_BUILD_URL"
 NOTE = "Link to the build in the ci system."
 
 
-class CIBuildUrlEnvVar(DynamicCiEnvVar):
+class CIBuildUrlEnvVar(CompoundCiEnvVar):
 
     def __init__(self, env):
         super().__init__(env, NAME, NOTE)

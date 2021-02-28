@@ -11,7 +11,7 @@ from .fingerprint_env_var import FingerprintEnvVar
 from .host_env_var import HostEnvVar
 from .user_data_env_var import UserDataEnvVar
 
-from .dynamic_ci_env_var import DynamicCiEnvVar
+from .compound_ci_env_var import CompoundCiEnvVar
 
 from .artifact_git_commit_env_var import ArtifactGitCommitEnvVar
 from .artifact_git_url_env_var import ArtifactGitUrlEnvVar

@@ -3,7 +3,7 @@ from env_vars import EnvVar, CiEnvVar
 from abc import ABC, abstractmethod
 
 
-class DynamicCiEnvVar(EnvVar, ABC):
+class CompoundCiEnvVar(EnvVar, ABC):
 
     def __init__(self, env, name, notes):
         super().__init__(env, name, '')

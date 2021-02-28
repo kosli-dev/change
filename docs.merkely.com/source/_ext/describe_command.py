@@ -1,7 +1,7 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from commands import Command, External
-from env_vars import DynamicCiEnvVar
+from env_vars import CompoundCiEnvVar
 
 class DescribeCommand(Directive):
 
@@ -53,7 +53,7 @@ def docker_run_string(name, kind, ci):
             drs += env(var)
         if kind == 'minimum' and var.is_required:
             drs += env(var)
-        if isinstance(var, DynamicCiEnvVar) and ci != 'docker':
+        if isinstance(var, CompoundCiEnvVar) and ci != 'docker':
             ci_env_var_names.extend(var.ci_env_var_names(ci))
 
     for name in sorted(set(ci_env_var_names)):
