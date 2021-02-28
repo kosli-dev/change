@@ -14,10 +14,10 @@ class LogTest(Command):
         ])
 
     @property
-    def _volume_mounts(self):
+    def volume_mounts(self):
         return [
+            "/var/run/docker.sock:/var/run/docker.sock",
             "${YOUR_TEST_RESULTS_FILE}:/data/junit/junit.xml",
-            "/var/run/docker.sock:/var/run/docker.sock"
         ]
 
     def __call__(self):

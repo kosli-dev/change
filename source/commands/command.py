@@ -33,6 +33,13 @@ class Command(ABC):
     __classes = {}
 
     # - - - - - - - - - - - - - - - - - - - - -
+    # os env-vars
+
+    @property
+    def env(self):
+        return self._external.env
+
+    # - - - - - - - - - - - - - - - - - - - - -
     # Merkelypipe.json
 
     @property
@@ -82,15 +89,8 @@ class Command(ABC):
         notes = "TRUE if the artifact is considered compliant from you build process."
         return self._required_env_var('MERKELY_IS_COMPLIANT', notes)
 
-    def _print_compliance(self):
-        env_var = self.is_compliant
-        print(f"{env_var.name}: {env_var.value == 'TRUE'}")
-
     # - - - - - - - - - - - - - - - - - - - - -
-
-    @property
-    def env(self):
-        return self._external.env
+    # subclass helpers
 
     def _required_env_var(self, name, notes):
         return RequiredEnvVar(self.env, name, notes)
@@ -98,48 +98,18 @@ class Command(ABC):
     def _static_defaulted_env_var(self, name, default, notes):
         return StaticDefaultedEnvVar(self.env, name, default, notes)
 
+    def _print_compliance(self):
+        env_var = self.is_compliant
+        print(f"{env_var.name}: {env_var.value == 'TRUE'}")
+
     # - - - - - - - - - - - - - - - - - - - - -
     # Living documentation
 
     def summary(self, _ci):  # pragma: no cover
         raise NotImplementedError(self.name)
 
-    def invocation(self, type, ci):
-        tab = "    "
-        def lcnl(string):
-            line_continuation = "\\"
-            newline = "\n"
-            return f"{string} {line_continuation}{newline}"
-        def env(var):
-            if var.name == "MERKELY_COMMAND":
-                value = var.value
-            else:
-                value = '"' + "${" + var.name + "}" + '"'
-            return lcnl(f'{tab}--env {var.name}={value}')
-
-        ci_env_var_names = []
-        invocation_string = lcnl("docker run")
-        for name in self._merkely_env_var_names:
-            var = getattr(self, name)
-            if type == 'full':
-                invocation_string += env(var)
-            if type == 'minimum' and var.is_required:
-                invocation_string += env(var)
-            if isinstance(var, DynamicCiEnvVar) and ci != 'docker':
-                ci_env_var_names.extend(var.ci_env_var_names(ci))
-
-        for name in sorted(set(ci_env_var_names)):
-            invocation_string += lcnl(f"{tab}--env {name}")
-
-        invocation_string += lcnl(f"{tab}--rm")
-        for mount in self._volume_mounts:
-            invocation_string += lcnl(f"{tab}--volume {mount}")
-        invocation_string += lcnl(tab+"--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json")
-        invocation_string += f"{tab}merkely/change"
-        return invocation_string
-
     @property
-    def _volume_mounts(self):  # pragma: no cover
+    def volume_mounts(self):  # pragma: no cover
         raise NotImplementedError(self.name)
 
     # - - - - - - - - - - - - - - - - - - - - -

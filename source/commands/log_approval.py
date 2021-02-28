@@ -12,7 +12,7 @@ class LogApproval(Command):
         return ""
 
     @property
-    def _volume_mounts(self):
+    def volume_mounts(self):
         return [
             "${PWD}:/src",
             "/var/run/docker.sock:/var/run/docker.sock"

@@ -11,7 +11,7 @@ class ControlDeployment(Command):
         return "Controls Deployments by short-circuiting pipelines if artifact not approved for release"
 
     @property
-    def _volume_mounts(self):
+    def volume_mounts(self):
         return ["/var/run/docker.sock:/var/run/docker.sock"]
 
     @property

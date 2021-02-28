@@ -10,7 +10,7 @@ class LogEvidence(Command):
         return "Logs evidence in Merkely."
 
     @property
-    def _volume_mounts(self):
+    def volume_mounts(self):
         return ["/var/run/docker.sock:/var/run/docker.sock"]
 
     def __call__(self):

@@ -1,7 +1,7 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from commands import Command, External
-
+from env_vars import DynamicCiEnvVar
 
 class DescribeCommand(Directive):
 
@@ -28,7 +28,43 @@ def summary(name, ci):
 
 
 def invocation(name, kind, ci):
-    return [nodes.literal_block(text=command_for(name).invocation(kind, ci))]
+    return [nodes.literal_block(text=docker_run_string(name, kind, ci))]
+
+
+def docker_run_string(name, kind, ci):
+    command = command_for(name)
+    tab = "    "
+    def lcnl(string):
+        line_continuation = "\\"
+        newline = "\n"
+        return f"{string} {line_continuation}{newline}"
+
+    def env(var):
+        if var.name == "MERKELY_COMMAND":
+            value = var.value
+        else:
+            value = '"' + "${" + var.name + "}" + '"'
+        return lcnl(f'{tab}--env {var.name}={value}')
+
+    ci_env_var_names = []
+    drs = lcnl("docker run")
+    for var in command.merkely_env_vars:
+        if kind == 'full':
+            drs += env(var)
+        if kind == 'minimum' and var.is_required:
+            drs += env(var)
+        if isinstance(var, DynamicCiEnvVar) and ci != 'docker':
+            ci_env_var_names.extend(var.ci_env_var_names(ci))
+
+    for name in sorted(set(ci_env_var_names)):
+        drs += lcnl(f"{tab}--env {name}")
+
+    drs += lcnl(f"{tab}--rm")
+    for mount in command.volume_mounts:
+        drs += lcnl(f"{tab}--volume {mount}")
+    drs += lcnl(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json")
+    drs += f"{tab}merkely/change"
+    return drs
 
 
 def parameters(name, ci):

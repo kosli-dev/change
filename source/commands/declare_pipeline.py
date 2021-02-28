@@ -9,7 +9,7 @@ class DeclarePipeline(Command):
         return "Declares a pipeline in Merkely"
 
     @property
-    def _volume_mounts(self):
+    def volume_mounts(self):
         return []
 
     def __call__(self):
