@@ -13,7 +13,6 @@
   --cdb-white: #fff;
 }
 
-
 .navbar {
   min-height: 70px;
 }
@@ -23,11 +22,20 @@
   border-color: var(--cdb-ddblue);
 }
 
-.navbar .container{
+.navbar .container {
   padding-top: 10px;
 }
 
-.navbar-brand{
+.navbar-brand {
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+a.copybtn {
+  position: absolute;
+  top: .4em;
+  right: .1em;
+  width: 2em;
+  height: 2em;
+  opacity: 0.7;
 }
