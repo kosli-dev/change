@@ -1,5 +1,5 @@
 from cdb.put_evidence import put_evidence
-from commands import run, External, LogEvidence
+from commands import run, External
 
 from tests.utils import *
 
@@ -85,12 +85,6 @@ def test_docker_protocol(capsys, mocker):
         'MERKELY_COMMAND=log_evidence',
         'MERKELY_IS_COMPLIANT: True',
     ]
-
-
-def test_summary_is_not_empty():
-    external = {}
-    command = LogEvidence(external)
-    assert len(command.summary('bitbucket')) > 0
 
 
 def new_log_evidence_env():

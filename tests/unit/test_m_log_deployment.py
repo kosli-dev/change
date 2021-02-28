@@ -1,5 +1,5 @@
 from cdb.create_deployment import create_deployment
-from commands import run, External, LogDeployment
+from commands import run, External
 from tests.utils import *
 
 APPROVAL_DIR = "tests/unit/approved_executions"
@@ -74,12 +74,6 @@ def test_docker_image(capsys, mocker):
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_deployment',
     ]
-
-
-def test_summary_is_not_empty():
-    external = {}
-    command = LogDeployment(external)
-    assert len(command.summary('bitbucket')) > 0
 
 
 def create_new_deployment_env():

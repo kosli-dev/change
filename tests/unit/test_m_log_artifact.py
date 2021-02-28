@@ -1,6 +1,6 @@
 from cdb.put_artifact       import put_artifact
 from cdb.put_artifact_image import put_artifact_image
-from commands import main, run, Command, External, LogArtifact
+from commands import main, run, Command, External
 
 from tests.utils import *
 
@@ -247,12 +247,6 @@ def test_all_env_vars_sha(capsys):
 
 
 # TODO: test when only required env-vars are supplied
-
-
-def test_summary_is_not_empty():
-    external = {}
-    command = LogArtifact(external)
-    assert len(command.summary('docker')) > 0
 
 
 def X_test_each_required_env_var_missing(capsys):

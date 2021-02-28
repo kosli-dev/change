@@ -1,4 +1,4 @@
-from commands import run, External, DeclarePipeline
+from commands import run, External
 from tests.utils import *
 
 
@@ -7,9 +7,3 @@ def test_green(capsys):
         run(External(env=env))
 
     verify_approval(capsys)
-
-
-def test_summary_is_not_empty():
-    external = {}
-    command = DeclarePipeline(external)
-    assert len(command.summary('github')) > 0

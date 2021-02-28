@@ -1,5 +1,5 @@
 from cdb.control_junit import control_junit
-from commands import main, run, External, LogTest
+from commands import main, run, External
 
 from tests.utils import *
 
@@ -149,12 +149,6 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     expected_payload["user_data"] = {'status': 'deployed'}
 
     assert payload == expected_payload
-
-
-def test_summary_is_not_empty():
-    external = {}
-    command = LogTest(external)
-    assert len(command.summary('github')) > 0
 
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
