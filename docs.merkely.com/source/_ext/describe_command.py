@@ -35,7 +35,21 @@ def docker_run_string(name, kind, ci):
     command = command_for(name)
     tab = "    "
 
-    n, ci_yml = command.ci_yml(ci)
+    yml_name_texts = {
+        'declare_pipeline': 'Declare Merkely Pipeline',
+        'log_approval': 'Log Approval in Merkely',
+        'log_artifact': 'Log Docker Image in Merkely',
+        'log_deployment': 'Log Deployment in Merkely',
+        'log_evidence': 'Log Evidence in Merkely',
+        'log_test': 'Log JUnit XML evidence in Merkely',
+        'control_deployment': '...'
+    }
+    if name in yml_name_texts:
+        yml_name_text = yml_name_texts[name]
+    else:
+        yml_name_text = '...'
+
+    n, ci_yml = ci_yml_prefix(ci, yml_name_text)
     ci_indent = ' ' * n
 
     # Turn off ci 'prefix' for now
@@ -83,6 +97,25 @@ def docker_run_string(name, kind, ci):
     drs += f"{ci_indent}{tab}merkely/change"
 
     return drs
+
+
+def ci_yml_prefix(ci, name_text):
+    if ci != 'github':
+        return 0, ""
+    if ci == 'github':
+        return 8, "\n".join([
+            "...",
+            "jobs:",
+            "  build:",
+            "    runs-on: ubuntu-latest",
+            "    steps:",
+            "    ...",
+            "    - name: {}".format(name_text),
+            "      env:",
+            "        ...",
+            "      run: |",
+            "",
+        ])
 
 
 def parameters(name, ci):
