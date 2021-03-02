@@ -114,17 +114,17 @@ pytest_help:
 
 DOCS_IMAGE := merkely/docs
 
-build_docs_dockerfile:
-	docker build --tag ${DOCS_IMAGE} docs.merkely.com/
+build_docs_image:
+	@docker build --tag ${DOCS_IMAGE} ${ROOT_DIR}/docs.merkely.com/
 
 build_docs:
 	@docker run \
 		--rm \
-		-v ${PWD}/docs.merkely.com:/docs \
-		-v ${PWD}:/app \
-		-v ${PWD}:/docs/source/app \
+		-v ${ROOT_DIR}/docs.merkely.com:/docs \
+		-v ${ROOT_DIR}:/app \
+		-v ${ROOT_DIR}:/docs/source/app \
 		${DOCS_IMAGE} make clean html
-	@cp -RP docs.merkely.com/build/html/. docs/.
+	@cp -RP ${ROOT_DIR}/docs.merkely.com/build/html/. docs/.
 
 # - - - - - - - - - - - - - - - - - - - -
 

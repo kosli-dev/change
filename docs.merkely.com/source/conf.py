@@ -82,6 +82,33 @@ def env_get_outdated(app, env, added, changed, removed):
 
 
 def setup(app):
+    source_dir = os.path.dirname(__file__)
+    ci_names = ['generic_docker', 'github_actions', 'bitbucket_pipelines']
+    #create_reference_rst_files(source_dir, ci_names)
     app.add_css_file("merkely-custom.css")
     app.connect('env-get-outdated', env_get_outdated)
 
+
+def create_reference_rst_files(source_dir, ci_names):
+    print(source_dir)
+    index = ""
+    for ci_name in ci_names:
+        index += index_ci_entry(ci_name)
+    print('X'*60)
+    print(index)
+    print('X'*60)
+    with open(source_dir + '/reference/index.rst', 'wt') as file:
+        file.write(index)
+
+
+def index_ci_entry(ci_name):
+    title = " ".join(list(s.capitalize() for s in ci_name.split('_')))
+    return "\n".join([
+        "",
+        ".. toctree::",
+        "   :maxdepth: 1",
+        f"   :caption: {title}:",
+        "",
+        f"   {ci_name}",
+        "",
+    ])
