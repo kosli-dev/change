@@ -1,3 +1,4 @@
+.. This file was auto-generated from /docs/source/conf.py
 
 .. toctree::
    :maxdepth: 1
@@ -7,12 +8,12 @@
 
 .. toctree::
    :maxdepth: 1
-   :caption: Github Actions:
+   :caption: Bitbucket Pipeline:
 
-   github_actions
+   bitbucket_pipeline
 
 .. toctree::
    :maxdepth: 1
-   :caption: Bitbucket pipeline:
+   :caption: Github Actions:
 
-   bitbucket_pipeline
+   github_actions
