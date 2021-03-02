@@ -49,6 +49,9 @@ class Command(ABC):
     # - - - - - - - - - - - - - - - - - - - - -
     # Living documentation
 
+    def ci_yml(self, ci):
+        return 0, ""
+
     @property
     def merkely_env_vars(self):
         """

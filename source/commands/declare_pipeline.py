@@ -8,6 +8,25 @@ class DeclarePipeline(Command):
     def summary(self, _ci):
         return "Declares a pipeline in Merkely"
 
+    def ci_yml(self, ci):
+        if ci != 'github':
+            return 0, ""
+        if ci == 'github':
+            return 8, "\n".join([
+                "jobs:",
+                "  build:",
+                "    runs-on: ubuntu-latest",
+                "",
+                "    steps:",
+                "    - uses: actions/checkout@v2",
+                "",
+                "    - name: Declare Merkely pipeline",
+                "      env:",
+                "        MERKELY_API_TOKEN: ${{secrets.MERKELY_API_TOKEN}}",
+                "      run: |",
+                "",
+            ])
+
     @property
     def volume_mounts(self):
         return []

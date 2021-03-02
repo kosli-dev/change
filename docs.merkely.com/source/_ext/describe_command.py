@@ -34,10 +34,18 @@ def invocation(name, kind, ci):
 def docker_run_string(name, kind, ci):
     command = command_for(name)
     tab = "    "
+
+    n, ci_yml = command.ci_yml(ci)
+    ci_indent = ' ' * n
+
+    # Turn off ci 'prefix' for now
+    ci_yml = ''
+    ci_indent = ''
+
     def lcnl(string):
         line_continuation = "\\"
         newline = "\n"
-        return f"{string} {line_continuation}{newline}"
+        return f"{ci_indent}{string} {line_continuation}{newline}"
 
     def env(var):
         if var.name == "MERKELY_COMMAND":
@@ -46,7 +54,8 @@ def docker_run_string(name, kind, ci):
             value = '"' + "${" + var.name + "}" + '"'
         return lcnl(f'{tab}--env {var.name}={value}')
 
-    drs = lcnl("docker run")
+    drs = ci_yml
+    drs += lcnl("docker run")
     for var in command.merkely_env_vars:
         if kind == 'full':
             drs += env(var)
@@ -60,7 +69,7 @@ def docker_run_string(name, kind, ci):
     for mount in command.volume_mounts:
         drs += lcnl(f"{tab}--volume {mount}")
     drs += lcnl(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json")
-    drs += f"{tab}merkely/change"
+    drs += f"{ci_indent}{tab}merkely/change"
     return drs
 
 
