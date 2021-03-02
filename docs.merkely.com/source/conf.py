@@ -12,6 +12,7 @@
 #
 import os
 import sys
+from pathlib import Path
 
 sys.path.append(os.path.abspath("./_ext"))
 sys.path.append(os.path.abspath("/app/source"))
@@ -86,7 +87,7 @@ def setup(app):
     ci_names = ['generic_docker', 'bitbucket_pipeline', 'github_actions']
     create_reference_rst_files(source_dir, ci_names)
     create_reference_ci_rst_files(source_dir, ci_names)
-
+    create_reference_ci_dir(source_dir, ci_names)
     app.add_css_file("merkely-custom.css")
     app.connect('env-get-outdated', env_get_outdated)
 
@@ -98,7 +99,7 @@ def create_reference_rst_files(source_dir, ci_names):
     ])
     for ci_name in ci_names:
         index += index_ci_entry(ci_name)
-    with open(source_dir + '/reference/index.rst', 'wt') as file:
+    with open(f'{source_dir}/reference/index.rst', 'wt') as file:
         file.write(index)
 
 
@@ -127,5 +128,27 @@ def create_reference_ci_rst_files(source_dir, ci_names):
             "",
             f"   {ci_name}/index"
         ])
-        with open(source_dir + f'/reference/{ci_name}.rst', 'wt') as file:
+        with open(f'{source_dir}/reference/{ci_name}.rst', 'wt') as file:
             file.write(rst)
+
+
+def create_reference_ci_dir(source_dir, ci_names):
+    for ci_name in ci_names:
+        dir = f"{source_dir}/reference/{ci_name}"
+        Path(dir).mkdir(exist_ok=True)
+        index = "\n".join([
+            ".. toctree::",
+            "   :maxdepth: 1",
+            "",
+            "   declare_pipeline",
+            "   log_approval",
+            "   log_artifact",
+            "   log_deployment",
+            "   log_evidence",
+            "   log_test",
+            "   control_deployment",
+        ])
+        with open(f'{source_dir}/reference/{ci_name}/index.rst', 'wt') as file:
+            file.write(index)
+
+

@@ -1,11 +1,10 @@
 .. toctree::
-	:maxdepth: 1
-	:caption: Github actions:
+   :maxdepth: 1
 
-	declare_pipeline
-	control_deployment
-	log_approval
-	log_artifact
-	log_deployment
-	log_evidence
-	log_test
+   declare_pipeline
+   log_approval
+   log_artifact
+   log_deployment
+   log_evidence
+   log_test
+   control_deployment
