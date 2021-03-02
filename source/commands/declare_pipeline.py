@@ -22,7 +22,7 @@ class DeclarePipeline(Command):
                 "",
                 "    - name: Declare Merkely pipeline",
                 "      env:",
-                "        MERKELY_API_TOKEN: ${{secrets.MERKELY_API_TOKEN}}",
+                "        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}",
                 "      run: |",
                 "",
             ])

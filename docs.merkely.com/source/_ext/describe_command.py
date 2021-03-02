@@ -1,7 +1,7 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from commands import Command, External
-from env_vars import CompoundCiEnvVar
+
 
 class DescribeCommand(Directive):
 
@@ -54,22 +54,34 @@ def docker_run_string(name, kind, ci):
             value = '"' + "${" + var.name + "}" + '"'
         return lcnl(f'{tab}--env {var.name}={value}')
 
+    # CI .yml 'context'
     drs = ci_yml
+    # The docker run command
     drs += lcnl("docker run")
+    # With each --env MERKELY_XXXX=...
     for var in command.merkely_env_vars:
         if kind == 'full':
             drs += env(var)
         if kind == 'minimum' and var.is_required:
             drs += env(var)
 
+    # With each CI env-var used in a MERKELY_XXXX env-var default
     for name in command.ci_env_var_names(ci):
         drs += lcnl(f"{tab}--env {name}")
 
+    # The --rm docker run option
     drs += lcnl(f"{tab}--rm")
+
+    # The docker run volume-mount options, if any
     for mount in command.volume_mounts:
         drs += lcnl(f"{tab}--volume {mount}")
+
+    # The merkely-pipe volume-mount is always required
     drs += lcnl(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json")
+
+    # The name of the docker image
     drs += f"{ci_indent}{tab}merkely/change"
+
     return drs
 
 
