@@ -1,3 +1,4 @@
+
 Declare Pipeline
 ================
 .. describe_command:: declare_pipeline summary docker

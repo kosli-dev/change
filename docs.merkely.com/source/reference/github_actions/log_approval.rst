@@ -1,3 +1,4 @@
+
 Log Approval
 ============
 .. describe_command:: log_approval summary github

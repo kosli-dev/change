@@ -1,3 +1,4 @@
+
 Log Test
 ========
 .. describe_command:: log_test summary bitbucket
