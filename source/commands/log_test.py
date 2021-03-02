@@ -8,7 +8,7 @@ from cdb.control_junit import is_compliant_test_results
 class LogTest(Command):
 
     def summary(self, _ci):
-        return "".join([
+        return " ".join([
             "Logs JUnit xml test summary evidence in Merkely.",
             "The JUnit xml file(s) must be volume-mounted to /data/junit/*.xml"
         ])

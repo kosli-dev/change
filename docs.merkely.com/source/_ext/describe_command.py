@@ -46,17 +46,14 @@ def docker_run_string(name, kind, ci):
             value = '"' + "${" + var.name + "}" + '"'
         return lcnl(f'{tab}--env {var.name}={value}')
 
-    ci_env_var_names = []
     drs = lcnl("docker run")
     for var in command.merkely_env_vars:
         if kind == 'full':
             drs += env(var)
         if kind == 'minimum' and var.is_required:
             drs += env(var)
-        if isinstance(var, CompoundCiEnvVar) and ci != 'docker':
-            ci_env_var_names.extend(var.ci_env_var_names(ci))
 
-    for name in sorted(set(ci_env_var_names)):
+    for name in command.ci_env_var_names(ci):
         drs += lcnl(f"{tab}--env {name}")
 
     drs += lcnl(f"{tab}--rm")

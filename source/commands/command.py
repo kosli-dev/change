@@ -47,13 +47,57 @@ class Command(ABC):
         return self._external.merkelypipe
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # All merkely env-vars
+    # Living documentation
 
     @property
     def merkely_env_vars(self):
+        """
+        All the MERKELY_... env-vars for this command.
+        Used in living documentation.
+        """
         names = self._merkely_env_var_names
         objects = [getattr(self, name) for name in names]
         return namedtuple('MerkelyEnvVars', tuple(names))(*objects)
+
+    def ci_env_var_names(self, ci):
+        """
+        All the env-var names used in defaults for all
+        the merkely_env_vars for this command, in the given ci.
+        Used in living documentation.
+        For example, one of LogTest command's merkely_env_vars is
+        MERKELY_CI_BUILD_URL which has a default, in ci='github',
+        which uses GITHUB_REPOSITORY. So GITHUB_REPOSITORY is one
+        of the ci_env_var_names() for LogCommand when ci=='github'
+        """
+        if ci == 'docker':
+            return []
+        names = []
+        for var in self.merkely_env_vars:
+            if isinstance(var, CompoundCiEnvVar):
+                names.extend(var.ci_env_var_names(ci))
+        return sorted(set(names))
+
+    @property
+    def _merkely_env_var_names(self):  # pragma: no cover
+        """
+        The names of the MERKELY_... env-var names for
+        this command, in display-order.
+        Used in living documentation.
+        """
+        raise NotImplementedError(self.name)
+
+    def summary(self, _ci):  # pragma: no cover
+        """
+        Used in living documentation.
+        """
+        raise NotImplementedError(self.name)
+
+    @property
+    def volume_mounts(self):  # pragma: no cover
+        """
+        Used in living documentation.
+        """
+        raise NotImplementedError(self.name)
 
     # - - - - - - - - - - - - - - - - - - - - -
     # Common merkely env-vars
@@ -103,22 +147,8 @@ class Command(ABC):
         print(f"{env_var.name}: {env_var.value == 'TRUE'}")
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # Living documentation
-
-    def summary(self, _ci):  # pragma: no cover
-        raise NotImplementedError(self.name)
-
-    @property
-    def volume_mounts(self):  # pragma: no cover
-        raise NotImplementedError(self.name)
-
-    # - - - - - - - - - - - - - - - - - - - - -
-    # Subclass implementations
+    # Subclass command implementation
 
     def __call__(self):  # pragma: no cover
-        raise NotImplementedError(self.name)
-
-    @property
-    def _merkely_env_var_names(self):  # pragma: no cover
         raise NotImplementedError(self.name)
 
