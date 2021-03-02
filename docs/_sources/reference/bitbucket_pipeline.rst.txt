@@ -1,5 +1,5 @@
-Bitbucket Pipelines
--------------------
+Bitbucket Pipeline
+------------------
 
 .. toctree::
    :maxdepth: 1

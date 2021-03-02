@@ -85,6 +85,8 @@ def setup(app):
     source_dir = os.path.dirname(__file__)
     ci_names = ['generic_docker', 'bitbucket_pipeline', 'github_actions']
     create_reference_rst_files(source_dir, ci_names)
+    create_reference_ci_rst_files(source_dir, ci_names)
+
     app.add_css_file("merkely-custom.css")
     app.connect('env-get-outdated', env_get_outdated)
 
@@ -111,3 +113,19 @@ def index_ci_entry(ci_name):
         f"   {ci_name}",
         "",
     ])
+
+
+def create_reference_ci_rst_files(source_dir, ci_names):
+    for ci_name in ci_names:
+        title = " ".join(list(s.capitalize() for s in ci_name.split('_')))
+        rst = "\n".join([
+            title,
+            "-" * len(title),
+            "",
+            ".. toctree::",
+            "   :maxdepth: 1",
+            "",
+            f"   {ci_name}/index"
+        ])
+        with open(source_dir + f'/reference/{ci_name}.rst', 'wt') as file:
+            file.write(rst)
