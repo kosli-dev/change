@@ -106,6 +106,7 @@ def create_reference_rst_files(reference_dir, ci_names):
 def index_ci_entry(ci_name):
     title = " ".join(list(s.capitalize() for s in ci_name.split('_')))
     return "\n".join([
+        f".. This file was auto-generated from {__file__}",
         "",
         ".. toctree::",
         "   :maxdepth: 1",
@@ -120,6 +121,8 @@ def create_reference_ci_rst_files(reference_dir, ci_names):
     for ci_name in ci_names:
         title = " ".join(list(s.capitalize() for s in ci_name.split('_')))
         rst = "\n".join([
+            f".. This file was auto-generated from {__file__}",
+            "",
             title,
             "-" * len(title),
             "",
@@ -137,6 +140,8 @@ def create_reference_ci_dir(reference_dir, ci_names):
         dir = f"{reference_dir}/{ci_name}"
         Path(dir).mkdir(exist_ok=True)
         index = "\n".join([
+            f".. This file was auto-generated from {__file__}",
+            "",
             ".. toctree::",
             "   :maxdepth: 1",
             "",
@@ -169,6 +174,7 @@ def create_reference_ci_command(reference_dir, ci_name, command_name):
     elif ci_name == 'github_actions':
         short_ci_name = 'github'
     rst = "\n".join([
+        f".. This file was auto-generated from {__file__}",
         "",
         f"{title}",
         "=" * len(title),

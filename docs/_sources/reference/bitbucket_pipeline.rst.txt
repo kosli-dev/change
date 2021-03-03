@@ -1,3 +1,5 @@
+.. This file was auto-generated from /docs/source/conf.py
+
 Bitbucket Pipeline
 ------------------
 
