@@ -53,8 +53,8 @@ def docker_run_string(name, kind, ci):
     ci_indent = ' ' * n
 
     # Turn off ci 'prefix' for now
-    ci_yml = ''
-    ci_indent = ''
+    #ci_yml = ''
+    #ci_indent = ''
 
     def lcnl(string):
         line_continuation = "\\"

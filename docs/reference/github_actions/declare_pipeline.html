@@ -117,13 +117,23 @@
 <p>Declares a pipeline in Merkely</p>
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=declare_pipeline \
-    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
-    --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
-    --rm \
-    --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
-    merkely/change
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>...
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    ...
+    - name: Declare Merkely Pipeline
+      env:
+        ...
+      run: |
+        docker run \
+            --env MERKELY_COMMAND=declare_pipeline \
+            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
+            --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
+            --rm \
+            --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
+            merkely/change
 </pre></div>
 </div>
 </div>

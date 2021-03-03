@@ -117,15 +117,25 @@
 <p>Controls Deployments by short-circuiting pipelines if artifact not approved for release</p>
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=control_deployment \
-    --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
-    --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
-    --rm \
-    --volume /var/run/docker.sock:/var/run/docker.sock \
-    --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
-    merkely/change
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>...
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    ...
+    - name: ...
+      env:
+        ...
+      run: |
+        docker run \
+            --env MERKELY_COMMAND=control_deployment \
+            --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
+            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
+            --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
+            --rm \
+            --volume /var/run/docker.sock:/var/run/docker.sock \
+            --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
+            merkely/change
 </pre></div>
 </div>
 </div>
