@@ -21,11 +21,13 @@ ifeq ($(CI),true)
 	# no tty on CI
 	DOCKER_RUN_TTY=
 	DOCKER_RUN_INTERACTIVE=
+	CI_ENV_FILE := ${ROOT_DIR}/../.github/workflows/merkely.env
 else
 	# colour on terminal needs tty
 	DOCKER_RUN_TTY=--tty
 	# pdb needs interactive
 	DOCKER_RUN_INTERACTIVE=--interactive
+	CI_ENV_FILE := ${ROOT_DIR}/.github/workflows/merkely.env
 endif
 
 # list the targets: from https://stackoverflow.com/questions/4219255/how-do-you-get-the-list-of-targets-in-a-makefile
@@ -159,9 +161,6 @@ stats:
 # - - - - - - - - - - - - - - - - - - - -
 # Merkely commands
 
-MERKELY_ENV_FILE := ${ROOT_DIR}/.github/workflows/merkely.env
-
-
 merkely_declare_pipeline:
 	docker run \
 		--env MERKELY_COMMAND=declare_pipeline \
@@ -186,7 +185,7 @@ merkely_log_artifact:
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env MERKELY_HOST=${MERKELY_HOST} \
         --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
-        --env-file ${MERKELY_ENV_FILE} \
+        --env-file ${CI_ENV_FILE} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
@@ -204,7 +203,7 @@ merkely_log_deployment:
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env MERKELY_HOST=${MERKELY_HOST} \
         --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
-        --env-file ${MERKELY_ENV_FILE} \
+        --env-file ${CI_ENV_FILE} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
@@ -222,7 +221,7 @@ merkely_log_evidence:
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --env MERKELY_HOST=${MERKELY_HOST} \
         --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
-        --env-file ${MERKELY_ENV_FILE} \
+        --env-file ${CI_ENV_FILE} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         --volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
@@ -238,7 +237,7 @@ merkely_log_test:
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--env MERKELY_HOST=${MERKELY_HOST} \
 		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
-		--env-file ${MERKELY_ENV_FILE} \
+		--env-file ${CI_ENV_FILE} \
 		--rm \
 		--volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
