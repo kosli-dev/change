@@ -159,7 +159,7 @@ stats:
 # - - - - - - - - - - - - - - - - - - - -
 # Merkely commands
 
-MERKELY_ENV_FILE := ${PWD}/merkely.github.env
+MERKELY_ENV_FILE := ${PWD}/.github/workflows/merkely.env
 
 
 merkely_declare_pipeline:
