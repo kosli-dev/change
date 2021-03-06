@@ -114,10 +114,12 @@
       
   <div class="section" id="logging-artifacts">
 <h1>Logging Artifacts<a class="headerlink" href="#logging-artifacts" title="Permalink to this headline">¶</a></h1>
-<p>To register an artifact in Merkely, you use the <cite>log_artifact</cite> command.  To get the sha256 for your artifact, you have some options:</p>
-<p>Explicitly provide the sha256 of the binary to the command
-Provide the file, the command will calculate the sha digest
-Provide the docker image and access to the docker daemon, and the command will query the docker daemon to query the repoDigest of the docker image. This requires the image to be pushed to a registry first.</p>
+<p>To register an artifact in Merkely, you use the <cite>log_artifact</cite> command.  To get the sha256 for your artifact, you have three options:</p>
+<ul class="simple">
+<li><p>Explicitly provide the sha256 of the binary to the command.</p></li>
+<li><p>Provide the full path to the file - the command will calculate the sha digest.</p></li>
+<li><p>Provide the docker image and access to the docker daemon - the command will use the docker daemon to query the repoDigest of the docker image. This requires the image to be pushed to a registry first.</p></li>
+</ul>
 <p>Here is an example using a docker image:</p>
 <div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -131,21 +133,19 @@ Provide the docker image and access to the docker daemon, and the command will q
 <span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
-            --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_artifact <span class="se">\</span>
-            <span class="se">\</span>
-            --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_API_TOKEN</span><span class="si">}</span> <span class="se">\</span>
-            --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;docker://</span><span class="si">${</span><span class="nv">YOUR_DOCKER_IMAGE_AND_TAG</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-            --env <span class="nv">MERKELY_ARTIFACT_NAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">YOUR_DOCKER_IMAGE_AND_TAG</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-            --env <span class="nv">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_CI_BUILD_URL</span><span class="si">}</span> <span class="se">\</span>
-            --env <span class="nv">MERKELY_BUILD_NUMBER</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_BUILD_NUMBER</span><span class="si">}</span> <span class="se">\</span>
-            --env <span class="nv">MERKELY_ARTIFACT_GIT_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_GIT_COMMIT_URL</span><span class="si">}</span> <span class="se">\</span>
-            --env <span class="nv">MERKELY_ARTIFACT_GIT_COMMIT</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_SOURCE_GIT_COMMIT</span><span class="si">}</span> <span class="se">\</span>
-            --rm <span class="se">\</span>
-            --volume <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/<span class="si">${</span><span class="nv">YOUR_MERKELY_PIPE</span><span class="si">}</span>:/data/Merkelypipe.json <span class="se">\</span>
-            --volume<span class="o">=</span>/var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
-            merkely/change
+<span class="normal">13</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+  --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_artifact <span class="se">\</span>
+  <span class="se">\</span>
+  --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;docker://</span><span class="si">${</span><span class="nv">YOUR_DOCKER_IMAGE_AND_TAG</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+  --env <span class="nv">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_CI_BUILD_URL</span><span class="si">}</span> <span class="se">\</span>
+  --env <span class="nv">MERKELY_BUILD_NUMBER</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_BUILD_NUMBER</span><span class="si">}</span> <span class="se">\</span>
+  --env <span class="nv">MERKELY_ARTIFACT_GIT_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_GIT_COMMIT_URL</span><span class="si">}</span> <span class="se">\</span>
+  --env <span class="nv">MERKELY_ARTIFACT_GIT_COMMIT</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_SOURCE_GIT_COMMIT</span><span class="si">}</span> <span class="se">\</span>
+  --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_API_TOKEN</span><span class="si">}</span> <span class="se">\</span>
+  --rm <span class="se">\</span>
+  --volume <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/<span class="si">${</span><span class="nv">YOUR_MERKELY_PIPE</span><span class="si">}</span>:/data/Merkelypipe.json <span class="se">\</span>
+  --volume /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
+  merkely/change
 </pre></div>
 </td></tr></table></div>
 </div>

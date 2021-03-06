@@ -12,7 +12,7 @@ Merkely uses a declarative Pipefile to define the DevOps Change Management needs
 To make integration with Merkely easy to implement in devops pipelines we provide a docker image `merkely/change
 <https://github.com/merkely-development/change>`_.  Using commands in this image you can define, log and control different aspects of your software delivery process automatically.
 
-For example, to declare the pipeline definition in Merkely we can use the command :ref:`declare_pipeline <declare_pipeline>`
+For example, to declare the pipeline definition in Merkely you use the command :ref:`declare_pipeline <declare_pipeline>`
 like so:
 
 .. describe_command:: declare_pipeline invocation_minimum docker

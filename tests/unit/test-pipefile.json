@@ -1,7 +1,7 @@
 {
+    "owner": "acme-cern",
     "name": "hadroncollider-game",
     "description": "Accelerating particles then smashing them together",
-    "owner": "acme-cern",
     "visibility": "private",
     "template": [
          "artifact",

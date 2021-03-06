@@ -126,9 +126,9 @@
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;acme-cern&quot;</span><span class="p">,</span>
     <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hadroncollider-game&quot;</span><span class="p">,</span>
     <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Accelerating particles then smashing them together&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;acme-cern&quot;</span><span class="p">,</span>
     <span class="nt">&quot;visibility&quot;</span><span class="p">:</span> <span class="s2">&quot;private&quot;</span><span class="p">,</span>
     <span class="nt">&quot;template&quot;</span><span class="p">:</span> <span class="p">[</span>
          <span class="s2">&quot;artifact&quot;</span><span class="p">,</span>
@@ -139,7 +139,7 @@
 </pre></div>
 </td></tr></table></div>
 <p>To make integration with Merkely easy to implement in devops pipelines we provide a docker image <a class="reference external" href="https://github.com/merkely-development/change">merkely/change</a>.  Using commands in this image you can define, log and control different aspects of your software delivery process automatically.</p>
-<p>For example, to declare the pipeline definition in Merkely we can use the command <span class="xref std std-ref">declare_pipeline</span>
+<p>For example, to declare the pipeline definition in Merkely you use the command <span class="xref std std-ref">declare_pipeline</span>
 like so:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=declare_pipeline \
