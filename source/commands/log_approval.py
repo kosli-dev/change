@@ -9,14 +9,13 @@ from pygit2._pygit2 import GIT_SORT_TIME
 class LogApproval(Command):
 
     def summary(self, _ci):
-        return ""
+        return "Logs an approval made outside of Merkely in Merkely"
 
-    @property
-    def volume_mounts(self):
-        return [
-            "${PWD}:/src",
-            "/var/run/docker.sock:/var/run/docker.sock"
-        ]
+    def volume_mounts(self, ci):
+        mounts = ["${PWD}:/src"]
+        if ci != 'bitbucket':
+            mounts.append("/var/run/docker.sock:/var/run/docker.sock")
+        return mounts
 
     def __call__(self):
         commit_list = list_commits_between(repo_at(self.src_repo_root.value),

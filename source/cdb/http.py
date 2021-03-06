@@ -50,7 +50,7 @@ def http_post_payload(url, payload, api_token):
 def raise_unless_success(response):
     # Eg https://github.com/merkely-development/change/runs/1961998055?check_suite_focus=true
     status_code = response.status_code
-    if status_code in [200,201]:
+    if status_code in [200, 201]:
         print(response.text)
     else:
         message = f"HTTP status=={status_code}\n{response.text}"

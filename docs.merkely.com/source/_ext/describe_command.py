@@ -52,12 +52,13 @@ def docker_run_string(name, kind, ci):
     n, ci_yml = ci_yml_prefix(ci, yml_name_text)
     ci_indent = ' ' * n
 
-    # Turn off ci 'prefix' for now
-    #ci_yml = ''
-    #ci_indent = ''
-
     def lcnl(string):
-        line_continuation = "\\"
+        # bitbucket uses leading - to indicate start of a command
+        # and a \ line continuation is not needed.
+        if ci == 'bitbucket':
+            line_continuation = ""
+        else:
+            line_continuation = "\\"
         newline = "\n"
         return f"{ci_indent}{string} {line_continuation}{newline}"
 
@@ -70,8 +71,13 @@ def docker_run_string(name, kind, ci):
 
     # CI .yml 'context'
     drs = ci_yml
+
     # The docker run command
-    drs += lcnl("docker run")
+    if ci == 'bitbucket':
+        drs += "docker run\n"
+    else:
+        drs += lcnl("docker run")
+
     # With each --env MERKELY_XXXX=...
     for var in command.merkely_env_vars:
         if kind == 'full':
@@ -87,7 +93,7 @@ def docker_run_string(name, kind, ci):
     drs += lcnl(f"{tab}--rm")
 
     # The docker run volume-mount options, if any
-    for mount in command.volume_mounts:
+    for mount in command.volume_mounts(ci):
         drs += lcnl(f"{tab}--volume {mount}")
 
     # The merkely-pipe volume-mount is always required
@@ -100,8 +106,20 @@ def docker_run_string(name, kind, ci):
 
 
 def ci_yml_prefix(ci, name_text):
-    if ci != 'github':
+    if ci == 'docker':
         return 0, ""
+    if ci == 'bitbucket':
+        return 8, "\n".join([
+            "image: atlassian/default-image:2",
+            "...",
+            "pipelines:",
+            "  default:",
+            "    ...",
+            "    - step:",
+            "        name: {}".format(name_text),
+            "        script:",
+            "          - ",
+        ])
     if ci == 'github':
         return 8, "\n".join([
             "...",
@@ -111,8 +129,7 @@ def ci_yml_prefix(ci, name_text):
             "    steps:",
             "    ...",
             "    - name: {}".format(name_text),
-            "      env:",
-            "        ...",
+            "      ...",
             "      run: |",
             "",
         ])

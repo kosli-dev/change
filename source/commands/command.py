@@ -92,8 +92,7 @@ class Command(ABC):
         """
         raise NotImplementedError(self.name)
 
-    @property
-    def volume_mounts(self):  # pragma: no cover
+    def volume_mounts(self, _ci):  # pragma: no cover
         """
         Used in living documentation.
         """

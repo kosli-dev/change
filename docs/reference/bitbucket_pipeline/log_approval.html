@@ -114,25 +114,32 @@
       
   <div class="section" id="log-approval">
 <h1>Log Approval<a class="headerlink" href="#log-approval" title="Permalink to this headline">¶</a></h1>
-<p></p>
+<p>Logs an approval made outside of Merkely in Merkely</p>
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=log_approval \
-    --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-    --env MERKELY_NEWEST_SRC_COMMITISH=&quot;${MERKELY_NEWEST_SRC_COMMITISH}&quot; \
-    --env MERKELY_OLDEST_SRC_COMMITISH=&quot;${MERKELY_OLDEST_SRC_COMMITISH}&quot; \
-    --env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \
-    --env MERKELY_IS_APPROVED=&quot;${MERKELY_IS_APPROVED}&quot; \
-    --env MERKELY_SRC_REPO_ROOT=&quot;${MERKELY_SRC_REPO_ROOT}&quot; \
-    --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
-    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
-    --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
-    --rm \
-    --volume ${PWD}:/src \
-    --volume /var/run/docker.sock:/var/run/docker.sock \
-    --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
-    merkely/change
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>image: atlassian/default-image:2
+...
+pipelines:
+  default:
+    ...
+    - step:
+        name: Log Approval in Merkely
+        script:
+          - docker run
+            --env MERKELY_COMMAND=log_approval 
+            --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; 
+            --env MERKELY_NEWEST_SRC_COMMITISH=&quot;${MERKELY_NEWEST_SRC_COMMITISH}&quot; 
+            --env MERKELY_OLDEST_SRC_COMMITISH=&quot;${MERKELY_OLDEST_SRC_COMMITISH}&quot; 
+            --env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; 
+            --env MERKELY_IS_APPROVED=&quot;${MERKELY_IS_APPROVED}&quot; 
+            --env MERKELY_SRC_REPO_ROOT=&quot;${MERKELY_SRC_REPO_ROOT}&quot; 
+            --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; 
+            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
+            --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; 
+            --rm 
+            --volume ${PWD}:/src 
+            --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json 
+            merkely/change
 </pre></div>
 </div>
 </div>

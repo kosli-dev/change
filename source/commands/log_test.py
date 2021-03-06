@@ -9,16 +9,15 @@ class LogTest(Command):
 
     def summary(self, _ci):
         return " ".join([
-            "Logs JUnit xml test summary evidence in Merkely.",
+            "Logs JUnit xml format test summary evidence in Merkely.",
             "The JUnit xml file(s) must be volume-mounted to /data/junit/*.xml"
         ])
 
-    @property
-    def volume_mounts(self):
-        return [
-            "/var/run/docker.sock:/var/run/docker.sock",
-            "${YOUR_TEST_RESULTS_FILE}:/data/junit/junit.xml",
-        ]
+    def volume_mounts(self, ci):
+        mounts = ["${YOUR_TEST_RESULTS_FILE}:/data/junit/junit.xml"]
+        if ci != 'bitbucket':
+            mounts.append("/var/run/docker.sock:/var/run/docker.sock")
+        return mounts
 
     def __call__(self):
         junit_results_dir = '/data/junit/'

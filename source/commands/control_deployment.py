@@ -10,9 +10,11 @@ class ControlDeployment(Command):
     def summary(self, _ci):
         return "Controls Deployments by short-circuiting pipelines if artifact not approved for release"
 
-    @property
-    def volume_mounts(self):
-        return ["/var/run/docker.sock:/var/run/docker.sock"]
+    def volume_mounts(self, ci):
+        if ci == 'bitbucket':
+            return []
+        else:
+            return ["/var/run/docker.sock:/var/run/docker.sock"]
 
     @property
     def _merkely_env_var_names(self):

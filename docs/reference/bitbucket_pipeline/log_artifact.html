@@ -117,25 +117,32 @@
 <p>Logs an artifact in Merkely.</p>
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=log_artifact \
-    --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-    --env MERKELY_IS_COMPLIANT=&quot;${MERKELY_IS_COMPLIANT}&quot; \
-    --env MERKELY_ARTIFACT_GIT_COMMIT=&quot;${MERKELY_ARTIFACT_GIT_COMMIT}&quot; \
-    --env MERKELY_ARTIFACT_GIT_URL=&quot;${MERKELY_ARTIFACT_GIT_URL}&quot; \
-    --env MERKELY_CI_BUILD_NUMBER=&quot;${MERKELY_CI_BUILD_NUMBER}&quot; \
-    --env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \
-    --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
-    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
-    --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
-    --env BITBUCKET_BUILD_NUMBER \
-    --env BITBUCKET_COMMIT \
-    --env BITBUCKET_REPO_SLUG \
-    --env BITBUCKET_WORKSPACE \
-    --rm \
-    --volume /var/run/docker.sock:/var/run/docker.sock \
-    --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
-    merkely/change
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>image: atlassian/default-image:2
+...
+pipelines:
+  default:
+    ...
+    - step:
+        name: Log Docker Image in Merkely
+        script:
+          - docker run
+            --env MERKELY_COMMAND=log_artifact 
+            --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; 
+            --env MERKELY_IS_COMPLIANT=&quot;${MERKELY_IS_COMPLIANT}&quot; 
+            --env MERKELY_ARTIFACT_GIT_COMMIT=&quot;${MERKELY_ARTIFACT_GIT_COMMIT}&quot; 
+            --env MERKELY_ARTIFACT_GIT_URL=&quot;${MERKELY_ARTIFACT_GIT_URL}&quot; 
+            --env MERKELY_CI_BUILD_NUMBER=&quot;${MERKELY_CI_BUILD_NUMBER}&quot; 
+            --env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; 
+            --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; 
+            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
+            --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; 
+            --env BITBUCKET_BUILD_NUMBER 
+            --env BITBUCKET_COMMIT 
+            --env BITBUCKET_REPO_SLUG 
+            --env BITBUCKET_WORKSPACE 
+            --rm 
+            --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json 
+            merkely/change
 </pre></div>
 </div>
 </div>

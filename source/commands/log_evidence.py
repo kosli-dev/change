@@ -9,9 +9,11 @@ class LogEvidence(Command):
     def summary(self, _ci):
         return "Logs evidence in Merkely."
 
-    @property
-    def volume_mounts(self):
-        return ["/var/run/docker.sock:/var/run/docker.sock"]
+    def volume_mounts(self, ci):
+        if ci == 'bitbucket':
+            return []
+        else:
+            return ["/var/run/docker.sock:/var/run/docker.sock"]
 
     def __call__(self):
         self._print_compliance()

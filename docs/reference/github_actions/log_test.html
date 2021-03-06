@@ -114,7 +114,7 @@
       
   <div class="section" id="log-test">
 <h1>Log Test<a class="headerlink" href="#log-test" title="Permalink to this headline">¶</a></h1>
-<p>Logs JUnit xml test summary evidence in Merkely. The JUnit xml file(s) must be volume-mounted to /data/junit/*.xml</p>
+<p>Logs JUnit xml format test summary evidence in Merkely. The JUnit xml file(s) must be volume-mounted to /data/junit/*.xml</p>
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>...
@@ -124,8 +124,7 @@ jobs:
     steps:
     ...
     - name: Log JUnit XML evidence in Merkely
-      env:
-        ...
+      ...
       run: |
         docker run \
             --env MERKELY_COMMAND=log_test \
@@ -139,8 +138,8 @@ jobs:
             --env GITHUB_RUN_ID \
             --env GITHUB_SERVER_URL \
             --rm \
-            --volume /var/run/docker.sock:/var/run/docker.sock \
             --volume ${YOUR_TEST_RESULTS_FILE}:/data/junit/junit.xml \
+            --volume /var/run/docker.sock:/var/run/docker.sock \
             --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
             merkely/change
 </pre></div>

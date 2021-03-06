@@ -124,8 +124,7 @@ jobs:
     steps:
     ...
     - name: Log Docker Image in Merkely
-      env:
-        ...
+      ...
       run: |
         docker run \
             --env MERKELY_COMMAND=log_artifact \
