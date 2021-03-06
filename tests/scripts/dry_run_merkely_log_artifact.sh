@@ -31,7 +31,7 @@ function merkely_log_artifact()
         --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
-        --volume ${MERKELYPIPE}:/Merkelypipe.json \
+        --volume ${MERKELYPIPE}:/data/Merkelypipe.json \
         merkely/change:master
 }
 
