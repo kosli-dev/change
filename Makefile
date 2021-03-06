@@ -17,7 +17,7 @@ IMAGES := $(shell docker image ls --format '{{.Repository}}:{{.Tag}}' $(NAME) | 
 
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-CI_ENV_FILE := ${ROOT_DIR}/.github/workflows/merkely.env
+CI_ENV_FILE := ${ROOT_DIR}/.github/merkely.env
 
 ifeq ($(CI),true)
 	# no tty on CI
