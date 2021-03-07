@@ -125,7 +125,7 @@ def ci_yml_prefix(ci, name_text):
             "...",
             "jobs:",
             "  build:",
-            "    runs-on: ubuntu-latest",
+            "    runs-on: ubuntu-20.04",
             "    steps:",
             "    ...",
             "    - name: {}".format(name_text),
