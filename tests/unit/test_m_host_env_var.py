@@ -21,5 +21,10 @@ def test_value_defaults_when_set_to_empty_string():
     assert ev.value == DEFAULT
 
 
+def test_is_required_is_false():
+    ev = make_env_var({})
+    assert not ev.is_required('bitbucket')
+
+
 def make_env_var(ev):
     return HostEnvVar(ev)
