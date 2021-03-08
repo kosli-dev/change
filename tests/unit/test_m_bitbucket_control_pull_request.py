@@ -1,5 +1,5 @@
 from cdb.bitbucket import put_bitbucket_pull_request
-from commands import run, External
+from commands import run, main, External
 
 from tests.utils import *
 
@@ -41,7 +41,7 @@ def test_bitbucket(capsys, mocker):
     }
 
     with dry_run(env):
-        rv = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response)
+        rv = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response())
         mocker.patch('cdb.bitbucket.requests.get', return_value=rv)
         mocker.patch('cdb.cdb_utils.load_project_configuration', return_value=test_pipefile)
         put_bitbucket_pull_request("tests/integration/test-pipefile.json")
@@ -86,7 +86,7 @@ def test_bitbucket(capsys, mocker):
     merkelypipe = "Merkelypipe.acme-roadrunner.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response)
+            rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response())
             mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
@@ -102,6 +102,27 @@ def test_bitbucket(capsys, mocker):
     assert payload == expected_payload
 
 
+def test_bitbucket_not_compliant_raises(capsys, mocker):
+    # make merkely call
+    ev = new_control_pull_request_env()
+    merkelypipe = "Merkelypipe.acme-roadrunner.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+            response = mocked_bitbucket_pull_requests_api_response()
+            response['values'] = []
+            rv1 = MockedAPIResponse(200, response)
+            mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            exit_code = main(external)
+
+    assert exit_code != 0
+
+    stdout = capsys_read(capsys)
+    lines = stdout.split("\n")
+    last_line = lines[-2]  # ignore trailing newline
+    assert last_line[:6] == 'Error:'
+
+
 class MockedAPIResponse:
     def __init__(self, status_code, response_body):
         self.status_code = status_code
@@ -113,26 +134,27 @@ class MockedAPIResponse:
         return json.dumps(self.response_body)
 
 
-mocked_bitbucket_pull_requests_api_response = {
-    "values": [{
-        "links": {
-            "self": {"href": "test_self_uri", "name": "test_self"},
-            "html": {"href": "test_html_uri", "name": "test_html"},
-        },
-        "id": "1",
-        "title": "test pull request",
-    }],
-    "state": "OPEN",
-    "participants": [
-        {
-            "approved": True,
-            "state": "approved",
-            "user": {
-                "display_name": "test_username"
+def mocked_bitbucket_pull_requests_api_response():
+    return {
+        "values": [{
+            "links": {
+                "self": {"href": "test_self_uri", "name": "test_self"},
+                "html": {"href": "test_html_uri", "name": "test_html"},
+            },
+            "id": "1",
+            "title": "test pull request",
+        }],
+        "state": "OPEN",
+        "participants": [
+            {
+                "approved": True,
+                "state": "approved",
+                "user": {
+                    "display_name": "test_username"
+                }
             }
-        }
-    ]
-}
+        ]
+    }
 
 
 test_pipefile = {

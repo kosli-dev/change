@@ -31,6 +31,8 @@ class ControlPullRequest(Command):
         }
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         http_put_payload(url, payload, self.api_token.value)
+        if not is_compliant:
+            raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not compliant")
         return 'Putting', url, payload
 
     @property
