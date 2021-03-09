@@ -120,8 +120,8 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=log_approval \
     --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-    --env MERKELY_NEWEST_SRC_COMMITISH=&quot;${MERKELY_NEWEST_SRC_COMMITISH}&quot; \
     --env MERKELY_OLDEST_SRC_COMMITISH=&quot;${MERKELY_OLDEST_SRC_COMMITISH}&quot; \
+    --env MERKELY_NEWEST_SRC_COMMITISH=&quot;${MERKELY_NEWEST_SRC_COMMITISH}&quot; \
     --env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \
     --env MERKELY_IS_APPROVED=&quot;${MERKELY_IS_APPROVED}&quot; \
     --env MERKELY_SRC_REPO_ROOT=&quot;${MERKELY_SRC_REPO_ROOT}&quot; \
@@ -154,13 +154,13 @@
 <td><p>yes</p></td>
 <td><p><a class="reference external" href="../../fingerprints/docker_fingerprint.html">Fingerprint</a></p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_NEWEST_SRC_COMMITISH</p></td>
-<td><p>yes</p></td>
-<td><p>The source commit-ish for the newest change in the approval.</p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_OLDEST_SRC_COMMITISH</p></td>
+<tr class="row-even"><td><p>MERKELY_OLDEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
 <td><p>The source commit-ish for the oldest change in the approval.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_NEWEST_SRC_COMMITISH</p></td>
+<td><p>yes</p></td>
+<td><p>The source commit-ish for the newest change in the approval.</p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>yes</p></td>

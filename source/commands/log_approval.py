@@ -69,8 +69,8 @@ class LogApproval(Command):
         return [
             'name',
             'fingerprint',
-            'newest_src_commitish',
             'oldest_src_commitish',
+            'newest_src_commitish',
             'description',
             'is_approved',
             'src_repo_root',
