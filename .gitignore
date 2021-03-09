@@ -1,5 +1,4 @@
 tmp/
-.coverage
 .idea/*
 __pycache__/
 source/cdb/__pycache__/
