@@ -29,7 +29,7 @@ project = 'Merkely'
 copyright = '2021, Merkely'
 author = 'Merkely'
 
-html_logo = "_static/images/w-merkely-white-01.png"
+html_logo = "_static/images/w-merkely-white.png"
 
 # -- General configuration ---------------------------------------------------
 
