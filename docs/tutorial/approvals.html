@@ -114,6 +114,51 @@
       
   <div class="section" id="creating-approvals">
 <h1>Creating Approvals<a class="headerlink" href="#creating-approvals" title="Permalink to this headline">¶</a></h1>
+<p>Many software development processes require an active decision to document an approval for deployment. This Human-in-the-Loop decision must be taken by someone responsible for accepting the risk of a given deployment. In order to be able to accept the risk, two criteria must be fulfilled:</p>
+<ol class="arabic simple">
+<li><p>The change must be understood</p></li>
+<li><p>The acceptance must be documented</p></li>
+</ol>
+<p>You can create the documentation for this approval automatically in your pipelines using Merkely’s <span class="xref std std-ref">log_approval</span> command.</p>
+<img alt="../_images/approvals.png" src="../_images/approvals.png" />
+<p>Merkely makes a dashboard for the cumulative change in the deployment, based on a list of the source git commits.  Provide two git references: one for what is currently in production, and one for what you would like to deploy.  The command will generate the git commit list between these two commits.</p>
+<p>In this example from the image above, to create the approval for deploying the artifact created at the master commit you would use the following parameters in the <span class="xref std std-ref">log_approval</span>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 60%" />
+<col style="width: 40%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>MERKELY_OLDEST_SRC_COMMITISH</p></td>
+<td><p>production</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_NEWEST_SRC_COMMITISH</p></td>
+<td><p>master</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="pipeline-approvals-vs-merkely-approvals">
+<h2>Pipeline approvals vs. Merkely approvals<a class="headerlink" href="#pipeline-approvals-vs-merkely-approvals" title="Permalink to this headline">¶</a></h2>
+<p>Merkely provides two methods for documenting deployment approvals:</p>
+<ul class="simple">
+<li><p>Pipeline approval: an approval accepted externally to Merkely, for instance in an external CI tool.</p></li>
+<li><p>Merkely approval: an approval to be accepted in Merkely.</p></li>
+</ul>
+<p>To create a pipeline approval, simply set the <code class="code docutils literal notranslate"><span class="pre">MERKELY_IS_APPROVED</span></code> parameter to <code class="code docutils literal notranslate"><span class="pre">TRUE</span></code>.  This will allow you to document an approval for example made in your CI tool and set it immediately to approved.  If you set this instead to <code class="code docutils literal notranslate"><span class="pre">FALSE</span></code>, it is possible to approve in the Merkely application.</p>
+</div>
+<div class="section" id="tracking-branches-for-production">
+<h2>Tracking branches for production<a class="headerlink" href="#tracking-branches-for-production" title="Permalink to this headline">¶</a></h2>
+<p>In a typical setup, you need to add a <code class="code docutils literal notranslate"><span class="pre">production</span></code> tracking branch in git that is updated on every deployment. For example:</p>
+<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>git checkout production
+git merge --ff-only master
+<span class="c1"># YOUR DEPLOYMENT COMMAND HERE</span>
+git push origin production
+</pre></div>
+</td></tr></table></div>
+</div>
 </div>
 
 
