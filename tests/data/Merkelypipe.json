@@ -2,10 +2,10 @@
     "description": "Test Pipeline for merkely/change",
     "name": "merkely-change-test-pipeline",
     "owner": "merkely-test",
+    "visibility": "public",
     "template": [
         "artifact",
         "unit_test",
         "coverage"
-    ],
-    "visibility": "public"
+    ]
 }
