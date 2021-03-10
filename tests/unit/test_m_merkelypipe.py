@@ -36,7 +36,7 @@ def test_raises_when_invalid_json(capsys):
 def test_raises_when_is_a_dir(capsys):
     with dry_run(core_env_vars()) as env:
         external = External(env=env)
-        with ScopedDirCopier("/test_src", "/Merkelypipe.json"):
+        with ScopedDirCopier("/app/tests/data", "/data/Merkelypipe.json"):
             with raises(ChangeError):
                 run(external)
 
