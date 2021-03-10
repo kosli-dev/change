@@ -21,7 +21,7 @@ def test_env_var_can_override_the_default():
 
 def test_raises_when_not_found(capsys):
     with dry_run(core_env_vars()) as env, raises(ChangeError):
-        # no /Merkelypipe.json
+        # no /data/Merkelypipe.json
         run(External(env=env))
 
 
