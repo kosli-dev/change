@@ -144,3 +144,26 @@ def get_pull_request_details_from_bitbucket(pr_evidence, pr_api_url, username, p
     else:
         print("Error occurred in fetching pull request details. Please review repository permissions.")
     return pr_evidence
+
+
+"""
+Notes for implementation on Github Actions
+https://docs.github.com/en/rest/reference/pulls#list-pull-requests
+GET /repos/{owner}/{repo}/pulls/{pull_number}/commits
+This needs the pull_number. Also, this is limited to 100.
+See https://github.com/actions/checkout/issues/58
+Uses the env-var $GITHUB_EVENT_PATH
+Eg:
+    const fs = require('fs')
+    const ev = JSON.parse(
+      fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')
+    )
+    const prNum = ev.pull_request.number 
+
+This could be awkward. The information in the file $GITHUB_EVENT_PATH
+needs to get inside the merkely/change container somehow. volume-mounting is
+problematic (in general as some CI's don't allow it).
+Or do it CI itself and create an env-var. Maybe will require some jq.
+Look into using pygit with David? 
+Will also need (username,password)
+"""

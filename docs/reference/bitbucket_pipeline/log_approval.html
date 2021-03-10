@@ -136,6 +136,7 @@ pipelines:
             --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; 
             --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
             --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; 
+            --env MERKELYPIPE_PATH=&quot;${MERKELYPIPE_PATH}&quot; 
             --rm 
             --volume ${PWD}:/src 
             --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json 
@@ -194,6 +195,10 @@ If not provided, the json content defaults to {}</p></td>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
 <td><p>Defaults to https://app.compliancedb.com</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELYPIPE_PATH</p></td>
+<td><p>no</p></td>
+<td><p>…</p></td>
 </tr>
 </tbody>
 </table>

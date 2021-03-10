@@ -44,10 +44,11 @@ class External:
         #   docker container remove --volumes eg
         # When using this workaround you must use a data/ directory
         # (you cannot use / as a --volume target)
-        if os.path.exists("/data/Merkelypipe.json"):
-            return self.load_json("/data/Merkelypipe.json")
+        pipe_path = self.env.get('MERKELYPIPE_PATH', "/data/Merkelypipe.json")
+        if os.path.exists(pipe_path):
+            return self.load_json(pipe_path)
         else:
-            raise ChangeError("/data/Merkelypipe.json file not found.")
+            raise ChangeError(f"{pipe_path} file not found.")
 
     @property
     def env(self):
