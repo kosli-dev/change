@@ -13,7 +13,7 @@ def test_defaults_to_Merkelypipe_dot_json_in_data_dir():
 
 
 def test_env_var_can_override_the_default():
-    os_env = {"MERKELYPIPE_PATH": "/app/tests/data/Merkelypipe.acme-roadrunner.json"}
+    os_env = {"MERKELY_PIPE_PATH": "/app/tests/data/Merkelypipe.acme-roadrunner.json"}
     external = External(env=os_env)
     json = external.merkelypipe
     assert json['owner'] == 'acme'
