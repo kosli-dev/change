@@ -34,21 +34,21 @@ class External:
 
     @property
     def merkelypipe(self):
-        # On some CIs you cannot use the --volume docker run option.
-        # A work-around is to create a volume, copy Merkelypipe.json into
-        # the volume (in /data dir), and then use the --volumes-from option.
-        # For example:
-        #   docker container run --detach --name eg --volume /data alpine /bin/true
-        #   docker container cp Merkelypipe.json eg:/data
-        #   docker container run --rm --volumes-from eg:ro ... merkely/change
-        #   docker container remove --volumes eg
-        # When using this workaround you must use a data/ directory
-        # (you cannot use / as a --volume target)
-        pipe_path = self.env.get('MERKELY_PIPE_PATH', "/data/Merkelypipe.json")
-        if os.path.exists(pipe_path):
-            return self.load_json(pipe_path)
-        else:
-            raise ChangeError(f"{pipe_path} file not found.")
+        owner = self.env.get('MERKELY_OWNER', None)
+        pipeline = self.env.get('MERKELY_PIPELINE', None)
+        if owner and pipeline:
+            return {
+                'owner': owner,
+                'name': pipeline
+            }
+
+        pipe_path = self.env.get('MERKELY_PIPE_PATH', '/data/Merkelypipe.json')
+        if pipe_path:
+            if os.path.exists(pipe_path):
+                return self.load_json(pipe_path)
+            else:
+                raise ChangeError(f"{pipe_path} file not found.")
+
 
     @property
     def env(self):

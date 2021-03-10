@@ -176,6 +176,8 @@ merkely_declare_pipeline:
 merkely_log_artifact:
 	docker run \
         --env MERKELY_COMMAND=log_artifact \
+        --env MERKELY_OWNER=compliancedb \
+        --env MERKELY_PIPELINE=change \
         --env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
         --env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
         --env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
@@ -188,7 +190,6 @@ merkely_log_artifact:
         --env-file ${CI_ENV_FILE} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
-        --volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
         ${IMAGE}
 
 
