@@ -19,4 +19,4 @@ ADD tests/data/test_source_repo.tar.gz /
 
 ENV PYTHONPATH="/app/source"
 ENTRYPOINT [""]
-CMD ["python", "source/main.py"]
+CMD ["python", "/app/source/main.py"]
