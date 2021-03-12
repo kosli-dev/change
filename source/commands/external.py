@@ -40,7 +40,6 @@ class External:
         else:
             raise ChangeError(f"{pipe_path} file not found.")
 
-
     @property
     def env(self):
         return self.__env
