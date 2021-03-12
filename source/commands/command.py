@@ -131,7 +131,7 @@ class Command(ABC):
         notes = " ".join([
             f"The full path to your Merkelypipe file.",
             "Must be volume-mounted in the container.",
-            "Defaults to {default}"
+            f"Defaults to {default}"
         ])
         return self._static_defaulted_env_var(name, default, notes)
 
