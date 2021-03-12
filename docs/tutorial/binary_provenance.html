@@ -121,33 +121,23 @@
 <li><p>Provide the docker image and access to the docker daemon - the command will use the docker daemon to query the repoDigest of the docker image. This requires the image to be pushed to a registry first.</p></li>
 </ul>
 <p>Here is an example using a docker image:</p>
-<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
-  --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_artifact <span class="se">\</span>
-  <span class="se">\</span>
-  --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;docker://</span><span class="si">${</span><span class="nv">YOUR_DOCKER_IMAGE_AND_TAG</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-  --env <span class="nv">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_CI_BUILD_URL</span><span class="si">}</span> <span class="se">\</span>
-  --env <span class="nv">MERKELY_BUILD_NUMBER</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_BUILD_NUMBER</span><span class="si">}</span> <span class="se">\</span>
-  --env <span class="nv">MERKELY_ARTIFACT_GIT_URL</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_GIT_COMMIT_URL</span><span class="si">}</span> <span class="se">\</span>
-  --env <span class="nv">MERKELY_ARTIFACT_GIT_COMMIT</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_SOURCE_GIT_COMMIT</span><span class="si">}</span> <span class="se">\</span>
-  --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="nv">YOUR_API_TOKEN</span><span class="si">}</span> <span class="se">\</span>
-  --rm <span class="se">\</span>
-  --volume <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/<span class="si">${</span><span class="nv">YOUR_MERKELY_PIPE</span><span class="si">}</span>:/data/Merkelypipe.json <span class="se">\</span>
-  --volume /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
-  merkely/change
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
+    --env MERKELY_COMMAND=log_artifact \
+    --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
+    --env MERKELY_IS_COMPLIANT=&quot;${MERKELY_IS_COMPLIANT}&quot; \
+    --env MERKELY_ARTIFACT_GIT_COMMIT=&quot;${MERKELY_ARTIFACT_GIT_COMMIT}&quot; \
+    --env MERKELY_ARTIFACT_GIT_URL=&quot;${MERKELY_ARTIFACT_GIT_URL}&quot; \
+    --env MERKELY_CI_BUILD_NUMBER=&quot;${MERKELY_CI_BUILD_NUMBER}&quot; \
+    --env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \
+    --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
+    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
+    --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
+    --rm \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
+    merkely/change
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 
 
