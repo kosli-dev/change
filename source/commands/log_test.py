@@ -4,23 +4,25 @@ from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 from cdb.control_junit import is_compliant_test_results
 
+DEFAULT_TEST_DIR = "/data/junit/"
+
 
 class LogTest(Command):
 
     def summary(self, _ci):
         return " ".join([
             "Logs JUnit xml format test summary evidence in Merkely.",
-            "The JUnit xml file(s) must be volume-mounted to /data/junit/*.xml"
+            f"By default, looks for JUnit xml files in the dir {DEFAULT_TEST_DIR}"
         ])
 
     def volume_mounts(self, ci):
-        mounts = ["${YOUR_TEST_RESULTS_FILE}:/data/junit/junit.xml"]
+        mounts = ["${YOUR_TEST_RESULTS_DIR}:/data/junit"]
         if ci != 'bitbucket':
             mounts.append("/var/run/docker.sock:/var/run/docker.sock")
         return mounts
 
     def __call__(self):
-        junit_results_dir = '/data/junit/'
+        junit_results_dir = self.test_results_dir.value
         is_compliant, message = is_compliant_tests_directory(junit_results_dir)
         description = "JUnit results xml verified by merkely/change: " + message
         payload = {
@@ -42,12 +44,22 @@ class LogTest(Command):
         return self._required_env_var("MERKELY_EVIDENCE_TYPE", notes)
 
     @property
+    def test_results_dir(self):
+        name = "MERKELY_TEST_RESULTS_DIR"
+        notes = " ".join([
+            "The directory where Merkely will look for junit .xml files.",
+            f"Defaults to {DEFAULT_TEST_DIR}"
+        ])
+        return self._static_defaulted_env_var(name, DEFAULT_TEST_DIR, notes)
+
+    @property
     def _merkely_env_var_names(self):
         # Print according to this order
         return [
             'name',
             'fingerprint',
             'evidence_type',
+            'test_results_dir',
             'ci_build_url',
             'user_data',
             'api_token',

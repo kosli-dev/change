@@ -151,6 +151,53 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     assert payload == expected_payload
 
 
+def test_junit_xml_results_dir_specified_with_env_var(capsys):
+    image_name = "acme/widget:4.67"
+    sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
+    build_url = "https://gitlab/build/1457"
+    evidence_type = "coverage"
+    domain = "app.compliancedb.com"
+    owner = "compliancedb"
+    name = "cdb-controls-test-pipeline"
+
+    expected_method = "Putting"
+    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/{sha256}"
+    expected_payload = {
+        "contents": {
+            "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites",
+            "is_compliant": True,
+            "url": build_url
+        },
+        "evidence_type": evidence_type
+    }
+
+    # make merkely call
+    ev = new_log_test_env()
+    ev['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/control_junit/xml-with-passed-results"
+    merkelypipe = "Merkelypipe.compliancedb.json"
+    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
+
+    capsys_read(capsys)
+
+    # verify matching data
+    assert method == expected_method
+    assert url == expected_url
+
+    # image name has changed
+    string = expected_payload['contents']['description']
+    string = string.replace('compliancedb/cdb_controls', 'merkely/change')
+    expected_payload['contents']['description'] = string
+
+    # user_data works in new code
+    expected_payload["user_data"] = {'status': 'deployed'}
+
+    assert payload == expected_payload
+
+
+
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 BUILD_URL = "https://gitlab/build/1457"
 

@@ -114,7 +114,7 @@
       
   <div class="section" id="log-test">
 <h1>Log Test<a class="headerlink" href="#log-test" title="Permalink to this headline">¶</a></h1>
-<p>Logs JUnit xml format test summary evidence in Merkely. The JUnit xml file(s) must be volume-mounted to /data/junit/*.xml</p>
+<p>Logs JUnit xml format test summary evidence in Merkely. By default, looks for JUnit xml files in the dir /data/junit/</p>
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>...
@@ -130,6 +130,7 @@ jobs:
             --env MERKELY_COMMAND=log_test \
             --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
             --env MERKELY_EVIDENCE_TYPE=&quot;${MERKELY_EVIDENCE_TYPE}&quot; \
+            --env MERKELY_TEST_RESULTS_DIR=&quot;${MERKELY_TEST_RESULTS_DIR}&quot; \
             --env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \
             --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
             --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
@@ -138,7 +139,7 @@ jobs:
             --env GITHUB_RUN_ID \
             --env GITHUB_SERVER_URL \
             --rm \
-            --volume ${YOUR_TEST_RESULTS_FILE}:/data/junit/junit.xml \
+            --volume ${YOUR_TEST_RESULTS_DIR}:/data/junit \
             --volume /var/run/docker.sock:/var/run/docker.sock \
             --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
             merkely/change
@@ -167,21 +168,25 @@ jobs:
 <td><p>yes</p></td>
 <td><p>The evidence type.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
+<tr class="row-odd"><td><p>MERKELY_TEST_RESULTS_DIR</p></td>
+<td><p>no</p></td>
+<td><p>The directory where Merkely will look for junit .xml files. Defaults to /data/junit/</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_CI_BUILD_URL</p></td>
 <td><p>no</p></td>
 <td><p>Link to the build in the ci system. Defaults to ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}.</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
+<tr class="row-odd"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>
 <td><p>A pathed filename containing json content to embed in the data logged to Merkely.
 The pathed filename must be volume-mounted in the container.
 If not provided, the json content defaults to {}</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
+<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_HOST</p></td>
+<tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
 <td><p>Defaults to https://app.compliancedb.com</p></td>
 </tr>

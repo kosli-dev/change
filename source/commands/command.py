@@ -127,7 +127,7 @@ class Command(ABC):
     def merkelypipe_path(self):
         name = "MERKELY_PIPE_PATH"
         default = "/data/Merkelypipe.json"
-        notes = "..."
+        notes = "The full path to your Merkelypipe file."
         return self._static_defaulted_env_var(name, default, notes)
 
     @property
