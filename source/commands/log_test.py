@@ -47,7 +47,7 @@ class LogTest(Command):
     def test_results_dir(self):
         name = "MERKELY_TEST_RESULTS_DIR"
         notes = " ".join([
-            "The directory where Merkely will look for junit .xml files.",
+            "The directory where Merkely will look for JUnit .xml files.",
             "Must be volume-mounted in the container.",
             f"Defaults to {DEFAULT_TEST_DIR}"
         ])

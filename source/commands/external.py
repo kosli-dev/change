@@ -34,14 +34,6 @@ class External:
 
     @property
     def merkelypipe(self):
-        owner = self.env.get('MERKELY_OWNER', None)
-        pipeline = self.env.get('MERKELY_PIPELINE', None)
-        if owner and pipeline:
-            return {
-                'owner': owner,
-                'name': pipeline
-            }
-
         pipe_path = self.env.get('MERKELY_PIPE_PATH', '/data/Merkelypipe.json')
         if os.path.exists(pipe_path):
             return self.load_json(pipe_path)
