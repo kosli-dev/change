@@ -124,10 +124,15 @@ class Command(ABC):
         return self._required_env_var("MERKELY_COMMAND", notes)
 
     @property
-    def merkelypipe_path(self):
+    def pipe_path(self):
+        # See external.merkelypipe
         name = "MERKELY_PIPE_PATH"
         default = "/data/Merkelypipe.json"
-        notes = "The full path to your Merkelypipe file."
+        notes = " ".join([
+            f"The full path to your Merkelypipe file.",
+            "Must be volume-mounted in the container.",
+            "Defaults to {default}"
+        ])
         return self._static_defaulted_env_var(name, default, notes)
 
     @property

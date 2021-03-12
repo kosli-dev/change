@@ -22,5 +22,6 @@ class DeclarePipeline(Command):
         return [
             'name',
             'api_token',
+            'pipe_path',
             'host',
         ]

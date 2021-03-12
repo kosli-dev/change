@@ -48,6 +48,7 @@ class LogTest(Command):
         name = "MERKELY_TEST_RESULTS_DIR"
         notes = " ".join([
             "The directory where Merkely will look for junit .xml files.",
+            "Must be volume-mounted in the container.",
             f"Defaults to {DEFAULT_TEST_DIR}"
         ])
         return self._static_defaulted_env_var(name, DEFAULT_TEST_DIR, notes)
@@ -63,6 +64,7 @@ class LogTest(Command):
             'ci_build_url',
             'user_data',
             'api_token',
+            'pipe_path',
             'host',
         ]
 

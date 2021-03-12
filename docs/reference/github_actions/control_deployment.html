@@ -130,6 +130,7 @@ jobs:
             --env MERKELY_COMMAND=control_deployment \
             --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
             --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
+            --env MERKELY_PIPE_PATH=&quot;${MERKELY_PIPE_PATH}&quot; \
             --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
             --rm \
             --volume /var/run/docker.sock:/var/run/docker.sock \
@@ -160,7 +161,11 @@ jobs:
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_HOST</p></td>
+<tr class="row-odd"><td><p>MERKELY_PIPE_PATH</p></td>
+<td><p>no</p></td>
+<td><p>The full path to your Merkelypipe file. Must be volume-mounted in the container. Defaults to {default}</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
 <td><p>Defaults to https://app.compliancedb.com</p></td>
 </tr>

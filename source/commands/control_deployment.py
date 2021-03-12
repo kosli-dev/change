@@ -22,6 +22,7 @@ class ControlDeployment(Command):
             'name',
             'fingerprint',
             'api_token',
+            'pipe_path',
             'host',
         ]
 

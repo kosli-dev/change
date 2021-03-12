@@ -43,11 +43,10 @@ class External:
             }
 
         pipe_path = self.env.get('MERKELY_PIPE_PATH', '/data/Merkelypipe.json')
-        if pipe_path:
-            if os.path.exists(pipe_path):
-                return self.load_json(pipe_path)
-            else:
-                raise ChangeError(f"{pipe_path} file not found.")
+        if os.path.exists(pipe_path):
+            return self.load_json(pipe_path)
+        else:
+            raise ChangeError(f"{pipe_path} file not found.")
 
 
     @property
