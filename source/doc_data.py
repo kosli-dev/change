@@ -12,15 +12,8 @@ def auto_generate():
     """
     make_dir(REFERENCE_DIR)
     make_dir(f"{REFERENCE_DIR}/min")
-    command_names = [
-        'declare_pipeline',
-        'log_approval',
-        'log_artifact',
-        'log_deployment',
-        'log_evidence',
-        'log_test',
-        'control_deployment',
-    ]
+    command_names = sorted(Command.names())
+    command_names.remove('control_pull_request')  # Currently only github
     for command_name in command_names:
         min_filename = f"{REFERENCE_DIR}/min/{command_name}.txt"
         min_lines = min_lines_for(command_name)

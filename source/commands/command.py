@@ -2,7 +2,8 @@ from abc import ABC
 from collections import namedtuple
 from env_vars import *
 from errors import ChangeError
-
+import re
+import copy
 
 class Command(ABC):
     """
@@ -19,6 +20,10 @@ class Command(ABC):
         return Command.__classes
 
     @classmethod
+    def names(cls):
+        return copy.deepcopy(Command.__names)
+
+    @classmethod
     def named(_cls, string):
         name = "".join(list(s.capitalize() for s in string.split('_')))
         try:
@@ -29,8 +34,11 @@ class Command(ABC):
     def __init_subclass__(cls):
         super().__init_subclass__()
         Command.__classes[cls.__name__] = cls
+        parts = re.findall('[A-Z][^A-Z]*', cls.__name__)
+        Command.__names.append("_".join(part.lower() for part in parts))
 
     __classes = {}
+    __names = []
 
     # - - - - - - - - - - - - - - - - - - - - -
     # os env-vars

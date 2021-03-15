@@ -1,23 +1,25 @@
 from pathlib import Path
+from commands import Command
+
+# The Makefile volume-mounts docs.merkely.com/ to docs/
+REFERENCE_DIR = '/docs/source/reference'
 
 
 def auto_generate():
-    # The Makefile volume-mounts docs.merkely.com/ to docs/
-    reference_dir = '/docs/source/reference'
     ci_names = ['generic_docker', 'bitbucket_pipeline', 'github_actions']
-    create_reference_rst_files(reference_dir, ci_names)
-    create_reference_ci_rst_files(reference_dir, ci_names)
-    create_reference_ci_dir(reference_dir, ci_names)
+    create_reference_rst_files(ci_names)
+    create_reference_ci_rst_files(ci_names)
+    create_reference_ci_dir(ci_names)
 
 
-def create_reference_rst_files(reference_dir, ci_names):
+def create_reference_rst_files(ci_names):
     index = "\n".join([
         f".. This file was auto-generated from {__file__}",
         "",
     ])
     for ci_name in ci_names:
         index += index_ci_entry(ci_name)
-    with open(f'{reference_dir}/index.rst', 'wt') as file:
+    with open(f'{REFERENCE_DIR}/index.rst', 'wt') as file:
         file.write(index)
 
 
@@ -35,7 +37,7 @@ def index_ci_entry(ci_name):
     ])
 
 
-def create_reference_ci_rst_files(reference_dir, ci_names):
+def create_reference_ci_rst_files(ci_names):
     for ci_name in ci_names:
         title = " ".join(list(s.capitalize() for s in ci_name.split('_')))
         rst = "\n".join([
@@ -49,13 +51,15 @@ def create_reference_ci_rst_files(reference_dir, ci_names):
             "",
             f"   {ci_name}/index"
         ])
-        with open(f'{reference_dir}/{ci_name}.rst', 'wt') as file:
+        with open(f'{REFERENCE_DIR}/{ci_name}.rst', 'wt') as file:
             file.write(rst)
 
 
-def create_reference_ci_dir(reference_dir, ci_names):
+def create_reference_ci_dir(ci_names):
+    command_names = sorted(Command.names())
+    command_names.remove('control_pull_request')  # Currently only github
     for ci_name in ci_names:
-        dir = f"{reference_dir}/{ci_name}"
+        dir = f"{REFERENCE_DIR}/{ci_name}"
         Path(dir).mkdir(exist_ok=True)
         index = "\n".join([
             f".. This file was auto-generated from {__file__}",
@@ -63,27 +67,17 @@ def create_reference_ci_dir(reference_dir, ci_names):
             ".. toctree::",
             "   :maxdepth: 1",
             "",
-            "   declare_pipeline",
-            "   log_approval",
-            "   log_artifact",
-            "   log_deployment",
-            "   log_evidence",
-            "   log_test",
-            "   control_deployment",
         ])
-        with open(f'{reference_dir}/{ci_name}/index.rst', 'wt') as file:
+        index += "\n"
+        for name in command_names:
+            index += f"   {name}\n"
+            create_reference_ci_command(ci_name, name)
+
+        with open(f'{REFERENCE_DIR}/{ci_name}/index.rst', 'wt') as file:
             file.write(index)
 
-        create_reference_ci_command(reference_dir, ci_name, 'declare_pipeline')
-        create_reference_ci_command(reference_dir, ci_name, 'log_approval')
-        create_reference_ci_command(reference_dir, ci_name, 'log_artifact')
-        create_reference_ci_command(reference_dir, ci_name, 'log_deployment')
-        create_reference_ci_command(reference_dir, ci_name, 'log_evidence')
-        create_reference_ci_command(reference_dir, ci_name, 'log_test')
-        create_reference_ci_command(reference_dir, ci_name, 'control_deployment')
 
-
-def create_reference_ci_command(reference_dir, ci_name, command_name):
+def create_reference_ci_command(ci_name, command_name):
     title = " ".join(list(s.capitalize() for s in command_name.split('_')))
     if ci_name == 'generic_docker':
         short_ci_name = 'docker'
@@ -107,6 +101,6 @@ def create_reference_ci_command(reference_dir, ci_name, command_name):
         f".. describe_command:: {command_name} parameters {short_ci_name}",
         "",
     ])
-    with open(f'{reference_dir}/{ci_name}/{command_name}.rst', 'wt') as file:
+    with open(f'{REFERENCE_DIR}/{ci_name}/{command_name}.rst', 'wt') as file:
         file.write(rst)
 
