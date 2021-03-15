@@ -2,7 +2,7 @@ from pathlib import Path
 
 
 def auto_generate():
-    # Makefile volume-mounts docs.merkely.com/ to docs/
+    # The Makefile volume-mounts docs.merkely.com/ to docs/
     reference_dir = '/docs/source/reference'
     ci_names = ['generic_docker', 'bitbucket_pipeline', 'github_actions']
     create_reference_rst_files(reference_dir, ci_names)

@@ -12,7 +12,7 @@ class LogTest(Command):
     def summary(self, _ci):
         return " ".join([
             "Logs JUnit xml format test summary evidence in Merkely.",
-            f"By default, looks for JUnit xml files in the dir {DEFAULT_TEST_DIR}"
+            f"By default, looks for JUnit .xml files in the dir {DEFAULT_TEST_DIR}"
         ])
 
     def volume_mounts(self, ci):
@@ -55,7 +55,7 @@ class LogTest(Command):
 
     @property
     def _merkely_env_var_names(self):
-        # Print according to this order
+        # Print in this order
         return [
             'name',
             'fingerprint',

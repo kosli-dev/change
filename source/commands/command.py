@@ -49,6 +49,12 @@ class Command(ABC):
     # - - - - - - - - - - - - - - - - - - - - -
     # Living documentation
 
+    def summary(self, _ci):  # pragma: no cover
+        """
+        Used in living documentation.
+        """
+        raise NotImplementedError(self.name)
+
     @property
     def merkely_env_vars(self):
         """
@@ -82,12 +88,6 @@ class Command(ABC):
         """
         The names of the MERKELY_... env-var names for
         this command, in display-order.
-        Used in living documentation.
-        """
-        raise NotImplementedError(self.name)
-
-    def summary(self, _ci):  # pragma: no cover
-        """
         Used in living documentation.
         """
         raise NotImplementedError(self.name)

@@ -15,7 +15,7 @@ class DescribeCommand(Directive):
         if description_type == "summary":
             return summary(name, ci)
         if description_type == "invocation_full":
-            return invocation(name, 'full', ci)
+            return full_invocation(name, ci)
         if description_type == "invocation_minimum":
             return invocation(name, 'minimum', ci)
         if description_type == "parameters":
@@ -25,6 +25,15 @@ class DescribeCommand(Directive):
 
 def summary(name, ci):
     return [nodes.paragraph(text=command_for(name).summary(ci))]
+
+
+def full_invocation(name, ci):
+    # The Makefile volume-mounts docs.merkely.com/ to docs/
+    reference_dir = '/docs/build/data'
+    filename = f"{reference_dir}/{ci}.{name}.txt"
+    with open(filename, "rt") as file:
+        text = "".join(file.readlines())
+    return [nodes.literal_block(text=text)]
 
 
 def invocation(name, kind, ci):
@@ -42,7 +51,7 @@ def docker_run_string(name, kind, ci):
         'log_deployment': 'Log Deployment in Merkely',
         'log_evidence': 'Log Evidence in Merkely',
         'log_test': 'Log JUnit XML evidence in Merkely',
-        'control_deployment': '...'
+        # 'control_deployment': '...'
     }
     if name in yml_name_texts:
         yml_name_text = yml_name_texts[name]
