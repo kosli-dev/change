@@ -144,8 +144,6 @@ like so:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=declare_pipeline \
     --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
-    --env MERKELY_PIPE_PATH=&quot;${MERKELY_PIPE_PATH}&quot; \
-    --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
     --rm \
     --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
     merkely/change

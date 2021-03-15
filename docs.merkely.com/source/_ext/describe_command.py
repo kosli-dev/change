@@ -17,7 +17,7 @@ class DescribeCommand(Directive):
         if description_type == "invocation_full":
             return full_invocation(name, ci)
         if description_type == "invocation_minimum":
-            return invocation(name, 'minimum', ci)
+            return min_invocation(name)
         if description_type == "parameters":
             return parameters(name, ci)
         return []
@@ -29,119 +29,20 @@ def summary(name, ci):
 
 def full_invocation(name, ci):
     # The Makefile volume-mounts docs.merkely.com/ to docs/
-    reference_dir = '/docs/build/data'
-    filename = f"{reference_dir}/{ci}.{name}.txt"
+    reference_dir = '/docs/build/reference'
+    filename = f"{reference_dir}/{ci}/{name}.txt"
     with open(filename, "rt") as file:
         text = "".join(file.readlines())
     return [nodes.literal_block(text=text)]
 
 
-def invocation(name, kind, ci):
-    return [nodes.literal_block(text=docker_run_string(name, kind, ci))]
-
-
-def docker_run_string(name, kind, ci):
-    command = command_for(name)
-    tab = "    "
-
-    yml_name_texts = {
-        'declare_pipeline': 'Declare Merkely Pipeline',
-        'log_approval': 'Log Approval in Merkely',
-        'log_artifact': 'Log Docker Image in Merkely',
-        'log_deployment': 'Log Deployment in Merkely',
-        'log_evidence': 'Log Evidence in Merkely',
-        'log_test': 'Log JUnit XML evidence in Merkely',
-        # 'control_deployment': '...'
-    }
-    if name in yml_name_texts:
-        yml_name_text = yml_name_texts[name]
-    else:
-        yml_name_text = '...'
-
-    n, ci_yml = ci_yml_prefix(ci, yml_name_text)
-    ci_indent = ' ' * n
-
-    def lcnl(string):
-        # bitbucket uses leading - to indicate start of a command
-        # and a \ line continuation is not needed.
-        if ci == 'bitbucket':
-            line_continuation = ""
-        else:
-            line_continuation = "\\"
-        newline = "\n"
-        return f"{ci_indent}{string} {line_continuation}{newline}"
-
-    def env(var):
-        if var.name == "MERKELY_COMMAND":
-            value = var.value
-        else:
-            value = '"' + "${" + var.name + "}" + '"'
-        return lcnl(f'{tab}--env {var.name}={value}')
-
-    # CI .yml 'context'
-    drs = ci_yml
-
-    # The docker run command
-    if ci == 'bitbucket':
-        drs += "docker run\n"
-    else:
-        drs += lcnl("docker run")
-
-    # With each --env MERKELY_XXXX=...
-    for var in command.merkely_env_vars:
-        if kind == 'full':
-            drs += env(var)
-        if kind == 'minimum' and var.is_required:
-            drs += env(var)
-
-    # With each CI env-var used in a MERKELY_XXXX env-var default
-    for name in command.ci_env_var_names(ci):
-        drs += lcnl(f"{tab}--env {name}")
-
-    # The --rm docker run option
-    drs += lcnl(f"{tab}--rm")
-
-    # The docker run volume-mount options, if any
-    for mount in command.volume_mounts(ci):
-        drs += lcnl(f"{tab}--volume {mount}")
-
-    # The merkely-pipe volume-mount is always required
-    drs += lcnl(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json")
-
-    # The name of the docker image
-    drs += f"{ci_indent}{tab}merkely/change"
-
-    return drs
-
-
-def ci_yml_prefix(ci, name_text):
-    if ci == 'docker':
-        return 0, ""
-    if ci == 'bitbucket':
-        return 8, "\n".join([
-            "image: atlassian/default-image:2",
-            "...",
-            "pipelines:",
-            "  default:",
-            "    ...",
-            "    - step:",
-            "        name: {}".format(name_text),
-            "        script:",
-            "          - ",
-        ])
-    if ci == 'github':
-        return 8, "\n".join([
-            "...",
-            "jobs:",
-            "  build:",
-            "    runs-on: ubuntu-20.04",
-            "    steps:",
-            "    ...",
-            "    - name: {}".format(name_text),
-            "      ...",
-            "      run: |",
-            "",
-        ])
+def min_invocation(name):
+    # The Makefile volume-mounts docs.merkely.com/ to docs/
+    reference_dir = '/docs/build/reference'
+    filename = f"{reference_dir}/min/{name}.txt"
+    with open(filename, "rt") as file:
+        text = "".join(file.readlines())
+    return [nodes.literal_block(text=text)]
 
 
 def parameters(name, ci):

@@ -23,24 +23,35 @@ def auto_generate():
     ]
 
     # The Makefile volume-mounts docs.merkely.com/ to docs/
-    reference_dir = '/docs/build/data'
-
-    if not os.path.exists(reference_dir):
-        os.makedirs(reference_dir)
+    reference_dir = '/docs/build/reference'
+    make_dir(reference_dir)
+    make_dir(f"{reference_dir}/bitbucket")
+    make_dir(f"{reference_dir}/docker")
+    make_dir(f"{reference_dir}/github")
+    make_dir(f"{reference_dir}/min")
 
     for ci_name in ci_names:
         for command_name in command_names:
-            filename = f"{reference_dir}/{ci_name}.{command_name}.txt"
+            filename = f"{reference_dir}/{ci_name}/{command_name}.txt"
             lines = lines_for(ci_name, command_name)
             with open(filename, "wt") as file:
                 file.writelines(line + "\n" for line in lines)
 
+    for command_name in command_names:
+        min_filename = f"{reference_dir}/min/{command_name}.txt"
+        min_lines = min_lines_for(command_name)
+        with open(min_filename, "wt") as file:
+            file.writelines(line + "\n" for line in min_lines)
+
+
+def make_dir(dir):
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
 
 def lines_for(ci, name):
-    # name == command name, eg 'log_test'
     # ci == ci name, eg 'bitbucket'
-
-    kind = 'full'
+    # name == command name, eg 'log_test'
     command = command_for(name)
     tab = "    "
     yml_name_texts = {
@@ -87,10 +98,7 @@ def lines_for(ci, name):
 
     # With each --env MERKELY_XXXX=...
     for var in command.merkely_env_vars:
-        if kind == 'full':
-            lines.append(env(var))
-        if kind == 'minimum' and var.is_required:
-            lines.append(env(var))
+        lines.append(env(var))
 
     # With each CI env-var used in a MERKELY_XXXX env-var default
     for name in command.ci_env_var_names(ci):
@@ -108,6 +116,45 @@ def lines_for(ci, name):
 
     # The name of the docker image
     lines.append(f"{ci_indent}{tab}merkely/change")
+
+    return lines
+
+
+def min_lines_for(name):
+    # name == command name, eg 'log_test'
+    command = command_for(name)
+    tab = "    "
+
+    def lc(string):
+        line_continuation = "\\"
+        return f"{string} {line_continuation}"
+
+    def env(var):
+        if var.name == "MERKELY_COMMAND":
+            value = var.value
+        else:
+            value = '"' + "${" + var.name + "}" + '"'
+        return lc(f'{tab}--env {var.name}={value}')
+
+    lines = [ lc("docker run") ]
+    # With each --env MERKELY_XXXX=...
+    for var in command.merkely_env_vars:
+        if var.name == "MERKELY_PIPE_PATH":
+            continue
+        if var.name == "MERKELY_HOST":
+            continue
+        if var.is_required:
+            lines.append(env(var))
+
+    lines.append(lc(f"{tab}--rm"))
+    for mount in command.volume_mounts('docker'):
+        lines.append(lc(f"{tab}--volume {mount}"))
+
+    # The merkely-pipe volume-mount is always required
+    lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
+
+    # The name of the docker image
+    lines.append(f"{tab}merkely/change")
 
     return lines
 
