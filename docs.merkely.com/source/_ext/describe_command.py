@@ -27,19 +27,19 @@ def summary(name, ci):
     return [nodes.paragraph(text=command_for(name).summary(ci))]
 
 
+# The Makefile volume-mounts docs.merkely.com/ to docs/
+REFERENCE_DIR = '/docs/build/reference'
+
+
 def full_invocation(name, ci):
-    # The Makefile volume-mounts docs.merkely.com/ to docs/
-    reference_dir = '/docs/build/reference'
-    filename = f"{reference_dir}/{ci}/{name}.txt"
+    filename = f"{REFERENCE_DIR}/{ci}/{name}.txt"
     with open(filename, "rt") as file:
         text = "".join(file.readlines())
     return [nodes.literal_block(text=text)]
 
 
 def min_invocation(name):
-    # The Makefile volume-mounts docs.merkely.com/ to docs/
-    reference_dir = '/docs/build/reference'
-    filename = f"{reference_dir}/min/{name}.txt"
+    filename = f"{REFERENCE_DIR}/min/{name}.txt"
     with open(filename, "rt") as file:
         text = "".join(file.readlines())
     return [nodes.literal_block(text=text)]
