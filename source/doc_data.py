@@ -34,6 +34,11 @@ def auto_generate():
                 file.writelines(line + "\n" for line in lines)
 
 
+def make_dir(dir):
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
+
 def lines_for(ci, command_name):
     if ci == 'docker':
         return lines_for_docker(command_name)
@@ -203,9 +208,4 @@ def command_for(name):
     env = {"MERKELY_COMMAND": name}
     external = External(env=env)
     return cls(external)
-
-
-def make_dir(dir):
-    if not os.path.exists(dir):
-        os.makedirs(dir)
 
