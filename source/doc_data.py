@@ -10,33 +10,33 @@ def auto_generate():
     Generates text files containing documentation source for each
     command (eg 'log_test') in each supported CI system (eg 'bitbucket')
     """
-    make_dir(REFERENCE_DIR)
-    make_dir(f"{REFERENCE_DIR}/min")
+    for filename, lines in generate_docs().items():
+        dir = os.path.dirname(filename)
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+        with open(filename, "wt") as file:
+            file.writelines(line + "\n" for line in lines)
+
+
+def generate_docs():
+    docs = {}
     command_names = sorted(Command.names())
     command_names.remove('control_pull_request')  # Currently only github
     for command_name in command_names:
-        min_filename = f"{REFERENCE_DIR}/min/{command_name}.txt"
-        min_lines = min_lines_for(command_name)
-        with open(min_filename, "wt") as file:
-            file.writelines(line + "\n" for line in min_lines)
-
+        filename = f"{REFERENCE_DIR}/min/{command_name}.txt"
+        lines = min_lines_for(command_name)
+        docs[filename] = lines
     ci_names = [
         'bitbucket',
         'docker',
         'github',
     ]
     for ci_name in ci_names:
-        make_dir(f"{REFERENCE_DIR}/{ci_name}")
         for command_name in command_names:
             filename = f"{REFERENCE_DIR}/{ci_name}/{command_name}.txt"
             lines = lines_for(ci_name, command_name)
-            with open(filename, "wt") as file:
-                file.writelines(line + "\n" for line in lines)
-
-
-def make_dir(dir):
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+            docs[filename] = lines
+    return docs
 
 
 def lines_for(ci, command_name):
