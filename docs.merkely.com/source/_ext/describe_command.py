@@ -35,7 +35,21 @@ def full_invocation(name, ci):
     filename = f"{REFERENCE_DIR}/{ci}/{name}.txt"
     with open(filename, "rt") as file:
         text = "".join(file.readlines())
-    return [nodes.literal_block(text=text)]
+
+    block = nodes.literal_block(text=text)
+
+    paragraph = nodes.container()
+    paragraph += block
+    paragraph += parameters(name, ci)
+
+    div_classes = [ci, "tab-pane"]
+    if ci == "docker":
+        div_classes.append("active")
+    paragraph.update_basic_atts({
+        "ids": [ci],
+        "classes": div_classes
+    })
+    return [paragraph]
 
 
 def min_invocation(name):
