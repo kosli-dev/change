@@ -18,8 +18,6 @@
     <script src="../../_static/copybutton.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Log Approval" href="log_approval.html" />
-    <link rel="prev" title="Control Deployment" href="control_deployment.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -72,11 +70,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/value_stream.html">Mapping your value stream</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/binary_provenance.html">Understanding Binary Provenance</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../generic_docker.html">Generic Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../bitbucket_pipeline.html">Bitbucket Pipeline</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../github_actions.html">Github Actions</a></li>
+<p class="caption"><span class="caption-text">Command Reference:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../control_deployment.html">Control Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../declare_pipeline.html">Declare Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../log_approval.html">Log Approval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../log_artifact.html">Log Artifact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../log_deployment.html">Log Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../log_evidence.html">Log Evidence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../log_test.html">Log Test</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Fingerprints:</span></p>
 <ul>
@@ -117,6 +119,7 @@
 <p>Declares a pipeline in Merkely</p>
 <div class="section" id="invocation">
 <h2>Invocation<a class="headerlink" href="#invocation" title="Permalink to this headline">¶</a></h2>
+<div class="docker tab-pane active docutils container" id="docker">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=declare_pipeline \
     --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
@@ -126,6 +129,33 @@
     --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
     merkely/change
 </pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>NAME</p></th>
+<th class="head"><p>Required?</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
+<td><p>yes</p></td>
+<td><p>The Merkely command to execute.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
+<td><p>yes</p></td>
+<td><p>Your API token for Merkely.</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_PIPE_PATH</p></td>
+<td><p>no</p></td>
+<td><p>The full path to your Merkelypipe file. Must be volume-mounted in the container. Defaults to /data/Merkelypipe.json</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_HOST</p></td>
+<td><p>no</p></td>
+<td><p>Defaults to https://app.compliancedb.com</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section" id="parameters">

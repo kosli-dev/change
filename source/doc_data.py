@@ -27,8 +27,8 @@ def generate_docs():
         lines = min_lines_for(command_name)
         docs[filename] = lines
     ci_names = [
-        'bitbucket',
         'docker',
+        'bitbucket',
         'github',
     ]
     for ci_name in ci_names:

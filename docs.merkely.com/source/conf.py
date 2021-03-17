@@ -85,6 +85,7 @@ def env_get_outdated(app, env, added, changed, removed):
 import doc_gen
 import doc_data
 
+
 def setup(app):
     doc_data.auto_generate()
     doc_gen.auto_generate()
