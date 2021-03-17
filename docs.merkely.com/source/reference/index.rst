@@ -20,3 +20,9 @@
    :caption: Github Actions:
 
    github_actions
+
+.. toctree::
+   :maxdepth: 1
+   :caption: combined:
+
+   combined

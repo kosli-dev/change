@@ -19,6 +19,16 @@ def create_reference_rst_files(ci_names):
     ])
     for ci_name in ci_names:
         index += index_ci_entry(ci_name)
+    index += "\n".join([
+        "",
+        ".. toctree::",
+        "   :maxdepth: 1",
+        f"   :caption: combined:",
+        "",
+        f"   combined",
+        "",
+    ])
+
     with open(f'{REFERENCE_DIR}/index.rst', 'wt') as file:
         file.write(index)
 
