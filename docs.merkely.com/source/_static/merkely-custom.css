@@ -39,3 +39,11 @@ a.copybtn {
   height: 2em;
   opacity: 0.7;
 }
+
+.nav.navbar-nav {
+  display: none; // drop-down looks terrible
+}
+
+.form-group {
+  display: none !important; // search is not functioning
+}
