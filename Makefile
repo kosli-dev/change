@@ -206,7 +206,6 @@ merkely_log_deployment:
         --env-file ${CI_ENV_FILE} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
-        --volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
         ${IMAGE}
 
 
@@ -224,7 +223,6 @@ merkely_log_evidence:
         --env-file ${CI_ENV_FILE} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
-        --volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
         ${IMAGE}
 
 
@@ -241,7 +239,6 @@ merkely_log_test:
 		--rm \
 		--volume ${TEST_RESULTS_FILE}:/data/junit/junit.xml \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
-        --volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
 		${IMAGE}
 
 
@@ -260,7 +257,6 @@ merkely_log_approval:
 		--rm \
 		--volume ${PWD}:/src \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
-		--volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
 		${IMAGE}
 
 
@@ -273,5 +269,4 @@ merkely_control_deployment:
 		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
 		--rm \
 		--volume /var/run/docker.sock:/var/run/docker.sock \
-		--volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
 		merkely/change
