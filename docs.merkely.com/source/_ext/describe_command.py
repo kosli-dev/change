@@ -40,6 +40,10 @@ def full_invocation(name, ci):
     div += nodes.literal_block(text=text)
     div += parameters(name, ci)
 
+    # Add bootstrap "tab-pane" to connect to
+    #    <ul class="nav nav-tabs">...</ul>
+    # inside each command's .rst file
+
     div_classes = [ci, "tab-pane"]
     if ci == "docker":
         div_classes.append("active")
@@ -81,7 +85,7 @@ def env_vars_to_table(env_vars, ci):
     thead = nodes.thead()
     tgroup += thead
     row = nodes.row()
-    row += nodes.entry("", nodes.paragraph(text="NAME"))
+    row += nodes.entry("", nodes.paragraph(text="ENVIRONMENT-VARIABLE"))
     row += nodes.entry("", nodes.paragraph(text="Required?"))
     row += nodes.entry("", nodes.paragraph(text="Notes"))
     thead += row
