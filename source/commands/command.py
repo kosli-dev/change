@@ -109,7 +109,7 @@ class Command(ABC):
         if owner.string != "" and pipeline.string != "":
             return {
                 "owner": owner.string,
-                "name": pipeline.name
+                "name": pipeline.string
             }
         return self._external.merkelypipe
 
