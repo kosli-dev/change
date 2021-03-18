@@ -11,8 +11,6 @@ CONTAINER := ${NAME}
 CDB_HOST = https://app.compliancedb.com
 
 MERKELY_HOST = https://app.compliancedb.com
-MERKELY_OWNER = compliancedb
-MERKELY_PIPELINE = change
 MERKELYPIPE = Merkelypipe.json
 
 # all non-latest images - for prune target
@@ -179,8 +177,6 @@ merkely_declare_pipeline:
 merkely_log_artifact:
 	docker run \
         --env MERKELY_COMMAND=log_artifact \
-        --env MERKELY_OWNER=${MERKELY_OWNER} \
-        --env MERKELY_PIPELINE=${MERKELY_PIPELINE} \
         --env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
         --env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
         --env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
