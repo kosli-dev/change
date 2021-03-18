@@ -9,7 +9,11 @@ LATEST := ${NAME}:latest
 CONTAINER := ${NAME}
 
 CDB_HOST = https://app.compliancedb.com
+
+MERKELY_OWNER = compliancedb
+MERKELY_PIPELINE = change
 MERKELY_HOST = https://app.compliancedb.com
+
 MERKELYPIPE = Merkelypipe.json
 
 # all non-latest images - for prune target
@@ -164,12 +168,11 @@ stats:
 merkely_declare_pipeline:
 	docker run \
 		--env MERKELY_COMMAND=declare_pipeline \
-		\
+		--env MERKELY_OWNER=${MERKELY_OWNER} \
+		--env MERKELY_PIPELINE=${MERKELY_PIPELINE} \
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--env MERKELY_HOST=${MERKELY_HOST} \
 		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
-		--rm \
-		--volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
 		${IMAGE}
 
 
