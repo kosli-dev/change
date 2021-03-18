@@ -48,13 +48,6 @@ class Command(ABC):
         return self._external.env
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # Merkelypipe.json
-
-    @property
-    def merkelypipe(self):
-        return self._external.merkelypipe
-
-    # - - - - - - - - - - - - - - - - - - - - -
     # Living documentation
 
     def summary(self, _ci):  # pragma: no cover
@@ -108,6 +101,17 @@ class Command(ABC):
 
     # - - - - - - - - - - - - - - - - - - - - -
     # Common merkely env-vars
+
+    @property
+    def merkelypipe(self):
+        owner = self._required_env_var("MERKELY_OWNER", "...")
+        pipeline = self._required_env_var("MERKELY_PIPELINE", "...")
+        if owner.string != "" and pipeline.string != "":
+            return {
+                "owner": owner.string,
+                "name": pipeline.name
+            }
+        return self._external.merkelypipe
 
     @property
     def api_token(self):
