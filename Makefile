@@ -10,10 +10,9 @@ CONTAINER := ${NAME}
 
 CDB_HOST = https://app.compliancedb.com
 
+MERKELY_HOST = https://app.compliancedb.com
 MERKELY_OWNER = compliancedb
 MERKELY_PIPELINE = change
-MERKELY_HOST = https://app.compliancedb.com
-
 MERKELYPIPE = Merkelypipe.json
 
 # all non-latest images - for prune target
@@ -168,17 +167,20 @@ stats:
 merkely_declare_pipeline:
 	docker run \
 		--env MERKELY_COMMAND=declare_pipeline \
-		--env MERKELY_OWNER=${MERKELY_OWNER} \
-		--env MERKELY_PIPELINE=${MERKELY_PIPELINE} \
+		\
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--env MERKELY_HOST=${MERKELY_HOST} \
 		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
+		--rm \
+		--volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
 		${IMAGE}
 
 
 merkely_log_artifact:
 	docker run \
         --env MERKELY_COMMAND=log_artifact \
+        --env MERKELY_OWNER=${MERKELY_OWNER} \
+        --env MERKELY_PIPELINE=${MERKELY_PIPELINE} \
         --env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
         --env MERKELY_IS_COMPLIANT=${MERKELY_IS_COMPLIANT} \
         --env MERKELY_ARTIFACT_GIT_COMMIT=${MERKELY_ARTIFACT_GIT_COMMIT} \
@@ -191,7 +193,6 @@ merkely_log_artifact:
         --env-file ${CI_ENV_FILE} \
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
-        --volume ${PWD}/${MERKELYPIPE}:/data/Merkelypipe.json \
         ${IMAGE}
 
 
