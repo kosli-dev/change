@@ -106,14 +106,17 @@ class Command(ABC):
     @property
     def merkelypipe(self):
         if self.name.string == "declare_pipeline":
-            return self._external.merkelypipe
+            json = self._external.merkelypipe
+        else:
+            json = {}
+
         owner = self._required_env_var("MERKELY_OWNER", "...")
         pipeline = self._required_env_var("MERKELY_PIPELINE", "...")
         if owner.string != "" and pipeline.string != "":
-            return {
-                "owner": owner.value,
-                "name": pipeline.value
-            }
+            json["owner"] = owner.value
+            json["name"] = pipeline.value
+
+        return json
 
     @property
     def api_token(self):

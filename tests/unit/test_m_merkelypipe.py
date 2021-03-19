@@ -4,7 +4,7 @@ from tests.utils import *
 from pytest import raises
 
 
-def test_MEREKELY_OWNER_is_used_for_owner_for_all_commands_except_declare_pipeline():
+def test_MEREKELY_OWNER_and_MERKELY_PIPE_LINE_are_used_for_all_commands_except_declare_pipeline():
     os_env = {
         "MERKELY_OWNER": "acme",
         "MERKELY_PIPELINE": "road-runner",
@@ -16,6 +16,24 @@ def test_MEREKELY_OWNER_is_used_for_owner_for_all_commands_except_declare_pipeli
     assert json["name"] == "road-runner"
 
 
+def test_MERKELY_OWNER_and_MERKELY_PIPE_override_entries_in_Merkelypipe_even_for_declare_pipeline():
+    # declare_pipeline requires a Merkelypipe.json file until its contents are 
+    # provided on the server. Till then allow env-vars to override the "owner"
+    # and "name" entries so that when anyone is doing the loan-calculator demo
+    # they only need to set the values once in the env-vars for all commands.
+    os_env = {
+        "MERKELY_OWNER": "Acme",
+        "MERKELY_PIPELINE": "road-runner-beep-beep",
+    }
+    external = External(env=os_env)
+    cls = Command.named('declare_pipeline')
+    with ScopedFileCopier('/app/tests/data/Merkelypipe.json', '/data/Merkelypipe.json'):
+        json = cls(external).merkelypipe
+
+    assert json["owner"] == "Acme"
+    assert json["name"] == "road-runner-beep-beep"
+
+    
 def test_defaults_to_Merkelypipe_dot_json_in_data_dir():
     os_env = {}
     external = External(env=os_env)

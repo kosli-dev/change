@@ -1,7 +1,7 @@
 {
-    "description": "Test Pipeline for merkely/change",
-    "name": "merkely-change-test-pipeline",
     "owner": "merkely-test",
+    "name": "merkely-change-test-pipeline",
+    "description": "Test Pipeline for merkely/change",
     "visibility": "public",
     "template": [
         "artifact",

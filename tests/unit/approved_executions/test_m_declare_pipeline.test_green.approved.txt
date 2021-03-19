@@ -2,8 +2,8 @@ MERKELY_COMMAND=declare_pipeline
 Putting this payload:
 {
     "description": "Test Pipeline for merkely/change",
-    "name": "merkely-change-test-pipeline",
-    "owner": "merkely-test",
+    "name": "cdb-controls-test-pipeline",
+    "owner": "compliancedb",
     "template": [
         "artifact",
         "unit_test",
@@ -11,5 +11,5 @@ Putting this payload:
     ],
     "visibility": "public"
 }
-To this url: https://app.compliancedb.com/api/v1/projects/merkely-test/
+To this url: https://app.compliancedb.com/api/v1/projects/compliancedb/
 DRY RUN: Put not sent
