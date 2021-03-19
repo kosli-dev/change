@@ -254,6 +254,7 @@ merkely_log_approval:
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--env MERKELY_HOST=${MERKELY_HOST} \
 		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
+		--env-file ${CI_ENV_FILE} \
 		--rm \
 		--volume ${PWD}:/src \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
@@ -267,6 +268,7 @@ merkely_control_deployment:
 		--env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
 		--env MERKELY_HOST=${MERKELY_HOST} \
 		--env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
+		--env-file ${CI_ENV_FILE} \
 		--rm \
 		--volume /var/run/docker.sock:/var/run/docker.sock \
 		merkely/change
