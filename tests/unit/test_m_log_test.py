@@ -10,6 +10,9 @@ CDB_DOMAIN = "app.compliancedb.com"
 
 USER_DATA = "/app/tests/data/user_data.json"
 
+OWNER = "compliancedb"
+PIPELINE = "cdb-controls-test-pipeline"
+
 
 def test_non_zero_status_when_no_data_directory(capsys, mocker):
     _image_name = "acme/widget:4.67"
@@ -33,11 +36,9 @@ def test_non_zero_status_when_no_data_directory(capsys, mocker):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     domain = "app.compliancedb.com"
-    owner = "compliancedb"
-    name = "cdb-controls-test-pipeline"
 
     expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/{sha256}"
+    expected_url = f"https://{domain}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {
             "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites",
@@ -106,11 +107,9 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     domain = "app.compliancedb.com"
-    owner = "compliancedb"
-    name = "cdb-controls-test-pipeline"
 
     expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/{sha256}"
+    expected_url = f"https://{domain}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {
             "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites",
@@ -157,11 +156,9 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
     domain = "app.compliancedb.com"
-    owner = "compliancedb"
-    name = "cdb-controls-test-pipeline"
 
     expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/{sha256}"
+    expected_url = f"https://{domain}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {
             "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites",
@@ -219,6 +216,8 @@ def new_log_test_env():
     evidence_type = "coverage"
     return {
         "MERKELY_COMMAND": "log_test",
+        "MERKELY_OWNER": OWNER,
+        "MERKELY_PIPELINE": PIPELINE,
         "MERKELY_FINGERPRINT": f"{protocol}{image_name}",
         "MERKELY_EVIDENCE_TYPE": evidence_type,
         "MERKELY_CI_BUILD_URL": BUILD_URL,

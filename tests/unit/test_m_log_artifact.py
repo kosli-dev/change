@@ -70,6 +70,8 @@ def test_all_env_vars_image(capsys, mocker):
     protocol = "docker://"
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
+    ev["MERKELY_OWNER"] = CDB_OWNER
+    ev["MERKELY_PIPELINE"] = CDB_NAME
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
@@ -150,6 +152,8 @@ def test_all_env_vars_file(capsys, mocker):
     protocol = "file://"
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{artifact_name}"
+    ev["MERKELY_OWNER"] = CDB_OWNER
+    ev["MERKELY_PIPELINE"] = CDB_NAME
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         with MockFileFingerprinter(artifact_name, sha256) as fingerprinter:
@@ -228,6 +232,8 @@ def test_all_env_vars_sha(capsys):
     protocol = "sha256://"
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{artifact_name}"
+    ev["MERKELY_OWNER"] = "compliancedb"
+    ev["MERKELY_PIPELINE"] = "cdb-controls-test-pipeline"
     merkelypipe = "Merkelypipe.compliancedb.json"
     with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
         method, url, payload = run(External(env=env))

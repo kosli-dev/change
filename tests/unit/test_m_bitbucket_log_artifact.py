@@ -10,14 +10,17 @@ DOMAIN = "app.compliancedb.com"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 BB = "https://bitbucket.org"
-ORG = 'acme'
-REPO = 'road-runner'
+BB_ORG = 'acme'
+BB_REPO = 'road-runner'
 COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
 BUILD_NUMBER = '1975'
 
 PROTOCOL = "docker://"
 IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
+
+OWNER = "merkely"
+PIPELINE = "test-pipefile"
 
 
 def test_required_env_vars(capsys, mocker):
@@ -29,14 +32,14 @@ def test_required_env_vars(capsys, mocker):
         "CDB_ARTIFACT_DOCKER_IMAGE": IMAGE_NAME,
         "BITBUCKET_COMMIT": COMMIT,
         "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
-        "BITBUCKET_WORKSPACE": ORG,
-        "BITBUCKET_REPO_SLUG": REPO
+        "BITBUCKET_WORKSPACE": BB_ORG,
+        "BITBUCKET_REPO_SLUG": BB_REPO
     }
     set_env_vars = {
-        'CDB_ARTIFACT_GIT_URL': f"{BB}/{ORG}/{REPO}/commits/{COMMIT}",
+        'CDB_ARTIFACT_GIT_URL': f"{BB}/{BB_ORG}/{BB_REPO}/commits/{COMMIT}",
         'CDB_ARTIFACT_GIT_COMMIT': COMMIT,
         'CDB_BUILD_NUMBER': BUILD_NUMBER,
-        'CDB_CI_BUILD_URL': f'{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}',
+        'CDB_CI_BUILD_URL': f'{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}',
         'CDB_ARTIFACT_SHA': SHA256,
     }
     with dry_run(env, set_env_vars):
@@ -53,10 +56,10 @@ def test_required_env_vars(capsys, mocker):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
-    expected_url = f"https://{DOMAIN}/api/v1/projects/merkely/test-pipefile/artifacts/"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
-        "build_url": f"{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
-        "commit_url": f"{BB}/{ORG}/{REPO}/commits/{COMMIT}",
+        "build_url": f"{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
+        "commit_url": f"{BB}/{BB_ORG}/{BB_REPO}/commits/{COMMIT}",
         "description": f"Created by build {BUILD_NUMBER}",
         "filename": IMAGE_NAME,
         "git_commit": COMMIT,
@@ -91,13 +94,15 @@ def test_required_env_vars(capsys, mocker):
 def new_log_artifact_env():
     return {
         "MERKELY_COMMAND": "log_artifact",
+        "MERKELY_OWNER": OWNER,
+        "MERKELY_PIPELINE": PIPELINE,
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
         "MERKELY_IS_COMPLIANT": "FALSE",
 
-        "BITBUCKET_WORKSPACE": ORG,
-        "BITBUCKET_REPO_SLUG": REPO,
+        "BITBUCKET_WORKSPACE": BB_ORG,
+        "BITBUCKET_REPO_SLUG": BB_REPO,
         "BITBUCKET_COMMIT": COMMIT,
         "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
     }

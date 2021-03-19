@@ -6,9 +6,9 @@ from tests.utils import *
 from pytest import raises
 
 
-CDB_DOMAIN = "app.compliancedb.com"
-CDB_OWNER = "compliancedb"
-CDB_NAME = "cdb-controls-test-pipeline"
+DOMAIN = "app.compliancedb.com"
+OWNER = "compliancedb"
+PIPELINE = "cdb-controls-test-pipeline"
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
@@ -47,12 +47,8 @@ def test_docker_image(capsys, mocker):
         old_approval = file.read()
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
-    domain = CDB_DOMAIN
-    owner = CDB_OWNER
-    name = CDB_NAME
-
     expected_method = "Posting"
-    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/approvals/"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/approvals/"
     expected_payload = {
         "artifact_sha256": sha256,
         "description": "The approval description here",
@@ -106,14 +102,15 @@ def test_raises_when_src_repo_root_does_not_exist(capsys):
 def new_log_approval_env():
     protocol = "docker://"
     image_name = "acme/runner:4.56"
-    domain = CDB_DOMAIN
     return {
         "MERKELY_COMMAND": "log_approval",
+        "MERKELY_OWNER": OWNER,
+        "MERKELY_PIPELINE": PIPELINE,
         "MERKELY_FINGERPRINT": f"{protocol}{image_name}",
         "MERKELY_API_TOKEN": API_TOKEN,
-        "MERKELY_HOST": f"https://{domain}",
-        "MERKELY_NEWEST_SRC_COMMITISH": "master",
+        "MERKELY_HOST": f"https://{DOMAIN}",
         "MERKELY_OLDEST_SRC_COMMITISH": "production",
+        "MERKELY_NEWEST_SRC_COMMITISH": "master",
         "MERKELY_DESCRIPTION": "The approval description here",
         'MERKELY_IS_APPROVED': 'TRUE',
     }

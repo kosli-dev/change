@@ -91,6 +91,8 @@ def test_bitbucket(capsys, mocker):
 def new_log_evidence_env():
     return {
         "MERKELY_COMMAND": "log_evidence",
+        "MERKELY_OWNER": ORG,
+        "MERKELY_PIPELINE": REPO,
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",

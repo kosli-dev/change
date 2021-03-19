@@ -5,6 +5,7 @@ from errors import ChangeError
 import re
 import copy
 
+
 class Command(ABC):
     """
     Abstract Base Class for all merkely/change commands.
@@ -104,14 +105,15 @@ class Command(ABC):
 
     @property
     def merkelypipe(self):
+        if self.name.string == "declare_pipeline":
+            return self._external.merkelypipe
         owner = self._required_env_var("MERKELY_OWNER", "...")
         pipeline = self._required_env_var("MERKELY_PIPELINE", "...")
         if owner.string != "" and pipeline.string != "":
             return {
-                "owner": owner.string,
-                "name": pipeline.name
+                "owner": owner.value,
+                "name": pipeline.value
             }
-        return self._external.merkelypipe
 
     @property
     def api_token(self):

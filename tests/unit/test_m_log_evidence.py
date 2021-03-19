@@ -4,9 +4,10 @@ from commands import run, External
 from tests.utils import *
 
 MERKELY_DOMAIN = "test.compliancedb.com"
-CDB_DOMAIN = "app.compliancedb.com"
-CDB_OWNER = "compliancedb"
-CDB_NAME = "cdb-controls-test-pipeline"
+
+DOMAIN = "app.compliancedb.com"
+OWNER = "compliancedb"
+PIPELINE = "cdb-controls-test-pipeline"
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
@@ -20,10 +21,6 @@ def test_docker_protocol(capsys, mocker):
     sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
     protocol = "docker://"
     image_name = "acme/widget:4.67"
-
-    domain = CDB_DOMAIN
-    owner = CDB_OWNER
-    name = CDB_NAME
 
     # make cdb call
     cdb_env = {
@@ -49,7 +46,7 @@ def test_docker_protocol(capsys, mocker):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/{sha256}"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {
             "description": "branch coverage",
@@ -88,15 +85,16 @@ def test_docker_protocol(capsys, mocker):
 
 
 def new_log_evidence_env():
-    domain = CDB_DOMAIN
     build_url = "https://gitlab/build/1956"
     protocol = "docker://"
     image_name = "acme/widget:4.67"
     return {
         "MERKELY_COMMAND": "log_evidence",
+        "MERKELY_OWNER": OWNER,
+        "MERKELY_PIPELINE": PIPELINE,
         "MERKELY_FINGERPRINT": f"{protocol}{image_name}",
         "MERKELY_API_TOKEN": API_TOKEN,
-        "MERKELY_HOST": f"https://{domain}",
+        "MERKELY_HOST": f"https://{DOMAIN}",
         "MERKELY_CI_BUILD_URL": build_url,
         "MERKELY_IS_COMPLIANT": "TRUE",
         "MERKELY_EVIDENCE_TYPE": "unit_test",

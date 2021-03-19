@@ -10,8 +10,8 @@ DOMAIN = "app.compliancedb.com"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 BB = "bitbucket.org"
-ORG = 'acme'
-REPO = 'beep-beep'
+BB_ORG = 'acme'
+BB_REPO = 'beep-beep'
 COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
 BUILD_NUMBER = '703'
 
@@ -21,6 +21,9 @@ SHA256 = "aacdaef69c676c2466571d3277770d559ccc2032b258fc5e73f99a103db462ee"
 EVIDENCE_TYPE = "junit"
 
 USER_DATA = "/app/tests/data/user_data.json"
+
+OWNER = "merkely"
+PIPELINE = "test-pipefile"
 
 
 def test_bitbucket(capsys):
@@ -32,14 +35,14 @@ def test_bitbucket(capsys):
         "CDB_TEST_RESULTS_DIR": "/app/tests/data/control_junit/xml-with-fails",
         "BITBUCKET_COMMIT": COMMIT,
         "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
-        "BITBUCKET_WORKSPACE": ORG,
-        "BITBUCKET_REPO_SLUG": REPO,
+        "BITBUCKET_WORKSPACE": BB_ORG,
+        "BITBUCKET_REPO_SLUG": BB_REPO,
     }
     set_env_vars = {
-        'CDB_ARTIFACT_GIT_URL': f'https://{BB}/{ORG}/{REPO}/commits/{COMMIT}',
+        'CDB_ARTIFACT_GIT_URL': f'https://{BB}/{BB_ORG}/{BB_REPO}/commits/{COMMIT}',
         'CDB_ARTIFACT_GIT_COMMIT': COMMIT,
         'CDB_BUILD_NUMBER': BUILD_NUMBER,
-        'CDB_CI_BUILD_URL': f'https://{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}'
+        'CDB_CI_BUILD_URL': f'https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}'
      }
     with dry_run(env, set_env_vars):
         pipe = BitbucketPipe(pipe_metadata='/pipe.yml', schema=schema)
@@ -56,12 +59,12 @@ def test_bitbucket(capsys):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
-    expected_url = f"https://{DOMAIN}/api/v1/projects/merkely/test-pipefile/artifacts/{SHA256}"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
         "contents": {
             "description": "JUnit results xml verified by compliancedb/cdb_controls: Tests contain failures",
             "is_compliant": False,
-            "url": f"https://{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}"
+            "url": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}"
         },
         "evidence_type": EVIDENCE_TYPE
     }
@@ -73,8 +76,7 @@ def test_bitbucket(capsys):
 
     # make merkely call
     ev = new_log_test_env()
-    merkelypipe = "pipefile.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with ScopedDirCopier('/app/tests/data/control_junit/xml-with-fails', '/data/junit'):
             with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
                 external = External(env=env, docker_fingerprinter=fingerprinter)
@@ -100,14 +102,16 @@ def test_bitbucket(capsys):
 def new_log_test_env():
     return {
         "MERKELY_COMMAND": "log_test",
+        "MERKELY_OWNER": OWNER,
+        "MERKELY_PIPELINE": PIPELINE,
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
         "MERKELY_EVIDENCE_TYPE": EVIDENCE_TYPE,
         "MERKELY_USER_DATA": USER_DATA,
 
-        "BITBUCKET_WORKSPACE": ORG,
-        "BITBUCKET_REPO_SLUG": REPO,
+        "BITBUCKET_WORKSPACE": BB_ORG,
+        "BITBUCKET_REPO_SLUG": BB_REPO,
         "BITBUCKET_COMMIT": COMMIT,
         "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
     }

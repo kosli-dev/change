@@ -1,7 +1,19 @@
-from commands import run, External
+from commands import run, Command, External
 from errors import ChangeError
 from tests.utils import *
 from pytest import raises
+
+
+def test_MEREKELY_OWNER_is_used_for_owner_for_all_commands_except_declare_pipeline():
+    os_env = {
+        "MERKELY_OWNER": "acme",
+        "MERKELY_PIPELINE": "road-runner",
+    }
+    external = External(env=os_env)
+    cls = Command.named('declare_pipeline')
+    json = cls(external).merkelypipe
+    assert json["owner"] == "acme"
+    assert json["name"] == "road-runner"
 
 
 def test_defaults_to_Merkelypipe_dot_json_in_data_dir():
