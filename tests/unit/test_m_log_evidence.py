@@ -3,16 +3,14 @@ from commands import run, External
 
 from tests.utils import *
 
-MERKELY_DOMAIN = "test.compliancedb.com"
+APPROVAL_DIR = "tests/unit/approved_executions"
+APPROVAL_FILE = "test_m_log_evidence"
 
 DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
 PIPELINE = "cdb-controls-test-pipeline"
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
-
-APPROVAL_DIR = "tests/unit/approved_executions"
-APPROVAL_FILE = "test_m_log_evidence"
 
 
 def test_docker_protocol(capsys, mocker):
@@ -64,8 +62,7 @@ def test_docker_protocol(capsys, mocker):
     # make merkely call
     ev = new_log_evidence_env()
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)

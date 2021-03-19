@@ -6,10 +6,9 @@ from tests.utils import *
 APPROVAL_DIR = "tests/unit/approved_executions"
 APPROVAL_FILE = "test_m_log_test"
 
-CDB_DOMAIN = "app.compliancedb.com"
-
 USER_DATA = "/app/tests/data/user_data.json"
 
+DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
 PIPELINE = "cdb-controls-test-pipeline"
 
@@ -35,10 +34,8 @@ def test_non_zero_status_when_no_data_directory(capsys, mocker):
         old_approval = file.read()
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
-    domain = "app.compliancedb.com"
-
     expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {
             "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites",
@@ -56,8 +53,7 @@ def test_non_zero_status_when_no_data_directory(capsys, mocker):
     # new behaviour is to fail with non-zero exit status
     ev = new_log_test_env()
     ev.pop('MERKELY_USER_DATA')
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         status = main(External(env=env))
 
     assert status != 0
@@ -106,10 +102,8 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
         old_approval = file.read()
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
-    domain = "app.compliancedb.com"
-
     expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {
             "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites",
@@ -126,8 +120,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
 
     # make merkely call
     ev = new_log_test_env()
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             with ScopedDirCopier('/app/tests/data/control_junit/xml-with-passed-results', '/data/junit'):
                 external = External(env=env, docker_fingerprinter=fingerprinter)
@@ -155,10 +148,9 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
     sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
-    domain = "app.compliancedb.com"
 
     expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {
             "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites",
@@ -171,8 +163,7 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
     # make merkely call
     ev = new_log_test_env()
     ev['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/control_junit/xml-with-passed-results"
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
@@ -194,17 +185,16 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
     assert payload == expected_payload
 
 
-
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 BUILD_URL = "https://gitlab/build/1457"
+IMAGE_NAME = "acme/widget:4.67"
+EVIDENCE_TYPE = "coverage"
 
 
 def old_control_junit_env():
-    image_name = "acme/widget:4.67"
-    evidence_type = "coverage"
     return {
-        "CDB_ARTIFACT_DOCKER_IMAGE": image_name,
-        "CDB_EVIDENCE_TYPE": evidence_type,
+        "CDB_ARTIFACT_DOCKER_IMAGE": IMAGE_NAME,
+        "CDB_EVIDENCE_TYPE": EVIDENCE_TYPE,
         "CDB_CI_BUILD_URL": BUILD_URL,
         "CDB_API_TOKEN": API_TOKEN,
     }
@@ -212,14 +202,12 @@ def old_control_junit_env():
 
 def new_log_test_env():
     protocol = "docker://"
-    image_name = "acme/widget:4.67"
-    evidence_type = "coverage"
     return {
         "MERKELY_COMMAND": "log_test",
         "MERKELY_OWNER": OWNER,
         "MERKELY_PIPELINE": PIPELINE,
-        "MERKELY_FINGERPRINT": f"{protocol}{image_name}",
-        "MERKELY_EVIDENCE_TYPE": evidence_type,
+        "MERKELY_FINGERPRINT": f"{protocol}{IMAGE_NAME}",
+        "MERKELY_EVIDENCE_TYPE": EVIDENCE_TYPE,
         "MERKELY_CI_BUILD_URL": BUILD_URL,
         "MERKELY_USER_DATA": USER_DATA,
         "MERKELY_API_TOKEN": API_TOKEN,

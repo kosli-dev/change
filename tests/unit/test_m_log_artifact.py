@@ -1,15 +1,15 @@
-from cdb.put_artifact       import put_artifact
+from cdb.put_artifact import put_artifact
 from cdb.put_artifact_image import put_artifact_image
 from commands import main, run, Command, External
 
 from tests.utils import *
 
-CDB_DOMAIN = "app.compliancedb.com"
-CDB_OWNER = "compliancedb"
-CDB_NAME = "cdb-controls-test-pipeline"
-
 APPROVAL_DIR = "tests/unit/approved_executions"
 APPROVAL_FILE = "test_m_log_artifact"
+
+DOMAIN = "app.compliancedb.com"
+OWNER = "compliancedb"
+PIPELINE = "cdb-controls-test-pipeline"
 
 
 def test_all_env_vars_image(capsys, mocker):
@@ -27,10 +27,6 @@ def test_all_env_vars_image(capsys, mocker):
     image_name = "acme/widget:3.4"
     build_url = "https://gitlab/build/1456"
     build_number = "23"
-
-    domain = CDB_DOMAIN
-    owner = CDB_OWNER
-    name = CDB_NAME
 
     # make cdb call
     env = old_put_artifact_env(commit)
@@ -50,7 +46,7 @@ def test_all_env_vars_image(capsys, mocker):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
         "build_url": build_url,
         "commit_url": commit_url(commit),
@@ -70,10 +66,7 @@ def test_all_env_vars_image(capsys, mocker):
     protocol = "docker://"
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
-    ev["MERKELY_OWNER"] = CDB_OWNER
-    ev["MERKELY_PIPELINE"] = CDB_NAME
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
@@ -109,10 +102,6 @@ def test_all_env_vars_file(capsys, mocker):
     build_url = "https://gitlab/build/1456"
     build_number = '23'
 
-    domain = CDB_DOMAIN
-    owner = CDB_OWNER
-    name = CDB_NAME
-
     # make cdb call
     old_env = old_put_artifact_env(commit)
     old_env["CDB_ARTIFACT_FILENAME"] = artifact_name
@@ -132,7 +121,7 @@ def test_all_env_vars_file(capsys, mocker):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
         'build_url': build_url,
         'commit_url': commit_url(commit),
@@ -152,10 +141,7 @@ def test_all_env_vars_file(capsys, mocker):
     protocol = "file://"
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{artifact_name}"
-    ev["MERKELY_OWNER"] = CDB_OWNER
-    ev["MERKELY_PIPELINE"] = CDB_NAME
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with MockFileFingerprinter(artifact_name, sha256) as fingerprinter:
             external = External(env=env, file_fingerprinter=fingerprinter)
             method, url, payload = run(external)
@@ -191,10 +177,6 @@ def test_all_env_vars_sha(capsys):
     build_url = "https://gitlab/build/1456"
     build_number = '23'
 
-    domain = "app.compliancedb.com"
-    owner = "compliancedb"
-    name = "cdb-controls-test-pipeline"
-
     env = old_put_artifact_env(commit)
     env["CDB_ARTIFACT_FILENAME"] = artifact_name
     env["CDB_ARTIFACT_SHA"] = sha256
@@ -212,7 +194,7 @@ def test_all_env_vars_sha(capsys):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
-    expected_url = f"https://{domain}/api/v1/projects/{owner}/{name}/artifacts/"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
         "build_url": build_url,
         "commit_url": commit_url(commit),
@@ -232,10 +214,7 @@ def test_all_env_vars_sha(capsys):
     protocol = "sha256://"
     ev = new_log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{artifact_name}"
-    ev["MERKELY_OWNER"] = "compliancedb"
-    ev["MERKELY_PIPELINE"] = "cdb-controls-test-pipeline"
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         method, url, payload = run(External(env=env))
 
     # CHANGE IN BEHAVIOUR
@@ -292,11 +271,12 @@ def old_put_artifact_env(commit):
 def new_log_artifact_env(commit=None):
     if commit is None:
         commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
-    domain = "app.compliancedb.com"
     return {
         "MERKELY_COMMAND": "log_artifact",
+        "MERKELY_OWNER": OWNER,
+        "MERKELY_PIPELINE": PIPELINE,
         "MERKELY_API_TOKEN": API_TOKEN,
-        "MERKELY_HOST": f"https://{domain}",
+        "MERKELY_HOST": f"https://{DOMAIN}",
         "MERKELY_FINGERPRINT": 'docker://acme/road-runner:2.3',
         "MERKELY_CI_BUILD_URL": BUILD_URL,
         "MERKELY_CI_BUILD_NUMBER": BUILD_NUMBER,

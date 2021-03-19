@@ -5,15 +5,14 @@ from errors import ChangeError
 from tests.utils import *
 from pytest import raises
 
+APPROVAL_DIR = "tests/unit/approved_executions"
+APPROVAL_FILE = "test_m_log_approval"
 
 DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
 PIPELINE = "cdb-controls-test-pipeline"
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
-
-APPROVAL_DIR = "tests/unit/approved_executions"
-APPROVAL_FILE = "test_m_log_approval"
 
 
 def test_docker_image(capsys, mocker):
@@ -68,10 +67,9 @@ def test_docker_image(capsys, mocker):
     ev = new_log_approval_env()
     with dry_run(ev) as env:
         with ScopedDirCopier("/test_src", "/src"):
-            with scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
-                with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-                    external = External(env=env, docker_fingerprinter=fingerprinter)
-                    method, url, payload = run(external)
+            with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+                external = External(env=env, docker_fingerprinter=fingerprinter)
+                method, url, payload = run(external)
 
     capsys_read(capsys)
 
@@ -85,15 +83,10 @@ def test_docker_image(capsys, mocker):
 
 
 def test_raises_when_src_repo_root_does_not_exist(capsys):
-    merkleypipe_dir = "tests/data"
-    merkelypipe = "test-pipefile.json"
-
-    # make merkely call
     ev = new_log_approval_env()
     with dry_run(ev) as env:
-        with scoped_merkelypipe_json(directory=merkleypipe_dir, filename=merkelypipe):
-            with raises(ChangeError) as exc:
-                run(External(env=env))
+        with raises(ChangeError) as exc:
+            run(External(env=env))
 
     silent(capsys)
     assert str(exc.value) == "Error: Repository not found at /src/.git"

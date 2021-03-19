@@ -61,8 +61,7 @@ def test_docker_image(capsys, mocker):
     protocol = "docker://"
     ev = create_new_deployment_env()
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{IMAGE_NAME}"
-    merkelypipe = "Merkelypipe.compliancedb.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
@@ -84,5 +83,6 @@ def create_new_deployment_env():
         "MERKELY_HOST": f"https://{DOMAIN}",
         "MERKELY_USER_DATA": USER_DATA,
     }
+    # MERKELY_OWNER and MERKELY_PIPELINE set in core_env_vars
     return {**core_env_vars("log_deployment"), **ev}
 
