@@ -6,21 +6,20 @@ from tests.utils import *
 APPROVAL_DIR = "tests/unit/approved_executions"
 APPROVAL_FILE = "test_m_bitbucket_log_artifact"
 
-DOMAIN = "app.compliancedb.com"
-API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
-
 BB = "https://bitbucket.org"
 BB_ORG = 'acme'
 BB_REPO = 'road-runner'
 COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
 BUILD_NUMBER = '1975'
 
+DOMAIN = "app.compliancedb.com"
+OWNER = "merkely"
+PIPELINE = "test-pipefile"
+API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
+
 PROTOCOL = "docker://"
 IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
-
-OWNER = "merkely"
-PIPELINE = "test-pipefile"
 
 
 def test_required_env_vars(capsys, mocker):
@@ -74,8 +73,7 @@ def test_required_env_vars(capsys, mocker):
 
     # make merkely call
     ev = new_log_artifact_env()
-    merkelypipe = "pipefile.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
@@ -99,6 +97,7 @@ def new_log_artifact_env():
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
+        
         "MERKELY_IS_COMPLIANT": "FALSE",
 
         "BITBUCKET_WORKSPACE": BB_ORG,

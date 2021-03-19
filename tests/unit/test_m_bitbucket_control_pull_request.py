@@ -6,17 +6,19 @@ from tests.utils import *
 APPROVAL_DIR = "tests/unit/approved_executions"
 APPROVAL_FILE = "test_m_bitbucket_control_pull_request"
 
-DOMAIN = "app.compliancedb.com"
-API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
-
 BITBUCKET_API_TOKEN = "6199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 BITBUCKET_API_USER = "test_user"
 
 BB = 'bitbucket.org'
-ORG = 'acme'
-REPO = 'road-runner'
+BB_ORG = 'acme'
+BB_REPO = 'road-runner'
 COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
 BUILD_NUMBER = '1975'
+
+DOMAIN = "app.compliancedb.com"
+OWNER = "acme"
+PIPELINE = "road-runner"
+API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 PROTOCOL = "docker://"
 IMAGE_NAME = "acme/road-runner:4.67"
@@ -35,8 +37,8 @@ def test_bitbucket(capsys, mocker):
         "BITBUCKET_API_TOKEN": BITBUCKET_API_TOKEN,
         "BITBUCKET_API_USER": BITBUCKET_API_USER,
 
-        "BITBUCKET_WORKSPACE": ORG,
-        "BITBUCKET_REPO_SLUG": REPO,
+        "BITBUCKET_WORKSPACE": BB_ORG,
+        "BITBUCKET_REPO_SLUG": BB_REPO,
         "BITBUCKET_COMMIT": COMMIT,
     }
 
@@ -58,7 +60,7 @@ def test_bitbucket(capsys, mocker):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
-    expected_url = f"https://{DOMAIN}/api/v1/projects/{ORG}/{REPO}/artifacts/{SHA256}"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
         "contents": {
             "description": DESCRIPTION,
@@ -71,7 +73,7 @@ def test_bitbucket(capsys, mocker):
                     "pullRequestURL": "test_html_uri"
                 }
             ],
-            "url": f"https://{BB}/{ORG}/{REPO}"
+            "url": f"https://{BB}/{BB_ORG}/{BB_REPO}"
         },
         "evidence_type": EVIDENCE_TYPE
     }
@@ -83,8 +85,7 @@ def test_bitbucket(capsys, mocker):
 
     # make merkely call
     ev = new_control_pull_request_env()
-    merkelypipe = "Merkelypipe.acme-roadrunner.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response())
             mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
@@ -94,7 +95,7 @@ def test_bitbucket(capsys, mocker):
     capsys_read(capsys)
 
     # Change of behaviour
-    expected_payload['contents']['url'] = f"https://{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}"
+    expected_payload['contents']['url'] = f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}"
 
     # verify matching data
     assert method == expected_method
@@ -105,8 +106,7 @@ def test_bitbucket(capsys, mocker):
 def test_bitbucket_not_compliant_raises(capsys, mocker):
     # make merkely call
     ev = new_control_pull_request_env()
-    merkelypipe = "Merkelypipe.acme-roadrunner.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             response = mocked_bitbucket_pull_requests_api_response()
             response['values'] = []
@@ -158,8 +158,8 @@ def mocked_bitbucket_pull_requests_api_response():
 
 
 test_pipefile = {
-    "owner": ORG,
-    "name": REPO,
+    "owner": OWNER,
+    "name": PIPELINE,
     "description": "Test Pipeline Controls for Merkely",
     "visibility": "public",
     "template": [
@@ -173,19 +173,20 @@ test_pipefile = {
 def new_control_pull_request_env():
     return {
         "MERKELY_COMMAND": "control_pull_request",
-        "MERKELY_OWNER": ORG,
-        "MERKELY_PIPELINE": REPO,
+        "MERKELY_OWNER": OWNER,
+        "MERKELY_PIPELINE": PIPELINE,
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
+
         "MERKELY_EVIDENCE_TYPE": EVIDENCE_TYPE,
         "MERKELY_DESCRIPTION": DESCRIPTION,
 
         "BITBUCKET_API_TOKEN": BITBUCKET_API_TOKEN,
         "BITBUCKET_API_USER": BITBUCKET_API_USER,
 
-        "BITBUCKET_WORKSPACE": ORG,
-        "BITBUCKET_REPO_SLUG": REPO,
+        "BITBUCKET_WORKSPACE": BB_ORG,
+        "BITBUCKET_REPO_SLUG": BB_REPO,
         "BITBUCKET_COMMIT": COMMIT,
         "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
     }

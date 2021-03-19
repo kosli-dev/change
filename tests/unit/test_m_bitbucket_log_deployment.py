@@ -6,14 +6,16 @@ from tests.utils import *
 APPROVAL_DIR = "tests/unit/approved_executions"
 APPROVAL_FILE = "test_m_bitbucket_log_deployment"
 
-DOMAIN = "app.compliancedb.com"
-API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
-
 BB = 'bitbucket.org'
-ORG = 'acme'
-REPO = 'road-runner'
+BB_ORG = 'acme'
+BB_REPO = 'road-runner'
 COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
 BUILD_NUMBER = '1975'
+
+DOMAIN = "app.compliancedb.com"
+OWNER = "acme"
+PIPELINE = "road-runner"
+API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 PROTOCOL = "docker://"
 IMAGE_NAME = "acme/road-runner:4.67"
@@ -33,7 +35,7 @@ def test_bitbucket(capsys, mocker):
         "CDB_ARTIFACT_DOCKER_IMAGE": "acme/runner:4.56",
         "CDB_ENVIRONMENT": ENVIRONMENT,
         "CDB_DESCRIPTION": DESCRIPTION,
-        "CDB_CI_BUILD_URL": f"https://{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
+        "CDB_CI_BUILD_URL": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
         "CDB_USER_DATA": USER_DATA,
     }
     set_env_vars = {'CDB_ARTIFACT_SHA': SHA256}
@@ -53,10 +55,10 @@ def test_bitbucket(capsys, mocker):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Posting"
-    expected_url = f"https://{DOMAIN}/api/v1/projects/{ORG}/{REPO}/deployments/"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/deployments/"
     expected_payload = {
         "artifact_sha256": SHA256,
-        "build_url": f"https://{BB}/{ORG}/{REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
+        "build_url": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
         "description": DESCRIPTION,
         "environment": ENVIRONMENT,
         "user_data": USER_DATA_JSON,
@@ -69,8 +71,7 @@ def test_bitbucket(capsys, mocker):
 
     # make merkely call
     ev = new_log_deployment_env()
-    merkelypipe = "Merkelypipe.acme-roadrunner.json"
-    with dry_run(ev) as env, scoped_merkelypipe_json(filename=merkelypipe):
+    with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
@@ -88,9 +89,8 @@ def test_bitbucket(capsys, mocker):
 def new_log_deployment_env():
     return {
         "MERKELY_COMMAND": "log_deployment",
-        "MERKELY_OWNER": ORG,
-        "MERKELY_PIPELINE": REPO,
-
+        "MERKELY_OWNER": OWNER,
+        "MERKELY_PIPELINE": PIPELINE,
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
@@ -99,8 +99,8 @@ def new_log_deployment_env():
         "MERKELY_ENVIRONMENT": ENVIRONMENT,
         "MERKELY_USER_DATA": USER_DATA,
 
-        "BITBUCKET_WORKSPACE": ORG,
-        "BITBUCKET_REPO_SLUG": REPO,
+        "BITBUCKET_WORKSPACE": BB_ORG,
+        "BITBUCKET_REPO_SLUG": BB_REPO,
         "BITBUCKET_COMMIT": COMMIT,
         "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
     }

@@ -7,10 +7,10 @@ APPROVAL_DIR = "tests/unit/approved_executions"
 APPROVAL_FILE = "test_m_bitbucket_declare_pipeline"
 
 DOMAIN = "app.compliancedb.com"
+OWNER = "acme"
+PIPELINE = "road-runner"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
-ORG = 'acme'
-REPO = 'road-runner'
 
 
 def test_bitbucket(capsys):
@@ -29,10 +29,10 @@ def test_bitbucket(capsys):
     _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
-    expected_url = f"https://{DOMAIN}/api/v1/projects/{ORG}/"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/"
     expected_payload = {
-        "owner": ORG,
-        "name": REPO,
+        "owner": OWNER,
+        "name": PIPELINE,
         "description": "Test Pipeline for merkely/change",
         "template": [
             "artifact",
