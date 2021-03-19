@@ -17,7 +17,6 @@ OWNER = "acme"
 PIPELINE = "road-runner"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
-PROTOCOL = "docker://"
 IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 
@@ -29,15 +28,7 @@ USER_DATA_JSON = {'status': 'deployed'}
 
 def test_bitbucket(capsys, mocker):
     # The original bitbucket code did not do a BitBucket translation for create_deployment
-    env = {
-        "CDB_HOST": "https://app.compliancedb.com",
-        "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "CDB_ARTIFACT_DOCKER_IMAGE": "acme/runner:4.56",
-        "CDB_ENVIRONMENT": ENVIRONMENT,
-        "CDB_DESCRIPTION": DESCRIPTION,
-        "CDB_CI_BUILD_URL": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
-        "CDB_USER_DATA": USER_DATA,
-    }
+    env = old_log_deployment_env()
     set_env_vars = {'CDB_ARTIFACT_SHA': SHA256}
 
     with dry_run(env, set_env_vars):
@@ -86,12 +77,25 @@ def test_bitbucket(capsys, mocker):
     ]
 
 
+def old_log_deployment_env():
+    return {
+        "CDB_HOST": "https://app.compliancedb.com",
+        "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
+        "CDB_ARTIFACT_DOCKER_IMAGE": "acme/runner:4.56",
+        "CDB_ENVIRONMENT": ENVIRONMENT,
+        "CDB_DESCRIPTION": DESCRIPTION,
+        "CDB_CI_BUILD_URL": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
+        "CDB_USER_DATA": USER_DATA,
+    }
+
+
 def new_log_deployment_env():
+    protocol = "docker://"
     return {
         "MERKELY_COMMAND": "log_deployment",
         "MERKELY_OWNER": OWNER,
         "MERKELY_PIPELINE": PIPELINE,
-        "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
+        "MERKELY_FINGERPRINT": f"{protocol}{IMAGE_NAME}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
 

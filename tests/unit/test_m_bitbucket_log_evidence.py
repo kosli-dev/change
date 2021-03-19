@@ -12,7 +12,6 @@ BB_REPO = 'road-runner'
 COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
 BUILD_NUMBER = '1975'
 
-PROTOCOL = "docker://"
 IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 
@@ -25,20 +24,10 @@ DESCRIPTION = "branch coverage"
 EVIDENCE_TYPE = "unit_test"
 
 
-
 def test_bitbucket(capsys, mocker):
     # The original bitbucket code did not do a translation for put_evidence
-
-    env = {
-        "CDB_API_TOKEN": API_TOKEN,
-        "CDB_ARTIFACT_DOCKER_IMAGE": IMAGE_NAME,
-        "CDB_IS_COMPLIANT": "TRUE",
-        "CDB_EVIDENCE_TYPE": EVIDENCE_TYPE,
-        "CDB_DESCRIPTION": DESCRIPTION,
-        "CDB_CI_BUILD_URL": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
-    }
+    env = old_log_evidence_env()
     set_env_vars = {}
-
     with dry_run(env, set_env_vars):
         mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=SHA256)
         put_evidence("tests/data/Merkelypipe.acme-roadrunner.json")
@@ -90,15 +79,27 @@ def test_bitbucket(capsys, mocker):
     ]
 
 
+def old_log_evidence_env():
+    return {
+        "CDB_API_TOKEN": API_TOKEN,
+        "CDB_ARTIFACT_DOCKER_IMAGE": IMAGE_NAME,
+        "CDB_IS_COMPLIANT": "TRUE",
+        "CDB_EVIDENCE_TYPE": EVIDENCE_TYPE,
+        "CDB_DESCRIPTION": DESCRIPTION,
+        "CDB_CI_BUILD_URL": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
+    }
+
+
 def new_log_evidence_env():
+    protocol = "docker://"
     return {
         "MERKELY_COMMAND": "log_evidence",
         "MERKELY_OWNER": OWNER,
         "MERKELY_PIPELINE": PIPELINE,
-        "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
+        "MERKELY_FINGERPRINT": f"{protocol}{IMAGE_NAME}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
-        
+
         "MERKELY_IS_COMPLIANT": "TRUE",
         "MERKELY_EVIDENCE_TYPE": EVIDENCE_TYPE,
         "MERKELY_DESCRIPTION": DESCRIPTION,

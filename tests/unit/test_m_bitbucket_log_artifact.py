@@ -17,23 +17,12 @@ OWNER = "merkely"
 PIPELINE = "test-pipefile"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
-PROTOCOL = "docker://"
 IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 
 
 def test_required_env_vars(capsys, mocker):
-    merkelypipe = "pipefile.json"
-    env = {
-        "CDB_COMMAND": "put_artifact_image",
-        "CDB_PIPELINE_DEFINITION": f"tests/data/{merkelypipe}",
-        "CDB_API_TOKEN": API_TOKEN,
-        "CDB_ARTIFACT_DOCKER_IMAGE": IMAGE_NAME,
-        "BITBUCKET_COMMIT": COMMIT,
-        "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
-        "BITBUCKET_WORKSPACE": BB_ORG,
-        "BITBUCKET_REPO_SLUG": BB_REPO
-    }
+    env = old_log_artifact_env()
     set_env_vars = {
         'CDB_ARTIFACT_GIT_URL': f"{BB}/{BB_ORG}/{BB_REPO}/commits/{COMMIT}",
         'CDB_ARTIFACT_GIT_COMMIT': COMMIT,
@@ -89,15 +78,30 @@ def test_required_env_vars(capsys, mocker):
     assert payload == expected_payload
 
 
+def old_log_artifact_env():
+    merkelypipe = "pipefile.json"
+    return {
+        "CDB_COMMAND": "put_artifact_image",
+        "CDB_PIPELINE_DEFINITION": f"tests/data/{merkelypipe}",
+        "CDB_API_TOKEN": API_TOKEN,
+        "CDB_ARTIFACT_DOCKER_IMAGE": IMAGE_NAME,
+        "BITBUCKET_COMMIT": COMMIT,
+        "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
+        "BITBUCKET_WORKSPACE": BB_ORG,
+        "BITBUCKET_REPO_SLUG": BB_REPO
+    }
+
+
 def new_log_artifact_env():
+    protocol = "docker://"
     return {
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_OWNER": OWNER,
         "MERKELY_PIPELINE": PIPELINE,
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
-        "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
-        
+        "MERKELY_FINGERPRINT": f"{protocol}{IMAGE_NAME}",
+
         "MERKELY_IS_COMPLIANT": "FALSE",
 
         "BITBUCKET_WORKSPACE": BB_ORG,
