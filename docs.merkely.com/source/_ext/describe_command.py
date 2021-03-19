@@ -85,7 +85,7 @@ def env_vars_to_table(env_vars, ci):
     thead = nodes.thead()
     tgroup += thead
     row = nodes.row()
-    row += nodes.entry("", nodes.paragraph(text="ENVIRONMENT-VARIABLE"))
+    row += nodes.entry("", nodes.paragraph(text="ENV-VARS"))
     row += nodes.entry("", nodes.paragraph(text="Required?"))
     row += nodes.entry("", nodes.paragraph(text="Notes"))
     thead += row
