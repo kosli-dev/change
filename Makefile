@@ -9,6 +9,7 @@ LATEST := ${NAME}:latest
 CONTAINER := ${NAME}
 
 CDB_HOST = https://app.compliancedb.com
+
 MERKELY_HOST = https://app.compliancedb.com
 MERKELYPIPE = Merkelypipe.json
 
