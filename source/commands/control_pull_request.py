@@ -59,7 +59,8 @@ class ControlPullRequest(Command):
             'description',
             'evidence_type',
             'api_token',
-            'pipe_path',
+            'owner',
+            'pipeline',
             'host',
         ]
 

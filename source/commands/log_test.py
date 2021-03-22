@@ -64,7 +64,8 @@ class LogTest(Command):
             'ci_build_url',
             'user_data',
             'api_token',
-            'pipe_path',
+            'owner',
+            'pipeline',
             'host',
         ]
 

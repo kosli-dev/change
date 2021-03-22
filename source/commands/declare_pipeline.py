@@ -18,10 +18,24 @@ class DeclarePipeline(Command):
         return 'Putting', url, payload
 
     @property
+    def pipe_path(self):
+        # See external.merkelypipe
+        name = "MERKELY_PIPE_PATH"
+        default = "/data/Merkelypipe.json"
+        notes = " ".join([
+            f"The full path to your Merkelypipe file.",
+            "Must be volume-mounted in the container.",
+            f"Defaults to {default}.",
+        ])
+        return self._static_defaulted_env_var(name, default, notes)
+
+    @property
     def _merkely_env_var_names(self):
         return [
             'name',
             'api_token',
+            'owner',
+            'pipeline',
             'pipe_path',
             'host',
         ]

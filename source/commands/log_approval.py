@@ -76,7 +76,8 @@ class LogApproval(Command):
             'src_repo_root',
             'user_data',
             'api_token',
-            'pipe_path',
+            'owner',
+            'pipeline',
             'host',
         ]
 

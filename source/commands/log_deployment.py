@@ -48,6 +48,7 @@ class LogDeployment(Command):
             'environment',
             'user_data',
             'api_token',
-            'pipe_path',
+            'owner',
+            'pipeline',
             'host',
         ]

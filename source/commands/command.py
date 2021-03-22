@@ -101,7 +101,7 @@ class Command(ABC):
         raise NotImplementedError(self.name)
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # Common merkely env-vars
+    # Merkely access env-vars
 
     @property
     def merkelypipe(self):
@@ -110,18 +110,31 @@ class Command(ABC):
         else:
             json = {}
 
-        owner = self._required_env_var("MERKELY_OWNER", "...")
-        pipeline = self._required_env_var("MERKELY_PIPELINE", "...")
-        if owner.string != "" and pipeline.string != "":
-            json["owner"] = owner.value
-            json["name"] = pipeline.value
-
+        json["owner"] = self.owner.value
+        json["name"] = self.pipeline.value
         return json
+
+    @property
+    def host(self):
+        return HostEnvVar(self.env)
 
     @property
     def api_token(self):
         notes = "Your API token for Merkely."
         return self._required_env_var("MERKELY_API_TOKEN", notes)
+
+    @property
+    def owner(self):
+        notes = "Your user/organization name in Merkely."
+        return self._required_env_var("MERKELY_OWNER", notes)
+
+    @property
+    def pipeline(self):
+        notes = "Your pipeline name inside your user/organization in Merkely."
+        return self._required_env_var("MERKELY_PIPELINE", notes)
+
+    # - - - - - - - - - - - - - - - - - - - - -
+    # Common merkely env-vars
 
     @property
     def ci_build_url(self):
@@ -132,25 +145,9 @@ class Command(ABC):
         return FingerprintEnvVar(self._external)
 
     @property
-    def host(self):
-        return HostEnvVar(self.env)
-
-    @property
     def name(self):
         notes = "The Merkely command to execute."
         return self._required_env_var("MERKELY_COMMAND", notes)
-
-    @property
-    def pipe_path(self):
-        # See external.merkelypipe
-        name = "MERKELY_PIPE_PATH"
-        default = "/data/Merkelypipe.json"
-        notes = " ".join([
-            f"The full path to your Merkelypipe file.",
-            "Must be volume-mounted in the container.",
-            f"Defaults to {default}"
-        ])
-        return self._static_defaulted_env_var(name, default, notes)
 
     @property
     def user_data(self):

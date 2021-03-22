@@ -12,7 +12,6 @@ PIPELINE = "road-runner"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
-
 def test_bitbucket(capsys):
     env = {"CDB_API_TOKEN": API_TOKEN}
     with dry_run({}):
@@ -64,6 +63,8 @@ def test_bitbucket(capsys):
 def new_declare_pipeline_env():
     return {
         "MERKELY_COMMAND": "declare_pipeline",
+        "MERKELY_OWNER": OWNER,
+        "MERKELY_PIPELINE": PIPELINE,
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
     }

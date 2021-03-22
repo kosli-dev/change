@@ -4,7 +4,7 @@ DEFAULT = {}
 
 NOTES = "\n".join([
     "A pathed filename containing json content to embed in the data logged to Merkely.",
-    "Must be volume-mounted in the container.",
+    "If provided, must be volume-mounted in the container.",
     f"If not provided, the json content defaults to {DEFAULT}",
 ])
 
