@@ -148,6 +148,8 @@ like so:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=declare_pipeline \
     --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
+    --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
+    --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
     --rm \
     --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
     merkely/change
