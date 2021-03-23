@@ -1,5 +1,6 @@
 from errors import ChangeError
 from commands import Command
+from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 from cdb.control_junit import is_compliant_test_results
@@ -40,18 +41,11 @@ class LogTest(Command):
 
     @property
     def evidence_type(self):
-        notes = "The evidence type."
-        return self._required_env_var("MERKELY_EVIDENCE_TYPE", notes)
+        return EvidenceTypeEnvVar(self.env)
 
     @property
     def test_results_dir(self):
-        name = "MERKELY_TEST_RESULTS_DIR"
-        notes = " ".join([
-            "The directory where Merkely will look for JUnit .xml files.",
-            "Must be volume-mounted in the container.",
-            f"Defaults to {DEFAULT_TEST_DIR}"
-        ])
-        return self._static_defaulted_env_var(name, DEFAULT_TEST_DIR, notes)
+        return TestResultsDirEnvVar(self.env)
 
     @property
     def _merkely_env_var_names(self):
@@ -63,11 +57,26 @@ class LogTest(Command):
             'test_results_dir',
             'ci_build_url',
             'user_data',
-            'api_token',
             'owner',
             'pipeline',
+            'api_token',
             'host',
         ]
+
+
+class TestResultsDirEnvVar(StaticDefaultedEnvVar):
+    def __init__(self, env):
+        notes = " ".join([
+            "The directory where Merkely will look for JUnit .xml files.",
+            "Must be volume-mounted in the container.",
+            f"Defaults to {DEFAULT_TEST_DIR}"
+        ])
+        super().__init__(env, "MERKELY_TEST_RESULTS_DIR", DEFAULT_TEST_DIR, notes)
+
+    def ci_doc_example(self, ci_name, _command_name):
+        if ci_name == 'github':
+            return True, "${{ github.workspace }}/build/security"
+        return False, ""
 
 
 def is_compliant_tests_directory(test_results_directory):

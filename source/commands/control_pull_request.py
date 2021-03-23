@@ -58,9 +58,9 @@ class ControlPullRequest(Command):
             'ci_build_url',
             'description',
             'evidence_type',
-            'api_token',
             'owner',
             'pipeline',
+            'api_token',
             'host',
         ]
 

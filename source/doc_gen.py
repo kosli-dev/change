@@ -6,6 +6,10 @@ REFERENCE_DIR = '/docs/source/reference'
 
 
 def auto_generate():
+    """
+    Called from docs.merkely.com/source/conf.py
+    Builds the Reference .rst files for each command.
+    """
     command_names = sorted(Command.names())
     command_names.remove('control_pull_request')  # Currently only github
 

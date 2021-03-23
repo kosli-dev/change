@@ -7,6 +7,7 @@ REFERENCE_DIR = '/docs/build/reference'
 
 def auto_generate():
     """
+    Called from docs.merkely.com/source/conf.py    
     Generates text files containing documentation source for each
     command (eg 'log_test') in each supported CI system (eg 'bitbucket')
     """
@@ -93,7 +94,7 @@ yml_name_texts = {
     'log_deployment': 'Log Deployment in Merkely',
     'log_evidence': 'Log Evidence in Merkely',
     'log_test': 'Log JUnit XML evidence in Merkely',
-    'control_deployment': '...'
+    'control_deployment': 'Stop deployment unless approved in Merkely'
 }
 
 
@@ -119,6 +120,21 @@ def lines_for_docker(command_name):
         lines.append(lc(f"{tab}--volume {mount}"))
     lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
     lines.append(f"{tab}merkely/change")
+    return lines
+
+
+def NEW_lines_for_github(command_name):
+    command = command_for(command_name)
+    lines = [
+        "    - name: {}".format(yml_name_texts[command_name]),
+        "      uses: docker://merkely/change:latest",
+        "      env:",
+    ]
+    tab = " " * 8
+    for var in command.merkely_env_vars:
+        show, example = var.ci_doc_example('github', command_name)
+        if show:
+            lines.append(f'{tab}{var.name}: {example}')
     return lines
 
 

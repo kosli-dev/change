@@ -55,8 +55,8 @@ class LogArtifact(Command):
             'ci_build_number',
             'ci_build_url',
             'user_data',
-            'api_token',
             'owner',
             'pipeline',
+            'api_token',
             'host',
         ]

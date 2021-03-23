@@ -32,13 +32,11 @@ class LogEvidence(Command):
 
     @property
     def description(self):
-        notes = "..."
-        return self._required_env_var("MERKELY_DESCRIPTION", notes)
+        return DescriptionEnvVar(self.env)
 
     @property
     def evidence_type(self):
-        notes = "The evidence type."
-        return self._required_env_var("MERKELY_EVIDENCE_TYPE", notes)
+        return EvidenceTypeEnvVar(self.env)
 
     @property
     def _merkely_env_var_names(self):
@@ -51,8 +49,21 @@ class LogEvidence(Command):
             'description',
             'ci_build_url',
             'user_data',
-            'api_token',
             'owner',
             'pipeline',
+            'api_token',
             'host',
         ]
+
+
+class DescriptionEnvVar(RequiredEnvVar):
+
+    def __init__(self, env):
+        notes = "A description for the evidence."
+        super().__init__(env, "MERKELY_DESCRIPTION", notes)
+
+    def ci_doc_example(self, ci_name, _command_name):
+        if ci_name == 'github':
+            return True, '${{ env.COVERAGE_SUMMARY }}'
+        return False, ""
+

@@ -1,4 +1,5 @@
 from commands import Command
+from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
 
@@ -19,23 +20,15 @@ class DeclarePipeline(Command):
 
     @property
     def pipe_path(self):
-        # See external.merkelypipe
-        name = "MERKELY_PIPE_PATH"
-        default = "/data/Merkelypipe.json"
-        notes = " ".join([
-            f"The full path to your Merkelypipe file.",
-            "Must be volume-mounted in the container.",
-            f"Defaults to {default}.",
-        ])
-        return self._static_defaulted_env_var(name, default, notes)
+        return PipePathEnvVar(self.env)
 
     @property
     def _merkely_env_var_names(self):
         return [
             'name',
-            'api_token',
             'owner',
             'pipeline',
             'pipe_path',
+            'api_token',
             'host',
         ]

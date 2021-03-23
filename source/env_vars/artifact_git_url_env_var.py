@@ -33,3 +33,6 @@ class ArtifactGitUrlEnvVar(CompoundCiEnvVar):
                 CiEnvVar('GITHUB_SHA')
             )
         }
+
+    def ci_doc_example(self, ci_name, _command_name):
+        return False, ""

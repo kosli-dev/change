@@ -57,7 +57,7 @@ class EnvVar(ABC):
 
     @property
     @abstractmethod
-    def is_required(self):
+    def is_required(self, ci):
         """
         Returns True or False.
         Used in living documentation. Never raises.
@@ -71,3 +71,14 @@ class EnvVar(ABC):
         run() validates its command by getting the value property
         of each command's env-var.
         """
+
+    def ci_doc_example(self, ci_name, command_name):
+        """
+        See docs.merkely.com/source/doc_data.py
+        """
+        if ci_name == 'github':
+            if self.name == "MERKELY_COMMAND":
+                return True, command_name
+            else:
+                return True, '"' + "${" + self.name + "}" + '"'
+        return False, ""

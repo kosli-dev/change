@@ -29,13 +29,15 @@ class LogDeployment(Command):
 
     @property
     def description(self):
-        notes = "A description for the deployment."
-        return self._required_env_var('MERKELY_DESCRIPTION', notes)
+        #notes = "A description for the deployment."
+        #return self._required_env_var('MERKELY_DESCRIPTION', notes)
+        return DescriptionEnvVar(self.env)
 
     @property
     def environment(self):
-        notes = "The name of the environment the artifact is being deployed to."
-        return self._required_env_var('MERKELY_ENVIRONMENT', notes)
+        #notes = "The name of the environment the artifact is being deployed to."
+        #return self._required_env_var('MERKELY_ENVIRONMENT', notes)
+        return EnvironmentEnvVar(self.env)
 
     @property
     def _merkely_env_var_names(self):
@@ -47,8 +49,31 @@ class LogDeployment(Command):
             'description',
             'environment',
             'user_data',
-            'api_token',
             'owner',
             'pipeline',
+            'api_token',
             'host',
         ]
+
+class DescriptionEnvVar(RequiredEnvVar):
+
+    def __init__(self, env):
+        notes = "A description for the deployment."
+        super().__init__(env, "MERKELY_DESCRIPTION", notes)
+
+    def ci_doc_example(self, ci_name, _command_name):
+        if ci_name == 'github':
+            return True, '"Deployed to production in pipeline"'
+        return False, ""
+
+
+class EnvironmentEnvVar(RequiredEnvVar):
+
+    def __init__(self, env):
+        notes = "The name of the environment the artifact is being deployed to."
+        super().__init__(env, "MERKELY_ENVIRONMENT", notes)
+
+    def ci_doc_example(self, ci_name, _command_name):
+        if ci_name == 'github':
+            return True, "production"
+        return False, ""

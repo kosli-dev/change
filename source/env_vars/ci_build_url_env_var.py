@@ -33,3 +33,6 @@ class CIBuildUrlEnvVar(CompoundCiEnvVar):
                 CiEnvVar('GITHUB_RUN_ID')
             ),
         }
+
+    def ci_doc_example(self, ci_name, _command_name):
+        return False, ""

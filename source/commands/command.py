@@ -120,18 +120,15 @@ class Command(ABC):
 
     @property
     def api_token(self):
-        notes = "Your API token for Merkely."
-        return self._required_env_var("MERKELY_API_TOKEN", notes)
+        return ApiTokenEnvVar(self.env)
 
     @property
     def owner(self):
-        notes = "Your user/organization name in Merkely."
-        return self._required_env_var("MERKELY_OWNER", notes)
+        return OwnerEnvVar(self.env)
 
     @property
     def pipeline(self):
-        notes = "Your pipeline name inside your user/organization in Merkely."
-        return self._required_env_var("MERKELY_PIPELINE", notes)
+        return PipelineEnvVar(self.env)
 
     # - - - - - - - - - - - - - - - - - - - - -
     # Common merkely env-vars
@@ -155,8 +152,7 @@ class Command(ABC):
 
     @property
     def is_compliant(self):
-        notes = "TRUE if the artifact is considered compliant from you build process."
-        return self._required_env_var('MERKELY_IS_COMPLIANT', notes)
+        return IsCompliantEnvVar(self.env)
 
     # - - - - - - - - - - - - - - - - - - - - -
     # subclass helpers

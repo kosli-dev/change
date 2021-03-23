@@ -8,7 +8,7 @@ from cdb.http import http_get_json
 class ControlDeployment(Command):
 
     def summary(self, _ci):
-        return "Controls Deployments by short-circuiting pipelines if artifact not approved for release"
+        return "Controls Deployments by short-circuiting pipelines if artifact not approved for release."
 
     def volume_mounts(self, ci):
         if ci == 'bitbucket':
@@ -21,9 +21,9 @@ class ControlDeployment(Command):
         return [
             'name',
             'fingerprint',
-            'api_token',
             'owner',
             'pipeline',
+            'api_token',
             'host',
         ]
 

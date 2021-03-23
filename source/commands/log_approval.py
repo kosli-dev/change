@@ -1,5 +1,6 @@
 from errors import ChangeError
 from commands import Command
+from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
 from pygit2 import Repository, _pygit2
@@ -34,34 +35,23 @@ class LogApproval(Command):
 
     @property
     def description(self):
-        notes = f"A description for the approval."
-        return self._required_env_var("MERKELY_DESCRIPTION", notes)
+        return DescriptionEnvVar(self.env)
 
     @property
     def newest_src_commitish(self):
-        notes = "The source commit-ish for the newest change in the approval."
-        return self._required_env_var("MERKELY_NEWEST_SRC_COMMITISH", notes)
+        return NewestSrcCommitishEnvVar(self.env)
 
     @property
     def oldest_src_commitish(self):
-        notes = "The source commit-ish for the oldest change in the approval."
-        return self._required_env_var("MERKELY_OLDEST_SRC_COMMITISH", notes)
+        return OldestSrcCommitishEnvVar(self.env)
 
     @property
     def src_repo_root(self):
-        default = "/src"
-        notes = " ".join([
-            "The directory where the source git repository is volume-mounted.",
-            f"Defaults to `{default}`",
-            ''
-         ])
-        return self._static_defaulted_env_var("MERKELY_SRC_REPO_ROOT", default, notes)
+        return SrcRepoRootEnvVar(self.env)
 
     @property
     def is_approved(self):
-        default = 'TRUE'
-        notes = f"Defaults to {default}"
-        return self._static_defaulted_env_var("MERKELY_IS_APPROVED", default, notes)
+        return IsApprovedEnvVar(self.env)
 
     @property
     def _merkely_env_var_names(self):
@@ -75,11 +65,53 @@ class LogApproval(Command):
             'is_approved',
             'src_repo_root',
             'user_data',
-            'api_token',
             'owner',
             'pipeline',
+            'api_token',
             'host',
         ]
+
+
+class IsApprovedEnvVar(StaticDefaultedEnvVar):
+
+    def __init__(self, env):
+        default = 'TRUE'
+        notes = f"Defaults to {default}"
+        super().__init__(env, "MERKELY_IS_APPROVED", default, notes)
+
+    def ci_doc_example(self, ci_name, _command_name):
+        if ci_name == 'github':
+            return True, '"TRUE"'
+        return False, ""
+
+
+class SrcRepoRootEnvVar(StaticDefaultedEnvVar):
+
+    def __init__(self, env):
+        default = "/src"
+        notes = " ".join([
+            "The directory where the source git repository is volume-mounted.",
+            f"Defaults to `{default}`",
+        ])
+        super().__init__(env, "MERKELY_SRC_REPO_ROOT", default, notes)
+
+    def ci_doc_example(self, ci_name, _command_name):
+        if ci_name == 'github':
+            return True, "${{ github.workspace }}"
+        return False, ""
+
+
+class DescriptionEnvVar(RequiredEnvVar):
+
+    def __init__(self, env):
+        notes = f"A description for the approval."
+        super().__init__(env, "MERKELY_DESCRIPTION", notes)
+
+    def ci_doc_example(self, ci_name, _command_name):
+        if ci_name == 'github':
+            return True, '"Approval created by ${{ github.actor }} on github"'
+        return False, ""
+
 
 
 def repo_at(root):

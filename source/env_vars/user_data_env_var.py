@@ -22,3 +22,6 @@ class UserDataEnvVar(DefaultedEnvVar):
             return self._external.load_json(filename)
         else:
             return DEFAULT
+
+    def ci_doc_example(self, _ci_name, _command_name):
+        return False, ""
