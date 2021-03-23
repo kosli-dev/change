@@ -29,14 +29,10 @@ class LogDeployment(Command):
 
     @property
     def description(self):
-        #notes = "A description for the deployment."
-        #return self._required_env_var('MERKELY_DESCRIPTION', notes)
         return DescriptionEnvVar(self.env)
 
     @property
     def environment(self):
-        #notes = "The name of the environment the artifact is being deployed to."
-        #return self._required_env_var('MERKELY_ENVIRONMENT', notes)
         return EnvironmentEnvVar(self.env)
 
     @property
