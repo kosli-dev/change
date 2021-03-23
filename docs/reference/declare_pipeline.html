@@ -127,10 +127,10 @@
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=declare_pipeline \
-    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
     --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
     --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
     --env MERKELY_PIPE_PATH=&quot;${MERKELY_PIPE_PATH}&quot; \
+    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
     --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
     --rm \
     --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
@@ -149,25 +149,25 @@
 <td><p>yes</p></td>
 <td><p>The Merkely command to execute.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
-<td><p>yes</p></td>
-<td><p>Your API token for Merkely.</p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_OWNER</p></td>
+<tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>
 <td><p>Your user/organization name in Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_PIPELINE</p></td>
+<tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
 <td><p>yes</p></td>
 <td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_PIPE_PATH</p></td>
+<tr class="row-odd"><td><p>MERKELY_PIPE_PATH</p></td>
 <td><p>no</p></td>
 <td><p>The full path to your Merkelypipe file. Must be volume-mounted in the container. Defaults to /data/Merkelypipe.json.</p></td>
 </tr>
+<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
+<td><p>yes</p></td>
+<td><p>Your API token for Merkely.</p></td>
+</tr>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>Defaults to https://app.compliancedb.com</p></td>
+<td><p>The API hostname for Merkely. Defaults to https://app.compliancedb.com</p></td>
 </tr>
 </tbody>
 </table>
@@ -183,10 +183,10 @@ pipelines:
         script:
           - docker run
             --env MERKELY_COMMAND=declare_pipeline 
-            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
             --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; 
             --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; 
             --env MERKELY_PIPE_PATH=&quot;${MERKELY_PIPE_PATH}&quot; 
+            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
             --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; 
             --rm 
             --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json 
@@ -205,25 +205,25 @@ pipelines:
 <td><p>yes</p></td>
 <td><p>The Merkely command to execute.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
-<td><p>yes</p></td>
-<td><p>Your API token for Merkely.</p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_OWNER</p></td>
+<tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>
 <td><p>Your user/organization name in Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_PIPELINE</p></td>
+<tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
 <td><p>yes</p></td>
 <td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_PIPE_PATH</p></td>
+<tr class="row-odd"><td><p>MERKELY_PIPE_PATH</p></td>
 <td><p>no</p></td>
 <td><p>The full path to your Merkelypipe file. Must be volume-mounted in the container. Defaults to /data/Merkelypipe.json.</p></td>
 </tr>
+<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
+<td><p>yes</p></td>
+<td><p>Your API token for Merkely.</p></td>
+</tr>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>Defaults to https://app.compliancedb.com</p></td>
+<td><p>The API hostname for Merkely. Defaults to https://app.compliancedb.com</p></td>
 </tr>
 </tbody>
 </table>
@@ -240,10 +240,10 @@ jobs:
       run: |
         docker run \
             --env MERKELY_COMMAND=declare_pipeline \
-            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
             --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
             --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
             --env MERKELY_PIPE_PATH=&quot;${MERKELY_PIPE_PATH}&quot; \
+            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
             --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
             --rm \
             --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
@@ -262,25 +262,25 @@ jobs:
 <td><p>yes</p></td>
 <td><p>The Merkely command to execute.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
-<td><p>yes</p></td>
-<td><p>Your API token for Merkely.</p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_OWNER</p></td>
+<tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>
 <td><p>Your user/organization name in Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_PIPELINE</p></td>
+<tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
 <td><p>yes</p></td>
 <td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_PIPE_PATH</p></td>
+<tr class="row-odd"><td><p>MERKELY_PIPE_PATH</p></td>
 <td><p>no</p></td>
 <td><p>The full path to your Merkelypipe file. Must be volume-mounted in the container. Defaults to /data/Merkelypipe.json.</p></td>
 </tr>
+<tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
+<td><p>yes</p></td>
+<td><p>Your API token for Merkely.</p></td>
+</tr>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>Defaults to https://app.compliancedb.com</p></td>
+<td><p>The API hostname for Merkely. Defaults to https://app.compliancedb.com</p></td>
 </tr>
 </tbody>
 </table>

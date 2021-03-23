@@ -134,9 +134,9 @@
     --env MERKELY_IS_APPROVED=&quot;${MERKELY_IS_APPROVED}&quot; \
     --env MERKELY_SRC_REPO_ROOT=&quot;${MERKELY_SRC_REPO_ROOT}&quot; \
     --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
-    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
     --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
     --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
+    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
     --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
     --rm \
     --volume ${PWD}:/src \
@@ -179,7 +179,7 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>
-<td><p>The directory where the source git repository is volume-mounted. Defaults to `/src` </p></td>
+<td><p>The directory where the source git repository is volume-mounted. Defaults to `/src`</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>
@@ -187,21 +187,21 @@
 If provided, must be volume-mounted in the container.
 If not provided, the json content defaults to {}</p></td>
 </tr>
+<tr class="row-even"><td><p>MERKELY_OWNER</p></td>
+<td><p>yes</p></td>
+<td><p>Your user/organization name in Merkely.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_PIPELINE</p></td>
+<td><p>yes</p></td>
+<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
+</tr>
 <tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
-<td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
-<td><p>yes</p></td>
-<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
-</tr>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>Defaults to https://app.compliancedb.com</p></td>
+<td><p>The API hostname for Merkely. Defaults to https://app.compliancedb.com</p></td>
 </tr>
 </tbody>
 </table>
@@ -224,9 +224,9 @@ pipelines:
             --env MERKELY_IS_APPROVED=&quot;${MERKELY_IS_APPROVED}&quot; 
             --env MERKELY_SRC_REPO_ROOT=&quot;${MERKELY_SRC_REPO_ROOT}&quot; 
             --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; 
-            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
             --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; 
             --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; 
+            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
             --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; 
             --rm 
             --volume ${PWD}:/src 
@@ -268,7 +268,7 @@ pipelines:
 </tr>
 <tr class="row-even"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>
-<td><p>The directory where the source git repository is volume-mounted. Defaults to `/src` </p></td>
+<td><p>The directory where the source git repository is volume-mounted. Defaults to `/src`</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>
@@ -276,21 +276,21 @@ pipelines:
 If provided, must be volume-mounted in the container.
 If not provided, the json content defaults to {}</p></td>
 </tr>
+<tr class="row-even"><td><p>MERKELY_OWNER</p></td>
+<td><p>yes</p></td>
+<td><p>Your user/organization name in Merkely.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_PIPELINE</p></td>
+<td><p>yes</p></td>
+<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
+</tr>
 <tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
-<td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
-<td><p>yes</p></td>
-<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
-</tr>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>Defaults to https://app.compliancedb.com</p></td>
+<td><p>The API hostname for Merkely. Defaults to https://app.compliancedb.com</p></td>
 </tr>
 </tbody>
 </table>
@@ -314,9 +314,9 @@ jobs:
             --env MERKELY_IS_APPROVED=&quot;${MERKELY_IS_APPROVED}&quot; \
             --env MERKELY_SRC_REPO_ROOT=&quot;${MERKELY_SRC_REPO_ROOT}&quot; \
             --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
-            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
             --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
             --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
+            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
             --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
             --rm \
             --volume ${PWD}:/src \
@@ -359,7 +359,7 @@ jobs:
 </tr>
 <tr class="row-even"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>
-<td><p>The directory where the source git repository is volume-mounted. Defaults to `/src` </p></td>
+<td><p>The directory where the source git repository is volume-mounted. Defaults to `/src`</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>
@@ -367,21 +367,21 @@ jobs:
 If provided, must be volume-mounted in the container.
 If not provided, the json content defaults to {}</p></td>
 </tr>
+<tr class="row-even"><td><p>MERKELY_OWNER</p></td>
+<td><p>yes</p></td>
+<td><p>Your user/organization name in Merkely.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_PIPELINE</p></td>
+<td><p>yes</p></td>
+<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
+</tr>
 <tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
-<td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
-<td><p>yes</p></td>
-<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
-</tr>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>Defaults to https://app.compliancedb.com</p></td>
+<td><p>The API hostname for Merkely. Defaults to https://app.compliancedb.com</p></td>
 </tr>
 </tbody>
 </table>

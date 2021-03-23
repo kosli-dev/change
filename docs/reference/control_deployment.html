@@ -118,7 +118,7 @@
       
   <div class="section" id="control-deployment">
 <h1>Control Deployment<a class="headerlink" href="#control-deployment" title="Permalink to this headline">¶</a></h1>
-<p>Controls Deployments by short-circuiting pipelines if artifact not approved for release</p>
+<p>Controls Deployments by short-circuiting pipelines if artifact not approved for release.</p>
 <ul class="nav nav-tabs">
    <li class="active"><a data-toggle="tab" href="#docker">Docker</a></li>
    <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
@@ -128,9 +128,9 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=control_deployment \
     --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
     --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
     --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
+    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
     --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
     --rm \
     --volume /var/run/docker.sock:/var/run/docker.sock \
@@ -154,21 +154,21 @@
 <td><p>yes</p></td>
 <td><p><a class="reference external" href="../../fingerprints/docker_fingerprint.html">Fingerprint</a></p></td>
 </tr>
+<tr class="row-even"><td><p>MERKELY_OWNER</p></td>
+<td><p>yes</p></td>
+<td><p>Your user/organization name in Merkely.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_PIPELINE</p></td>
+<td><p>yes</p></td>
+<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
+</tr>
 <tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
-<td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
-<td><p>yes</p></td>
-<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
-</tr>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>Defaults to https://app.compliancedb.com</p></td>
+<td><p>The API hostname for Merkely. Defaults to https://app.compliancedb.com</p></td>
 </tr>
 </tbody>
 </table>
@@ -180,14 +180,14 @@ pipelines:
   default:
     ...
     - step:
-        name: ...
+        name: Stop deployment unless approved in Merkely
         script:
           - docker run
             --env MERKELY_COMMAND=control_deployment 
             --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; 
-            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
             --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; 
             --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; 
+            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
             --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; 
             --rm 
             --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json 
@@ -210,21 +210,21 @@ pipelines:
 <td><p>yes</p></td>
 <td><p><a class="reference external" href="../../fingerprints/docker_fingerprint.html">Fingerprint</a></p></td>
 </tr>
+<tr class="row-even"><td><p>MERKELY_OWNER</p></td>
+<td><p>yes</p></td>
+<td><p>Your user/organization name in Merkely.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_PIPELINE</p></td>
+<td><p>yes</p></td>
+<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
+</tr>
 <tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
-<td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
-<td><p>yes</p></td>
-<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
-</tr>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>Defaults to https://app.compliancedb.com</p></td>
+<td><p>The API hostname for Merkely. Defaults to https://app.compliancedb.com</p></td>
 </tr>
 </tbody>
 </table>
@@ -236,15 +236,15 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     ...
-    - name: ...
+    - name: Stop deployment unless approved in Merkely
       ...
       run: |
         docker run \
             --env MERKELY_COMMAND=control_deployment \
             --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
             --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
             --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
+            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
             --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
             --rm \
             --volume /var/run/docker.sock:/var/run/docker.sock \
@@ -268,21 +268,21 @@ jobs:
 <td><p>yes</p></td>
 <td><p><a class="reference external" href="../../fingerprints/docker_fingerprint.html">Fingerprint</a></p></td>
 </tr>
+<tr class="row-even"><td><p>MERKELY_OWNER</p></td>
+<td><p>yes</p></td>
+<td><p>Your user/organization name in Merkely.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_PIPELINE</p></td>
+<td><p>yes</p></td>
+<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
+</tr>
 <tr class="row-even"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
 <td><p>Your API token for Merkely.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
-<td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
-<td><p>yes</p></td>
-<td><p>Your pipeline name inside your user/organization in Merkely.</p></td>
-</tr>
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>Defaults to https://app.compliancedb.com</p></td>
+<td><p>The API hostname for Merkely. Defaults to https://app.compliancedb.com</p></td>
 </tr>
 </tbody>
 </table>
