@@ -17,4 +17,6 @@ class PipePathEnvVar(StaticDefaultedEnvVar):
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, "${{ github.workspace }}/Merkelypipe.json"
+        if ci_name == 'bitbucket':
+            return True, "${MERKELY_PIPE_PATH}"
         return False, ""

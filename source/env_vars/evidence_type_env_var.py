@@ -13,4 +13,9 @@ class EvidenceTypeEnvVar(RequiredEnvVar):
                 return True, 'coverage'
             if command_name == 'log_test':
                 return True, 'security'
+        if ci_name == 'bitbucket':
+            if command_name == 'log_evidence':
+                return True, 'coverage'
+            if command_name == 'log_test':
+                return True, 'security'
         return False, ""

@@ -65,5 +65,7 @@ class DescriptionEnvVar(RequiredEnvVar):
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, '${{ env.COVERAGE_SUMMARY }}'
+        if ci_name == 'bitbucket':
+            return True, '${COVERAGE_SUMMARY}'
         return False, ""
 

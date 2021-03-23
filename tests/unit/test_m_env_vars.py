@@ -51,7 +51,7 @@ class Example:
         return RequiredEnvVar(ev, "MERKELY_HOST", "notes")
 
 
-def test_env_vars_using_env_var_decorator():
+def X_test_env_vars_using_env_var_decorator():
     eg = Example()
     assert len(eg.env_vars) == 2
     assert eg.env_vars.api_token.name == "MERKELY_API_TOKEN"
@@ -60,7 +60,7 @@ def test_env_vars_using_env_var_decorator():
     assert eg.env_vars.host.value == "https://tests.compliancedb.com"
 
 
-def test_env_vars():
+def X_test_env_vars():
     domain = "app.compliancedb.com"
     build_url = "https://gitlab/build/1956"
     protocol = "docker://"

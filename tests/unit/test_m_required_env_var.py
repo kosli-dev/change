@@ -1,8 +1,8 @@
 from errors import ChangeError
-from env_vars import RequiredEnvVar
+from env_vars import *
 from pytest import raises
 
-NAME = "MERKELY_MORSE"
+NAME = "MERKELY_OWNER"
 NOTES = "A favourite tv program"
 
 
@@ -38,4 +38,4 @@ def test_value_raises_when_not_set_in_os():
 
 def make_test_variables():
     os_env = {}
-    return os_env, RequiredEnvVar(os_env, NAME, NOTES)
+    return os_env, OwnerEnvVar(os_env)

@@ -203,7 +203,7 @@ pipelines:
   default:
     ...
     - step:
-        name: Log JUnit XML evidence in Merkely
+        name: Log unit test results in Merkely
         script:
           - docker run
             --env MERKELY_COMMAND=log_test 
@@ -285,7 +285,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     ...
-    - name: Log JUnit XML evidence in Merkely
+    - name: Log unit test results in Merkely
       ...
       run: |
         docker run \

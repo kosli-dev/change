@@ -72,13 +72,8 @@ class EnvVar(ABC):
         of each command's env-var.
         """
 
+    @abstractmethod
     def ci_doc_example(self, ci_name, command_name):
         """
         See docs.merkely.com/source/doc_data.py
         """
-        if ci_name == 'github':
-            if self.name == "MERKELY_COMMAND":
-                return True, command_name
-            else:
-                return True, '"' + "${" + self.name + "}" + '"'
-        return False, ""

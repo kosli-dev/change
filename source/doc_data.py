@@ -93,7 +93,7 @@ yml_name_texts = {
     'log_artifact': 'Log Docker image in Merkely',
     'log_deployment': 'Log deployment in Merkely',
     'log_evidence': 'Log evidence in Merkely',
-    'log_test': 'Log JUnit XML evidence in Merkely',
+    'log_test': 'Log unit test results in Merkely',
     'control_deployment': 'Fail the pipeline unless approved for deployment in Merkely'
 }
 
@@ -176,6 +176,31 @@ def lines_for_github(command_name):
         lines.append(lc(f"{tab}--volume {mount}"))
     lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
     lines.append(f"{ci_indent}{tab}merkely/change")
+    return lines
+
+
+def NEW_lines_for_bitbucket(command_name):
+    command = command_for(command_name)
+    name = yml_name_texts[command_name]
+    step_name = "_".join(name.lower().split(' '))
+    if command_name == 'declare_pipeline':
+        export = "export_merkely_pipeline_env_vars"
+    else:
+        export = "export_merkely_fingerprint_env_vars"
+    lines = [
+       f"    - step: &{step_name}",
+       f"        name: {name}",
+        "        services: [ docker ]",
+        "        script:",
+       f"          - *{export}",
+        "          - pipe: docker://merkely/change:latest",
+        "            variables:",
+    ]
+    tab = " " * 14
+    for var in command.merkely_env_vars:
+        show, example = var.ci_doc_example('bitbucket', command_name)
+        if show:
+            lines.append(f'{tab}{var.name}: {example}')
     return lines
 
 

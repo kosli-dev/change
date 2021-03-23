@@ -50,3 +50,6 @@ class Example(EnvVar):
 
     def is_required(self):
         return True
+
+    def ci_doc_example(self, _ci_name, command_name):
+        return True, ""

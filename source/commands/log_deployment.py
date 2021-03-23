@@ -60,6 +60,8 @@ class DescriptionEnvVar(RequiredEnvVar):
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, '"Deployed to production in pipeline"'
+        if ci_name == 'bitbucket':
+            return True, '"Deployed to production in pipeline"'
         return False, ""
 
 
@@ -71,5 +73,7 @@ class EnvironmentEnvVar(RequiredEnvVar):
 
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
+            return True, "production"
+        if ci_name == 'bitbucket':
             return True, "production"
         return False, ""

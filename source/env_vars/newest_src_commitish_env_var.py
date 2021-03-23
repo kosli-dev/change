@@ -11,5 +11,7 @@ class NewestSrcCommitishEnvVar(RequiredEnvVar):
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, "${{ github.event.inputs.deploy_commit }}"
+        if ci_name == 'bitbucket':
+            return True, "${BITBUCKET_COMMIT}"
         return False, ""
 

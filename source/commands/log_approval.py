@@ -82,6 +82,8 @@ class IsApprovedEnvVar(StaticDefaultedEnvVar):
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, '"TRUE"'
+        if ci_name == 'bitbucket':
+            return True, '"TRUE"'
         return False, ""
 
 
@@ -98,6 +100,8 @@ class SrcRepoRootEnvVar(StaticDefaultedEnvVar):
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, "${{ github.workspace }}"
+        if ci_name == 'bitbucket':
+            return True, "${PWD}"
         return False, ""
 
 
@@ -110,6 +114,8 @@ class DescriptionEnvVar(RequiredEnvVar):
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, '"Approval created by ${{ github.actor }} on github"'
+        if ci_name == 'bitbucket':
+            return True, '"Production release requested"'
         return False, ""
 
 

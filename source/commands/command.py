@@ -143,8 +143,7 @@ class Command(ABC):
 
     @property
     def name(self):
-        notes = "The Merkely command to execute."
-        return RequiredEnvVar(self.env, "MERKELY_COMMAND", notes)
+        return NameEnvVar(self.env)
 
     @property
     def user_data(self):
@@ -167,3 +166,12 @@ class Command(ABC):
     def __call__(self):  # pragma: no cover
         raise NotImplementedError(self.name)
 
+
+class NameEnvVar(RequiredEnvVar):
+    
+    def __init__(self, env):
+        notes = "The Merkely command to execute."
+        super().__init__(env, "MERKELY_COMMAND", notes)
+
+    def ci_doc_example(self, ci_name, command_name):
+        return True, command_name

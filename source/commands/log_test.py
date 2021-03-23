@@ -77,6 +77,8 @@ class TestResultsDirEnvVar(StaticDefaultedEnvVar):
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, "${{ github.workspace }}/build/security"
+        if ci_name == 'bitbucket':
+            return True, "${PWD}/build/security/"
         return False, ""
 
 

@@ -36,5 +36,7 @@ class FingerprintEnvVar(RequiredEnvVar):
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, "docker://${{ env.IMAGE_TAGGED }}"
+        if ci_name == 'bitbucket':
+            return True, "${MERKELY_FINGERPRINT}"
         return False, ""
 
