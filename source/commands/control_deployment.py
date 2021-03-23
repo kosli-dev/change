@@ -8,7 +8,7 @@ from cdb.http import http_get_json
 class ControlDeployment(Command):
 
     def summary(self, _ci):
-        return "Controls Deployments by short-circuiting pipelines if artifact not approved for release."
+        return "Fails a pipeline if an artifact is not approved for deployment."
 
     def volume_mounts(self, ci):
         if ci == 'bitbucket':
@@ -32,5 +32,5 @@ class ControlDeployment(Command):
         approvals = http_get_json(url, self.api_token.value)
         is_approved = control_deployment_approved(approvals)
         if not is_approved:
-            raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not approved for deployment")
+            raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not approved.")
         return 'Getting', url, approvals

@@ -202,7 +202,7 @@ pipelines:
   default:
     ...
     - step:
-        name: Log Deployment in Merkely
+        name: Log deployment in Merkely
         script:
           - docker run
             --env MERKELY_COMMAND=log_deployment 
@@ -283,7 +283,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     ...
-    - name: Log Deployment in Merkely
+    - name: Log deployment in Merkely
       ...
       run: |
         docker run \

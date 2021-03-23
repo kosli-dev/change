@@ -65,6 +65,7 @@ class LogTest(Command):
 
 
 class TestResultsDirEnvVar(StaticDefaultedEnvVar):
+    
     def __init__(self, env):
         notes = " ".join([
             "The directory where Merkely will look for JUnit .xml files.",

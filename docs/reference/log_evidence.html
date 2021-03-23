@@ -207,7 +207,7 @@ pipelines:
   default:
     ...
     - step:
-        name: Log Evidence in Merkely
+        name: Log evidence in Merkely
         script:
           - docker run
             --env MERKELY_COMMAND=log_evidence 
@@ -293,7 +293,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     ...
-    - name: Log Evidence in Merkely
+    - name: Log evidence in Merkely
       ...
       run: |
         docker run \

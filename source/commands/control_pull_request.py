@@ -38,17 +38,11 @@ class ControlPullRequest(Command):
 
     @property
     def description(self):
-        name = "MERKELY_DESCRIPTION"
-        default = "Bitbucket pull request"
-        notes = "Bitbucket pull request."
-        return StaticDefaultedEnvVar(self.env, name, default, notes)
+        return DescriptionEnvVar(self.env)
 
     @property
     def evidence_type(self):
-        name = "MERKELY_EVIDENCE_TYPE"
-        default = "pull_request"
-        notes = "The evidence type."
-        return StaticDefaultedEnvVar(self.env, name, default, notes)
+        return EvidenceTypeEnvVar(self.env)
 
     @property
     def _merkely_env_var_names(self):
@@ -64,6 +58,28 @@ class ControlPullRequest(Command):
             'api_token',
             'host',
         ]
+
+
+class DescriptionEnvVar(StaticDefaultedEnvVar):
+
+    def __init__(self, env):
+        default = "Bitbucket pull request"
+        notes = "Bitbucket pull request."
+        super().__init__(env, "MERKELY_DESCRIPTION", default, notes)
+
+    def ci_doc_example(self, _ci_name, _command_name):
+        return False, ""
+
+
+class EvidenceTypeEnvVar(StaticDefaultedEnvVar):
+
+    def __init__(self, env):
+        default = "pull_request"
+        notes = "The evidence type."
+        super().__init__(env, "MERKELY_EVIDENCE_TYPE", default, notes)
+
+    def ci_doc_example(self, _ci_name, _command_name):
+        return False, ""
 
 
 def get_pull_request_for_current_commit(env):

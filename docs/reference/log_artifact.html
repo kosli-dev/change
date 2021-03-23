@@ -212,7 +212,7 @@ pipelines:
   default:
     ...
     - step:
-        name: Log Docker Image in Merkely
+        name: Log Docker image in Merkely
         script:
           - docker run
             --env MERKELY_COMMAND=log_artifact 
@@ -304,7 +304,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     ...
-    - name: Log Docker Image in Merkely
+    - name: Log Docker image in Merkely
       ...
       run: |
         docker run \

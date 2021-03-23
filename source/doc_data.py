@@ -89,12 +89,12 @@ def min_lines_for(command_name):
 
 yml_name_texts = {
     'declare_pipeline': 'Declare Merkely Pipeline',
-    'log_approval': 'Log Approval in Merkely',
-    'log_artifact': 'Log Docker Image in Merkely',
-    'log_deployment': 'Log Deployment in Merkely',
-    'log_evidence': 'Log Evidence in Merkely',
+    'log_approval': 'Log approval in Merkely',
+    'log_artifact': 'Log Docker image in Merkely',
+    'log_deployment': 'Log deployment in Merkely',
+    'log_evidence': 'Log evidence in Merkely',
     'log_test': 'Log JUnit XML evidence in Merkely',
-    'control_deployment': 'Stop deployment unless approved in Merkely'
+    'control_deployment': 'Fail the pipeline unless approved for deployment in Merkely'
 }
 
 

@@ -213,7 +213,7 @@ pipelines:
   default:
     ...
     - step:
-        name: Log Approval in Merkely
+        name: Log approval in Merkely
         script:
           - docker run
             --env MERKELY_COMMAND=log_approval 
@@ -302,7 +302,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     ...
-    - name: Log Approval in Merkely
+    - name: Log approval in Merkely
       ...
       run: |
         docker run \
