@@ -144,7 +144,7 @@ class Command(ABC):
     @property
     def name(self):
         notes = "The Merkely command to execute."
-        return self._required_env_var("MERKELY_COMMAND", notes)
+        return RequiredEnvVar(self.env, "MERKELY_COMMAND", notes)
 
     @property
     def user_data(self):
@@ -156,12 +156,6 @@ class Command(ABC):
 
     # - - - - - - - - - - - - - - - - - - - - -
     # subclass helpers
-
-    def _required_env_var(self, name, notes):
-        return RequiredEnvVar(self.env, name, notes)
-
-    def _static_defaulted_env_var(self, name, default, notes):
-        return StaticDefaultedEnvVar(self.env, name, default, notes)
 
     def _print_compliance(self):
         env_var = self.is_compliant

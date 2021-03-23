@@ -2,6 +2,7 @@ import json
 import requests
 
 from commands import Command
+from env_vars import *
 from errors import ChangeError
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
@@ -40,14 +41,14 @@ class ControlPullRequest(Command):
         name = "MERKELY_DESCRIPTION"
         default = "Bitbucket pull request"
         notes = "Bitbucket pull request."
-        return self._static_defaulted_env_var(name, default, notes)
+        return StaticDefaultedEnvVar(self.env, name, default, notes)
 
     @property
     def evidence_type(self):
         name = "MERKELY_EVIDENCE_TYPE"
         default = "pull_request"
         notes = "The evidence type."
-        return self._static_defaulted_env_var(name, default, notes)
+        return StaticDefaultedEnvVar(self.env, name, default, notes)
 
     @property
     def _merkely_env_var_names(self):
