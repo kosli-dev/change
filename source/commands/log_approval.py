@@ -27,9 +27,11 @@ class LogApproval(Command):
             "description": self.description.value,
             "src_commit_list": commit_list,
             "user_data": self.user_data.value,
-            "approvals": {
-                "state": self.approval_state(),
-            }
+            "approvals": [
+                {
+                    "state": self.approval_state(),
+                }
+            ]
         }
         url = ApiSchema.url_for_approvals(self.host.value, self.merkelypipe)
         http_post_payload(url, payload, self.api_token.value)
