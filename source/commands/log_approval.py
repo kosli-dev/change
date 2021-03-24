@@ -30,6 +30,9 @@ class LogApproval(Command):
             "approvals": [
                 {
                     "state": self.approval_state(),
+                    "comment": self.description.value,
+                    "approved_by": "External",
+                    "approval_url": "undefined"
                 }
             ]
         }

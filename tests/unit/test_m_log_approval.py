@@ -78,7 +78,10 @@ def test_docker_image(capsys, mocker):
     del expected_payload['is_approved']
     expected_payload['approvals'] = [
         {
-            "state": "APPROVED"
+            "state": "APPROVED",
+            "comment": expected_payload["description"],
+            "approved_by": "External",
+            "approval_url": "undefined"
         }
     ]
 
