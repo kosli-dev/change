@@ -1,5 +1,6 @@
 from pathlib import Path
 from commands import Command
+from functools import cmp_to_key
 
 # The Makefile volume-mounts docs.merkely.com/ to docs/
 REFERENCE_DIR = '/docs/source/reference'
@@ -10,8 +11,22 @@ def auto_generate():
     Called from docs.merkely.com/source/conf.py
     Builds the Reference .rst files for each command.
     """
-    command_names = sorted(Command.names())
+    command_names = Command.names()
     command_names.remove('control_pull_request')  # Currently only github
+
+    def cmp_names(lhs, rhs):
+        order = [
+            'declare_pipeline',
+            'log_artifact',
+            'log_evidence',
+            'log_test',
+            'log_approval',
+            'control_deployment',
+            'log_deployment',
+        ]
+        return order.index(lhs) - order.index(rhs)
+
+    command_names.sort(key=cmp_to_key(cmp_names))
 
     rst = reference_index_rst(command_names)
     with open(f'{REFERENCE_DIR}/index.rst', 'wt') as file:
