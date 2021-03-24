@@ -93,7 +93,7 @@ yml_name_texts = {
     'log_artifact': 'Log Docker image in Merkely',
     'log_deployment': 'Log deployment in Merkely',
     'log_evidence': 'Log evidence in Merkely',
-    'log_test': 'Log test results in Merkely',
+    'log_test': 'Log unit test results in Merkely',
     'control_deployment': 'Fail the pipeline unless approved for deployment in Merkely'
 }
 
