@@ -119,20 +119,19 @@
   <div class="section" id="logging-deployments">
 <h1>Logging Deployments<a class="headerlink" href="#logging-deployments" title="Permalink to this headline">¶</a></h1>
 <p>…</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=log_deployment \
-    --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-    --env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \
-    --env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \
-    --env MERKELY_ENVIRONMENT=&quot;${MERKELY_ENVIRONMENT}&quot; \
-    --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
-    --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
-    --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
-    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
-    --rm \
-    --volume /var/run/docker.sock:/var/run/docker.sock \
-    --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
-    merkely/change
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_COMMAND</span><span class="o">=</span><span class="n">log_deployment</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_FINGERPRINT}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_CI_BUILD_URL}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_DESCRIPTION</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_DESCRIPTION}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_ENVIRONMENT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_ENVIRONMENT}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_USER_DATA</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_USER_DATA}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_OWNER</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_OWNER}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_PIPELINE}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_API_TOKEN}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">rm</span> \
+    <span class="o">--</span><span class="n">volume</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span> \
+    <span class="n">merkely</span><span class="o">/</span><span class="n">change</span>
 </pre></div>
 </div>
 </div>

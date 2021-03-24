@@ -79,7 +79,8 @@ def min_lines_for(command_name):
         lines.append(lc(f"{tab}--volume {mount}"))
 
     # The merkely-pipe volume-mount is always required
-    lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
+    if command_name == 'declare_pipeline':
+        lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
 
     # The name of the docker image
     lines.append(f"{tab}merkely/change")
@@ -118,7 +119,8 @@ def lines_for_docker(command_name):
     lines.append(lc(f"{tab}--rm"))
     for mount in command.volume_mounts('docker'):
         lines.append(lc(f"{tab}--volume {mount}"))
-    lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
+    if command_name == 'declare_pipeline':
+        lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
     lines.append(f"{tab}merkely/change")
     return lines
 
