@@ -25,19 +25,25 @@ class LogTest(Command):
     def __call__(self):
         junit_results_dir = self.test_results_dir.value
         is_compliant, message = is_compliant_tests_directory(junit_results_dir)
-        description = "JUnit results xml verified by merkely/change: " + message
+        setattr(self, 'default_suffix', message)
         payload = {
             "evidence_type": self.evidence_type.value,
             "user_data": self.user_data.value,
             "contents": {
                 "is_compliant": is_compliant,
                 "url": self.ci_build_url.value,
-                "description": description
+                "description": self.description.value
             }
         }
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         http_put_payload(url, payload, self.api_token.value)
         return 'Putting', url, payload
+
+    @property
+    def description(self):
+        prefix = "JUnit results xml verified by merkely/change: "
+        suffix = getattr(self, 'default_suffix', 'All tests passed in 1 test suites')
+        return DescriptionEnvVar(self.env, prefix, suffix)
 
     @property
     def evidence_type(self):
@@ -49,12 +55,13 @@ class LogTest(Command):
 
     @property
     def _merkely_env_var_names(self):
-        # Print in this order
+        # In docs print in this order
         return [
             'name',
             'fingerprint',
             'evidence_type',
             'test_results_dir',
+            'description',
             'ci_build_url',
             'user_data',
             'owner',
@@ -62,6 +69,21 @@ class LogTest(Command):
             'api_token',
             'host',
         ]
+
+
+class DescriptionEnvVar(StaticDefaultedEnvVar):
+
+    def __init__(self, env, default_prefix, default_suffix):
+        default = default_prefix + default_suffix
+        notes = " ".join([
+            "A description of the test.",
+            f'Defaults to "{default_prefix}"',
+            f'followed by the JUnit .xml summary, eg "{default_suffix}"'
+        ])
+        super().__init__(env, "MERKELY_DESCRIPTION", default, notes)
+
+    def ci_doc_example(self, ci_name, _command_name):
+        return False, ""
 
 
 class TestResultsDirEnvVar(StaticDefaultedEnvVar):
