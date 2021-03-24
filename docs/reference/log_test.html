@@ -197,8 +197,8 @@ If not provided, the json content defaults to {}</p></td>
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;log_unit_test_results_in_merkely
-        name: Log unit test results in Merkely
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;log_test_results_in_merkely
+        name: Log test results in Merkely
         services: [ docker ]
         script:
           - *export_merkely_fingerprint_env_vars
@@ -267,7 +267,7 @@ If not provided, the json content defaults to {}</p></td>
 </table>
 </div>
 <div class="github tab-pane docutils container" id="github">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Log unit test results in Merkely
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Log test results in Merkely
       uses: docker://merkely/change:latest
       env:
         MERKELY_COMMAND: log_test
