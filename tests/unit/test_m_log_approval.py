@@ -75,6 +75,10 @@ def test_docker_image(capsys, mocker):
 
     # CHANGE IN BEHAVIOUR
     expected_payload['user_data'] = {}
+    del expected_payload['is_approved']
+    expected_payload['approvals'] = {
+        "state": "APPROVED"
+    }
 
     # verify matching data
     assert method == expected_method
