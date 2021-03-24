@@ -207,31 +207,23 @@ If not provided, the json content defaults to {}</p></td>
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>image: atlassian/default-image:2
-...
-pipelines:
-  default:
-    ...
-    - step:
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;log_approval_in_merkely
         name: Log approval in Merkely
+        services: [ docker ]
         script:
-          - docker run
-            --env MERKELY_COMMAND=log_approval 
-            --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; 
-            --env MERKELY_OLDEST_SRC_COMMITISH=&quot;${MERKELY_OLDEST_SRC_COMMITISH}&quot; 
-            --env MERKELY_NEWEST_SRC_COMMITISH=&quot;${MERKELY_NEWEST_SRC_COMMITISH}&quot; 
-            --env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; 
-            --env MERKELY_IS_APPROVED=&quot;${MERKELY_IS_APPROVED}&quot; 
-            --env MERKELY_SRC_REPO_ROOT=&quot;${MERKELY_SRC_REPO_ROOT}&quot; 
-            --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; 
-            --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; 
-            --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; 
-            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
-            --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; 
-            --rm 
-            --volume ${PWD}:/src 
-            --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json 
-            merkely/change
+          - *export_merkely_fingerprint_env_vars
+          - pipe: docker://merkely/change:latest
+            variables:
+              MERKELY_COMMAND: log_approval
+              MERKELY_FINGERPRINT: ${MERKELY_FINGERPRINT}
+              MERKELY_OLDEST_SRC_COMMITISH: &quot;origin/production&quot;
+              MERKELY_NEWEST_SRC_COMMITISH: ${BITBUCKET_COMMIT}
+              MERKELY_DESCRIPTION: &quot;Production release requested&quot;
+              MERKELY_IS_APPROVED: &quot;TRUE&quot;
+              MERKELY_SRC_REPO_ROOT: ${PWD}
+              MERKELY_OWNER: ${MERKELY_OWNER}
+              MERKELY_PIPELINE: ${MERKELY_PIPELINE}
+              MERKELY_API_TOKEN: ${MERKELY_API_TOKEN}
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -296,33 +288,19 @@ If not provided, the json content defaults to {}</p></td>
 </table>
 </div>
 <div class="github tab-pane docutils container" id="github">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>...
-jobs:
-  build:
-    runs-on: ubuntu-20.04
-    steps:
-    ...
-    - name: Log approval in Merkely
-      ...
-      run: |
-        docker run \
-            --env MERKELY_COMMAND=log_approval \
-            --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-            --env MERKELY_OLDEST_SRC_COMMITISH=&quot;${MERKELY_OLDEST_SRC_COMMITISH}&quot; \
-            --env MERKELY_NEWEST_SRC_COMMITISH=&quot;${MERKELY_NEWEST_SRC_COMMITISH}&quot; \
-            --env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \
-            --env MERKELY_IS_APPROVED=&quot;${MERKELY_IS_APPROVED}&quot; \
-            --env MERKELY_SRC_REPO_ROOT=&quot;${MERKELY_SRC_REPO_ROOT}&quot; \
-            --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
-            --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
-            --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
-            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
-            --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
-            --rm \
-            --volume ${PWD}:/src \
-            --volume /var/run/docker.sock:/var/run/docker.sock \
-            --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
-            merkely/change
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Log approval in Merkely
+      uses: docker://merkely/change:latest
+      env:
+        MERKELY_COMMAND: log_approval
+        MERKELY_FINGERPRINT: docker://${{ env.IMAGE_TAGGED }}
+        MERKELY_OLDEST_SRC_COMMITISH: origin/production
+        MERKELY_NEWEST_SRC_COMMITISH: ${{ github.event.inputs.deploy_commit }}
+        MERKELY_DESCRIPTION: &quot;Approval created by ${{ github.actor }} on github&quot;
+        MERKELY_IS_APPROVED: &quot;TRUE&quot;
+        MERKELY_SRC_REPO_ROOT: ${{ github.workspace }}
+        MERKELY_OWNER: ${{ env.MERKELY_OWNER }}
+        MERKELY_PIPELINE: ${{ env.MERKELY_PIPELINE }}
+        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
 </pre></div>
 </div>
 <table class="docutils align-default">

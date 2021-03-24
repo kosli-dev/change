@@ -196,31 +196,20 @@ If not provided, the json content defaults to {}</p></td>
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>image: atlassian/default-image:2
-...
-pipelines:
-  default:
-    ...
-    - step:
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;log_deployment_in_merkely
         name: Log deployment in Merkely
+        services: [ docker ]
         script:
-          - docker run
-            --env MERKELY_COMMAND=log_deployment 
-            --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; 
-            --env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; 
-            --env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; 
-            --env MERKELY_ENVIRONMENT=&quot;${MERKELY_ENVIRONMENT}&quot; 
-            --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; 
-            --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; 
-            --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; 
-            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; 
-            --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; 
-            --env BITBUCKET_BUILD_NUMBER 
-            --env BITBUCKET_REPO_SLUG 
-            --env BITBUCKET_WORKSPACE 
-            --rm 
-            --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json 
-            merkely/change
+          - *export_merkely_fingerprint_env_vars
+          - pipe: docker://merkely/change:latest
+            variables:
+              MERKELY_COMMAND: log_deployment
+              MERKELY_FINGERPRINT: ${MERKELY_FINGERPRINT}
+              MERKELY_DESCRIPTION: &quot;Deployed to production in pipeline&quot;
+              MERKELY_ENVIRONMENT: production
+              MERKELY_OWNER: ${MERKELY_OWNER}
+              MERKELY_PIPELINE: ${MERKELY_PIPELINE}
+              MERKELY_API_TOKEN: ${MERKELY_API_TOKEN}
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -277,33 +266,16 @@ If not provided, the json content defaults to {}</p></td>
 </table>
 </div>
 <div class="github tab-pane docutils container" id="github">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>...
-jobs:
-  build:
-    runs-on: ubuntu-20.04
-    steps:
-    ...
-    - name: Log deployment in Merkely
-      ...
-      run: |
-        docker run \
-            --env MERKELY_COMMAND=log_deployment \
-            --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-            --env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \
-            --env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \
-            --env MERKELY_ENVIRONMENT=&quot;${MERKELY_ENVIRONMENT}&quot; \
-            --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
-            --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
-            --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
-            --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
-            --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
-            --env GITHUB_REPOSITORY \
-            --env GITHUB_RUN_ID \
-            --env GITHUB_SERVER_URL \
-            --rm \
-            --volume /var/run/docker.sock:/var/run/docker.sock \
-            --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
-            merkely/change
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Log deployment in Merkely
+      uses: docker://merkely/change:latest
+      env:
+        MERKELY_COMMAND: log_deployment
+        MERKELY_FINGERPRINT: docker://${{ env.IMAGE_TAGGED }}
+        MERKELY_DESCRIPTION: &quot;Deployed to production in pipeline&quot;
+        MERKELY_ENVIRONMENT: production
+        MERKELY_OWNER: ${{ env.MERKELY_OWNER }}
+        MERKELY_PIPELINE: ${{ env.MERKELY_PIPELINE }}
+        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
 </pre></div>
 </div>
 <table class="docutils align-default">

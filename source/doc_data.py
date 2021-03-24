@@ -8,7 +8,7 @@ REFERENCE_DIR = '/docs/build/reference'
 def auto_generate():
     """
     Called from docs.merkely.com/source/conf.py    
-    Generates text files containing documentation source for each
+    Generates text files containing documentation fragment for each
     command (eg 'log_test') in each supported CI system (eg 'bitbucket')
     """
     for filename, lines in generate_docs().items():
@@ -123,7 +123,7 @@ def lines_for_docker(command_name):
     return lines
 
 
-def NEW_lines_for_github(command_name):
+def lines_for_github(command_name):
     command = command_for(command_name)
     lines = [
         "    - name: {}".format(yml_name_texts[command_name]),
@@ -138,7 +138,7 @@ def NEW_lines_for_github(command_name):
     return lines
 
 
-def lines_for_github(command_name):
+def OLD_lines_for_github(command_name):
     ci_indent = " " * 8
     def lc(string):
         line_continuation = "\\"
@@ -179,7 +179,7 @@ def lines_for_github(command_name):
     return lines
 
 
-def NEW_lines_for_bitbucket(command_name):
+def lines_for_bitbucket(command_name):
     command = command_for(command_name)
     name = yml_name_texts[command_name]
     step_name = "_".join(name.lower().split(' '))
@@ -204,7 +204,7 @@ def NEW_lines_for_bitbucket(command_name):
     return lines
 
 
-def lines_for_bitbucket(command_name):
+def OLD_lines_for_bitbucket(command_name):
     ci_indent = " " * 8
     def lc(string):
         # bitbucket uses leading - to indicate start of a command
