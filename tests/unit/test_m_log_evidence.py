@@ -1,4 +1,3 @@
-from cdb.put_evidence import put_evidence
 from commands import run, External
 
 from tests.utils import *
@@ -13,28 +12,12 @@ PIPELINE = "cdb-controls-test-pipeline"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
-def test_docker_protocol(capsys, mocker):
+def test_docker_protocol(capsys):
     # input data
     build_url = "https://gitlab/build/1956"
     sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
     protocol = "docker://"
     image_name = "acme/widget:4.67"
-
-    # make cdb call
-    cdb_env = {
-        "CDB_API_TOKEN": API_TOKEN,
-        "CDB_ARTIFACT_DOCKER_IMAGE": image_name,
-        "CDB_IS_COMPLIANT": "TRUE",
-        "CDB_EVIDENCE_TYPE": "unit_test",
-        "CDB_DESCRIPTION": "branch coverage",
-        "CDB_CI_BUILD_URL": build_url,
-    }
-    with dry_run(cdb_env):
-        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
-        put_evidence("tests/integration/test-pipefile.json")
-        
-    # compare with approved cdb text file
-    verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
     this_test = "test_docker_protocol"

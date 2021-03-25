@@ -1,4 +1,3 @@
-from cdb.put_evidence import put_evidence
 from commands import run, External
 
 from tests.utils import *
@@ -24,16 +23,7 @@ DESCRIPTION = "branch coverage"
 EVIDENCE_TYPE = "unit_test"
 
 
-def test_bitbucket(capsys, mocker):
-    # The original bitbucket code did not do a translation for put_evidence
-    env = old_log_evidence_env()
-    set_env_vars = {}
-    with dry_run(env, set_env_vars):
-        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=SHA256)
-        put_evidence("tests/data/Merkelypipe.acme-roadrunner.json")
-
-    verify_approval(capsys, ["out"])
-
+def test_bitbucket(capsys):
     # extract data from approved cdb text file
     import inspect
     this_test = inspect.stack()[0].function
