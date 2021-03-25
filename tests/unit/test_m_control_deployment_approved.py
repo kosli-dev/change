@@ -1,4 +1,4 @@
-from cdb.control_deployment import control_deployment_approved
+from commands.control_deployment import control_deployment_approved
 
 UNAPPROVED_REQUEST = {
 	"approvals": [],

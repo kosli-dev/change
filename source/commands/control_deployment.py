@@ -1,7 +1,6 @@
 from errors import ChangeError
 from commands import Command
 from cdb.api_schema import ApiSchema
-from cdb.control_deployment import control_deployment_approved
 from cdb.http import http_get_json
 
 
@@ -34,3 +33,10 @@ class ControlDeployment(Command):
         if not is_approved:
             raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not approved.")
         return 'Getting', url, approvals
+
+
+def control_deployment_approved(approvals):
+    for approval in approvals:
+        if approval["state"] == "APPROVED":
+            return True
+    return False
