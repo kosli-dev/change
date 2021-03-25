@@ -2,15 +2,23 @@
 
 set -eu
 
+# TARGET
 # ${1} is set in the Makefile.
 # Defaults to tests/unit/ (the dir name)
-# To run an individual test file...
-# $ make test TARGET=test_create_release.py
-# which will result in ${1}==tests/unit/test_release.py
+# which runs all the tests
+
+# To run a single test file...
+# $ make test_unit TARGET=FILENAME
+# which will result in ${1}==tests/unit/FILENAME
+
+# To run a single test...
+# $ make test_unit TARGET=FILENAME::TESTNAME
+# which will result in ${1}==tests/unit/FILENAME::TESTNAME
+
 readonly TARGET="${1}"
 
-# Beware using --approvaltests-use-reporter='PythonNative'
-# See comment in tests/unit/utils/verify_approval.py
+# If you use --approvaltests-use-reporter='PythonNative'
+# see comment in tests/unit/utils/verify_approval.py
 
 # pytest-cov command line options are documented here
 # https://pytest-cov.readthedocs.io/en/latest/config.html

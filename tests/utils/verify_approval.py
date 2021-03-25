@@ -28,6 +28,9 @@ A [pip list] command confirms we are using approvaltests 0.3.1
 But these two lines in requirements.txt do not yet work:
   git+git://github.com/approvals/ApprovalTests.Python.git@master#egg=approvaltests
   pytest-approvaltests==0.2.0 
+  
+  
+Update. This was fixed in the 0.3.0 release.  
 """
 
 

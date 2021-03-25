@@ -14,11 +14,8 @@ Create the JSON
 Put the JSON
 
 """
-from pathlib import Path
 import pytest
-
 from cdb.cdb_utils import build_release_json, latest_artifact_for_commit
-from cdb.git import list_commits_between, repo_at
 from cdb.api_schema import ApiSchema
 
 TEST_REPO_ROOT = "/test_src/"
