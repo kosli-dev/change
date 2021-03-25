@@ -1,5 +1,18 @@
+from errors import ChangeError
 from pygit2 import Repository, _pygit2
 from pygit2._pygit2 import GIT_SORT_TIME
+
+
+def repo_at(root):
+    try:
+        # Ensure dir/ does not have duplicted / in error messages
+        if root.endswith('/'):
+            dir = root + '.git'
+        else:
+            dir = root + '/.git'
+        return Repository(dir)
+    except _pygit2.GitError as err:
+        raise ChangeError(f"Error: {str(err)}")
 
 
 def commit_for_commitish(repo, commitish):
@@ -20,12 +33,3 @@ def list_commits_between(repo, target_commit, base_commit):
         commits.append(str(commit.id))
 
     return commits
-
-
-def repo_at(root):
-    try:
-        repo = Repository(root + '.git')
-    except _pygit2.GitError as err:
-        print("Error: " + str(err))
-        return None
-    return repo

@@ -1,6 +1,7 @@
 from pathlib import Path
-
 from cdb.git import repo_at, list_commits_between
+from errors import ChangeError
+from pytest import raises
 
 TEST_REPO_ROOT = "/test_src/"
 
@@ -18,14 +19,18 @@ This repo is added in the docker image at /test_src/
 
 
 def test_repo_is_present_in_image():
-    repo_path = Path("/test_src/.git")
+    repo_path = Path(f"/{TEST_REPO_ROOT}/.git")
     assert repo_path.is_dir()
 
 
-def test_is_repo(capsys):
+def test_repo_at_returns_Repo_object_when_git_repo_exists_at_dir():
     assert repo_at(TEST_REPO_ROOT) is not None
-    assert repo_at("/cdb_data/") is None
-    read_stdout_stderr_to_keep_test_output_clean(capsys)
+
+
+def test_repo_at_raises_when_git_repo_does_not_exist_at_dir():
+    with raises(ChangeError) as exc:
+        repo_at("/cdb_data/")
+    assert str(exc.value) == "Error: Repository not found at /cdb_data/.git"
 
 
 def test_list_commits_between_master_and_production():

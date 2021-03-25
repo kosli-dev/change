@@ -1,10 +1,8 @@
-from errors import ChangeError
 from commands import Command
 from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_post_payload
-from pygit2 import Repository, _pygit2
-from pygit2._pygit2 import GIT_SORT_TIME
+from cdb.git import repo_at, list_commits_between
 
 
 class RequestApproval(Command):
@@ -88,35 +86,12 @@ class SrcRepoRootEnvVar(StaticDefaultedEnvVar):
 class DescriptionEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        notes = f"A description for the approval."
+        notes = f"A description for the approval request."
         super().__init__(env, "MERKELY_DESCRIPTION", notes)
 
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
-            return True, '"Approval created by ${{ github.actor }} on github"'
+            return True, '"Approval requested by ${{ github.actor }} on github"'
         if ci_name == 'bitbucket':
             return True, '"Production release requested"'
         return False, ""
-
-
-
-def repo_at(root):
-    try:
-        repo = Repository(root + '/.git')
-    except _pygit2.GitError as err:
-        raise ChangeError(f"Error: {str(err)}")
-    return repo
-
-
-def list_commits_between(repo, target_commit, base_commit):
-    start = repo.revparse_single(target_commit)
-    stop = repo.revparse_single(base_commit)
-
-    commits = []
-
-    walker = repo.walk(start.id, GIT_SORT_TIME)
-    walker.hide(stop.id)
-    for commit in walker:
-        commits.append(str(commit.id))
-
-    return commits
