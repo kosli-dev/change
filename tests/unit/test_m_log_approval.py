@@ -1,4 +1,3 @@
-from cdb.create_approval import create_approval
 from commands import run, External
 from errors import ChangeError
 
@@ -15,29 +14,9 @@ PIPELINE = "cdb-controls-test-pipeline"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
-def test_docker_image(capsys, mocker):
+def test_docker_image(capsys):
     image_name = "acme/runner:4.56"
     sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
-    merkleypipe_dir = "tests/data"
-    merkelypipe = "test-pipefile.json"
-    mock_artifacts_for_commit = {
-        "artifacts": [{"sha256": sha256}]
-    }
-    env = {
-        "CDB_API_TOKEN": API_TOKEN,
-        "CDB_ARTIFACT_DOCKER_IMAGE": image_name,
-        "CDB_BASE_SRC_COMMITISH": "production",
-        "CDB_TARGET_SRC_COMMITISH": "master",
-        "CDB_DESCRIPTION": "The approval description here",
-        "CDB_IS_APPROVED_EXTERNALLY": "TRUE",
-    }
-    set_env_vars = {"CDB_ARTIFACT_SHA": sha256}
-    with dry_run(env, set_env_vars) as env, ScopedDirCopier("/test_src", "/src"):
-        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
-        mocker.patch('cdb.create_release.get_artifacts_for_commit', return_value=mock_artifacts_for_commit)
-        create_approval(f"{merkleypipe_dir}/{merkelypipe}", env)
-
-    verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
     this_test = "test_docker_image"
@@ -116,3 +95,22 @@ def new_log_approval_env():
         "MERKELY_DESCRIPTION": "The approval description here",
         'MERKELY_IS_APPROVED': 'TRUE',
     }
+
+
+
+"""
+Comment from old cdb test
+...
+We have a test repo with a commit graph like this:
+
+    * e0d1acf1adb9e263c1b6e0cfe3e0d2c1ade371e1 2020-09-12 (HEAD -> approval-branch)  Initial approval commit (Mike Long)
+    * 8f5b384644eb83e7f2a6d9499539a077e7256b8b 2020-09-12 (master)  Fourth commit (Mike Long)
+    * e0ad84e1a2464a9486e777c1ecde162edff930a9 2020-09-12  Third commit (Mike Long)
+    * b6c9e60f281e37d912ec24f038b7937f79723fb4 2020-09-12 (production)  Second commit (Mike Long)
+    * b7e6aa63087fcb1e64a5f2a99c8d255415d8cb99 2020-09-12  Initial commit (Mike Long)
+
+Get the artifact SHA from CDB using latest policy
+Get the list of commits
+Create the JSON
+Put the JSON
+"""
