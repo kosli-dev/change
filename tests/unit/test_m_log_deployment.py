@@ -1,4 +1,3 @@
-from cdb.create_deployment import create_deployment
 from commands import run, External
 from tests.utils import *
 
@@ -19,21 +18,7 @@ SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 USER_DATA = "/app/tests/data/user_data.json"
 
 
-def test_docker_image(capsys, mocker):
-    # make the cdb call
-    env = {
-        "CDB_ARTIFACT_DOCKER_IMAGE": IMAGE_NAME,
-        "CDB_DESCRIPTION": DESCRIPTION,
-        "CDB_ENVIRONMENT": ENVIRONMENT,
-        "CDB_CI_BUILD_URL": CI_BUILD_URL,
-        "CDB_USER_DATA": USER_DATA,
-    }
-    set_env_vars = {'CDB_ARTIFACT_SHA': SHA256}
-    with dry_run(env, set_env_vars):
-        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=SHA256)
-        create_deployment("tests/integration/test-pipefile.json")
-    verify_approval(capsys, ["out"])
-
+def test_docker_image(capsys):
     # extract data from approved cdb text file
     import inspect
     this_test = inspect.stack()[0].function

@@ -1,4 +1,3 @@
-from cdb.create_deployment import create_deployment
 from commands import run, External
 
 from tests.utils import *
@@ -26,17 +25,7 @@ USER_DATA = "/app/tests/data/user_data.json"
 USER_DATA_JSON = {'status': 'deployed'}
 
 
-def test_bitbucket(capsys, mocker):
-    # The original bitbucket code did not do a BitBucket translation for create_deployment
-    env = old_log_deployment_env()
-    set_env_vars = {'CDB_ARTIFACT_SHA': SHA256}
-
-    with dry_run(env, set_env_vars):
-        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=SHA256)
-        create_deployment("tests/data/Merkelypipe.acme-roadrunner.json")
-
-    verify_approval(capsys, ["out"])
-
+def test_bitbucket(capsys):
     # extract data from approved cdb text file
     import inspect
     this_test = inspect.stack()[0].function
@@ -75,18 +64,6 @@ def test_bitbucket(capsys, mocker):
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_deployment',
     ]
-
-
-def old_log_deployment_env():
-    return {
-        "CDB_HOST": "https://app.compliancedb.com",
-        "CDB_API_TOKEN": "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4",
-        "CDB_ARTIFACT_DOCKER_IMAGE": "acme/runner:4.56",
-        "CDB_ENVIRONMENT": ENVIRONMENT,
-        "CDB_DESCRIPTION": DESCRIPTION,
-        "CDB_CI_BUILD_URL": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
-        "CDB_USER_DATA": USER_DATA,
-    }
 
 
 def new_log_deployment_env():
