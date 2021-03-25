@@ -1,4 +1,3 @@
-from cdb.bitbucket import put_bitbucket_pull_request
 from commands import run, main, External
 
 from tests.utils import *
@@ -29,28 +28,6 @@ EVIDENCE_TYPE = "pull_request"
 
 
 def test_bitbucket(capsys, mocker):
-    env = {
-        "CDB_HOST": f"https://{DOMAIN}",
-        "CDB_API_TOKEN": API_TOKEN,
-        "CDB_ARTIFACT_SHA": SHA256,
-
-        "BITBUCKET_API_TOKEN": BITBUCKET_API_TOKEN,
-        "BITBUCKET_API_USER": BITBUCKET_API_USER,
-
-        "BITBUCKET_WORKSPACE": BB_ORG,
-        "BITBUCKET_REPO_SLUG": BB_REPO,
-        "BITBUCKET_COMMIT": COMMIT,
-    }
-
-    with dry_run(env):
-        rv = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response())
-        mocker.patch('cdb.bitbucket.requests.get', return_value=rv)
-        mocker.patch('cdb.cdb_utils.load_project_configuration', return_value=test_pipefile)
-        put_bitbucket_pull_request("tests/integration/test-pipefile.json")
-        mocker.stopall()
-
-    verify_approval(capsys, ["out"])
-
     # extract data from approved cdb text file
     import inspect
     this_test = inspect.stack()[0].function
