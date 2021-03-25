@@ -15,16 +15,18 @@ jobs:
           # fetch full history
           fetch-depth: 0
 
-
-      - name: Set Docker image name and short sha as environment variables
-        run: |
-          echo "UNTAGGED_IMAGE=merkely/change"     >> ${GITHUB_ENV}
-          echo "TAG=sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
+      - name: Set long sha env-var
+        run: echo "LONG_SHA=$(git log -1 --pretty=%H)" >> ${GITHUB_ENV}
+      - name: Set short sha env-var
+        run: echo "SHORT_SHA=${LONG_SHA:0:7}" >> ${GITHUB_ENV}
+      - name: Set tagged-image sha env-var
+        run: echo "TAGGED_IMAGE=merkely/change:sha-${SHORT_SHA}" >> ${GITHUB_ENV}
+      - name: Set merkely-fingerprint env-var
+        run: echo "MERKELY_FINGERPRINT=docker://${TAGGED_IMAGE}" >> ${GITHUB_ENV}
 
 
       - name: Approve deployment in Merkely
         env:
-          MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:sha-${TAG}
           MERKELY_NEWEST_SRC_COMMITISH: ${GITHUB_SHA}
           MERKELY_OLDEST_SRC_COMMITISH: "origin/latest"
           MERKELY_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
@@ -32,21 +34,20 @@ jobs:
           MERKELY_PIPELINE: ${{ secrets.MERKELY_PIPELINE }}
           MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
         run: |
-          docker pull ${UNTAGGED_IMAGE}:${TAG}
+          docker pull ${TAGGED_IMAGE}
           make merkely_approve_deployment
 
 
       - name: Deploy latest docker image
         run: |
-          docker tag ${UNTAGGED_IMAGE}:${TAG} ${UNTAGGED_IMAGE}:latest
+          docker tag ${TAGGED_IMAGE} merkely/change:latest
           docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
-          docker push ${UNTAGGED_IMAGE}:latest
+          docker push merkely/change:latest
           docker logout
 
 
       - name: Log the deployment in Merkely
         env:
-          MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:sha-${TAG}
           MERKELY_DESCRIPTION: "Deployment of ${UNTAGGED_IMAGE}:latest to docker hub"
           MERKELY_ENVIRONMENT: "docker_hub"
           MERKELY_OWNER: ${{ secrets.MERKELY_OWNER }}
