@@ -1,4 +1,3 @@
-from cdb.put_pipeline import put_pipeline
 from commands import run, External
 
 from tests.utils import *
@@ -13,12 +12,6 @@ API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
 def test_bitbucket(capsys):
-    env = {"CDB_API_TOKEN": API_TOKEN}
-    with dry_run({}):
-        put_pipeline("tests/data/Merkelypipe.acme-roadrunner.json", env)
-
-    verify_approval(capsys)
-
     # extract data from approved cdb text file
     import inspect
     this_test = inspect.stack()[0].function
