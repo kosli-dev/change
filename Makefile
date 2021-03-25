@@ -3,7 +3,9 @@ NAME   := ${APP}
 TAG    := $$(git log -1 --pretty=%h) # eg 5d72e2b
 SHA    := $$(git log -1 --pretty=%H) # eg 5d72e2b158be269390d4b3931ed5d0febd784fb5
 
-IMAGE  := merkely/${APP}:master
+# Th is this what's being built by the custom action docker/build-push-action@v1.1.0
+# in .github/workflows/main.yml
+IMAGE  := merkely/${APP}:sha-${TAG}
 
 LATEST := ${NAME}:latest
 CONTAINER := ${NAME}
@@ -55,14 +57,13 @@ delete_base_image:
 	@docker image rm ${BASE_IMAGE} 2> /dev/null || true
 
 # - - - - - - - - - - - - - - - - - - - -
-# image builds with Docker caching
 
-DEAD_build: # main.yml uses custom action docker/build-push-action@v1.1.0
+build:
 	@echo ${IMAGE}
 	@docker build \
 		--file Dockerfile \
 		--tag ${IMAGE} .
-	@docker tag ${IMAGE} ${LATEST}
+	@docker tag ${IMAGE} ${LATEST} # Needed?
 
 # - - - - - - - - - - - - - - - - - - - -
 # run tests without building by volume-mounting

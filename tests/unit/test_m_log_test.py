@@ -63,7 +63,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
                 external = External(env=env, docker_fingerprinter=fingerprinter)
                 method, url, payload = run(external)
 
-    capsys_read(capsys)
+    capsys_read(capsys)  # keeping stdout silent
 
     # verify matching data
     assert method == expected_method
