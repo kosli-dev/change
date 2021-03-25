@@ -42,7 +42,7 @@ def test_docker_image(capsys):
                 external = External(env=env, docker_fingerprinter=fingerprinter)
                 method, url, payload = run(external)
 
-    capsys.readouterr()
+    capsys_read(capsys)
 
     # verify matching data
     assert method == expected_method

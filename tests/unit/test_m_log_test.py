@@ -2,9 +2,6 @@ from commands import main, run, External
 
 from tests.utils import *
 
-APPROVAL_DIR = "tests/unit/approved_executions"
-APPROVAL_FILE = "test_m_log_test"
-
 USER_DATA = "/app/tests/data/user_data.json"
 
 DOMAIN = "app.compliancedb.com"
@@ -13,38 +10,7 @@ PIPELINE = "cdb-controls-test-pipeline"
 
 
 def test_non_zero_status_when_no_data_directory(capsys):
-    _image_name = "acme/widget:4.67"
-    sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
-    build_url = "https://gitlab/build/1457"
-    evidence_type = "coverage"
-
-     # extract data from approved cdb text file
-    import inspect
-    this_test = inspect.stack()[0].function
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
-
-    expected_method = "Putting"
-    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
-    expected_payload = {
-        "contents": {
-            "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites",
-            "is_compliant": True,
-            "url": build_url
-        },
-        "evidence_type": evidence_type
-    }
-
-    # verify data from approved cdb text file
-    assert old_method == expected_method
-    assert old_url == expected_url
-    assert old_payload == expected_payload
-
-    # new behaviour is to fail with non-zero exit status
     ev = new_log_test_env()
-    ev.pop('MERKELY_USER_DATA')
     with dry_run(ev) as env:
         status = main(External(env=env))
 
@@ -78,14 +44,6 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
 
-    # extract data from approved cdb text file
-    import inspect
-    this_test = inspect.stack()[0].function
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
-
     expected_method = "Putting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
@@ -96,11 +54,6 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
         },
         "evidence_type": evidence_type
     }
-
-    # verify data from approved cdb text file
-    assert old_method == expected_method
-    assert old_url == expected_url
-    assert old_payload == expected_payload
 
     # make merkely call
     ev = new_log_test_env()

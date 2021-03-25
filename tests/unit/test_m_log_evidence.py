@@ -2,56 +2,35 @@ from commands import run, External
 
 from tests.utils import *
 
-APPROVAL_DIR = "tests/unit/approved_executions"
-APPROVAL_FILE = "test_m_log_evidence"
-
 DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
 PIPELINE = "cdb-controls-test-pipeline"
-
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
+
+IMAGE_NAME = "acme/widget:4.67"
+SHA256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
+BUILD_URL = "https://gitlab/build/1956"
 
 
 def test_docker_protocol(capsys):
-    # input data
-    build_url = "https://gitlab/build/1956"
-    sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
-    protocol = "docker://"
-    image_name = "acme/widget:4.67"
-
-    # extract data from approved cdb text file
-    this_test = "test_docker_protocol"
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
-
     expected_method = "Putting"
-    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
         "contents": {
             "description": "branch coverage",
             "is_compliant": True,
-            "url": build_url
+            "url": BUILD_URL
         },
-        "evidence_type": "unit_test"
+        "evidence_type": "unit_test",
+        "user_data": {},
     }
-
-    # verify data from approved cdb text file
-    assert old_method == expected_method
-    assert old_url == expected_url
-    assert old_payload == expected_payload
 
     # make merkely call
     ev = new_log_evidence_env()
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
     with dry_run(ev) as env:
-        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
-
-    # CHANGE IN BEHAVIOUR
-    expected_payload['user_data'] = {}
 
     # verify matching data
     assert method == expected_method
@@ -65,17 +44,15 @@ def test_docker_protocol(capsys):
 
 
 def new_log_evidence_env():
-    build_url = "https://gitlab/build/1956"
     protocol = "docker://"
-    image_name = "acme/widget:4.67"
     return {
         "MERKELY_COMMAND": "log_evidence",
         "MERKELY_OWNER": OWNER,
         "MERKELY_PIPELINE": PIPELINE,
-        "MERKELY_FINGERPRINT": f"{protocol}{image_name}",
+        "MERKELY_FINGERPRINT": f"{protocol}{IMAGE_NAME}",
         "MERKELY_API_TOKEN": API_TOKEN,
         "MERKELY_HOST": f"https://{DOMAIN}",
-        "MERKELY_CI_BUILD_URL": build_url,
+        "MERKELY_CI_BUILD_URL": BUILD_URL,
         "MERKELY_IS_COMPLIANT": "TRUE",
         "MERKELY_EVIDENCE_TYPE": "unit_test",
         "MERKELY_DESCRIPTION": "branch coverage"
