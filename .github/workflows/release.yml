@@ -22,13 +22,9 @@ jobs:
           echo "TAG=sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
 
 
-      - name: Set merkely-fingerprint env-var
-        run: echo "MERKELY_FINGERPRINT=docker://${UNTAGGED_IMAGE}:sha-${TAG}" >> ${GITHUB_ENV}
-
-
       - name: Approve deployment in Merkely
         env:
-          MERKELY_FINGERPRINT: ${MERKELY_FINGERPRINT}
+          MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:sha-${TAG}
           MERKELY_NEWEST_SRC_COMMITISH: ${GITHUB_SHA}
           MERKELY_OLDEST_SRC_COMMITISH: "origin/latest"
           MERKELY_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
@@ -50,7 +46,7 @@ jobs:
 
       - name: Log the deployment in Merkely
         env:
-          MERKELY_FINGERPRINT: ${MERKELY_FINGERPRINT}
+          MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:sha-${TAG}
           MERKELY_DESCRIPTION: "Deployment of ${UNTAGGED_IMAGE}:latest to docker hub"
           MERKELY_ENVIRONMENT: "docker_hub"
           MERKELY_OWNER: ${{ secrets.MERKELY_OWNER }}
