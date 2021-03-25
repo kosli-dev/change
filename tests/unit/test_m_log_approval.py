@@ -4,9 +4,6 @@ from errors import ChangeError
 from tests.utils import *
 from pytest import raises
 
-APPROVAL_DIR = "tests/unit/approved_executions"
-APPROVAL_FILE = "test_m_log_approval"
-
 DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
 PIPELINE = "cdb-controls-test-pipeline"

@@ -2,28 +2,17 @@ from commands import main, run, Command, External
 
 from tests.utils import *
 
-APPROVAL_DIR = "tests/unit/approved_executions"
-APPROVAL_FILE = "test_m_log_artifact"
-
 DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
 PIPELINE = "cdb-controls-test-pipeline"
 
 
 def test_all_env_vars_image(capsys):
-    # input data
     sha256 = "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"
     commit = "12037940e4e7503055d8a8eea87e177f04f14616"
     image_name = "acme/widget:3.4"
     build_url = "https://gitlab/build/1456"
     build_number = "23"
-
-    # extract data from approved cdb text file
-    this_test = "test_all_env_vars_image"
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
 
     expected_method = "Putting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
@@ -34,13 +23,9 @@ def test_all_env_vars_image(capsys):
         "filename": image_name,
         "git_commit": commit,
         "is_compliant": True,
-        "sha256": sha256
+        "sha256": sha256,
+        "user_data": {}
     }
-
-    # verify data from approved cdb text file
-    assert old_method == expected_method
-    assert old_url == expected_url
-    assert old_payload == expected_payload
 
     # make merkely call
     protocol = "docker://"
@@ -50,9 +35,6 @@ def test_all_env_vars_image(capsys):
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
-
-    # CHANGE IN BEHAVIOUR
-    expected_payload['user_data'] = {}
 
     # verify matching data
     assert method == expected_method
@@ -65,8 +47,7 @@ def test_all_env_vars_image(capsys):
     ]
 
 
-def test_all_env_vars_file(capsys, mocker):
-    # input data
+def test_all_env_vars_file(capsys):
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
     sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
     directory = "app/tests/data"
@@ -75,29 +56,18 @@ def test_all_env_vars_file(capsys, mocker):
     build_url = "https://gitlab/build/1456"
     build_number = '23'
 
-    # extract data from approved cdb text file
-    this_test = "test_all_env_vars_file"
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
-
     expected_method = "Putting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
         'build_url': build_url,
         'commit_url': commit_url(commit),
         'description': f'Created by build {build_number}',
-        'filename': artifact_name,
+        'filename': filename,
         'git_commit': commit,
         'is_compliant': True,
         'sha256': sha256,
+        'user_data': {},
     }
-
-    # verify data from approved cdb text file
-    assert old_method == expected_method
-    assert old_url == expected_url
-    assert old_payload == expected_payload
 
     # make merkely call
     protocol = "file://"
@@ -111,10 +81,6 @@ def test_all_env_vars_file(capsys, mocker):
     # verify matching data
     assert method == expected_method
     assert url == expected_url
-
-    # CHANGE IN BEHAVIOUR
-    expected_payload['user_data'] = {}
-    expected_payload['filename'] = filename
     assert payload == expected_payload
 
     assert extract_blurb(capsys_read(capsys)) == [
@@ -130,13 +96,6 @@ def test_all_env_vars_sha(capsys):
     build_url = "https://gitlab/build/1456"
     build_number = '23'
 
-    # extract data from approved cdb text file
-    this_test = "test_all_env_vars_sha"
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
-
     expected_method = "Putting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
@@ -146,13 +105,9 @@ def test_all_env_vars_sha(capsys):
         "filename": artifact_name,
         "git_commit": commit,
         "is_compliant": True,
-        "sha256": sha256
+        "sha256": sha256,
+        "user_data": {},
     }
-
-    # verify data from approved cdb text file
-    assert old_method == expected_method
-    assert old_url == expected_url
-    assert old_payload == expected_payload
 
     # make merkely call
     protocol = "sha256://"
@@ -160,9 +115,6 @@ def test_all_env_vars_sha(capsys):
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{artifact_name}"
     with dry_run(ev) as env:
         method, url, payload = run(External(env=env))
-
-    # CHANGE IN BEHAVIOUR
-    expected_payload['user_data'] = {}
 
     # verify matching data
     assert method == expected_method
@@ -173,13 +125,6 @@ def test_all_env_vars_sha(capsys):
         'MERKELY_COMMAND=log_artifact',
         'MERKELY_IS_COMPLIANT: True',
     ]
-
-
-def make_command_env_vars():
-    klass = Command.named('log_artifact')
-    env = new_log_artifact_env()
-    external = External(env=env)
-    return klass(external).merkely_env_vars
 
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
