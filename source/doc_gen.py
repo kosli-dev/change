@@ -21,6 +21,7 @@ def auto_generate():
             'log_evidence',
             'log_test',
             'log_approval',
+            'request_approval',
             'control_deployment',
             'log_deployment',
         ]
