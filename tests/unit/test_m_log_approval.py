@@ -18,31 +18,26 @@ def test_docker_image(capsys):
     image_name = "acme/runner:4.56"
     sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 
-    # extract data from approved cdb text file
-    this_test = "test_docker_image"
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
-
     expected_method = "Posting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/approvals/"
     expected_payload = {
         "artifact_sha256": sha256,
         "description": "The approval description here",
-        "is_approved": True,
+        'user_data': {},
         "src_commit_list": [
             "8f5b384644eb83e7f2a6d9499539a077e7256b8b",
             "e0ad84e1a2464a9486e777c1ecde162edff930a9"
         ],
+        "approvals": [
+            {
+                "state": "APPROVED",
+                "comment": "The approval description here",
+                "approved_by": "External",
+                "approval_url": "undefined"
+            }
+        ]
     }
 
-    # verify data from approved cdb text file
-    assert old_method == expected_method
-    assert old_url == expected_url
-    assert old_payload == expected_payload
-
-    # make merkely call
     ev = new_log_approval_env()
     with dry_run(ev) as env:
         with ScopedDirCopier("/test_src", "/src"):
@@ -50,19 +45,7 @@ def test_docker_image(capsys):
                 external = External(env=env, docker_fingerprinter=fingerprinter)
                 method, url, payload = run(external)
 
-    capsys_read(capsys)
-
-    # CHANGE IN BEHAVIOUR
-    expected_payload['user_data'] = {}
-    del expected_payload['is_approved']
-    expected_payload['approvals'] = [
-        {
-            "state": "APPROVED",
-            "comment": expected_payload["description"],
-            "approved_by": "External",
-            "approval_url": "undefined"
-        }
-    ]
+    capsys.readouterr()
 
     # verify matching data
     assert method == expected_method
@@ -70,13 +53,12 @@ def test_docker_image(capsys):
     assert payload == expected_payload
 
 
-def test_raises_when_src_repo_root_does_not_exist(capsys):
+def test_raises_when_src_repo_root_does_not_exist():
     ev = new_log_approval_env()
     with dry_run(ev) as env:
         with raises(ChangeError) as exc:
             run(External(env=env))
 
-    silent(capsys)
     assert str(exc.value) == "Error: Repository not found at /src/.git"
 
 
