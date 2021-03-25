@@ -3,7 +3,7 @@ from commands import Command
 from env_vars import *
 from cdb.api_schema import ApiSchema
 from cdb.http import http_put_payload
-from cdb.control_junit import is_compliant_test_results
+from junitparser import JUnitXml
 
 DEFAULT_TEST_DIR = "/data/junit/"
 
@@ -103,6 +103,15 @@ class TestResultsDirEnvVar(StaticDefaultedEnvVar):
             return True, "${PWD}/build/test/"
         return False, ""
 
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def is_compliant_suite(junit_xml):
+    if junit_xml.failures != 0:
+        return False, "Tests contain failures"
+    if junit_xml.errors != 0:
+        return False, "Tests contain errors"
+    return True, "All tests passed"
+
 
 def is_compliant_tests_directory(test_results_directory):
     results_files = ls_test_results(test_results_directory)
@@ -124,3 +133,27 @@ def ls_test_results(root_directory):
         test_files = [file for file in files if not file.endswith(exclude)]
     return test_files
 
+
+def load_test_results(file_path):
+    test_xml = JUnitXml.fromfile(file_path)
+    return test_xml
+
+
+def is_compliant_test_results(file_path):
+    """
+    This parses a junit xml file to determine if there are any errors or failures
+
+    return:
+        A tuple, with is_compliant, plus a message string
+    """
+    test_xml = load_test_results(file_path)
+    if test_xml._tag == "testsuites":
+        for suite in test_xml:
+            suite_is_compliant, message = is_compliant_suite(suite)
+            if not suite_is_compliant:
+                return suite_is_compliant, message
+        # every test suite passed, so return True
+        return True, "All tests passed"
+    if test_xml._tag == "testsuite":
+        return is_compliant_suite(test_xml)
+    return False, "Could not find test suite(s)"

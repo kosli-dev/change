@@ -1,4 +1,3 @@
-from cdb.control_junit import control_junit
 from commands import main, run, External
 
 from tests.utils import *
@@ -13,18 +12,11 @@ OWNER = "compliancedb"
 PIPELINE = "cdb-controls-test-pipeline"
 
 
-def test_non_zero_status_when_no_data_directory(capsys, mocker):
+def test_non_zero_status_when_no_data_directory(capsys):
     _image_name = "acme/widget:4.67"
     sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
-    env = old_control_junit_env()
-    set_env_vars = {}
-    with dry_run(env, set_env_vars):
-        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
-        control_junit("tests/integration/test-pipefile.json")
-
-    verify_approval(capsys, ["out"])
 
      # extract data from approved cdb text file
     import inspect
@@ -66,7 +58,7 @@ def test_non_zero_status_when_no_data_directory(capsys, mocker):
     ]
 
 
-def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
+def test_zero_exit_status_when_there_is_a_data_directory(capsys):
     """
     The cdb code looks at CDB_USER_DATA but the line to add
     the json (in cdb_utils.py build_evidence_dict) is this:
@@ -85,14 +77,6 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys, mocker):
     sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
-    env = old_control_junit_env()
-    set_env_vars = {}
-    with dry_run(env, set_env_vars):
-        with ScopedDirCopier('/app/tests/data/control_junit/xml-with-passed-results', '/data/junit'):
-            mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=sha256)
-            control_junit("tests/integration/test-pipefile.json")
-
-    verify_approval(capsys, ["out"])
 
     # extract data from approved cdb text file
     import inspect
@@ -189,15 +173,6 @@ API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 BUILD_URL = "https://gitlab/build/1457"
 IMAGE_NAME = "acme/widget:4.67"
 EVIDENCE_TYPE = "coverage"
-
-
-def old_control_junit_env():
-    return {
-        "CDB_ARTIFACT_DOCKER_IMAGE": IMAGE_NAME,
-        "CDB_EVIDENCE_TYPE": EVIDENCE_TYPE,
-        "CDB_CI_BUILD_URL": BUILD_URL,
-        "CDB_API_TOKEN": API_TOKEN,
-    }
 
 
 def new_log_test_env():

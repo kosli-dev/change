@@ -1,5 +1,4 @@
 from commands import run, External
-from commands.bitbucket import BitbucketPipe, schema
 
 from tests.utils import *
 
@@ -21,20 +20,7 @@ IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 
 
-def test_required_env_vars(capsys, mocker):
-    env = old_log_artifact_env()
-    set_env_vars = {
-        'CDB_ARTIFACT_GIT_URL': f"{BB}/{BB_ORG}/{BB_REPO}/commits/{COMMIT}",
-        'CDB_ARTIFACT_GIT_COMMIT': COMMIT,
-        'CDB_BUILD_NUMBER': BUILD_NUMBER,
-        'CDB_CI_BUILD_URL': f'{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}',
-        'CDB_ARTIFACT_SHA': SHA256,
-    }
-    with dry_run(env, set_env_vars):
-        pipe = BitbucketPipe(pipe_metadata='/pipe.yml', schema=schema)
-        mocker.patch('cdb.cdb_utils.calculate_sha_digest_for_docker_image', return_value=SHA256)
-        pipe.run()
-
+def test_required_env_vars(capsys):
     # extract data from approved cdb text file
     import inspect
     this_test = inspect.stack()[0].function
@@ -76,20 +62,6 @@ def test_required_env_vars(capsys, mocker):
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
-
-
-def old_log_artifact_env():
-    merkelypipe = "pipefile.json"
-    return {
-        "CDB_COMMAND": "put_artifact_image",
-        "CDB_PIPELINE_DEFINITION": f"tests/data/{merkelypipe}",
-        "CDB_API_TOKEN": API_TOKEN,
-        "CDB_ARTIFACT_DOCKER_IMAGE": IMAGE_NAME,
-        "BITBUCKET_COMMIT": COMMIT,
-        "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
-        "BITBUCKET_WORKSPACE": BB_ORG,
-        "BITBUCKET_REPO_SLUG": BB_REPO
-    }
 
 
 def new_log_artifact_env():

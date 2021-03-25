@@ -1,5 +1,4 @@
 from commands import run, External
-from commands.bitbucket import BitbucketPipe, schema
 
 from tests.utils import *
 
@@ -26,29 +25,6 @@ API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
 def test_bitbucket(capsys):
-    env = {
-        "CDB_COMMAND": "control_junit",
-        "CDB_PIPELINE_DEFINITION": "tests/data/pipefile.json",
-        "CDB_API_TOKEN": API_TOKEN,
-        "CDB_ARTIFACT_SHA": SHA256,
-        "CDB_TEST_RESULTS_DIR": "/app/tests/data/control_junit/xml-with-fails",
-        "BITBUCKET_COMMIT": COMMIT,
-        "BITBUCKET_BUILD_NUMBER": BUILD_NUMBER,
-        "BITBUCKET_WORKSPACE": BB_ORG,
-        "BITBUCKET_REPO_SLUG": BB_REPO,
-    }
-    set_env_vars = {
-        'CDB_ARTIFACT_GIT_URL': f'https://{BB}/{BB_ORG}/{BB_REPO}/commits/{COMMIT}',
-        'CDB_ARTIFACT_GIT_COMMIT': COMMIT,
-        'CDB_BUILD_NUMBER': BUILD_NUMBER,
-        'CDB_CI_BUILD_URL': f'https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}'
-     }
-    with dry_run(env, set_env_vars):
-        pipe = BitbucketPipe(pipe_metadata='/pipe.yml', schema=schema)
-        pipe.run()
-
-    verify_approval(capsys)
-
     # extract data from approved cdb text file
     import inspect
     this_test = inspect.stack()[0].function
