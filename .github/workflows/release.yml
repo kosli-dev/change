@@ -22,9 +22,9 @@ jobs:
           echo "TAG=sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
 
 
-      - name: Approve deployment in Merkely, update latest docker image and git branch
+      - name: Approve deployment in Merkely
         env:
-          MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:latest
+          MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:${TAG}
           MERKELY_NEWEST_SRC_COMMITISH: ${GITHUB_SHA}
           MERKELY_OLDEST_SRC_COMMITISH: "origin/latest"
           MERKELY_DESCRIPTION: "Approval created in github actions on git tag ${GITHUB_REF}"
@@ -32,26 +32,21 @@ jobs:
           MERKELY_PIPELINE: ${{ secrets.MERKELY_PIPELINE }}
           MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
         run: |
+          docker pull ${UNTAGGED_IMAGE}:${TAG}
           make merkely_approve_deployment
 
-          # Deploy latest docker image
-          docker pull ${UNTAGGED_IMAGE}:${TAG}
+
+      - name: Deploy latest docker image
+        run: |
           docker tag ${UNTAGGED_IMAGE}:${TAG} ${UNTAGGED_IMAGE}:latest
           docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
           docker push ${UNTAGGED_IMAGE}:latest
-
-          git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
-
-          # update git branch
-          # Merge latest -> master
-          git checkout latest
-          git merge --ff-only ${GITHUB_SHA}
-          git push origin latest
+          docker logout
 
 
       - name: Log the deployment in Merkely
         env:
-          MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:latest
+          MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:${TAG}
           MERKELY_DESCRIPTION: "Deployment of ${UNTAGGED_IMAGE}:latest to docker hub"
           MERKELY_ENVIRONMENT: "docker_hub"
           MERKELY_OWNER: ${{ secrets.MERKELY_OWNER }}
@@ -59,3 +54,13 @@ jobs:
           MERKELY_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
         run: |
           make merkely_log_deployment
+
+
+      - name: Update git branch
+        run: |
+          # For debugging
+          git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
+
+          git checkout latest
+          git merge --ff-only ${GITHUB_SHA}
+          git push origin latest
