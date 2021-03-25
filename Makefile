@@ -57,7 +57,7 @@ delete_base_image:
 # - - - - - - - - - - - - - - - - - - - -
 # image builds with Docker caching
 
-build:
+DEAD_build: # main.yml uses custom action docker/build-push-action@v1.1.0
 	@echo ${IMAGE}
 	@docker build \
 		--file Dockerfile \
@@ -177,23 +177,6 @@ merkely_log_artifact:
         ${IMAGE}
 
 
-merkely_log_deployment:
-	docker run \
-        --env MERKELY_COMMAND=log_deployment \
-        --env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
-        --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
-        --env MERKELY_DESCRIPTION="${MERKELY_DESCRIPTION}" \
-        --env MERKELY_ENVIRONMENT=${MERKELY_ENVIRONMENT} \
-        --env MERKELY_USER_DATA=${MERKELY_USER_DATA} \
-        --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
-        --env MERKELY_HOST=${MERKELY_HOST} \
-        --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
-        --env-file ${CI_ENV_FILE} \
-        --rm \
-        --volume=/var/run/docker.sock:/var/run/docker.sock \
-        ${IMAGE}
-
-
 merkely_log_evidence:
 	docker run \
         --env MERKELY_COMMAND=log_evidence \
@@ -227,6 +210,25 @@ merkely_log_test:
 		${IMAGE}
 
 
+merkely_approve_deployment:
+	docker run \
+		--env MERKELY_COMMAND=approve_deployment \
+		--env MERKELY_FINGERPRINT="${MERKELY_FINGERPRINT}" \
+		--env MERKELY_OLDEST_SRC_COMMITISH="${MERKELY_OLDEST_SRC_COMMITISH}" \
+		--env MERKELY_NEWEST_SRC_COMMITISH="${MERKELY_NEWEST_SRC_COMMITISH}" \
+		--env MERKELY_DESCRIPTION="${MERKELY_DESCRIPTION}" \
+		--env MERKELY_SRC_REPO_ROOT="${MERKELY_SRC_REPO_ROOT}" \
+		--env MERKELY_USER_DATA="${MERKELY_USER_DATA}" \
+		--env MERKELY_API_TOKEN="${MERKELY_API_TOKEN}" \
+		--env MERKELY_HOST="${MERKELY_HOST}" \
+        --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
+        --env-file ${CI_ENV_FILE} \
+		--rm \
+		--volume ${PWD}:/src \
+		--volume /var/run/docker.sock:/var/run/docker.sock \
+		merkely/change
+
+
 merkely_log_approval:
 	docker run \
 		--env MERKELY_COMMAND=log_approval \
@@ -257,3 +259,20 @@ merkely_control_deployment:
 		--rm \
 		--volume /var/run/docker.sock:/var/run/docker.sock \
 		merkely/change
+
+
+merkely_log_deployment:
+	docker run \
+        --env MERKELY_COMMAND=log_deployment \
+        --env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
+        --env MERKELY_CI_BUILD_URL=${MERKELY_CI_BUILD_URL} \
+        --env MERKELY_DESCRIPTION="${MERKELY_DESCRIPTION}" \
+        --env MERKELY_ENVIRONMENT=${MERKELY_ENVIRONMENT} \
+        --env MERKELY_USER_DATA=${MERKELY_USER_DATA} \
+        --env MERKELY_API_TOKEN=${MERKELY_API_TOKEN} \
+        --env MERKELY_HOST=${MERKELY_HOST} \
+        --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
+        --env-file ${CI_ENV_FILE} \
+        --rm \
+        --volume=/var/run/docker.sock:/var/run/docker.sock \
+        ${IMAGE}

@@ -22,7 +22,7 @@ jobs:
           echo "TAG=sha-$(git log -1 --pretty=%h)" >> ${GITHUB_ENV}
 
 
-      - name: Create approval in Merkely, update latest docker image and git branch
+      - name: Approve deployment in Merkely, update latest docker image and git branch
         env:
           MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:latest
           MERKELY_NEWEST_SRC_COMMITISH: ${GITHUB_SHA}
@@ -32,21 +32,24 @@ jobs:
           MERKELY_PIPELINE: ${{ secrets.MERKELY_PIPELINE }}
           MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
         run: |
+          make merkely_approve_deployment
+
+          # Deploy latest docker image
           docker pull ${UNTAGGED_IMAGE}:${TAG}
           docker tag ${UNTAGGED_IMAGE}:${TAG} ${UNTAGGED_IMAGE}:latest
           docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
           docker push ${UNTAGGED_IMAGE}:latest
+
           git log --graph --full-history --all --color --date=short --pretty=format:"%Cred%x09%h %Creset%ad%Cblue%d %Creset %s %C(bold)(%an)%Creset" | head -n 30
 
-          make merkely_log_approval
-
+          # update git branch
           # Merge latest -> master
           git checkout latest
           git merge --ff-only ${GITHUB_SHA}
           git push origin latest
 
 
-      - name: Create the deployment in ComplianceDB
+      - name: Log the deployment in Merkely
         env:
           MERKELY_FINGERPRINT: docker://${UNTAGGED_IMAGE}:latest
           MERKELY_DESCRIPTION: "Deployment of ${UNTAGGED_IMAGE}:latest to docker hub"
