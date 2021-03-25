@@ -10,6 +10,7 @@ from .log_deployment import LogDeployment
 from .log_test import LogTest
 from .log_evidence import LogEvidence
 from .log_approval import LogApproval
+from .approve_deployment import ApproveDeployment
 from .request_approval import RequestApproval
 
 from .runner import run, main

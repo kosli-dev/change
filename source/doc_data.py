@@ -96,6 +96,7 @@ yml_name_texts = {
     'log_evidence': 'Log evidence in Merkely',
     'log_test': 'Log unit test results in Merkely',
     'request_approval': 'Request approval in Merkely',
+    'approve_deployment': 'Approve a deployment',
     'control_deployment': 'Fail the pipeline unless approved for deployment in Merkely'
 }
 
