@@ -1,3 +1,93 @@
+                          DONE           DONE
+                          REQUIRED       OPTIONAL   IN-README
+put_artifact()            yes            yes        yes
+control_junit()           yes            yes        yes
+put_artifact_image()      yes            yes        yes
+put_evidence()            yes            yes        yes
+put_pipeline()            yes            yes        yes
+create_deployment()       yes            yes        yes
+
+control_latest_release()  yes            yes         yes
+
+create_approval()         yes            yes        yes
+create_release()          no             no         no  (example in Makefile)
+put_project()             no             no         no  (example in Makefile)
+
+put_bitbucket_pr()        no             no         yes (see tests/bb_integration)
+
+
+There is also put_review() but that looks unstarted.
+
+Misc notes
+==========
+
+create_deployment()
+-------------------
+1) The code uses CDB_USER_DATA but README.md originally
+contained CDB_USER_DATA_FILE. For now README.md has
+been edited to CDB_USER_DATA.
+
+2) :CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME
+o) if CDB_ARTIFACT_SHA is set it is used, and the other 2, if set, are ignored
+o) if CDB_ARTIFACT_FILENAME is set, CDB_ARTIFACT_DOCKER_IMAGE, if set, is ignored
+o) if CDB_ARTIFACT_DOCKER_IMAGE is set, it is used
+
+3) create_approval() is missing a docker-run example in README.md
+
+
+put_evidence()
+--------------
+1) CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_SHA
+If you provide CDB_ARTIFACT_SHA, it is used.
+If you provide CDB_ARTIFACT_DOCKER_IMAGE (and not CDB_ARTIFACT_SHA) it is used.
+If both are provided, CDB_ARTIFACT_SHA is used, and CDB_ARTIFACT_DOCKER_IMAGE is ignored.
+
+
+create_approval()
+-----------------
+1) CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME are required ENV VARS.
+Added CDB_ARTIFACT_FILENAME to its README.md and made one of these three Required
+Readme says "if not given then this is retrieved from CDB" ?
+
+
+put_artifact_image()
+--------------------
+1) CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_SHA, One must be provided.
+So you do not have to provide CDB_ARTIFACT_DOCKER_IMAGE
+despite the name of this command being put_artifact_image().
+2) CDB_BUILD_NUMBER is an optional env var used for description of artifact
+
+control_junit()
+---------------
+1) Using CDB_EVIDENCE_TYPE set to a dir that does not exist, eg /data/test/junit
+Dir is _not_ checked. Results in message
+"JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 0 test suites"
+
+2) Statement on line 73 control_junit.py -when test suite(s) not found in Junit xml - cannot be tested
+because if such condition is met then statement load_test_results() on line 63 will throw error:
+"junitparser.junitparser.JUnitXmlError: Invalid format." Line 73 seems to be a dead code.
+
+put_artifact()
+--------------
+1) CDB_ARTIFACT_FILENAME must be defined.
+
+control_latest_release()
+------------------------
+The function works not only with CDB_ARTIFACT_SHA but with CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME as well.
+Added this information to README.md
+
+
+create_release()
+----------------
+Description in README.md is absent; needs to be added.
+| CDB_HOST | Optional | The host name for ComplianceDB, default is https://app.compliancedb.com |
+| CDB_API_TOKEN | Required | Your API token for ComplianceDB |
+| CDB_ARTIFACT_SHA or CDB_ARTIFACT_DOCKER_IMAGE or CDB_ARTIFACT_FILENAME| Required | The SHA256 for the artifact that you would like to approve, if not given then this is retrieved from CDB  |
+| CDB_BASE_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the approval |
+| CDB_TARGET_SRC_COMMITISH | Required | The source commit-ish for the oldest change in the approval |
+| CDB_RELEASE_DESCRIPTION | Optional | A description for the approval |
+| CDB_SRC_REPO_ROOT | Optional | The path where the source git repository is mounted, default to `/src` |
+
 
 # Further tests
 # sha256 and SHA does not look like a SHA?

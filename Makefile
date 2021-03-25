@@ -76,8 +76,6 @@ define TESTS_VOLUME_MOUNT
 endef
 
 
-test_all: test_unit test_integration
-
 test_unit:
 	docker rm --force ${CONTAINER} 2> /dev/null || true
 	$(eval COVERAGE_DIR = tmp/coverage/unit)
@@ -92,19 +90,6 @@ test_unit:
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
 
-test_integration:
-	@docker rm --force ${CONTAINER} 2> /dev/null || true
-	$(eval COVERAGE_DIR = tmp/coverage/integration)
-	@rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
-	@docker run \
-		--name ${CONTAINER} \
-		${DOCKER_RUN_TTY} \
-		${DOCKER_RUN_INTERACTIVE} \
-		${SOURCE_VOLUME_MOUNTS} \
-		${TESTS_VOLUME_MOUNT} \
-		--volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
-		--entrypoint ./tests/integration/coverage_entrypoint.sh \
-			${IMAGE} tests/integration/${TARGET}
 
 pytest_help:
 	@docker run \

@@ -1,2 +1,0 @@
-Getting pull requests from https://api.bitbucket.org/2.0/repositories/None/None/commit/None/pullrequests
-Repository pull requests are still being indexed, please retry.

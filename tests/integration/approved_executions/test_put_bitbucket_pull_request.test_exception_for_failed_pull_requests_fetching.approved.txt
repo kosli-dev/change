@@ -1,3 +1,0 @@
-Getting pull requests from https://api.bitbucket.org/2.0/repositories/None/None/commit/None/pullrequests
-Exception occurred in fetching pull requests. Http return code is 401
-    None

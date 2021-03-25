@@ -1,3 +1,0 @@
-INCOMPLIANT: latest release 1234
-    released sha: 99cdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212 
-    expected sha: aacdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46333 

@@ -65,7 +65,7 @@ jobs:
 
     - name: Run tests
       run: |
-        make build test_all
+        make build test_unit
 
 
     - name: Log test results to Merkely
