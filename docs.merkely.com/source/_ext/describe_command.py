@@ -15,9 +15,9 @@ class DescribeCommand(Directive):
         if description_type == "summary":
             return summary(name, ci)
         if description_type == "invocation_full":
-            return full_invocation(name, ci)
+            return invocation_full(name, ci)
         if description_type == "invocation_minimum":
-            return min_invocation(name)
+            return invocation_minimum(name)
         if description_type == "parameters":
             return parameters(name, ci)
         return []
@@ -31,10 +31,10 @@ def summary(name, ci):
 REFERENCE_DIR = '/docs/build/reference'
 
 
-def full_invocation(name, ci):
+def invocation_full(name, ci):
     filename = f"{REFERENCE_DIR}/{ci}/{name}.txt"
     with open(filename, "rt") as file:
-        text = "".join(file.readlines())
+        text = file.read()
 
     div = nodes.container()
     div += nodes.literal_block(text=text)
@@ -54,10 +54,10 @@ def full_invocation(name, ci):
     return [div]
 
 
-def min_invocation(name):
+def invocation_minimum(name):
     filename = f"{REFERENCE_DIR}/min/{name}.txt"
     with open(filename, "rt") as file:
-        text = "".join(file.readlines())
+        text = file.read()
     return [nodes.literal_block(text=text)]
 
 
