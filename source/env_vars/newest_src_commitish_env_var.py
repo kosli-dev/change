@@ -1,12 +1,11 @@
 from env_vars import RequiredEnvVar
 
-NOTES = "The source commit-ish for the newest change in the approval."
-
 
 class NewestSrcCommitishEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_NEWEST_SRC_COMMITISH", NOTES)
+        notes = "The source commit-ish for the newest change in the approval."
+        super().__init__(env, "MERKELY_NEWEST_SRC_COMMITISH", notes)
 
     def ci_doc_example(self, ci_name, _command_name):
         if ci_name == 'github':

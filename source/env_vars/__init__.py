@@ -15,6 +15,7 @@ from .pipeline_env_var import PipelineEnvVar
 from .pipe_path_env_var import PipePathEnvVar
 from .newest_src_commitish_env_var import NewestSrcCommitishEnvVar
 from .oldest_src_commitish_env_var import OldestSrcCommitishEnvVar
+from .src_repo_root_env_var import SrcRepoRootEnvVar
 from .evidence_type_env_var import EvidenceTypeEnvVar
 from .host_env_var import HostEnvVar
 from .user_data_env_var import UserDataEnvVar
