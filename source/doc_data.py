@@ -5,7 +5,7 @@ from commands import Command, External
 REFERENCE_DIR = '/docs/build/reference'
 
 
-def auto_generate():
+def auto_generate_txt_files():
     """
     Called from docs.merkely.com/source/conf.py    
     Generates text files containing documentation fragment for each

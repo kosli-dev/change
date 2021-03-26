@@ -44,8 +44,10 @@ def test_trailing_whitespace_is_stripped_from_image_name():
     fingerprinter = DockerFingerprinter()
     image_name = " " * 4
     string = DOCKER_PROTOCOL + image_name
+
     def assert_raises_empty_image(method_name):
         with raises(ChangeError) as exc:
             getattr(fingerprinter, method_name)(string)
         assert str(exc.value) == f"Empty {DOCKER_PROTOCOL} fingerprint"
+
     assert_raises_empty_image('sha')

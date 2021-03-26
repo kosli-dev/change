@@ -1,12 +1,11 @@
-from pathlib import Path
 from commands import Command
 from functools import cmp_to_key
 
-# The Makefile volume-mounts docs.merkely.com/ to docs/
+# The Makefile volume-mounts docs.merkely.com/ to /docs/
 REFERENCE_DIR = '/docs/source/reference'
 
 
-def auto_generate():
+def auto_generate_rst_files():
     """
     Called from docs.merkely.com/source/conf.py
     Builds the Reference .rst files for each command.
@@ -14,6 +13,7 @@ def auto_generate():
     command_names = Command.names()
     command_names.remove('control_pull_request')  # Currently only github
     command_names.remove('log_approval')  # deprecated
+
     def cmp_names(lhs, rhs):
         order = [
             'declare_pipeline',
