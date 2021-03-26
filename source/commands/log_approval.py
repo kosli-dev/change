@@ -87,8 +87,7 @@ class IsApprovedEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
         default = 'TRUE'
-        notes = f"Defaults to {default}"
-        super().__init__(env, "MERKELY_IS_APPROVED", default, notes)
+        super().__init__(env, "MERKELY_IS_APPROVED", default, '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -97,12 +96,15 @@ class IsApprovedEnvVar(StaticDefaultedEnvVar):
             return True, '"TRUE"'
         return False, ""
 
+    def doc_note(self, ci_name, _command_name):
+        return f'Defaults to "TRUE"'
+
+
 
 class DescriptionEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        notes = f"A description for the approval."
-        super().__init__(env, "MERKELY_DESCRIPTION", notes)
+        super().__init__(env, "MERKELY_DESCRIPTION", '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -110,3 +112,6 @@ class DescriptionEnvVar(RequiredEnvVar):
         if ci_name == 'bitbucket':
             return True, '"Production release requested"'
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return f"A description for the approval."

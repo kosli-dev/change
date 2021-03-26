@@ -54,8 +54,7 @@ class LogDeployment(Command):
 class DescriptionEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        notes = "A description for the deployment."
-        super().__init__(env, "MERKELY_DESCRIPTION", notes)
+        super().__init__(env, "MERKELY_DESCRIPTION", '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -63,13 +62,15 @@ class DescriptionEnvVar(RequiredEnvVar):
         if ci_name == 'bitbucket':
             return True, '"Deployed to production in pipeline"'
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return "A description for the deployment."
 
 
 class EnvironmentEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        notes = "The name of the environment the artifact is being deployed to."
-        super().__init__(env, "MERKELY_ENVIRONMENT", notes)
+        super().__init__(env, "MERKELY_ENVIRONMENT", '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -77,3 +78,6 @@ class EnvironmentEnvVar(RequiredEnvVar):
         if ci_name == 'bitbucket':
             return True, "production"
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return "The name of the environment the artifact is being deployed to."

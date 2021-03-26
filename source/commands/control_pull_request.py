@@ -64,22 +64,26 @@ class DescriptionEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
         default = "Bitbucket pull request"
-        notes = "Bitbucket pull request."
-        super().__init__(env, "MERKELY_DESCRIPTION", default, notes)
+        super().__init__(env, "MERKELY_DESCRIPTION", default, '')
 
     def doc_example(self, _ci_name, _command_name):
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return "Bitbucket pull request."
 
 
 class EvidenceTypeEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
         default = "pull_request"
-        notes = "The evidence type."
-        super().__init__(env, "MERKELY_EVIDENCE_TYPE", default, notes)
+        super().__init__(env, "MERKELY_EVIDENCE_TYPE", default, '')
 
     def doc_example(self, _ci_name, _command_name):
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return "The evidence type."
 
 
 def get_pull_request_for_current_commit(env):

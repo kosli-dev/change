@@ -4,8 +4,7 @@ from env_vars import RequiredEnvVar
 class OldestSrcCommitishEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        notes = "The source commit-ish for the oldest change in the approval."
-        super().__init__(env, "MERKELY_OLDEST_SRC_COMMITISH", notes)
+        super().__init__(env, "MERKELY_OLDEST_SRC_COMMITISH", '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -14,3 +13,5 @@ class OldestSrcCommitishEnvVar(RequiredEnvVar):
             return True, '"origin/production"'
         return False, ""
 
+    def doc_note(self, _ci_name, _command_name):
+        return "The source commit-ish for the oldest change in the approval."

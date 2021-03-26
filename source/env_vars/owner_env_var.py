@@ -1,12 +1,10 @@
 from env_vars import RequiredEnvVar
 
-NOTES = "Your user/organization name in Merkely."
-
 
 class OwnerEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_OWNER", NOTES)
+        super().__init__(env, "MERKELY_OWNER", '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -15,3 +13,5 @@ class OwnerEnvVar(RequiredEnvVar):
             return True, "${MERKELY_OWNER}"
         return False, ""
 
+    def doc_note(self, _ci_name, _command_name):
+        return "Your user/organization name in Merkely."

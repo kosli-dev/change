@@ -7,10 +7,6 @@ class FingerprintEnvVar(RequiredEnvVar):
         super().__init__(external.env, "MERKELY_FINGERPRINT", '')
         self.__external = external
 
-    def notes(self, _ci):
-        # See docs.merkely.com/source/_ext/describe_command.py
-        return "<FINGERPRINT_LINK>"
-
     @property
     def value(self):
         super().value
@@ -40,3 +36,5 @@ class FingerprintEnvVar(RequiredEnvVar):
             return True, "${MERKELY_FINGERPRINT}"
         return False, ""
 
+    def doc_note(self, _ci_name, _command_name):
+        return "<FINGERPRINT_LINK>"

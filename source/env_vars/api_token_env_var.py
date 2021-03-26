@@ -1,12 +1,10 @@
 from env_vars import RequiredEnvVar
 
-NOTES = "Your API token for Merkely."
-
 
 class ApiTokenEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_API_TOKEN", NOTES)
+        super().__init__(env, "MERKELY_API_TOKEN", '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -14,3 +12,6 @@ class ApiTokenEnvVar(RequiredEnvVar):
         if ci_name == 'bitbucket':
             return True, "${MERKELY_API_TOKEN}"
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return "Your API token for Merkely."

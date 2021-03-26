@@ -3,14 +3,9 @@ from env_vars import CIBuildNumberEnvVar
 from pytest import raises
 
 
-def test_notes_is_simple_non_dynamic_when_ci_is_raw_docker():
+def test_doc_note_is_passed_ci_name_and_command_name_for_customisability():
     expected = "The ci build number."
-    assert CIBuildNumberEnvVar({}).notes('docker') == expected
-
-
-def test_notes_also_describes_dynamic_expansion_when_ci_not_raw_docker():
-    expected = "The ci build number. Defaults to ${GITHUB_RUN_ID}."
-    assert CIBuildNumberEnvVar({}).notes('github') == expected
+    assert CIBuildNumberEnvVar({}).doc_note('docker', 'log_artifact') == expected
 
 
 def test_notes_raises_when_ci_is_unknown():

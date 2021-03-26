@@ -1,13 +1,10 @@
 from env_vars import CompoundEnvVar, CompoundCiEnvVar, CiEnvVar
 
-NAME = "MERKELY_ARTIFACT_GIT_URL"
-NOTE = "The link to the source git commit this build was based on."
-
 
 class ArtifactGitUrlEnvVar(CompoundCiEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, NAME, NOTE)
+        super().__init__(env, "MERKELY_ARTIFACT_GIT_URL", '')
 
     @property
     def _ci_env_vars(self):
@@ -36,3 +33,6 @@ class ArtifactGitUrlEnvVar(CompoundCiEnvVar):
 
     def doc_example(self, ci_name, _command_name):
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return "The link to the source git commit this build was based on."

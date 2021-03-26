@@ -68,8 +68,7 @@ class RequestApproval(Command):
 class DescriptionEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        notes = f"A description for the approval request."
-        super().__init__(env, "MERKELY_DESCRIPTION", notes)
+        super().__init__(env, "MERKELY_DESCRIPTION", '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -77,3 +76,6 @@ class DescriptionEnvVar(RequiredEnvVar):
         if ci_name == 'bitbucket':
             return True, '"Approval requested on bitbucket"'
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return f"A description for the approval request."

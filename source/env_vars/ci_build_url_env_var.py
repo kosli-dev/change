@@ -1,13 +1,10 @@
 from env_vars import CompoundEnvVar, CompoundCiEnvVar, CiEnvVar
 
-NAME = "MERKELY_CI_BUILD_URL"
-NOTE = "Link to the build in the ci system."
-
 
 class CIBuildUrlEnvVar(CompoundCiEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, NAME, NOTE)
+        super().__init__(env, "MERKELY_CI_BUILD_URL", '')
 
     @property
     def _ci_env_vars(self):
@@ -34,5 +31,8 @@ class CIBuildUrlEnvVar(CompoundCiEnvVar):
             ),
         }
 
-    def doc_example(self, ci_name, _command_name):
+    def doc_example(self, _ci_name, _command_name):
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return "Link to the build in the ci system."

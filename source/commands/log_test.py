@@ -75,26 +75,25 @@ class DescriptionEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env, default_prefix, default_suffix):
         default = default_prefix + default_suffix
-        notes = " ".join([
-            "A description of the test.",
-            f'Defaults to "{default_prefix}"',
-            f'followed by the JUnit .xml summary, eg "{default_suffix}"'
-        ])
-        super().__init__(env, "MERKELY_DESCRIPTION", default, notes)
+        self._default_prefix = default_prefix
+        self._default_suffix = default_suffix
+        super().__init__(env, "MERKELY_DESCRIPTION", default, '')
 
-    def doc_example(self, ci_name, _command_name):
+    def doc_example(self, _ci_name, _command_name):
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return " ".join([
+            "A description of the test.",
+            f'Defaults to "{self._default_prefix}"',
+            f'followed by the JUnit .xml summary, eg "{self._default_suffix}"'
+        ])
 
 
 class TestResultsDirEnvVar(StaticDefaultedEnvVar):
     
     def __init__(self, env):
-        notes = " ".join([
-            "The directory where Merkely will look for JUnit .xml files.",
-            "Must be volume-mounted in the container.",
-            f"Defaults to {DEFAULT_TEST_DIR}"
-        ])
-        super().__init__(env, "MERKELY_TEST_RESULTS_DIR", DEFAULT_TEST_DIR, notes)
+        super().__init__(env, "MERKELY_TEST_RESULTS_DIR", DEFAULT_TEST_DIR, '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -102,6 +101,13 @@ class TestResultsDirEnvVar(StaticDefaultedEnvVar):
         if ci_name == 'bitbucket':
             return True, "${PWD}/build/test/"
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return " ".join([
+            "The directory where Merkely will look for JUnit .xml files.",
+            "Must be volume-mounted in the container.",
+            f"Defaults to {DEFAULT_TEST_DIR}"
+        ])
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

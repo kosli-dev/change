@@ -4,8 +4,7 @@ from env_vars import RequiredEnvVar
 class PipelineEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        notes = "Your pipeline name inside your user/organization in Merkely."
-        super().__init__(env, "MERKELY_PIPELINE", notes)
+        super().__init__(env, "MERKELY_PIPELINE", '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -13,3 +12,6 @@ class PipelineEnvVar(RequiredEnvVar):
         if ci_name == 'bitbucket':
             return True, "${MERKELY_PIPELINE}"
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return "Your pipeline name in your user/organization in Merkely."

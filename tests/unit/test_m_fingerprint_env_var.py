@@ -11,7 +11,7 @@ def test_notes_living_documentation():
     image_name = "acme/road-runner:4.5"
     fingerprint = f"{protocol}{image_name}"
     ev = make_fingerprint_env_var(fingerprint)
-    assert ev.notes(None) == "<FINGERPRINT_LINK>"
+    assert ev.doc_note('docker', 'log_test') == "<FINGERPRINT_LINK>"
 
 
 def test_docker_protocol_properties():

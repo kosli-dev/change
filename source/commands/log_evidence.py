@@ -59,8 +59,7 @@ class LogEvidence(Command):
 class DescriptionEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        notes = "A description for the evidence."
-        super().__init__(env, "MERKELY_DESCRIPTION", notes)
+        super().__init__(env, "MERKELY_DESCRIPTION", '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -68,4 +67,7 @@ class DescriptionEnvVar(RequiredEnvVar):
         if ci_name == 'bitbucket':
             return True, '${COVERAGE_SUMMARY}'
         return False, ""
+
+    def doc_note(self, _ci_name, _command_name):
+        return "A description for the evidence."
 

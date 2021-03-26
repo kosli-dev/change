@@ -78,5 +78,8 @@ class EnvVar(ABC):
         See docs.merkely.com/source/doc_data.py
         """
 
-    def doc_note(self, ci_name, _command_name=None):
-        return self.notes(ci_name)
+    @abstractmethod
+    def doc_note(self, ci_name, command_name):
+        """
+        See docs.merkely.com/source/_ext/describe_command.py
+        """
