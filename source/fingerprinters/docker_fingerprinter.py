@@ -52,7 +52,7 @@ class DockerFingerprinter(Fingerprinter):
             client = docker.from_env()
             image = client.images.get(image_name)
             return image.attrs["RepoDigests"][0].split(":")[1]
-        except (docker.errors.ImageNotFound, requests.exceptions.HTTPError):
+        except (docker.errors.ImageNotFound, requests.exceptions.HTTPError, IndexError):
             # For example, see
             # https://github.com/merkely-development/loan-calculator/runs/1903030144?check_suite_focus=true
             message = " ".join([
