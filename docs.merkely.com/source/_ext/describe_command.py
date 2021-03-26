@@ -9,60 +9,62 @@ class DescribeCommand(Directive):
 
     def run(self):
         args = self.content[0].split()
-        name = args[0]
+        command_name = args[0]
         description_type = args[1]
-        ci = args[2]
+        ci_name = args[2]
         if description_type == "summary":
-            return summary(name, ci)
+            return summary(command_name, ci_name)
         if description_type == "invocation_full":
-            return invocation_full(name, ci)
+            return invocation_full(command_name, ci_name)
         if description_type == "invocation_minimum":
-            return invocation_minimum(name)
+            return invocation_minimum(command_name)
         if description_type == "parameters":
-            return parameters(name, ci)
+            return parameters(command_name, ci_name)
         return []
 
 
-def summary(name, ci):
-    return [nodes.paragraph(text=command_for(name).summary(ci))]
+def summary(command_name, ci_name):
+    return [nodes.paragraph(text=command_for(command_name).summary(ci_name))]
 
 
 # The Makefile volume-mounts docs.merkely.com/ to docs/
 REFERENCE_DIR = '/docs/build/reference'
 
 
-def invocation_full(name, ci):
-    filename = f"{REFERENCE_DIR}/{ci}/{name}.txt"
+def invocation_full(command_name, ci_name):
+    filename = f"{REFERENCE_DIR}/{ci_name}/{command_name}.txt"
     with open(filename, "rt") as file:
         text = file.read()
 
     div = nodes.container()
     div += nodes.literal_block(text=text)
-    div += parameters(name, ci)
+    div += parameters(command_name, ci_name)
 
     # Add bootstrap "tab-pane" to connect to
     #    <ul class="nav nav-tabs">...</ul>
     # inside each command's .rst file
 
-    div_classes = [ci, "tab-pane"]
-    if ci == "docker":
+    div_classes = [ci_name, "tab-pane"]
+    if ci_name == "docker":
         div_classes.append("active")
     div.update_basic_atts({
-        "ids": [ci],
+        "ids": [ci_name],
         "classes": div_classes
     })
     return [div]
 
 
-def invocation_minimum(name):
-    filename = f"{REFERENCE_DIR}/min/{name}.txt"
+def invocation_minimum(command_name):
+    filename = f"{REFERENCE_DIR}/min/{command_name}.txt"
     with open(filename, "rt") as file:
         text = file.read()
     return [nodes.literal_block(text=text)]
 
 
-def parameters(command_name, ci):
-    return [env_vars_to_table(command_for(command_name).merkely_env_vars, ci, command_name)]
+def parameters(command_name, ci_name):
+    command = command_for(command_name)
+    env_vars = command.merkely_env_vars
+    return [env_vars_to_table(env_vars, ci_name, command_name)]
 
 
 def command_for(name):
