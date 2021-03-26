@@ -72,10 +72,6 @@ jobs:
       env:
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
-        cat ${GITHUB_ENV}
-        echo ":${MERKELY_FINGERPRINT}:"
-        docker inspect ${TAGGED_IMAGE}
-        docker image ls | grep change
         export MERKELY_TEST_RESULTS_DIR=${PWD}/tmp/coverage/unit/htmlcov
         export MERKELY_EVIDENCE_TYPE=unit_test
         make merkely_log_test

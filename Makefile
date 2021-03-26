@@ -77,7 +77,13 @@ define TESTS_VOLUME_MOUNT
 endef
 
 
-test_unit: build
+# Don't add build as a dependency to test_unit.
+# If you do then in .github/workflows/main.yml the line
+#   make merkely_log_test
+# will create a new docker image, overwriting the previous
+# one (which was pushed to dockerhub) and thus losing the digest.
+
+test_unit:
 	docker rm --force ${CONTAINER} 2> /dev/null || true
 	$(eval COVERAGE_DIR = tmp/coverage/unit)
 	rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
