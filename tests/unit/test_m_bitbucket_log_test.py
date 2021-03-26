@@ -2,9 +2,6 @@ from commands import run, External
 
 from tests.utils import *
 
-APPROVAL_DIR = "tests/unit/approved_executions"
-APPROVAL_FILE = "test_m_bitbucket_log_test"
-
 BB = "bitbucket.org"
 BB_ORG = 'acme'
 BB_REPO = 'beep-beep'
@@ -25,29 +22,19 @@ API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
 def test_bitbucket(capsys):
-    # extract data from approved cdb text file
-    import inspect
-    this_test = inspect.stack()[0].function
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
-
     expected_method = "Putting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
         "contents": {
-            "description": "JUnit results xml verified by compliancedb/cdb_controls: Tests contain failures",
+            "description": "JUnit results xml verified by merkely/change: Tests contain failures",
             "is_compliant": False,
             "url": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}"
         },
-        "evidence_type": EVIDENCE_TYPE
+        "evidence_type": EVIDENCE_TYPE,
+        "user_data": {
+            "status": "deployed"
+        },
     }
-
-    # verify data from approved cdb text file
-    assert old_payload == expected_payload
-    assert old_method == expected_method
-    assert old_url == expected_url
 
     # make merkely call
     ev = new_log_test_env()
@@ -62,15 +49,6 @@ def test_bitbucket(capsys):
     # verify matching data
     assert method == expected_method
     assert url == expected_url
-
-    # image name has changed
-    old_description = expected_payload['contents']['description']
-    new_description = old_description.replace('compliancedb/cdb_controls', 'merkely/change')
-    expected_payload['contents']['description'] = new_description
-
-    # user_data works did not work in cdb code
-    expected_payload["user_data"] = {'status': 'deployed'}
-
     assert payload == expected_payload
 
 

@@ -2,9 +2,6 @@ from commands import run, External
 
 from tests.utils import *
 
-APPROVAL_DIR = "tests/unit/approved_executions"
-APPROVAL_FILE = "test_m_bitbucket_log_deployment"
-
 BB = 'bitbucket.org'
 BB_ORG = 'acme'
 BB_REPO = 'road-runner'
@@ -26,14 +23,6 @@ USER_DATA_JSON = {'status': 'deployed'}
 
 
 def test_bitbucket(capsys):
-    # extract data from approved cdb text file
-    import inspect
-    this_test = inspect.stack()[0].function
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
-
     expected_method = "Posting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/deployments/"
     expected_payload = {
@@ -43,11 +32,6 @@ def test_bitbucket(capsys):
         "environment": ENVIRONMENT,
         "user_data": USER_DATA_JSON,
     }
-
-    # verify data from approved cdb text file
-    assert old_method == expected_method
-    assert old_url == expected_url
-    assert old_payload == expected_payload
 
     # make merkely call
     ev = new_log_deployment_env()

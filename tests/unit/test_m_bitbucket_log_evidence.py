@@ -2,9 +2,6 @@ from commands import run, External
 
 from tests.utils import *
 
-APPROVAL_DIR = "tests/unit/approved_executions"
-APPROVAL_FILE = "test_m_bitbucket_log_evidence"
-
 BB = 'bitbucket.org'
 BB_ORG = 'acme'
 BB_REPO = 'road-runner'
@@ -24,14 +21,6 @@ EVIDENCE_TYPE = "unit_test"
 
 
 def test_bitbucket(capsys):
-    # extract data from approved cdb text file
-    import inspect
-    this_test = inspect.stack()[0].function
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
-
     expected_method = "Putting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
@@ -40,13 +29,9 @@ def test_bitbucket(capsys):
             "is_compliant": True,
             "url": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
         },
-        "evidence_type": EVIDENCE_TYPE
+        "evidence_type": EVIDENCE_TYPE,
+        "user_data": {},
     }
-
-    # verify data from approved cdb text file
-    assert old_method == expected_method
-    assert old_url == expected_url
-    assert old_payload == expected_payload
 
     # make merkely call
     ev = new_log_evidence_env()
@@ -54,9 +39,6 @@ def test_bitbucket(capsys):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
-
-    # CHANGE IN BEHAVIOUR
-    expected_payload['user_data'] = {}
 
     # verify matching data
     assert method == expected_method
