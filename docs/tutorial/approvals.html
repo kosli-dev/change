@@ -78,7 +78,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_artifact.html">Log Artifact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_evidence.html">Log Evidence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_test.html">Log Test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/log_approval.html">Log Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/approve_deployment.html">Approve Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/request_approval.html">Request Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/control_deployment.html">Control Deployment</a></li>
@@ -125,7 +124,7 @@
 <li><p>The change must be understood</p></li>
 <li><p>The acceptance must be documented</p></li>
 </ol>
-<p>You can create the documentation for this approval automatically in your pipelines using Merkely’s <span class="xref std std-ref">log_approval</span> command.</p>
+<p>You can create the documentation for this approval automatically in your pipelines using Merkely commands.</p>
 <img alt="../_images/approvals.png" src="../_images/approvals.png" />
 <p>Merkely makes a dashboard for the cumulative change in the deployment, based on a list of the source git commits.  Provide two git references: one for what is currently in production, and one for what you would like to deploy.  The command will generate the git commit list between these two commits.</p>
 <p>In this example from the image above, to create the approval for deploying the artifact created at the master commit you would use the following parameters in the <span class="xref std std-ref">log_approval</span>:</p>

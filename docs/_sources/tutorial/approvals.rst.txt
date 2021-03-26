@@ -6,7 +6,7 @@ Many software development processes require an active decision to document an ap
 1. The change must be understood
 2. The acceptance must be documented
 
-You can create the documentation for this approval automatically in your pipelines using Merkely's :ref:`log_approval` command.
+You can create the documentation for this approval automatically in your pipelines using Merkely commands.
 
 .. image:: ../images/approvals.png
 

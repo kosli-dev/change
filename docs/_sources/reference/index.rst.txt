@@ -7,7 +7,6 @@
    log_artifact
    log_evidence
    log_test
-   log_approval
    approve_deployment
    request_approval
    control_deployment
