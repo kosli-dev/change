@@ -22,7 +22,7 @@ class SrcRepoRootEnvVar(StaticDefaultedEnvVar):
         ])
         if ci_name == 'github':
             note += " ".join([
-                "In a github uses: directive the repo directory is",
+                "In a uses: directive the repository directory is",
                 "automatically volume-mounted to ${{ github.workspace }}."
             ])
         return note
