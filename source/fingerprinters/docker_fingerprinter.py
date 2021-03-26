@@ -38,7 +38,7 @@ class DockerFingerprinter(Fingerprinter):
 
     def artifact_name(self, string):
         assert self.handles_protocol(string)
-        result = string[len(PROTOCOL):]
+        result = string[len(PROTOCOL):].rstrip()  # Postel's Law
         if result == "":
             raise ChangeError(f"Empty {PROTOCOL} fingerprint")
         return result

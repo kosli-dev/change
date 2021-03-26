@@ -29,11 +29,23 @@ def test_empty_image_name_raises():
     fingerprinter = DockerFingerprinter()
     image_name = ""
     string = DOCKER_PROTOCOL + image_name
-    def assert_raises(method_name):
+
+    def assert_raises_empty_image(method_name):
         with raises(ChangeError) as exc:
             getattr(fingerprinter, method_name)(string)
         assert str(exc.value) == f"Empty {DOCKER_PROTOCOL} fingerprint"
 
-    assert_raises('artifact_name')
-    assert_raises('artifact_basename')
-    assert_raises('sha')
+    assert_raises_empty_image('artifact_name')
+    assert_raises_empty_image('artifact_basename')
+    assert_raises_empty_image('sha')
+
+
+def test_trailing_whitespace_is_stripped_from_image_name():
+    fingerprinter = DockerFingerprinter()
+    image_name = " " * 4
+    string = DOCKER_PROTOCOL + image_name
+    def assert_raises_empty_image(method_name):
+        with raises(ChangeError) as exc:
+            getattr(fingerprinter, method_name)(string)
+        assert str(exc.value) == f"Empty {DOCKER_PROTOCOL} fingerprint"
+    assert_raises_empty_image('sha')
