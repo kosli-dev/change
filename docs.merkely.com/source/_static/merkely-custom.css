@@ -1,3 +1,7 @@
+body {
+  padding-right: 60px;
+}
+
 :root {
   --custom-color: #f0f0f0;
   --cdb-green: #00f4b9;
