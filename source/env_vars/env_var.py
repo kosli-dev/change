@@ -5,12 +5,11 @@ class EnvVar(ABC):
     """
     An abstract base class for 'smart' OS environment-variables.
     """
-    def __init__(self, env, name, notes):
+    def __init__(self, env, name, _notes=None):
         assert name is not None
         assert name != ""
         self.__env = env
         self.__name = name
-        self.__notes = notes
 
     @property
     def _env(self):
@@ -39,23 +38,6 @@ class EnvVar(ABC):
         return self._get(default="")
 
     @property
-    def name(self):
-        """
-        Returns the name of the environment-variable, as set in the ctor.
-        Used in living documentation. Never raises.
-        """
-        return self.__name
-
-    def notes(self, ci):
-        """
-        Returns notes string.
-        Uses either the value set in the ctor,
-        or override can inspect ci parameter.
-        Used in living documentation. Never raises.
-        """
-        return self.__notes
-
-    @property
     @abstractmethod
     def is_required(self, ci):
         """
@@ -72,14 +54,27 @@ class EnvVar(ABC):
         of each command's env-var.
         """
 
+    #- - - - - - - - - - - - - - - - - - - - - - -
+    # Living documentation
+
+    @property
+    def name(self):
+        """
+        Returns the name of the environment-variable, as set in the c'tor.
+        Used in living documentation. Never raises.
+        """
+        return self.__name
+
     @abstractmethod
     def doc_example(self, ci_name, command_name):
         """
+        Used in living documentation. Never raises.
         See docs.merkely.com/source/doc_data.py
         """
 
     @abstractmethod
     def doc_note(self, ci_name, command_name):
         """
+        Used in living documentation. Never raises.
         See docs.merkely.com/source/_ext/describe_command.py
         """
