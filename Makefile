@@ -7,7 +7,7 @@ SHA    := $$(git log -1 --pretty=%H) # eg 5d72e2b158be269390d4b3931ed5d0febd784f
 # in .github/workflows/main.yml
 IMAGE  := merkely/${APP}:sha-${TAG}
 
-LATEST := ${NAME}:latest
+LATEST := merkely/${APP}:latest
 CONTAINER := ${NAME}
 
 CDB_HOST = https://app.compliancedb.com

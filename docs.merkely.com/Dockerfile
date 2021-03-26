@@ -2,6 +2,7 @@
 FROM merkely/change
 
 WORKDIR /docs
+RUN apk add make
 
 # install sphinx
 ADD requirements.txt /docs
