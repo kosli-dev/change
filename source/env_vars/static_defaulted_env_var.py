@@ -6,8 +6,8 @@ class StaticDefaultedEnvVar(DefaultedEnvVar):
     A defaulted OS environment-variable where
     the default is statically assigned at construction.
     """
-    def __init__(self, env, name, default, notes):
-        super().__init__(env, name, notes)
+    def __init__(self, env, name, default):
+        super().__init__(env, name)
         self.__default = default
 
     @property

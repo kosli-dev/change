@@ -4,7 +4,7 @@ from env_vars import CompoundEnvVar, CompoundCiEnvVar, CiEnvVar
 class ArtifactGitUrlEnvVar(CompoundCiEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_ARTIFACT_GIT_URL", '')
+        super().__init__(env, "MERKELY_ARTIFACT_GIT_URL")
 
     @property
     def _ci_env_vars(self):

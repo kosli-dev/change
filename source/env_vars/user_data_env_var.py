@@ -6,7 +6,7 @@ DEFAULT = {}
 class UserDataEnvVar(DefaultedEnvVar):
 
     def __init__(self, external):
-        super().__init__(external.env, "MERKELY_USER_DATA", '')
+        super().__init__(external.env, "MERKELY_USER_DATA")
         self._external = external
 
     @property

@@ -5,25 +5,17 @@ from abc import ABC, abstractmethod
 
 class CompoundCiEnvVar(EnvVar, ABC):
 
-    def __init__(self, env, name, notes):
-        super().__init__(env, name, '')
-        self._notes = notes
+    def __init__(self, env, name):
+        super().__init__(env, name)
 
     # - - - - - - - - - - - - - - - - - - - - -
     # Living documentation
 
-    def notes(self, ci):
-        if ci == 'docker':
-            return self._notes
-        if ci not in self._ci_env_vars.keys():
-            raise RuntimeError(f"{ci} is unknown CI")
-        return f"{self._notes} Defaults to {self._ci_env_vars[ci].string}."
+    def is_required(self, ci_name):
+        return ci_name == 'docker'
 
-    def is_required(self, ci):
-        return ci == 'docker'
-
-    def ci_env_var_names(self, ci):
-        return self._ci_env_vars[ci].names
+    def ci_env_var_names(self, ci_name):
+        return self._ci_env_vars[ci_name].names
 
     # - - - - - - - - - - - - - - - - - - - - -
 

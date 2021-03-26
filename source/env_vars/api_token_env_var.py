@@ -4,7 +4,7 @@ from env_vars import RequiredEnvVar
 class ApiTokenEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_API_TOKEN", '')
+        super().__init__(env, "MERKELY_API_TOKEN")
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':

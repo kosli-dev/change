@@ -4,7 +4,7 @@ from env_vars import RequiredEnvVar
 class OldestSrcCommitishEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_OLDEST_SRC_COMMITISH", '')
+        super().__init__(env, "MERKELY_OLDEST_SRC_COMMITISH")
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':

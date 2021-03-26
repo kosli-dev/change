@@ -4,7 +4,7 @@ from env_vars import RequiredEnvVar
 class FingerprintEnvVar(RequiredEnvVar):
 
     def __init__(self, external):
-        super().__init__(external.env, "MERKELY_FINGERPRINT", '')
+        super().__init__(external.env, "MERKELY_FINGERPRINT")
         self.__external = external
 
     @property

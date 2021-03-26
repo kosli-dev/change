@@ -4,7 +4,7 @@ from env_vars import CompoundEnvVar, CompoundCiEnvVar, CiEnvVar
 class ArtifactGitCommitEnvVar(CompoundCiEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_ARTIFACT_GIT_COMMIT", '')
+        super().__init__(env, "MERKELY_ARTIFACT_GIT_COMMIT")
 
     @property
     def _ci_env_vars(self):

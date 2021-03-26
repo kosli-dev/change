@@ -87,7 +87,7 @@ class IsApprovedEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
         default = 'TRUE'
-        super().__init__(env, "MERKELY_IS_APPROVED", default, '')
+        super().__init__(env, "MERKELY_IS_APPROVED", default)
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -104,7 +104,7 @@ class IsApprovedEnvVar(StaticDefaultedEnvVar):
 class DescriptionEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_DESCRIPTION", '')
+        super().__init__(env, "MERKELY_DESCRIPTION")
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':

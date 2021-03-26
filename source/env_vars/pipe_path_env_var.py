@@ -6,7 +6,7 @@ DEFAULT = "/data/Merkelypipe.json"
 class PipePathEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_PIPE_PATH", DEFAULT, '')
+        super().__init__(env, "MERKELY_PIPE_PATH", DEFAULT)
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':

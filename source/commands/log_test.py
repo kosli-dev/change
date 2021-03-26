@@ -77,7 +77,7 @@ class DescriptionEnvVar(StaticDefaultedEnvVar):
         default = default_prefix + default_suffix
         self._default_prefix = default_prefix
         self._default_suffix = default_suffix
-        super().__init__(env, "MERKELY_DESCRIPTION", default, '')
+        super().__init__(env, "MERKELY_DESCRIPTION", default)
 
     def doc_example(self, _ci_name, _command_name):
         return False, ""
@@ -93,7 +93,7 @@ class DescriptionEnvVar(StaticDefaultedEnvVar):
 class TestResultsDirEnvVar(StaticDefaultedEnvVar):
     
     def __init__(self, env):
-        super().__init__(env, "MERKELY_TEST_RESULTS_DIR", DEFAULT_TEST_DIR, '')
+        super().__init__(env, "MERKELY_TEST_RESULTS_DIR", DEFAULT_TEST_DIR)
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':

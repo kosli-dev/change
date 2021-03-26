@@ -5,7 +5,7 @@ class EnvVar(ABC):
     """
     An abstract base class for 'smart' OS environment-variables.
     """
-    def __init__(self, env, name, _notes=None):
+    def __init__(self, env, name):
         assert name is not None
         assert name != ""
         self.__env = env

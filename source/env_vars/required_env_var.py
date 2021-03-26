@@ -6,10 +6,10 @@ class RequiredEnvVar(EnvVar):
     """
     A required OS environment-variable.
     """
-    def __init__(self, env, name, notes):
-        super().__init__(env, name, notes)
+    def __init__(self, env, name):
+        super().__init__(env, name)
 
-    def is_required(self, ci):
+    def is_required(self, _ci_name):
         return True
 
     @property

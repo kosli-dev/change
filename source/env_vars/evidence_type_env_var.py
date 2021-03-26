@@ -4,7 +4,7 @@ from env_vars import RequiredEnvVar
 class EvidenceTypeEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_EVIDENCE_TYPE", '')
+        super().__init__(env, "MERKELY_EVIDENCE_TYPE")
 
     def doc_example(self, ci_name, command_name):
         if ci_name == 'github':
@@ -19,5 +19,5 @@ class EvidenceTypeEnvVar(RequiredEnvVar):
                 return True, 'security'
         return False, ""
 
-    def doc_note(self, ci_name, command_name):
+    def doc_note(self, _ci_name, _command_name):
         return "The evidence type."

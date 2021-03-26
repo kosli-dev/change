@@ -4,7 +4,7 @@ from env_vars import RequiredEnvVar
 class IsCompliantEnvVar(RequiredEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_IS_COMPLIANT", '')
+        super().__init__(env, "MERKELY_IS_COMPLIANT")
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':

@@ -8,13 +8,6 @@ def test_doc_note_is_passed_ci_name_and_command_name_for_customisability():
     assert CIBuildNumberEnvVar({}).doc_note('docker', 'log_artifact') == expected
 
 
-def test_notes_raises_when_ci_is_unknown():
-    ev = CIBuildNumberEnvVar({})
-    with raises(RuntimeError) as exc:
-        ev.notes('xxx')
-    assert str(exc.value) == "xxx is unknown CI"
-
-
 def test_value_expands_when_non_abiguous_expansion():
     gh = {"GITHUB_RUN_ID": "23"}
     assert CIBuildNumberEnvVar(gh).value == "23"

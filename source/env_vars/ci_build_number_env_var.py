@@ -4,7 +4,7 @@ from env_vars import CompoundEnvVar, CompoundCiEnvVar, CiEnvVar
 class CIBuildNumberEnvVar(CompoundCiEnvVar):
 
     def __init__(self, env):
-        super().__init__(env, "MERKELY_CI_BUILD_NUMBER", '')
+        super().__init__(env, "MERKELY_CI_BUILD_NUMBER")
 
     @property
     def _ci_env_vars(self):

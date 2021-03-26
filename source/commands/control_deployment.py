@@ -6,11 +6,11 @@ from cdb.http import http_get_json
 
 class ControlDeployment(Command):
 
-    def summary(self, _ci):
+    def summary(self, _ci_name):
         return "Fails a pipeline if an artifact is not approved for deployment."
 
-    def volume_mounts(self, ci):
-        if ci == 'bitbucket':
+    def volume_mounts(self, ci_name):
+        if ci_name == 'bitbucket':
             return []
         else:
             return ["/var/run/docker.sock:/var/run/docker.sock"]

@@ -64,7 +64,7 @@ class DescriptionEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
         default = "Bitbucket pull request"
-        super().__init__(env, "MERKELY_DESCRIPTION", default, '')
+        super().__init__(env, "MERKELY_DESCRIPTION", default)
 
     def doc_example(self, _ci_name, _command_name):
         return False, ""
@@ -77,7 +77,7 @@ class EvidenceTypeEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
         default = "pull_request"
-        super().__init__(env, "MERKELY_EVIDENCE_TYPE", default, '')
+        super().__init__(env, "MERKELY_EVIDENCE_TYPE", default)
 
     def doc_example(self, _ci_name, _command_name):
         return False, ""
