@@ -1,0 +1,3 @@
+[report]
+omit = source/doc_data.py
+      source/doc_gen.py

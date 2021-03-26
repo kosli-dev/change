@@ -28,6 +28,7 @@ mkdir /data || true  # for Merkelypipe.json to be copied into
 pytest \
        --random-order-bucket=global \
        --capture=no \
+       --cov-config=tests/unit/.coveragerc \
        --cov=source/ \
        --junitxml=htmlcov/junit.xml \
        -o junit_family=xunit1 \
