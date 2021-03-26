@@ -63,7 +63,7 @@ build:
 	@docker build \
 		--file Dockerfile \
 		--tag ${IMAGE} .
-	@docker tag ${IMAGE} ${LATEST} # Needed?
+	@docker tag ${IMAGE} ${LATEST}
 
 # - - - - - - - - - - - - - - - - - - - -
 # run tests without building by volume-mounting
@@ -77,7 +77,7 @@ define TESTS_VOLUME_MOUNT
 endef
 
 
-test_unit:
+test_unit: build
 	docker rm --force ${CONTAINER} 2> /dev/null || true
 	$(eval COVERAGE_DIR = tmp/coverage/unit)
 	rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
