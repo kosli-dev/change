@@ -1,15 +1,12 @@
 from env_vars import StaticDefaultedEnvVar
 
+DEFAULT_DIR = '/src'
+
 
 class SrcRepoRootEnvVar(StaticDefaultedEnvVar):
 
     def __init__(self, env):
-        default = "/src"
-        notes = " ".join([
-            "The directory where the source git repository is volume-mounted.",
-            f"Defaults to `{default}`",
-        ])
-        super().__init__(env, "MERKELY_SRC_REPO_ROOT", default, notes)
+        super().__init__(env, "MERKELY_SRC_REPO_ROOT", DEFAULT_DIR, '')
 
     def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
@@ -18,5 +15,14 @@ class SrcRepoRootEnvVar(StaticDefaultedEnvVar):
             return True, "${PWD}"
         return False, ""
 
-    #def doc_note(self, ci_name, command_name=None):
-    #    return self.notes(ci_name)
+    def doc_note(self, ci_name, command_name=None):
+        note = " ".join([
+            "The directory where the source git repository is volume-mounted.",
+            f"Defaults to `{DEFAULT_DIR}`.",
+        ])
+        if ci_name == 'github':
+            note += " ".join([
+                "In a github uses: directive the repo directory is",
+                "automatically volume-mounted to ${{ github.workspace }}."
+            ])
+        return note
