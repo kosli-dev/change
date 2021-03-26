@@ -144,47 +144,6 @@ def lines_for_github(command_name):
     return lines
 
 
-def OLD_lines_for_github(command_name):
-    ci_indent = " " * 8
-    def lc(string):
-        line_continuation = "\\"
-        return f"{ci_indent}{string} {line_continuation}"
-
-    tab = " " * 4
-    def env(var):
-        if var.name == "MERKELY_COMMAND":
-            value = var.value
-        else:
-            value = '"' + "${" + var.name + "}" + '"'
-        return lc(f'{tab}--env {var.name}={value}')
-
-    command = command_for(command_name)
-    lines = [
-        "...",
-        "jobs:",
-        "  build:",
-        "    runs-on: ubuntu-20.04",
-        "    steps:",
-        "    ...",
-        "    - name: {}".format(yml_name_texts[command_name]),
-        "      ...",
-        "      run: |",
-        lc("docker run"),
-    ]
-    for var in command.merkely_env_vars:
-        lines.append(env(var))
-    # Add each CI env-var used in a MERKELY_XXXX env-var default
-    # eg GITHUB_REPOSITORY
-    for name in command.ci_env_var_names('github'):
-        lines.append(lc(f"{tab}--env {name}"))
-    lines.append(lc(f"{tab}--rm"))
-    for mount in command.volume_mounts('github'):
-        lines.append(lc(f"{tab}--volume {mount}"))
-    lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
-    lines.append(f"{ci_indent}{tab}merkely/change")
-    return lines
-
-
 def lines_for_bitbucket(command_name):
     command = command_for(command_name)
     name = yml_name_texts[command_name]
@@ -207,46 +166,6 @@ def lines_for_bitbucket(command_name):
         show, example = var.doc_example('bitbucket', command_name)
         if show:
             lines.append(f'{tab}{var.name}: {example}')
-    return lines
-
-
-def OLD_lines_for_bitbucket(command_name):
-    ci_indent = " " * 8
-    def lc(string):
-        # bitbucket uses leading - to indicate start of a command
-        # and a \ line continuation is not needed.
-        return f"{ci_indent}{string} "
-    tab = " " * 4
-    def env(var):
-        if var.name == "MERKELY_COMMAND":
-            value = var.value
-        else:
-            value = '"' + "${" + var.name + "}" + '"'
-        return lc(f'{tab}--env {var.name}={value}')
-
-    command = command_for(command_name)
-    lines = [
-        "image: atlassian/default-image:2",
-        "...",
-        "pipelines:",
-        "  default:",
-        "    ...",
-        "    - step:",
-        "        name: {}".format(yml_name_texts[command_name]),
-        "        script:",
-        f"  {ci_indent}- docker run",
-    ]
-    for var in command.merkely_env_vars:
-        lines.append(env(var))
-    # Add each CI env-var used in a MERKELY_XXXX env-var default
-    # eg BITBUCKET_BITBUCKET_REPO_SLUG
-    for name in command.ci_env_var_names('bitbucket'):
-        lines.append(lc(f"{tab}--env {name}"))
-    lines.append(lc(f"{tab}--rm"))
-    for mount in command.volume_mounts('bitbucket'):
-        lines.append(lc(f"{tab}--volume {mount}"))
-    lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
-    lines.append(f"{ci_indent}{tab}merkely/change")
     return lines
 
 
