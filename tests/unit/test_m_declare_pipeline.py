@@ -24,6 +24,8 @@ def test_green(capsys):
     with dry_run(core_env_vars()) as env, scoped_merkelypipe_json():
         method, url, payload = run(External(env=env))
 
+    capsys_read(capsys)
+
     # verify matching data
     assert method == expected_method
     assert url == expected_url
