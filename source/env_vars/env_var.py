@@ -73,7 +73,10 @@ class EnvVar(ABC):
         """
 
     @abstractmethod
-    def ci_doc_example(self, ci_name, command_name):
+    def doc_example(self, ci_name, command_name):
         """
         See docs.merkely.com/source/doc_data.py
         """
+
+    def doc_note(self, ci_name, _command_name=None):
+        return self.notes(ci_name)

@@ -61,8 +61,8 @@ def invocation_minimum(name):
     return [nodes.literal_block(text=text)]
 
 
-def parameters(name, ci):
-    return [env_vars_to_table(command_for(name).merkely_env_vars, ci)]
+def parameters(command_name, ci):
+    return [env_vars_to_table(command_for(command_name).merkely_env_vars, ci, command_name)]
 
 
 def command_for(name):
@@ -72,7 +72,7 @@ def command_for(name):
     return cls(external)
 
 
-def env_vars_to_table(env_vars, ci):
+def env_vars_to_table(env_vars, ci_name, command_name):
     table = nodes.table()
     tgroup = nodes.tgroup(cols=3)
     table += tgroup
@@ -94,19 +94,19 @@ def env_vars_to_table(env_vars, ci):
     for env_var in env_vars:
         row = nodes.row()
         row += nodes.entry("", nodes.paragraph(text=env_var.name))
-        if env_var.is_required(ci):
+        if env_var.is_required(ci_name):
             required = 'yes'
         else:
             required = 'no'
         row += nodes.entry("", nodes.paragraph(text=required))
-        notes = env_var.notes(ci)
-        if notes == "<FINGERPRINT_LINK>":
+        note = env_var.doc_note(ci_name, command_name)
+        if note == "<FINGERPRINT_LINK>":
             ref = "../../fingerprints/docker_fingerprint.html"
             para = nodes.paragraph(text="")
             para += nodes.reference('', 'Fingerprint', internal=False, refuri=ref)
             row += nodes.entry("", para)
         else:
-            row += nodes.entry("", nodes.paragraph(text=notes))
+            row += nodes.entry("", nodes.paragraph(text=note))
         tbody += row
     tgroup += tbody
     return table

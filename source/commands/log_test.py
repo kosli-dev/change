@@ -82,7 +82,7 @@ class DescriptionEnvVar(StaticDefaultedEnvVar):
         ])
         super().__init__(env, "MERKELY_DESCRIPTION", default, notes)
 
-    def ci_doc_example(self, ci_name, _command_name):
+    def doc_example(self, ci_name, _command_name):
         return False, ""
 
 
@@ -96,7 +96,7 @@ class TestResultsDirEnvVar(StaticDefaultedEnvVar):
         ])
         super().__init__(env, "MERKELY_TEST_RESULTS_DIR", DEFAULT_TEST_DIR, notes)
 
-    def ci_doc_example(self, ci_name, _command_name):
+    def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, "${{ github.workspace }}/build/test"
         if ci_name == 'bitbucket':
@@ -104,6 +104,7 @@ class TestResultsDirEnvVar(StaticDefaultedEnvVar):
         return False, ""
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 def is_compliant_suite(junit_xml):
     if junit_xml.failures != 0:

@@ -67,7 +67,7 @@ class DescriptionEnvVar(StaticDefaultedEnvVar):
         notes = "Bitbucket pull request."
         super().__init__(env, "MERKELY_DESCRIPTION", default, notes)
 
-    def ci_doc_example(self, _ci_name, _command_name):
+    def doc_example(self, _ci_name, _command_name):
         return False, ""
 
 
@@ -78,7 +78,7 @@ class EvidenceTypeEnvVar(StaticDefaultedEnvVar):
         notes = "The evidence type."
         super().__init__(env, "MERKELY_EVIDENCE_TYPE", default, notes)
 
-    def ci_doc_example(self, _ci_name, _command_name):
+    def doc_example(self, _ci_name, _command_name):
         return False, ""
 
 
@@ -166,7 +166,7 @@ def get_pull_request_details_from_bitbucket(pr_evidence, pr_api_url, username, p
 
 
 """
-Notes for implementation on Github Actions
+Notes for future implementation on Github Actions
 https://docs.github.com/en/rest/reference/pulls#list-pull-requests
 GET /repos/{owner}/{repo}/pulls/{pull_number}/commits
 This needs the pull_number. Also, this is limited to 100.

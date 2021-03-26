@@ -33,7 +33,7 @@ class FingerprintEnvVar(RequiredEnvVar):
     def __fingerprinter(self):
         return self.__external.fingerprinter_for(self.string)
 
-    def ci_doc_example(self, ci_name, _command_name):
+    def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, "docker://${{ env.IMAGE_TAGGED }}"
         if ci_name == 'bitbucket':

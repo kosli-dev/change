@@ -11,9 +11,12 @@ class SrcRepoRootEnvVar(StaticDefaultedEnvVar):
         ])
         super().__init__(env, "MERKELY_SRC_REPO_ROOT", default, notes)
 
-    def ci_doc_example(self, ci_name, _command_name):
+    def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, "${{ github.workspace }}"
         if ci_name == 'bitbucket':
             return True, "${PWD}"
         return False, ""
+
+    #def doc_note(self, ci_name, command_name=None):
+    #    return self.notes(ci_name)

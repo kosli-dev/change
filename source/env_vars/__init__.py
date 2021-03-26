@@ -7,6 +7,7 @@ from .required_env_var import RequiredEnvVar
 from .defaulted_env_var import DefaultedEnvVar
 from .static_defaulted_env_var import StaticDefaultedEnvVar
 
+from .command_name_env_var import CommandNameEnvVar
 from .fingerprint_env_var import FingerprintEnvVar
 from .is_compliant_env_var import IsCompliantEnvVar
 from .owner_env_var import OwnerEnvVar

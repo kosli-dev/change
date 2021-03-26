@@ -57,7 +57,7 @@ class DescriptionEnvVar(RequiredEnvVar):
         notes = "A description for the deployment."
         super().__init__(env, "MERKELY_DESCRIPTION", notes)
 
-    def ci_doc_example(self, ci_name, _command_name):
+    def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, '"Deployed to production in pipeline"'
         if ci_name == 'bitbucket':
@@ -71,7 +71,7 @@ class EnvironmentEnvVar(RequiredEnvVar):
         notes = "The name of the environment the artifact is being deployed to."
         super().__init__(env, "MERKELY_ENVIRONMENT", notes)
 
-    def ci_doc_example(self, ci_name, _command_name):
+    def doc_example(self, ci_name, _command_name):
         if ci_name == 'github':
             return True, "production"
         if ci_name == 'bitbucket':

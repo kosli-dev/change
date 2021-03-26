@@ -23,5 +23,5 @@ class UserDataEnvVar(DefaultedEnvVar):
         else:
             return DEFAULT
 
-    def ci_doc_example(self, _ci_name, _command_name):
+    def doc_example(self, _ci_name, _command_name):
         return False, ""

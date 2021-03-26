@@ -171,7 +171,7 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>yes</p></td>
-<td><p>A description for the approval.</p></td>
+<td><p>A description for the approval request.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>
@@ -214,7 +214,7 @@ If not provided, the json content defaults to {}</p></td>
               MERKELY_FINGERPRINT: ${MERKELY_FINGERPRINT}
               MERKELY_OLDEST_SRC_COMMITISH: &quot;origin/production&quot;
               MERKELY_NEWEST_SRC_COMMITISH: ${BITBUCKET_COMMIT}
-              MERKELY_DESCRIPTION: &quot;Production release requested&quot;
+              MERKELY_DESCRIPTION: &quot;Approval requested on bitbucket&quot;
               MERKELY_SRC_REPO_ROOT: ${PWD}
               MERKELY_OWNER: ${MERKELY_OWNER}
               MERKELY_PIPELINE: ${MERKELY_PIPELINE}
@@ -247,7 +247,7 @@ If not provided, the json content defaults to {}</p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>yes</p></td>
-<td><p>A description for the approval.</p></td>
+<td><p>A description for the approval request.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>
@@ -286,7 +286,7 @@ If not provided, the json content defaults to {}</p></td>
         MERKELY_FINGERPRINT: docker://${{ env.IMAGE_TAGGED }}
         MERKELY_OLDEST_SRC_COMMITISH: origin/production
         MERKELY_NEWEST_SRC_COMMITISH: ${{ github.event.inputs.deploy_commit }}
-        MERKELY_DESCRIPTION: &quot;Approval created by ${{ github.actor }} on github&quot;
+        MERKELY_DESCRIPTION: &quot;Approval requested by ${{ github.actor }} on github&quot;
         MERKELY_SRC_REPO_ROOT: ${{ github.workspace }}
         MERKELY_OWNER: ${{ env.MERKELY_OWNER }}
         MERKELY_PIPELINE: ${{ env.MERKELY_PIPELINE }}
@@ -319,7 +319,7 @@ If not provided, the json content defaults to {}</p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>yes</p></td>
-<td><p>A description for the approval.</p></td>
+<td><p>A description for the approval request.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>

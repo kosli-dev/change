@@ -136,7 +136,7 @@ def lines_for_github(command_name):
     ]
     tab = " " * 8
     for var in command.merkely_env_vars:
-        show, example = var.ci_doc_example('github', command_name)
+        show, example = var.doc_example('github', command_name)
         if show:
             lines.append(f'{tab}{var.name}: {example}')
     return lines
@@ -202,7 +202,7 @@ def lines_for_bitbucket(command_name):
     ]
     tab = " " * 14
     for var in command.merkely_env_vars:
-        show, example = var.ci_doc_example('bitbucket', command_name)
+        show, example = var.doc_example('bitbucket', command_name)
         if show:
             lines.append(f'{tab}{var.name}: {example}')
     return lines

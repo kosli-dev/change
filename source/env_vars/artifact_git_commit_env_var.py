@@ -16,6 +16,6 @@ class ArtifactGitCommitEnvVar(CompoundCiEnvVar):
             'github': CompoundEnvVar(self._env, self.name, CiEnvVar('GITHUB_SHA')),
         }
 
-    def ci_doc_example(self, ci_name, _command_name):
+    def doc_example(self, ci_name, _command_name):
         return False, ""
 
