@@ -115,13 +115,19 @@ def env_vars_to_table(env_vars, ci_name, command_name):
     return table
 
 
-def literal_block_link(_command_name, ci_name):
+def literal_block_link(command_name, ci_name):
     if ci_name == 'docker':
         ref = 'https://github.com/merkely-development/change/blob/master/Makefile'
     if ci_name == 'bitbucket':
         ref = 'https://bitbucket.org/merkely/loan-calculator/src/master/bitbucket-pipelines.yml'
     if ci_name == 'github':
-        ref = 'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/master_pipeline.yml'
+        workflow_url = 'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows'
+        if command_name == 'request_approval':
+            ref = f'{workflow_url}/request_approval.yml'
+        elif command_name == 'control_deployment':
+            ref = f'{workflow_url}/deploy_to_production.yml'
+        else:
+            ref = f'{workflow_url}/master_pipeline.yml'
     para = nodes.paragraph(text="")
     para += nodes.reference('', 'See an example of use in a git repo.', internal=False, refuri=ref)
     para.update_basic_atts({
