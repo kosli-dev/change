@@ -7,7 +7,5 @@ junitparser
 pygit2==1.5.0
 pytest-mock
 pyfakefs
-approvaltests
-pytest-approvaltests
 pytest-random-order
 bitbucket-pipes-toolkit==1.6.4

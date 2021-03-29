@@ -1,7 +1,3 @@
-from approvaltests.approvals import verify
-from approvaltests.reporters import PythonNativeReporter
-
-
 """
 According to https://github.com/approvals/ApprovalTests.Python
 you can setup the approval-test reporter at the command line 
@@ -32,23 +28,6 @@ But these two lines in requirements.txt do not yet work:
   
 Update. This was fixed in the 0.3.0 release.  
 """
-
-
-def verify_approval(capsys, streams=None):
-    actual = capsys_read(capsys, streams)
-    verify(actual, PythonNativeReporter())
-
-
-def verify_payload_and_url(capsys, streams=None):
-    actual = capsys_read(capsys, streams)
-    payload_and_url = ""
-    inside = False
-    for line in actual.splitlines(True):
-        inside = line.startswith("Putting this payload:") or inside
-        inside = line.startswith("Posting this payload:") or inside
-        if inside:
-            payload_and_url += line
-    verify(payload_and_url, PythonNativeReporter())
 
 
 def capsys_read(capsys, streams=None):

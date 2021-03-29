@@ -18,7 +18,7 @@ set -eu
 readonly TARGET="${1}"
 
 # If you use --approvaltests-use-reporter='PythonNative'
-# see comment in tests/unit/utils/verify_approval.py
+# see comment in tests/unit/utils/capsys_read.py
 
 # pytest-cov command line options are documented here
 # https://pytest-cov.readthedocs.io/en/latest/config.html
