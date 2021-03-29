@@ -8,7 +8,7 @@ PIPELINE = "cdb-controls-test-pipeline"
 
 
 def test_green(capsys):
-    expected_method = "Putting"
+    expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/"
     expected_payload = {
         "owner": OWNER,

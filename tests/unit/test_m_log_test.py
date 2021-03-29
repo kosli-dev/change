@@ -44,7 +44,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
 
-    expected_method = "Putting"
+    expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {
@@ -86,7 +86,7 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
 
-    expected_method = "Putting"
+    expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {

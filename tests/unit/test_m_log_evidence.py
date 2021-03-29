@@ -13,7 +13,7 @@ BUILD_URL = "https://gitlab/build/1956"
 
 
 def test_docker_protocol(capsys):
-    expected_method = "Putting"
+    expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
         "contents": {

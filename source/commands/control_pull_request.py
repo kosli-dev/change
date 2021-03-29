@@ -33,8 +33,8 @@ class ControlPullRequest(Command):
         def callback(_response):
             if not is_compliant:
                 raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not compliant")
-            return 'Putting', url, payload
-        return 'Putting', url, payload, callback
+            return 'PUT', url, payload
+        return 'PUT', url, payload, callback
 
     @property
     def description(self):

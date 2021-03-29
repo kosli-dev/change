@@ -14,7 +14,7 @@ def test_all_env_vars_image(capsys):
     build_url = "https://gitlab/build/1456"
     build_number = "23"
 
-    expected_method = "Putting"
+    expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
         "build_url": build_url,
@@ -56,7 +56,7 @@ def test_all_env_vars_file(capsys):
     build_url = "https://gitlab/build/1456"
     build_number = '23'
 
-    expected_method = "Putting"
+    expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
         'build_url': build_url,
@@ -96,7 +96,7 @@ def test_all_env_vars_sha(capsys):
     build_url = "https://gitlab/build/1456"
     build_number = '23'
 
-    expected_method = "Putting"
+    expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
         "build_url": build_url,

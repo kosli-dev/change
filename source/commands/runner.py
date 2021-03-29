@@ -15,11 +15,11 @@ def run(external):
 
     api_token = command.api_token.value
     method, url, payload, callback = command()
-    if method == 'Getting':
+    if method == 'GET':
         response = http_get_json(url, api_token)
-    if method == 'Putting':
+    if method == 'PUT':
         response = http_put_payload(url, payload, api_token)
-    if method == 'Posting':
+    if method == 'POST':
         response = http_post_payload(url, payload, api_token)
 
     if callback is not None:

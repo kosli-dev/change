@@ -25,7 +25,7 @@ EVIDENCE_TYPE = "pull_request"
 
 
 def test_bitbucket(capsys, mocker):
-    expected_method = "Putting"
+    expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
         "contents": {

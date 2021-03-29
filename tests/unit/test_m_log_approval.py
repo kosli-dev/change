@@ -15,7 +15,7 @@ def test_docker_image(capsys):
     image_name = "acme/runner:4.56"
     sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 
-    expected_method = "Posting"
+    expected_method = "POST"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/approvals/"
     expected_payload = {
         "artifact_sha256": sha256,

@@ -16,7 +16,7 @@ USER_DATA = "/app/tests/data/user_data.json"
 
 
 def test_docker_image(capsys):
-    expected_method = "Posting"
+    expected_method = "POST"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{NAME}/deployments/"
     expected_payload = {
         "artifact_sha256": SHA256,

@@ -23,7 +23,7 @@ class LogDeployment(Command):
             "user_data": self.user_data.value
         }
         url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
-        return 'Posting', url, payload, None
+        return 'POST', url, payload, None
 
     @property
     def description(self):

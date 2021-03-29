@@ -21,7 +21,7 @@ EVIDENCE_TYPE = "unit_test"
 
 
 def test_bitbucket(capsys):
-    expected_method = "Putting"
+    expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
         "contents": {
@@ -49,17 +49,6 @@ def test_bitbucket(capsys):
         'MERKELY_COMMAND=log_evidence',
         'MERKELY_IS_COMPLIANT: True',
     ]
-
-
-def old_log_evidence_env():
-    return {
-        "CDB_API_TOKEN": API_TOKEN,
-        "CDB_ARTIFACT_DOCKER_IMAGE": IMAGE_NAME,
-        "CDB_IS_COMPLIANT": "TRUE",
-        "CDB_EVIDENCE_TYPE": EVIDENCE_TYPE,
-        "CDB_DESCRIPTION": DESCRIPTION,
-        "CDB_CI_BUILD_URL": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
-    }
 
 
 def new_log_evidence_env():

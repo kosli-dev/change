@@ -23,7 +23,7 @@ USER_DATA_JSON = {'status': 'deployed'}
 
 
 def test_bitbucket(capsys):
-    expected_method = "Posting"
+    expected_method = "POST"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/deployments/"
     expected_payload = {
         "artifact_sha256": SHA256,
