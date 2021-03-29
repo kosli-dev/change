@@ -3,14 +3,13 @@ NAME   := ${APP}
 TAG    := $$(git log -1 --pretty=%h) # eg 5d72e2b
 SHA    := $$(git log -1 --pretty=%H) # eg 5d72e2b158be269390d4b3931ed5d0febd784fb5
 
-# Th is this what's being built by the custom action docker/build-push-action@v1.1.0
+# sha-${TAG} is what's being built by the custom action
+# docker/build-push-action@v1.1.0
 # in .github/workflows/main.yml
 IMAGE  := merkely/${APP}:sha-${TAG}
-
 LATEST := merkely/${APP}:latest
-CONTAINER := ${NAME}
 
-CDB_HOST = https://app.compliancedb.com
+CONTAINER := ${NAME}
 
 MERKELY_HOST = https://app.compliancedb.com
 MERKELYPIPE = Merkelypipe.json
@@ -66,7 +65,7 @@ build:
 	@docker tag ${IMAGE} ${LATEST}
 
 # - - - - - - - - - - - - - - - - - - - -
-# run tests without building by volume-mounting
+# run tests without building, by volume-mounting
 
 define SOURCE_VOLUME_MOUNTS
 	--volume ${ROOT_DIR}/source:/app/source
@@ -75,7 +74,6 @@ endef
 define TESTS_VOLUME_MOUNT
     --volume ${ROOT_DIR}/tests:/app/tests
 endef
-
 
 # Don't add build as a dependency to test_unit.
 # If you do then in .github/workflows/main.yml the line
@@ -96,7 +94,6 @@ test_unit:
 	    --volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
-
 
 pytest_help:
 	@docker run \
@@ -149,7 +146,6 @@ prune:
 stats:
 	@echo Commits: $$(git rev-list --count master)
 	@cloc .
-
 
 # - - - - - - - - - - - - - - - - - - - -
 # Merkely commands
