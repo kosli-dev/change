@@ -26,7 +26,7 @@ class LogEvidence(Command):
             }
         }
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
-        return 'Putting', url, payload, self.api_token.value, None
+        return 'Putting', url, payload, None
 
     @property
     def description(self):

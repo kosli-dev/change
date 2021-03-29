@@ -14,7 +14,7 @@ class DeclarePipeline(Command):
     def __call__(self):
         url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
         payload = self.merkelypipe
-        return 'Putting', url, payload, self.api_token.value, None
+        return 'Putting', url, payload, None
 
 
     @property

@@ -34,7 +34,7 @@ class ControlPullRequest(Command):
             if not is_compliant:
                 raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not compliant")
             return 'Putting', url, payload
-        return 'Putting', url, payload, self.api_token.value, callback
+        return 'Putting', url, payload, callback
 
     @property
     def description(self):

@@ -27,7 +27,7 @@ class LogArtifact(Command):
             "user_data": self.user_data.value
         }
         url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)
-        return 'Putting', url, payload, self.api_token.value, None
+        return 'Putting', url, payload, None
 
     @property
     def artifact_git_commit(self):

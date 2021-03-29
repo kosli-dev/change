@@ -33,7 +33,7 @@ class ControlDeployment(Command):
             if not is_approved:
                 raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not approved.")
             return 'Getting', url, approvals
-        return 'Getting', url, None, self.api_token.value, callback
+        return 'Getting', url, None, callback
 
 
 def control_deployment_approved(approvals):

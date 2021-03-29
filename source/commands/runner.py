@@ -13,7 +13,8 @@ def run(external):
     for env_var in command.merkely_env_vars:
         env_var.value
 
-    method, url, payload, api_token, callback = command()
+    api_token = command.api_token.value
+    method, url, payload, callback = command()
     if method == 'Getting':
         response = http_get_json(url, api_token)
     if method == 'Putting':

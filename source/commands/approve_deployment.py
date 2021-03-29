@@ -34,7 +34,7 @@ class ApproveDeployment(Command):
             ]
         }
         url = ApiSchema.url_for_approvals(self.host.value, self.merkelypipe)
-        return 'Posting', url, payload, self.api_token.value, None
+        return 'Posting', url, payload, None
 
     @property
     def description(self):
