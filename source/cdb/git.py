@@ -5,7 +5,7 @@ from pygit2._pygit2 import GIT_SORT_TIME
 
 def repo_at(root):
     try:
-        # Ensure dir/ does not have duplicted / in error messages
+        # Ensure dir/ does not have duplicated / in error messages
         if root.endswith('/'):
             dir = root + '.git'
         else:
@@ -13,12 +13,6 @@ def repo_at(root):
         return Repository(dir)
     except _pygit2.GitError as err:
         raise ChangeError(f"Error: {str(err)}")
-
-
-def commit_for_commitish(repo, commitish):
-    """returns the commit for a given reference as a string"""
-    commit = repo.revparse_single(commitish)
-    return str(commit.id)
 
 
 def list_commits_between(repo, target_commit, base_commit):
