@@ -18,7 +18,9 @@ def test_no_retries_when_http_call_is_not_503(capsys):
         http_post_payload(url, payload, api_token)
 
     assert len(responses.calls) == 1
-    verify_approval(capsys)
+
+    trailing_lines = extract_trailing_blurb(capsys_read(capsys))
+    assert trailing_lines == ['{"success": 42}']
 
 
 @responses.activate

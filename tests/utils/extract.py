@@ -6,6 +6,20 @@ def extract_blurb(output):
     return blurb
 
 
+def extract_trailing_blurb(output):
+    """
+    """
+    trailing_lines = []
+    seen_to_this_url = False
+    for line in output.splitlines(False):
+        if line.startswith("To this url:"):
+            seen_to_this_url = True
+        elif seen_to_this_url:
+            trailing_lines.append(line)
+
+    return trailing_lines
+
+
 def extract_blurb_method_payload_url(output):
     """
     Splits output so each part can be asserted individually.
