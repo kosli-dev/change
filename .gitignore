@@ -7,8 +7,6 @@ source/env_vars/__pycache__/
 source/errors/__pycache__/
 source/fingerprinters/__pycache__/
 tests/__pycache__/
-tests/bb_integration/__pycache__/
-tests/integration/__pycache__/
 tests/unit/__pycache__/
 tests/utils/__pycache__/
 docs/.buildinfo
