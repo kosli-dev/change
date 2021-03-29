@@ -37,6 +37,7 @@ def invocation_full(command_name, ci_name):
         text = file.read()
 
     div = nodes.container()
+    div += literal_block_link(command_name, ci_name)
     div += nodes.literal_block(text=text)
     div += parameters(command_name, ci_name)
 
@@ -112,6 +113,21 @@ def env_vars_to_table(env_vars, ci_name, command_name):
         tbody += row
     tgroup += tbody
     return table
+
+
+def literal_block_link(_command_name, ci_name):
+    if ci_name == 'docker':
+        ref = 'https://github.com/merkely-development/change/blob/master/Makefile'
+    if ci_name == 'bitbucket':
+        ref = 'https://bitbucket.org/merkely/loan-calculator/src/master/bitbucket-pipelines.yml'
+    if ci_name == 'github':
+        ref = 'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/master_pipeline.yml'
+    para = nodes.paragraph(text="")
+    para += nodes.reference('', 'See at an example of use (below) in a file', internal=False, refuri=ref)
+    para.update_basic_atts({
+        "classes": ['literal-block-link']
+    })
+    return para
 
 
 def setup(app):

@@ -35,6 +35,10 @@ body {
   padding-bottom: 10px;
 }
 
+.literal-block-link {
+  padding-top: 10px;
+}
+
 a.copybtn {
   position: absolute;
   top: .4em;
