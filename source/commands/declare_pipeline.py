@@ -6,7 +6,7 @@ from cdb.api_schema import ApiSchema
 class DeclarePipeline(Command):
 
     def doc_summary(self, _ci_name):
-        return "Declares a pipeline in Merkely"
+        return "Declares a pipeline in Merkely."
 
     def doc_volume_mounts(self, _ci_name):
         return []

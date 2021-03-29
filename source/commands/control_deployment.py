@@ -6,7 +6,7 @@ from cdb.api_schema import ApiSchema
 class ControlDeployment(Command):
 
     def doc_summary(self, _ci_name):
-        return "Fails a pipeline if an artifact is not approved for deployment."
+        return "Fails a pipeline if an artifact is not approved for deployment in Merkely."
 
     def doc_volume_mounts(self, ci_name):
         if ci_name == 'docker':
