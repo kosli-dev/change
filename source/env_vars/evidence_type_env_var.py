@@ -11,12 +11,12 @@ class EvidenceTypeEnvVar(RequiredEnvVar):
             if command_name == 'log_evidence':
                 return True, 'coverage'
             if command_name == 'log_test':
-                return True, 'security'
+                return True, 'unit_test'
         if ci_name == 'bitbucket':
             if command_name == 'log_evidence':
                 return True, 'coverage'
             if command_name == 'log_test':
-                return True, 'security'
+                return True, 'unit_test'
         return False, ""
 
     def doc_note(self, _ci_name, _command_name):
