@@ -51,21 +51,17 @@ class Command(ABC):
     # - - - - - - - - - - - - - - - - - - - - -
     # Living documentation
 
-    def summary(self, _ci):  # pragma: no cover
+    def doc_summary(self, _ci_name):  # pragma: no cover
         """
         Used in living documentation.
         """
         raise NotImplementedError(self.name)
 
-    @property
-    def merkely_env_vars(self):
+    def doc_volume_mounts(self, _ci_name):  # pragma: no cover
         """
-        All the MERKELY_... env-vars for this command.
         Used in living documentation.
         """
-        names = self._merkely_env_var_names
-        objects = [getattr(self, name) for name in names]
-        return namedtuple('MerkelyEnvVars', tuple(names))(*objects)
+        raise NotImplementedError(self.name)
 
     @property
     def _merkely_env_var_names(self):  # pragma: no cover
@@ -76,11 +72,17 @@ class Command(ABC):
         """
         raise NotImplementedError(self.name)
 
-    def volume_mounts(self, _ci):  # pragma: no cover
+    # - - - - - - - - - - - - - - - - - - - - -
+
+    @property
+    def merkely_env_vars(self):
         """
+        All the MERKELY_... env-vars for this command.
         Used in living documentation.
         """
-        raise NotImplementedError(self.name)
+        names = self._merkely_env_var_names
+        objects = [getattr(self, name) for name in names]
+        return namedtuple('MerkelyEnvVars', tuple(names))(*objects)
 
     # - - - - - - - - - - - - - - - - - - - - -
     # Merkely access env-vars

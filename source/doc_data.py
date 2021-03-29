@@ -77,7 +77,7 @@ def min_lines_for(command_name):
             lines.append(env(var))
 
     lines.append(lc(f"{tab}--rm"))
-    for mount in command.volume_mounts('docker'):
+    for mount in command.doc_volume_mounts('docker'):
         lines.append(lc(f"{tab}--volume {mount}"))
 
     # The merkely-pipe volume-mount is always required
@@ -121,7 +121,7 @@ def lines_for_docker(command_name):
     for var in command.merkely_env_vars:
         lines.append(env(var))
     lines.append(lc(f"{tab}--rm"))
-    for mount in command.volume_mounts('docker'):
+    for mount in command.doc_volume_mounts('docker'):
         lines.append(lc(f"{tab}--volume {mount}"))
     if command_name == 'declare_pipeline':
         lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))

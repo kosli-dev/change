@@ -9,14 +9,14 @@ from cdb.api_schema import ApiSchema
 
 class ControlPullRequest(Command):
 
-    def summary(self, _ci):
+    def doc_summary(self, _ci_name):
         return ""
 
-    def volume_mounts(self, ci):
-        if ci == 'bitbucket':
-            return []
-        else:
+    def doc_volume_mounts(self, ci_name):
+        if ci_name == 'docker':
             return ["/var/run/docker.sock:/var/run/docker.sock"]
+        else:
+            return []
 
     def __call__(self):
         is_compliant, pull_requests = get_pull_request_for_current_commit(self.env)

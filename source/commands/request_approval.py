@@ -6,14 +6,17 @@ from cdb.git import repo_at, list_commits_between
 
 class RequestApproval(Command):
 
-    def summary(self, _ci):
+    def doc_summary(self, _ci_name):
         return "Request an approval in Merkely."
 
-    def volume_mounts(self, ci):
-        mounts = ["${PWD}:/src"]
-        if ci != 'bitbucket':
-            mounts.append("/var/run/docker.sock:/var/run/docker.sock")
-        return mounts
+    def doc_volume_mounts(self, ci_name):
+        if ci_name == 'docker':
+            return [
+                "${PWD}:/src",
+                "/var/run/docker.sock:/var/run/docker.sock"
+            ]
+        else:
+            return []
 
     def __call__(self):
         commit_list = list_commits_between(repo_at(self.src_repo_root.value),

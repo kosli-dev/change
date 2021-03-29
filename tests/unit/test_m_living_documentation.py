@@ -10,6 +10,6 @@ def test_summary():
             continue
         if klass.__name__ == 'LogApproval':
             continue
-        assert len(command.summary('github')) > 0, klass.__name__
+        assert len(command.doc_summary('github')) > 0, klass.__name__
 
 

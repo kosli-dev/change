@@ -5,14 +5,14 @@ from cdb.api_schema import ApiSchema
 
 class LogArtifact(Command):
 
-    def summary(self, _ci):
+    def doc_summary(self, _ci_name):
         return "Logs an artifact in Merkely."
 
-    def volume_mounts(self, ci):
-        if ci == 'bitbucket':
-            return []
-        else:
+    def doc_volume_mounts(self, ci_name):
+        if ci_name == 'docker':
             return ["/var/run/docker.sock:/var/run/docker.sock"]
+        else:
+            return []
 
     def __call__(self):
         self._print_compliance()

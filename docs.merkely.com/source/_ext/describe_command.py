@@ -24,7 +24,7 @@ class DescribeCommand(Directive):
 
 
 def summary(command_name, ci_name):
-    return [nodes.paragraph(text=command_for(command_name).summary(ci_name))]
+    return [nodes.paragraph(text=command_for(command_name).doc_summary(ci_name))]
 
 
 # The Makefile volume-mounts docs.merkely.com/ to docs/

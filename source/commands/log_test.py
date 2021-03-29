@@ -9,17 +9,20 @@ DEFAULT_TEST_DIR = "/data/junit/"
 
 class LogTest(Command):
 
-    def summary(self, _ci):
+    def doc_summary(self, _ci_name):
         return " ".join([
             "Logs JUnit xml format test summary evidence in Merkely.",
             f"By default, looks for JUnit .xml files in the dir {DEFAULT_TEST_DIR}"
         ])
 
-    def volume_mounts(self, ci):
-        mounts = ["${YOUR_TEST_RESULTS_DIR}:/data/junit"]
-        if ci != 'bitbucket':
-            mounts.append("/var/run/docker.sock:/var/run/docker.sock")
-        return mounts
+    def doc_volume_mounts(self, ci_name):
+        if ci_name == 'docker':
+            return [
+                "${YOUR_TEST_RESULTS_DIR}:/data/junit",
+                "/var/run/docker.sock:/var/run/docker.sock",
+            ]
+        else:
+            return []
 
     def __call__(self):
         junit_results_dir = self.test_results_dir.value

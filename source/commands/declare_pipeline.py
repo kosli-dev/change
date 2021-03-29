@@ -5,17 +5,16 @@ from cdb.api_schema import ApiSchema
 
 class DeclarePipeline(Command):
 
-    def summary(self, _ci):
+    def doc_summary(self, _ci_name):
         return "Declares a pipeline in Merkely"
 
-    def volume_mounts(self, _ci):
+    def doc_volume_mounts(self, _ci_name):
         return []
 
     def __call__(self):
         url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
         payload = self.merkelypipe
         return 'PUT', url, payload, None
-
 
     @property
     def pipe_path(self):
