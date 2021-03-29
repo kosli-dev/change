@@ -70,6 +70,7 @@ def test_post_stops_retrying_when_non_503_and_returns_None(capsys):
     assert len(responses.calls) == 1 + 1 + 1
     assert_1_retry(capsys)
 
+
 @responses.activate
 def test_put_stops_retrying_when_non_503_and_returns_None(capsys):
     url, payload, api_token = stub_http_503('PUT', 1 + 1)
