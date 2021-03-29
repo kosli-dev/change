@@ -14,9 +14,6 @@ class CompoundCiEnvVar(EnvVar, ABC):
     def is_required(self, ci_name):
         return ci_name == 'docker'
 
-    def ci_env_var_names(self, ci_name):
-        return self._ci_env_vars[ci_name].names
-
     # - - - - - - - - - - - - - - - - - - - - -
 
     @property

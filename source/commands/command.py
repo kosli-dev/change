@@ -67,24 +67,6 @@ class Command(ABC):
         objects = [getattr(self, name) for name in names]
         return namedtuple('MerkelyEnvVars', tuple(names))(*objects)
 
-    def ci_env_var_names(self, ci):
-        """
-        All the env-var names used in defaults for all
-        the merkely_env_vars for this command, in the given ci.
-        Used in living documentation.
-        For example, one of LogTest command's merkely_env_vars is
-        MERKELY_CI_BUILD_URL which has a default, in ci='github',
-        which uses GITHUB_REPOSITORY. So GITHUB_REPOSITORY is one
-        of the ci_env_var_names() for LogCommand when ci=='github'
-        """
-        if ci == 'docker':
-            return []
-        names = []
-        for var in self.merkely_env_vars:
-            if isinstance(var, CompoundCiEnvVar):
-                names.extend(var.ci_env_var_names(ci))
-        return sorted(set(names))
-
     @property
     def _merkely_env_var_names(self):  # pragma: no cover
         """

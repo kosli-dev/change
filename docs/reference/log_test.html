@@ -209,7 +209,7 @@
             variables:
               MERKELY_COMMAND: log_test
               MERKELY_FINGERPRINT: ${MERKELY_FINGERPRINT}
-              MERKELY_EVIDENCE_TYPE: security
+              MERKELY_EVIDENCE_TYPE: unit_test
               MERKELY_TEST_RESULTS_DIR: ${PWD}/build/test/
               MERKELY_OWNER: ${MERKELY_OWNER}
               MERKELY_PIPELINE: ${MERKELY_PIPELINE}
@@ -277,7 +277,7 @@
       env:
         MERKELY_COMMAND: log_test
         MERKELY_FINGERPRINT: docker://${{ env.IMAGE_TAGGED }}
-        MERKELY_EVIDENCE_TYPE: security
+        MERKELY_EVIDENCE_TYPE: unit_test
         MERKELY_TEST_RESULTS_DIR: ${{ github.workspace }}/build/test
         MERKELY_OWNER: ${{ env.MERKELY_OWNER }}
         MERKELY_PIPELINE: ${{ env.MERKELY_PIPELINE }}
