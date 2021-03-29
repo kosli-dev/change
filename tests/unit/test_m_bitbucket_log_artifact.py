@@ -2,9 +2,6 @@ from commands import run, External
 
 from tests.utils import *
 
-APPROVAL_DIR = "tests/unit/approved_executions"
-APPROVAL_FILE = "test_m_bitbucket_log_artifact"
-
 BB = "https://bitbucket.org"
 BB_ORG = 'acme'
 BB_REPO = 'road-runner'
@@ -21,14 +18,6 @@ SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 
 
 def test_required_env_vars(capsys):
-    # extract data from approved cdb text file
-    import inspect
-    this_test = inspect.stack()[0].function
-    approved = f"{APPROVAL_DIR}/{APPROVAL_FILE}.{this_test}.approved.txt"
-    with open(approved) as file:
-        old_approval = file.read()
-    _old_blurb, old_method, old_payload, old_url = extract_blurb_method_payload_url(old_approval)
-
     expected_method = "Putting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
@@ -39,12 +28,8 @@ def test_required_env_vars(capsys):
         "git_commit": COMMIT,
         "is_compliant": False,
         "sha256": SHA256,
+        "user_data": {},
     }
-
-    # verify data from approved cdb text file
-    assert old_payload == expected_payload
-    assert old_method == expected_method
-    assert old_url == expected_url
 
     # make merkely call
     ev = new_log_artifact_env()
@@ -54,9 +39,6 @@ def test_required_env_vars(capsys):
             method, url, payload = run(external)
 
     capsys_read(capsys)
-
-    # CHANGE IN BEHAVIOUR
-    expected_payload['user_data'] = {}
 
     # verify matching data
     assert method == expected_method

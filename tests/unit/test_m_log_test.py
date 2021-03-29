@@ -59,7 +59,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
     ev = new_log_test_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-            with ScopedDirCopier('/app/tests/data/control_junit/xml-with-passed-results', '/data/junit'):
+            with ScopedDirCopier('/app/tests/data/control_junit/xml_with_passed_results', '/data/junit'):
                 external = External(env=env, docker_fingerprinter=fingerprinter)
                 method, url, payload = run(external)
 
@@ -99,7 +99,7 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
 
     # make merkely call
     ev = new_log_test_env()
-    ev['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/control_junit/xml-with-passed-results"
+    ev['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/control_junit/xml_with_passed_results"
     with dry_run(ev) as env:
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
