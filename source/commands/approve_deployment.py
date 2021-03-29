@@ -7,7 +7,7 @@ from cdb.git import repo_at, list_commits_between
 class ApproveDeployment(Command):
 
     def doc_summary(self, _ci_name):
-        return "Logs an approval."
+        return "Logs a deployment approval in Merkely."
 
     def doc_volume_mounts(self, ci_name):
         if ci_name == 'docker':
@@ -86,4 +86,4 @@ class DescriptionEnvVar(RequiredEnvVar):
         return False, ""
 
     def doc_note(self, _ci_name, _command_name):
-        return f"A description for the approval."
+        return f"A description for the deployment approval."

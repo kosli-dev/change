@@ -119,7 +119,7 @@
       
   <div class="section" id="approve-deployment">
 <h1>Approve Deployment<a class="headerlink" href="#approve-deployment" title="Permalink to this headline">¶</a></h1>
-<p>Logs an approval.</p>
+<p>Logs a deployment approval in Merkely.</p>
 <ul class="nav nav-tabs">
    <li class="active"><a data-toggle="tab" href="#docker">Docker</a></li>
    <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
@@ -163,11 +163,11 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_OLDEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the oldest change in the approval.</p></td>
+<td><p>The source commit-ish for the oldest change in the deployment approval.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_NEWEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the newest change in the approval.</p></td>
+<td><p>The source commit-ish for the newest change in the deployment approval.</p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>yes</p></td>
@@ -201,7 +201,7 @@
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
-<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/master/bitbucket-pipelines.yml">See an example of use in a git repo.</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile">See an example of use in a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;approve_a_deployment
         name: Approve a deployment
         services: [ docker ]
@@ -238,11 +238,11 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_OLDEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the oldest change in the approval.</p></td>
+<td><p>The source commit-ish for the oldest change in the deployment approval.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_NEWEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the newest change in the approval.</p></td>
+<td><p>The source commit-ish for the newest change in the deployment approval.</p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>yes</p></td>
@@ -276,7 +276,7 @@
 </table>
 </div>
 <div class="github tab-pane docutils container" id="github">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/master_pipeline.yml">See an example of use in a git repo.</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile">See an example of use in a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Approve a deployment
       uses: docker://merkely/change:latest
       env:
@@ -309,11 +309,11 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_OLDEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the oldest change in the approval.</p></td>
+<td><p>The source commit-ish for the oldest change in the deployment approval.</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_NEWEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the newest change in the approval.</p></td>
+<td><p>The source commit-ish for the newest change in the deployment approval.</p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>yes</p></td>

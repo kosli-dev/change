@@ -116,11 +116,15 @@ def env_vars_to_table(env_vars, ci_name, command_name):
 
 
 def literal_block_link(command_name, ci_name):
-    if ci_name == 'docker':
-        ref = 'https://github.com/merkely-development/change/blob/master/Makefile'
-    if ci_name == 'bitbucket':
+    change_makefile_url = 'https://github.com/merkely-development/change/blob/master/Makefile'
+    if command_name == 'approve_deployment':
+        # Currently only one 'docker' use
+        ref = change_makefile_url
+    elif ci_name == 'docker':
+        ref = change_makefile_url
+    elif ci_name == 'bitbucket':
         ref = 'https://bitbucket.org/merkely/loan-calculator/src/master/bitbucket-pipelines.yml'
-    if ci_name == 'github':
+    elif ci_name == 'github':
         workflow_url = 'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows'
         if command_name == 'request_approval':
             ref = f'{workflow_url}/request_approval.yml'

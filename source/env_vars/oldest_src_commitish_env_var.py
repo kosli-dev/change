@@ -13,5 +13,9 @@ class OldestSrcCommitishEnvVar(RequiredEnvVar):
             return True, '"origin/production"'
         return False, ""
 
-    def doc_note(self, _ci_name, _command_name):
-        return "The source commit-ish for the oldest change in the approval."
+    def doc_note(self, _ci_name, command_name):
+        if command_name == 'request_approval':
+            return "The source commit-ish for the oldest change in the approval request."
+        else:  # approve_deployment
+            return "The source commit-ish for the oldest change in the deployment approval."
+
