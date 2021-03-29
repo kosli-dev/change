@@ -12,7 +12,8 @@ class LogTest(Command):
     def doc_summary(self, _ci_name):
         return " ".join([
             "Logs JUnit xml format test summary evidence in Merkely.",
-            f"By default, looks for JUnit .xml files in the dir {DEFAULT_TEST_DIR}"
+            "The JUnit xml format is used by many tools, not just testing frameworks.",
+            f"By default, looks for JUnit .xml files in the {DEFAULT_TEST_DIR} dir."
         ])
 
     def doc_volume_mounts(self, ci_name):
@@ -85,7 +86,7 @@ class DescriptionEnvVar(StaticDefaultedEnvVar):
 
     def doc_note(self, _ci_name, _command_name):
         return " ".join([
-            "A description of the test.",
+            "A description of the test summary.",
             f'Defaults to "{self._default_prefix}"',
             f'followed by the JUnit .xml summary, eg "{self._default_suffix}"'
         ])

@@ -123,7 +123,7 @@ def literal_block_link(_command_name, ci_name):
     if ci_name == 'github':
         ref = 'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/master_pipeline.yml'
     para = nodes.paragraph(text="")
-    para += nodes.reference('', 'See at an example of use (below) in a file', internal=False, refuri=ref)
+    para += nodes.reference('', 'See at an example of use in a file', internal=False, refuri=ref)
     para.update_basic_atts({
         "classes": ['literal-block-link']
     })

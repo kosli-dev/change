@@ -119,14 +119,14 @@
       
   <div class="section" id="log-test">
 <h1>Log Test<a class="headerlink" href="#log-test" title="Permalink to this headline">¶</a></h1>
-<p>Logs JUnit xml format test summary evidence in Merkely. By default, looks for JUnit .xml files in the dir /data/junit/</p>
+<p>Logs JUnit xml format test summary evidence in Merkely. The JUnit xml format is used by many tools, not just testing frameworks. By default, looks for JUnit .xml files in the /data/junit/ dir.</p>
 <ul class="nav nav-tabs">
    <li class="active"><a data-toggle="tab" href="#docker">Docker</a></li>
    <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
    <li><a data-toggle="tab" href="#github">Github</a></li>
 </ul>
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile">See at an example of use (below) in a file</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile">See at an example of use in a file</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=log_test \
     --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
@@ -171,7 +171,7 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>no</p></td>
-<td><p>A description of the test. Defaults to “JUnit results xml verified by merkely/change: ” followed by the JUnit .xml summary, eg “All tests passed in 1 test suites”</p></td>
+<td><p>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by the JUnit .xml summary, eg “All tests passed in 1 test suites”</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
 <td><p>yes</p></td>
@@ -201,7 +201,7 @@
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
-<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/master/bitbucket-pipelines.yml">See at an example of use (below) in a file</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/master/bitbucket-pipelines.yml">See at an example of use in a file</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;log_unit_test_results_in_merkely
         name: Log unit test results in Merkely
         services: [ docker ]
@@ -244,7 +244,7 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>no</p></td>
-<td><p>A description of the test. Defaults to “JUnit results xml verified by merkely/change: ” followed by the JUnit .xml summary, eg “All tests passed in 1 test suites”</p></td>
+<td><p>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by the JUnit .xml summary, eg “All tests passed in 1 test suites”</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
 <td><p>no</p></td>
@@ -274,7 +274,7 @@
 </table>
 </div>
 <div class="github tab-pane docutils container" id="github">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/master_pipeline.yml">See at an example of use (below) in a file</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/master_pipeline.yml">See at an example of use in a file</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Log unit test results in Merkely
       uses: docker://merkely/change:latest
       env:
@@ -313,7 +313,7 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>no</p></td>
-<td><p>A description of the test. Defaults to “JUnit results xml verified by merkely/change: ” followed by the JUnit .xml summary, eg “All tests passed in 1 test suites”</p></td>
+<td><p>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by the JUnit .xml summary, eg “All tests passed in 1 test suites”</p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
 <td><p>no</p></td>
