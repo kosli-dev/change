@@ -126,7 +126,7 @@
    <li><a data-toggle="tab" href="#github">Github</a></li>
 </ul>
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile">See at an example of use in a file</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile">See an example of use in a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=request_approval \
     --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
@@ -201,7 +201,7 @@
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
-<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/master/bitbucket-pipelines.yml">See at an example of use in a file</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/master/bitbucket-pipelines.yml">See an example of use in a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;request_approval_in_merkely
         name: Request approval in Merkely
         services: [ docker ]
@@ -276,7 +276,7 @@
 </table>
 </div>
 <div class="github tab-pane docutils container" id="github">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/master_pipeline.yml">See at an example of use in a file</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/master_pipeline.yml">See an example of use in a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Request approval in Merkely
       uses: docker://merkely/change:latest
       env:
