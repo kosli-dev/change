@@ -1,6 +1,8 @@
 from commands import run, main, External
+from errors import ChangeError
 
 from tests.utils import *
+from pytest import raises
 
 BITBUCKET_API_TOKEN = "6199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 BITBUCKET_API_USER = "test_user"
@@ -61,6 +63,44 @@ def test_bitbucket(capsys, mocker):
     assert payload == expected_payload
 
 
+def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
+    expected_method = "PUT"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
+    expected_payload = {
+        "contents": {
+            "description": DESCRIPTION,
+            "is_compliant": True,
+            "source": [
+                {
+                    "pullRequestMergeCommit": COMMIT,
+                    "pullRequestState": "OPEN",
+                    "pullRequestURL": "test_html_uri"
+                }
+            ],
+            "url": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}"
+        },
+        "evidence_type": EVIDENCE_TYPE
+    }
+
+    # make merkely call
+    ev = new_control_pull_request_env()
+    with dry_run(ev) as env:
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+            response = mocked_bitbucket_pull_requests_api_response()
+            response['participants'] = []
+            rv1 = MockedAPIResponse(200, response)
+            mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
+
+    # verify matching data
+    stdout = capsys_read(capsys).split("\n")
+    assert stdout[3] == "No approvers found"
+    assert method == expected_method
+    assert url == expected_url
+    assert payload == expected_payload
+
+
 def test_bitbucket_not_compliant_raises(capsys, mocker):
     # make merkely call
     ev = new_control_pull_request_env()
@@ -79,6 +119,56 @@ def test_bitbucket_not_compliant_raises(capsys, mocker):
     lines = stdout.split("\n")
     last_line = lines[-2]  # ignore trailing newline
     assert last_line[:6] == 'Error:'
+
+
+def test_bitbucket_api_response_202(capsys, mocker):
+    # make merkely call
+    ev = new_control_pull_request_env()
+    with dry_run(ev) as env:
+            with raises(ChangeError) as exc:
+                rv1 = MockedAPIResponse(202, {})
+                mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+                external = External(env=env)
+                _, _, _ = run(external)
+
+    capsys_read(capsys)
+    assert str(exc.value) == "Repository pull requests are still being indexed, please retry."
+
+
+def test_bitbucket_api_response_404(capsys, mocker):
+    # make merkely call
+    ev = new_control_pull_request_env()
+    with dry_run(ev) as env:
+            with raises(ChangeError) as exc:
+                rv1 = MockedAPIResponse(404, {})
+                mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+                external = External(env=env)
+                _, _, _ = run(external)
+
+    capsys_read(capsys)
+    expected_error_message = " ".join([
+            "Repository does not exists or pull requests are not indexed.",
+            "Please make sure Pull Request Commit Links app is installed"
+        ])
+    assert str(exc.value) == expected_error_message
+
+
+def test_bitbucket_api_response_505(capsys, mocker):
+    # Test error message in case of unexpected status code from Bitbucket API
+
+    # make merkely call
+    ev = new_control_pull_request_env()
+    with dry_run(ev) as env:
+            with raises(ChangeError) as exc:
+                rv1 = MockedAPIResponse(505, {"Message": "Test error"})
+                mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+                external = External(env=env)
+                _, _, _ = run(external)
+
+    capsys_read(capsys)
+    message = 'Exception occurred in fetching pull requests. Http return code is 505'
+    message += '\n    {"Message": "Test error"}'
+    assert str(exc.value) == message
 
 
 class MockedAPIResponse:
