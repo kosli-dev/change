@@ -4,14 +4,16 @@ from tests.utils import *
 
 DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
+PIPELINE = "cdb-controls-test-pipeline"
+
 
 def test_green(capsys):
     expected_method = "Putting"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/"
     expected_payload = {
-        "description": "Test Pipeline for merkely/change",
-        "name": "cdb-controls-test-pipeline",
         "owner": OWNER,
+        "name": PIPELINE,
+        "description": "Test Pipeline for merkely/change",
         "template": [
             "artifact",
             "unit_test",
