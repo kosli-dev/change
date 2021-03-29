@@ -32,16 +32,7 @@ def test_503_post_retries_5_times_then_raises_HttpRetryExhausted(capsys):
 
     assert exc_info.value.url() == url
     assert len(responses.calls) == 1 + MAX_RETRY_COUNT
-
-    trailing_lines = extract_trailing_blurb(capsys_read(capsys))
-    assert trailing_lines == [
-        'Response.status=503, retrying in 0.001 seconds...',
-        'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
-        'Retry 2/5: response.status=503, retrying in 0.004 seconds...',
-        'Retry 3/5: response.status=503, retrying in 0.008 seconds...',
-        'Retry 4/5: response.status=503, retrying in 0.016 seconds...',
-        'Retry 5/5: response.status=503'
-    ]
+    assert_5_retries(capsys)
 
 
 @responses.activate
@@ -53,16 +44,7 @@ def test_503_put_retries_5_times_then_raises_HttpRetryExhausted(capsys):
 
     assert exc_info.value.url() == url
     assert len(responses.calls) == 1 + MAX_RETRY_COUNT
-
-    trailing_lines = extract_trailing_blurb(capsys_read(capsys))
-    assert trailing_lines == [
-        'Response.status=503, retrying in 0.001 seconds...',
-        'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
-        'Retry 2/5: response.status=503, retrying in 0.004 seconds...',
-        'Retry 3/5: response.status=503, retrying in 0.008 seconds...',
-        'Retry 4/5: response.status=503, retrying in 0.016 seconds...',
-        'Retry 5/5: response.status=503'
-    ]
+    assert_5_retries(capsys)
 
 
 @responses.activate
@@ -74,16 +56,7 @@ def test_503_get_retries_5_times_then_raises_HttpRetryExhausted(capsys):
 
     assert exc_info.value.url() == url
     assert len(responses.calls) == 1 + MAX_RETRY_COUNT
-
-    trailing_lines = extract_trailing_blurb(capsys_read(capsys))
-    assert trailing_lines == [
-        'Response.status=503, retrying in 0.001 seconds...',
-        'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
-        'Retry 2/5: response.status=503, retrying in 0.004 seconds...',
-        'Retry 3/5: response.status=503, retrying in 0.008 seconds...',
-        'Retry 4/5: response.status=503, retrying in 0.016 seconds...',
-        'Retry 5/5: response.status=503'
-    ]
+    assert_5_retries(capsys)
 
 
 @responses.activate
@@ -95,15 +68,7 @@ def test_post_stops_retrying_when_non_503_and_returns_None(capsys):
 
     assert response is None
     assert len(responses.calls) == 1 + 1 + 1
-
-    trailing_lines = extract_trailing_blurb(capsys_read(capsys))
-    assert trailing_lines == [
-        'Response.status=503, retrying in 0.001 seconds...',
-        'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
-        'Retry 2/5: response.status=200',
-        '{"success": 42}'
-    ]
-
+    assert_1_retry(capsys)
 
 @responses.activate
 def test_put_stops_retrying_when_non_503_and_returns_None(capsys):
@@ -114,15 +79,7 @@ def test_put_stops_retrying_when_non_503_and_returns_None(capsys):
 
     assert response is None
     assert len(responses.calls) == 1 + 1 + 1
-
-    trailing_lines = extract_trailing_blurb(capsys_read(capsys))
-    assert trailing_lines == [
-        'Response.status=503, retrying in 0.001 seconds...',
-        'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
-        'Retry 2/5: response.status=200',
-        '{"success": 42}'
-    ]
-
+    assert_1_retry(capsys)
 
 
 @responses.activate
@@ -134,7 +91,22 @@ def test_get_stops_retrying_when_non_503_and_returns_response_json(capsys):
 
     assert response_json == {'success': 42}
     assert len(responses.calls) == 1 + 1 + 1
+    assert_1_retry(capsys)
 
+
+def assert_5_retries(capsys):
+    trailing_lines = extract_trailing_blurb(capsys_read(capsys))
+    assert trailing_lines == [
+        'Response.status=503, retrying in 0.001 seconds...',
+        'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
+        'Retry 2/5: response.status=503, retrying in 0.004 seconds...',
+        'Retry 3/5: response.status=503, retrying in 0.008 seconds...',
+        'Retry 4/5: response.status=503, retrying in 0.016 seconds...',
+        'Retry 5/5: response.status=503'
+    ]
+
+
+def assert_1_retry(capsys):
     trailing_lines = extract_trailing_blurb(capsys_read(capsys))
     assert trailing_lines == [
         'Response.status=503, retrying in 0.001 seconds...',
