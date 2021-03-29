@@ -2,7 +2,6 @@ from errors import ChangeError
 from commands import Command
 from env_vars import *
 from cdb.api_schema import ApiSchema
-from cdb.http import http_put_payload
 from junitparser import JUnitXml
 
 DEFAULT_TEST_DIR = "/data/junit/"
@@ -36,8 +35,7 @@ class LogTest(Command):
             }
         }
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
-        http_put_payload(url, payload, self.api_token.value)
-        return 'Putting', url, payload
+        return 'Putting', url, payload, self.api_token.value, None
 
     @property
     def description(self):

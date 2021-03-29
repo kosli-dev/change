@@ -1,7 +1,6 @@
 from commands import Command
 from env_vars import *
 from cdb.api_schema import ApiSchema
-from cdb.http import http_post_payload
 
 
 class LogDeployment(Command):
@@ -24,8 +23,7 @@ class LogDeployment(Command):
             "user_data": self.user_data.value
         }
         url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
-        http_post_payload(url, payload, self.api_token.value)
-        return 'Posting', url, payload
+        return 'Posting', url, payload, self.api_token.value, None
 
     @property
     def description(self):

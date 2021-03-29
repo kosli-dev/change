@@ -1,7 +1,6 @@
 from errors import ChangeError
 from commands import Command
 from cdb.api_schema import ApiSchema
-from cdb.http import http_get_json
 
 
 class ControlDeployment(Command):
@@ -28,11 +27,13 @@ class ControlDeployment(Command):
 
     def __call__(self):
         url = ApiSchema.url_for_artifact_approvals(self.host.value, self.merkelypipe, self.fingerprint.sha)
-        approvals = http_get_json(url, self.api_token.value)
-        is_approved = control_deployment_approved(approvals)
-        if not is_approved:
-            raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not approved.")
-        return 'Getting', url, approvals
+        def callback(response):
+            approvals = response
+            is_approved = control_deployment_approved(approvals)
+            if not is_approved:
+                raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not approved.")
+            return 'Getting', url, approvals
+        return 'Getting', url, None, self.api_token.value, callback
 
 
 def control_deployment_approved(approvals):

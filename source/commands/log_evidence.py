@@ -1,7 +1,6 @@
 from commands import Command
 from env_vars import *
 from cdb.api_schema import ApiSchema
-from cdb.http import http_put_payload
 
 
 class LogEvidence(Command):
@@ -27,8 +26,7 @@ class LogEvidence(Command):
             }
         }
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
-        http_put_payload(url, payload, self.api_token.value)
-        return 'Putting', url, payload
+        return 'Putting', url, payload, self.api_token.value, None
 
     @property
     def description(self):

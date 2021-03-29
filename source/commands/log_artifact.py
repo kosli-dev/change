@@ -1,7 +1,6 @@
 from commands import Command
 from env_vars import *
 from cdb.api_schema import ApiSchema
-from cdb.http import http_put_payload
 
 
 class LogArtifact(Command):
@@ -28,8 +27,7 @@ class LogArtifact(Command):
             "user_data": self.user_data.value
         }
         url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)
-        http_put_payload(url, payload, self.api_token.value)
-        return 'Putting', url, payload
+        return 'Putting', url, payload, self.api_token.value, None
 
     @property
     def artifact_git_commit(self):

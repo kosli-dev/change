@@ -1,7 +1,6 @@
 from commands import Command
 from env_vars import *
 from cdb.api_schema import ApiSchema
-from cdb.http import http_post_payload
 from cdb.git import repo_at, list_commits_between
 
 
@@ -35,8 +34,7 @@ class LogApproval(Command):
             ]
         }
         url = ApiSchema.url_for_approvals(self.host.value, self.merkelypipe)
-        http_post_payload(url, payload, self.api_token.value)
-        return 'Posting', url, payload
+        return 'Posting', url, payload, self.api_token.value, None
 
     def approval_state(self):
         if self.is_approved.value == 'TRUE':

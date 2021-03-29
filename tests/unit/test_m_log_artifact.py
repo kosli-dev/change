@@ -1,4 +1,4 @@
-from commands import main, run, Command, External
+from commands import run, External
 
 from tests.utils import *
 

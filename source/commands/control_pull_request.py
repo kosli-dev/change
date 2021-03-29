@@ -5,7 +5,6 @@ from commands import Command
 from env_vars import *
 from errors import ChangeError
 from cdb.api_schema import ApiSchema
-from cdb.http import http_put_payload
 
 
 class ControlPullRequest(Command):
@@ -31,10 +30,11 @@ class ControlPullRequest(Command):
             }
         }
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
-        http_put_payload(url, payload, self.api_token.value)
-        if not is_compliant:
-            raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not compliant")
-        return 'Putting', url, payload
+        def callback(_response):
+            if not is_compliant:
+                raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not compliant")
+            return 'Putting', url, payload
+        return 'Putting', url, payload, self.api_token.value, callback
 
     @property
     def description(self):

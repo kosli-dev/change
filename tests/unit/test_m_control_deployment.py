@@ -13,7 +13,7 @@ SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 
 
 def test_when_no_approvals_then_raises(mocker):
-    mocked_get = mocker.patch('commands.control_deployment.http_get_json', return_value=[])
+    mocked_get = mocker.patch('commands.runner.http_get_json', return_value=[])
 
     ev = new_control_deployment_env()
 
@@ -31,7 +31,7 @@ def test_when_no_approvals_then_raises(mocker):
 
 def test_when_approved_then_does_not_raise(mocker):
     mock_payload = [{"some_random": "stuff"}]
-    mocked_get = mocker.patch('commands.control_deployment.http_get_json', return_value=mock_payload)
+    mocked_get = mocker.patch('commands.runner.http_get_json', return_value=mock_payload)
     mocker.patch('commands.control_deployment.control_deployment_approved', return_value=True)
 
     ev = new_control_deployment_env()

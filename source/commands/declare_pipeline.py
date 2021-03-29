@@ -1,7 +1,6 @@
 from commands import Command
 from env_vars import *
 from cdb.api_schema import ApiSchema
-from cdb.http import http_put_payload
 
 
 class DeclarePipeline(Command):
@@ -15,8 +14,8 @@ class DeclarePipeline(Command):
     def __call__(self):
         url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)
         payload = self.merkelypipe
-        http_put_payload(url, payload, self.api_token.value)
-        return 'Putting', url, payload
+        return 'Putting', url, payload, self.api_token.value, None
+
 
     @property
     def pipe_path(self):
