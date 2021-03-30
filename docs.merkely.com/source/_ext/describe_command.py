@@ -1,6 +1,7 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from commands import Command, External
+import requests
 
 
 class DescribeCommand(Directive):
@@ -127,7 +128,9 @@ def literal_block_link(command_name, ci_name):
     elif ci_name == 'github':
         workflow_url = 'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows'
         if command_name == 'request_approval':
-            ref = f'{workflow_url}/request_approval.yml'
+            url = f'{workflow_url}/request_approval.yml'
+            #ref = precise_url(url, 'MERKELY_COMMAND: request_approval')
+            ref = url
         elif command_name == 'control_deployment':
             ref = f'{workflow_url}/deploy_to_production.yml'
         else:
@@ -138,6 +141,14 @@ def literal_block_link(command_name, ci_name):
         "classes": ['literal-block-link']
     })
     return para
+
+
+def precise_url(url, search_text):
+    url = 'https://raw.githubusercontent.com/merkely-development/loan-calculator/master/.github/workflows/request_approval.yml'
+    lines = requests.get(url).text.splitlines()
+    indices = [i for i, line in enumerate(lines) if search_text in line]
+    index = indices[0] + 1
+    return f'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/request_approval.yml#L{index}'
 
 
 def setup(app):
