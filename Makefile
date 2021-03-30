@@ -11,7 +11,7 @@ LATEST := merkely/${APP}:latest
 
 CONTAINER := ${NAME}
 
-MERKELY_HOST = https://app.compliancedb.com
+MERKELY_HOST = https://app.merkely.com
 MERKELYPIPE = Merkelypipe.json
 
 # all non-latest images - for prune target
