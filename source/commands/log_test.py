@@ -88,7 +88,7 @@ class DescriptionEnvVar(StaticDefaultedEnvVar):
         return " ".join([
             "A description of the test summary.",
             f'Defaults to "{self._default_prefix}"',
-            f'followed by the JUnit .xml summary, eg "{self._default_suffix}"'
+            f'followed by a summary, eg "{self._default_suffix}"'
         ])
 
 
