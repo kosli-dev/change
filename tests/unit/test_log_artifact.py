@@ -126,9 +126,7 @@ BUILD_URL = 'https://gitlab/build/1456'
 BUILD_NUMBER = '23'
 
 
-def log_artifact_env(commit=None):
-    if commit is None:
-        commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
+def log_artifact_env(commit):
     return {
         "MERKELY_COMMAND": "log_artifact",
         "MERKELY_OWNER": OWNER,

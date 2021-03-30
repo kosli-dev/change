@@ -1,3 +1,7 @@
+"""
+# Trying to use reflection but my Python fu is not
+# strong enough yet...
+
 from commands import LogEvidence, External
 from env_vars import RequiredEnvVar
 
@@ -25,14 +29,10 @@ class Example:
 
     @property
     def X_env_vars(self):
-        """
-        Trying to use reflection but my Python fu is not
-        strong enough yet...
-        """
         names = []
         evs = []
         for name,maybe in Example.__dict__.items():
-            #print(f"Looking at {item!r} {type(item)}")
+            # print(f"Looking at {item!r} {type(item)}")
             if hasattr(maybe, 'is_env_var'):
                 names.append(name)
                 evs.append(maybe())
@@ -86,3 +86,4 @@ def X_test_env_vars():
     assert env_vars.fingerprint.value == f"{protocol}/{image_name}"
     assert env_vars.host.value == f"https://{domain}"
     assert env_vars.is_compliant.value == 'TRUE'
+"""

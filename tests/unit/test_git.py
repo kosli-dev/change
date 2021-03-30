@@ -56,7 +56,3 @@ def test_list_commits_between_master_and_commit():
         "b6c9e60f281e37d912ec24f038b7937f79723fb4"
     ]
     assert commits == expected
-
-
-def read_stdout_stderr_to_keep_test_output_clean(capsys):
-    capsys.readouterr()

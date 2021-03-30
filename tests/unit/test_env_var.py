@@ -32,13 +32,13 @@ def test_string_is_empty_when_set_to_empty_string():
 
 class Example(EnvVar):
     def value(self):
-        pass
+        pass  # pragma: no cover
 
     def is_required(self):
-        return True
+        return True  # pragma: no cover
 
     def doc_example(self, _ci_name, _command_name):
-        return True, ""
+        return True, ""  # pragma: no cover
 
     def doc_note(self, _ci_name, _command_name):
-        return ""
+        return ""  # pragma: no cover

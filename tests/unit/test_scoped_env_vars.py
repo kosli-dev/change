@@ -22,7 +22,7 @@ def test_arg1_env_vars_that_already_exist_RAISE():
     env = {"EXISTING_ENV_VAR": "Adventures"}
     with raises(AlreadyExistingEnvVarError) as exc:
         with ScopedEnvVars(env):
-            pass
+            pass  # pragma: no cover
 
     assert exc.value.env_vars() == {"EXISTING_ENV_VAR": "Wonderland"}
 

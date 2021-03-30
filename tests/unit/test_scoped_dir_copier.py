@@ -26,7 +26,7 @@ def test_source_dir_does_not_exist_raises():
 
     with raises(ScopedDirCopier.Error):
         with ScopedDirCopier(source_dir, target_dir):
-            pass
+            pass  # pragma: no cover
 
     assert not path.isdir(source_dir)
     assert not path.isdir(target_dir)
@@ -41,7 +41,7 @@ def test_target_dir_already_exists_raises():
 
     with raises(ScopedDirCopier.Error):
         with ScopedDirCopier(source_dir, target_dir):
-            pass
+            pass  # pragma: no cover
 
     assert path.isdir(source_dir)
     assert path.isdir(target_dir)
