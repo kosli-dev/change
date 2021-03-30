@@ -1,4 +1,4 @@
-import cdb.http_retry as http_retry
+import lib.http_retry as http_retry
 
 
 def retry_backoff_factor(f):

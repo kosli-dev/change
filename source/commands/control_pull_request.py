@@ -4,7 +4,7 @@ import requests
 from commands import Command
 from env_vars import *
 from errors import ChangeError
-from cdb.api_schema import ApiSchema
+from lib.api_schema import ApiSchema
 
 
 class ControlPullRequest(Command):

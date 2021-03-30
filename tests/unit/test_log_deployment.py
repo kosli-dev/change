@@ -3,7 +3,7 @@ from tests.utils import *
 
 DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
-NAME = "cdb-controls-test-pipeline"
+NAME = "lib-controls-test-pipeline"
 
 DESCRIPTION = "some description"
 ENVIRONMENT = "production"

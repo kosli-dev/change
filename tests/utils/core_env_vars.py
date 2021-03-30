@@ -8,5 +8,5 @@ def core_env_vars(command=None):
         "MERKELY_API_TOKEN": "MY_SUPER_SECRET_API_TOKEN",
         "MERKELY_HOST": "https://app.compliancedb.com",
         "MERKELY_OWNER": "compliancedb",
-        "MERKELY_PIPELINE": "cdb-controls-test-pipeline",
+        "MERKELY_PIPELINE": "lib-controls-test-pipeline",
     }

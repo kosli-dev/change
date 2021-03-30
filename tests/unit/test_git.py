@@ -1,5 +1,5 @@
 from pathlib import Path
-from cdb.git import repo_at, list_commits_between
+from lib.git import repo_at, list_commits_between
 from errors import ChangeError
 from pytest import raises
 

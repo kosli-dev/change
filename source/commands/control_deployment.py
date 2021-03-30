@@ -1,6 +1,6 @@
 from errors import ChangeError
 from commands import Command
-from cdb.api_schema import ApiSchema
+from lib.api_schema import ApiSchema
 
 
 class ControlDeployment(Command):

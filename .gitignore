@@ -1,7 +1,7 @@
 tmp/
 .idea/*
 __pycache__/
-source/cdb/__pycache__/
+source/lib/__pycache__/
 source/commands/__pycache__/
 source/env_vars/__pycache__/
 source/errors/__pycache__/

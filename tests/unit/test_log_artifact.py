@@ -4,7 +4,7 @@ from tests.utils import *
 
 DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
-PIPELINE = "cdb-controls-test-pipeline"
+PIPELINE = "lib-controls-test-pipeline"
 
 
 def test_all_env_vars_image(capsys):

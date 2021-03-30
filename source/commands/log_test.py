@@ -1,7 +1,7 @@
 from errors import ChangeError
 from commands import Command
 from env_vars import *
-from cdb.api_schema import ApiSchema
+from lib.api_schema import ApiSchema
 from junitparser import JUnitXml
 
 DEFAULT_TEST_DIR = "/data/junit/"

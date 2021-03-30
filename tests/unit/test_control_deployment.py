@@ -6,7 +6,7 @@ from tests.utils import *
 
 DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
-PIPELINE = "cdb-controls-test-pipeline"
+PIPELINE = "lib-controls-test-pipeline"
 
 IMAGE_NAME = "acme/road-runner:4.56"
 SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"

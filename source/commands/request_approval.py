@@ -1,7 +1,7 @@
 from commands import Command
 from env_vars import *
-from cdb.api_schema import ApiSchema
-from cdb.git import repo_at, list_commits_between
+from lib.api_schema import ApiSchema
+from lib.git import repo_at, list_commits_between
 
 
 class RequestApproval(Command):

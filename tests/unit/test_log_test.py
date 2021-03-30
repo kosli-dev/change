@@ -6,7 +6,7 @@ USER_DATA = "/app/tests/data/user_data.json"
 
 DOMAIN = "app.compliancedb.com"
 OWNER = "compliancedb"
-PIPELINE = "cdb-controls-test-pipeline"
+PIPELINE = "lib-controls-test-pipeline"
 
 
 def test_non_zero_status_when_no_data_directory(capsys):
@@ -26,7 +26,7 @@ def test_non_zero_status_when_no_data_directory(capsys):
 
 def test_zero_exit_status_when_there_is_a_data_directory(capsys):
     """
-    The cdb code looks at CDB_USER_DATA but the line to add
+    The lib code looks at CDB_USER_DATA but the line to add
     the json (in cdb_utils.py build_evidence_dict) is this:
 
     if user_data is not None:
@@ -37,7 +37,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
     if user_data is not None:
         evidence["user_data"] = user_data
 
-    So that functionality does not exist in the old cdb code.
+    So that functionality does not exist in the old lib code.
     """
     image_name = "acme/widget:4.67"
     sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"

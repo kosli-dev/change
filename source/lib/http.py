@@ -1,4 +1,4 @@
-from cdb.http_retry import HttpRetry
+from lib.http_retry import HttpRetry
 from errors import ChangeError
 import json
 import os

@@ -1,4 +1,4 @@
-from cdb.api_schema import ApiSchema
+from lib.api_schema import ApiSchema
 
 partial_project_data = {"name": "hadroncollider", "owner": "cern"}
 
