@@ -23,7 +23,6 @@ def generate_docs():
     docs = {}
     command_names = sorted(Command.names())
     command_names.remove('control_pull_request')  # Currently only github
-    command_names.remove('log_approval')  # deprecated
 
     for command_name in command_names:
         filename = f"{REFERENCE_DIR}/min/{command_name}.txt"
@@ -92,7 +91,6 @@ def min_lines_for(command_name):
 
 yml_name_texts = {
     'declare_pipeline': 'Declare Merkely Pipeline',
-    'log_approval': 'Log approval in Merkely',
     'log_artifact': 'Log Docker image in Merkely',
     'log_deployment': 'Log deployment in Merkely',
     'log_evidence': 'Log evidence in Merkely',

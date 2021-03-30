@@ -12,7 +12,6 @@ def auto_generate_rst_files():
     """
     command_names = Command.names()
     command_names.remove('control_pull_request')  # Currently only github
-    command_names.remove('log_approval')  # deprecated
 
     def cmp_names(lhs, rhs):
         order = [
@@ -20,7 +19,6 @@ def auto_generate_rst_files():
             'log_artifact',
             'log_evidence',
             'log_test',
-            'log_approval',
             'approve_deployment',
             'request_approval',
             'control_deployment',

@@ -6,8 +6,8 @@ from pytest import raises
 def test_command_named():
     klass = Command.named('log_artifact')
     assert klass.__name__ == 'LogArtifact'
-    klass = Command.named('log_approval')
-    assert klass.__name__ == 'LogApproval'
+    klass = Command.named('request_approval')
+    assert klass.__name__ == 'RequestApproval'
 
 
 def test_command_named_raises_when_unknown():

@@ -8,8 +8,6 @@ def test_summary():
         command = klass(external)
         if klass.__name__ == 'ControlPullRequest':
             continue
-        if klass.__name__ == 'LogApproval':
-            continue
         assert len(command.doc_summary('github')) > 0, klass.__name__
 
 
