@@ -5,12 +5,12 @@ from tests.utils import *
 USER_DATA = "/app/tests/data/user_data.json"
 
 DOMAIN = "app.merkely.com"
-OWNER = "compliancedb"
+OWNER = "acme"
 PIPELINE = "lib-controls-test-pipeline"
 
 
 def test_non_zero_status_when_no_data_directory(capsys):
-    ev = new_log_test_env()
+    ev = log_test_env()
     with dry_run(ev) as env:
         status = main(External(env=env))
 
@@ -44,8 +44,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
         }
     }
 
-    # make merkely call
-    ev = new_log_test_env()
+    ev = log_test_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             with ScopedDirCopier('/app/tests/data/control_junit/xml_with_passed_results', '/data/junit'):
@@ -79,8 +78,7 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
         }
     }
 
-    # make merkely call
-    ev = new_log_test_env()
+    ev = log_test_env()
     ev['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/control_junit/xml_with_passed_results"
     with dry_run(ev) as env:
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
@@ -100,7 +98,7 @@ IMAGE_NAME = "acme/widget:4.67"
 EVIDENCE_TYPE = "coverage"
 
 
-def new_log_test_env():
+def log_test_env():
     protocol = "docker://"
     return {
         "MERKELY_COMMAND": "log_test",

@@ -8,8 +8,8 @@ BB_REPO = 'road-runner'
 COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
 BUILD_NUMBER = '1975'
 
-DOMAIN = "app.compliancedb.com"
-OWNER = "merkely"
+DOMAIN = "app.merkely.com"
+OWNER = "acme"
 PIPELINE = "test-pipefile"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
@@ -31,8 +31,7 @@ def test_required_env_vars(capsys):
         "user_data": {},
     }
 
-    # make merkely call
-    ev = new_log_artifact_env()
+    ev = log_artifact_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
@@ -40,13 +39,12 @@ def test_required_env_vars(capsys):
 
     capsys_read(capsys)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
 
 
-def new_log_artifact_env():
+def log_artifact_env():
     protocol = "docker://"
     return {
         "MERKELY_COMMAND": "log_artifact",

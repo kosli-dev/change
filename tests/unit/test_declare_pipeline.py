@@ -2,8 +2,8 @@ from commands import run, External
 from tests.utils import *
 
 
-DOMAIN = "app.compliancedb.com"
-OWNER = "compliancedb"
+DOMAIN = "app.merkely.com"
+OWNER = "acme"
 PIPELINE = "lib-controls-test-pipeline"
 
 
@@ -22,13 +22,11 @@ def test_green(capsys):
         "visibility": "public"
     }
 
-    # make merkely call
     with dry_run(core_env_vars()) as env, scoped_merkelypipe_json():
         method, url, payload = run(External(env=env))
 
     capsys_read(capsys)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload

@@ -8,7 +8,7 @@ BB_REPO = 'road-runner'
 COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
 BUILD_NUMBER = '1975'
 
-DOMAIN = "app.compliancedb.com"
+DOMAIN = "app.merkely.com"
 OWNER = "acme"
 PIPELINE = "road-runner"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
@@ -33,14 +33,12 @@ def test_bitbucket(capsys):
         "user_data": USER_DATA_JSON,
     }
 
-    # make merkely call
-    ev = new_log_deployment_env()
+    ev = log_deployment_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
@@ -50,7 +48,7 @@ def test_bitbucket(capsys):
     ]
 
 
-def new_log_deployment_env():
+def log_deployment_env():
     protocol = "docker://"
     return {
         "MERKELY_COMMAND": "log_deployment",

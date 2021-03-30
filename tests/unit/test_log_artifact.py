@@ -2,8 +2,8 @@ from commands import run, External
 
 from tests.utils import *
 
-DOMAIN = "app.compliancedb.com"
-OWNER = "compliancedb"
+DOMAIN = "app.merkely.com"
+OWNER = "acme"
 PIPELINE = "lib-controls-test-pipeline"
 
 
@@ -27,16 +27,14 @@ def test_all_env_vars_image(capsys):
         "user_data": {}
     }
 
-    # make merkely call
     protocol = "docker://"
-    ev = new_log_artifact_env(commit)
+    ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
     with dry_run(ev) as env:
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
@@ -69,16 +67,14 @@ def test_all_env_vars_file(capsys):
         'user_data': {},
     }
 
-    # make merkely call
     protocol = "file://"
-    ev = new_log_artifact_env(commit)
+    ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{artifact_name}"
     with dry_run(ev) as env:
         with MockFileFingerprinter(artifact_name, sha256) as fingerprinter:
             external = External(env=env, file_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
@@ -109,14 +105,12 @@ def test_all_env_vars_sha(capsys):
         "user_data": {},
     }
 
-    # make merkely call
     protocol = "sha256://"
-    ev = new_log_artifact_env(commit)
+    ev = log_artifact_env(commit)
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{artifact_name}"
     with dry_run(ev) as env:
         method, url, payload = run(External(env=env))
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
@@ -132,7 +126,7 @@ BUILD_URL = 'https://gitlab/build/1456'
 BUILD_NUMBER = '23'
 
 
-def new_log_artifact_env(commit=None):
+def log_artifact_env(commit=None):
     if commit is None:
         commit = "abc50c8a53f79974d615df335669b59fb56a4ed3"
     return {

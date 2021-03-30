@@ -1,8 +1,8 @@
 from commands import run, External
 from tests.utils import *
 
-DOMAIN = "app.compliancedb.com"
-OWNER = "compliancedb"
+DOMAIN = "app.merkely.com"
+OWNER = "acme"
 NAME = "lib-controls-test-pipeline"
 
 DESCRIPTION = "some description"
@@ -26,16 +26,14 @@ def test_docker_image(capsys):
         "user_data": {'status': 'deployed'},
     }
 
-    # make merkely call
     protocol = "docker://"
-    ev = create_new_deployment_env()
+    ev = log_deployment_env()
     ev["MERKELY_FINGERPRINT"] = f"{protocol}{IMAGE_NAME}"
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
@@ -45,7 +43,7 @@ def test_docker_image(capsys):
     ]
 
 
-def create_new_deployment_env():
+def log_deployment_env():
     ev = {
         "MERKELY_CI_BUILD_URL": CI_BUILD_URL,
         "MERKELY_ENVIRONMENT": ENVIRONMENT,

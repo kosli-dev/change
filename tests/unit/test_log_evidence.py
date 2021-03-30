@@ -2,8 +2,8 @@ from commands import run, External
 
 from tests.utils import *
 
-DOMAIN = "app.compliancedb.com"
-OWNER = "compliancedb"
+DOMAIN = "app.merkely.com"
+OWNER = "acme"
 PIPELINE = "lib-controls-test-pipeline"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
@@ -25,14 +25,12 @@ def test_docker_protocol(capsys):
         "user_data": {},
     }
 
-    # make merkely call
-    ev = new_log_evidence_env()
+    ev = log_evidence_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
@@ -43,7 +41,7 @@ def test_docker_protocol(capsys):
     ]
 
 
-def new_log_evidence_env():
+def log_evidence_env():
     protocol = "docker://"
     return {
         "MERKELY_COMMAND": "log_evidence",

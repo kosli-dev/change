@@ -1,11 +1,10 @@
 from commands import run, External
-from errors import ChangeError
-from lib import *
+#from lib import *
 from tests.utils import *
-from pytest import raises
+#from pytest import raises
 
-DOMAIN = "app.compliancedb.com"
-OWNER = "compliancedb"
+DOMAIN = "app.merkely.com"
+OWNER = "acme"
 PIPELINE = "lib-controls-test-pipeline"
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
@@ -28,7 +27,7 @@ def test_docker_image(capsys):
         "approvals": []
     }
 
-    ev = new_request_approval_env()
+    ev = request_approval_env()
     with dry_run(ev) as env:
         with ScopedDirCopier("/test_src", "/src"):
             with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
@@ -37,13 +36,12 @@ def test_docker_image(capsys):
 
     capsys_read(capsys)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
 
 
-def new_request_approval_env():
+def request_approval_env():
     protocol = "docker://"
     image_name = "acme/runner:4.56"
     return {

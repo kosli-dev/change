@@ -47,7 +47,7 @@ class Example:
     @property
     @env_var
     def host(self):
-        ev = {"MERKELY_HOST": "https://tests.compliancedb.com"}
+        ev = {"MERKELY_HOST": "https://tests.merkely.com"}
         return RequiredEnvVar(ev, "MERKELY_HOST", "notes")
 
 
@@ -57,11 +57,11 @@ def X_test_env_vars_using_env_var_decorator():
     assert eg.env_vars.api_token.name == "MERKELY_API_TOKEN"
     assert eg.env_vars.api_token.value == "3455643212456"
     assert eg.env_vars.host.name == "MERKELY_HOST"
-    assert eg.env_vars.host.value == "https://tests.compliancedb.com"
+    assert eg.env_vars.host.value == "https://tests.merkely.com"
 
 
 def X_test_env_vars():
-    domain = "app.compliancedb.com"
+    domain = "app.merkely.com"
     build_url = "https://gitlab/build/1956"
     protocol = "docker://"
     image_name = "acme/widget:4.67"

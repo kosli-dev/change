@@ -11,7 +11,7 @@ BUILD_NUMBER = '1975'
 IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 
-DOMAIN = "app.compliancedb.com"
+DOMAIN = "app.merkely.com"
 OWNER = "acme"
 PIPELINE = "road-runner"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
@@ -33,14 +33,12 @@ def test_bitbucket(capsys):
         "user_data": {},
     }
 
-    # make merkely call
-    ev = new_log_evidence_env()
+    ev = log_evidence_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
@@ -51,7 +49,7 @@ def test_bitbucket(capsys):
     ]
 
 
-def new_log_evidence_env():
+def log_evidence_env():
     protocol = "docker://"
     return {
         "MERKELY_COMMAND": "log_evidence",

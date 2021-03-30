@@ -15,8 +15,8 @@ EVIDENCE_TYPE = "junit"
 
 USER_DATA = "/app/tests/data/user_data.json"
 
-DOMAIN = "app.compliancedb.com"
-OWNER = "merkely"
+DOMAIN = "app.merkely.com"
+OWNER = "acme"
 PIPELINE = "test-pipefile"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
@@ -36,8 +36,7 @@ def test_bitbucket(capsys):
         },
     }
 
-    # make merkely call
-    ev = new_log_test_env()
+    ev = log_test_env()
     with dry_run(ev) as env:
         with ScopedDirCopier('/app/tests/data/control_junit/xml_with_fails', '/data/junit'):
             with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -46,13 +45,12 @@ def test_bitbucket(capsys):
 
     capsys_read(capsys)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
 
 
-def new_log_test_env():
+def log_test_env():
     return {
         "MERKELY_COMMAND": "log_test",
         "MERKELY_OWNER": OWNER,

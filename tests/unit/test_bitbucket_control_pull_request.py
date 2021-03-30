@@ -13,7 +13,7 @@ BB_REPO = 'road-runner'
 COMMIT = "abc50c8a53f79974d615df335669b59fb56a4ed3"
 BUILD_NUMBER = '1975'
 
-DOMAIN = "app.compliancedb.com"
+DOMAIN = "app.merkely.com"
 OWNER = "acme"
 PIPELINE = "road-runner"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
@@ -46,8 +46,7 @@ def test_bitbucket(capsys, mocker):
         "evidence_type": EVIDENCE_TYPE
     }
 
-    # make merkely call
-    ev = new_control_pull_request_env()
+    ev = control_pull_request_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response())
@@ -57,7 +56,6 @@ def test_bitbucket(capsys, mocker):
 
     capsys_read(capsys)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
@@ -82,8 +80,7 @@ def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
         "evidence_type": EVIDENCE_TYPE
     }
 
-    # make merkely call
-    ev = new_control_pull_request_env()
+    ev = control_pull_request_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             response = mocked_bitbucket_pull_requests_api_response()
@@ -93,7 +90,6 @@ def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    # verify matching data
     stdout = capsys_read(capsys).split("\n")
     assert stdout[3] == "No approvers found"
     assert method == expected_method
@@ -102,8 +98,7 @@ def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
 
 
 def test_bitbucket_not_compliant_raises(capsys, mocker):
-    # make merkely call
-    ev = new_control_pull_request_env()
+    ev = control_pull_request_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             response = mocked_bitbucket_pull_requests_api_response()
@@ -122,8 +117,7 @@ def test_bitbucket_not_compliant_raises(capsys, mocker):
 
 
 def test_bitbucket_api_response_202(capsys, mocker):
-    # make merkely call
-    ev = new_control_pull_request_env()
+    ev = control_pull_request_env()
     with dry_run(ev) as env:
             with raises(ChangeError) as exc:
                 rv1 = MockedAPIResponse(202, {})
@@ -136,8 +130,7 @@ def test_bitbucket_api_response_202(capsys, mocker):
 
 
 def test_bitbucket_api_response_404(capsys, mocker):
-    # make merkely call
-    ev = new_control_pull_request_env()
+    ev = control_pull_request_env()
     with dry_run(ev) as env:
             with raises(ChangeError) as exc:
                 rv1 = MockedAPIResponse(404, {})
@@ -155,9 +148,7 @@ def test_bitbucket_api_response_404(capsys, mocker):
 
 def test_bitbucket_api_response_505(capsys, mocker):
     # Test error message in case of unexpected status code from Bitbucket API
-
-    # make merkely call
-    ev = new_control_pull_request_env()
+    ev = control_pull_request_env()
     with dry_run(ev) as env:
             with raises(ChangeError) as exc:
                 rv1 = MockedAPIResponse(505, {"Message": "Test error"})
@@ -218,7 +209,7 @@ test_pipefile = {
 }
 
 
-def new_control_pull_request_env():
+def control_pull_request_env():
     return {
         "MERKELY_COMMAND": "control_pull_request",
         "MERKELY_OWNER": OWNER,

@@ -4,8 +4,8 @@ from errors import ChangeError
 from tests.utils import *
 from pytest import raises
 
-DOMAIN = "app.compliancedb.com"
-OWNER = "compliancedb"
+DOMAIN = "app.merkely.com"
+OWNER = "acme"
 PIPELINE = "lib-controls-test-pipeline"
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
@@ -35,7 +35,7 @@ def test_docker_image(capsys):
         ]
     }
 
-    ev = new_log_approval_env()
+    ev = log_approval_env()
     with dry_run(ev) as env:
         with ScopedDirCopier("/test_src", "/src"):
             with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
@@ -44,14 +44,13 @@ def test_docker_image(capsys):
 
     capsys_read(capsys)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
 
 
 def test_raises_when_src_repo_root_does_not_exist():
-    ev = new_log_approval_env()
+    ev = log_approval_env()
     with dry_run(ev) as env:
         with raises(ChangeError) as exc:
             run(External(env=env))
@@ -59,7 +58,7 @@ def test_raises_when_src_repo_root_does_not_exist():
     assert str(exc.value) == "Error: Repository not found at /src/.git"
 
 
-def new_log_approval_env():
+def log_approval_env():
     protocol = "docker://"
     image_name = "acme/runner:4.56"
     return {
