@@ -1,6 +1,6 @@
 from errors import ChangeError
 from commands import Command
-from lib.http import http_get_json, http_put_payload, http_post_payload
+from lib.http import *
 
 
 def run(external):
