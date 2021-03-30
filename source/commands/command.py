@@ -64,17 +64,6 @@ class Command(ABC):
         raise NotImplementedError(self.name)
 
     @property
-    def _merkely_env_var_names(self):  # pragma: no cover
-        """
-        The names of the MERKELY_... env-var names for
-        this command, in display-order.
-        Used in living documentation.
-        """
-        raise NotImplementedError(self.name)
-
-    # - - - - - - - - - - - - - - - - - - - - -
-
-    @property
     def merkely_env_vars(self):
         """
         All the MERKELY_... env-vars for this command.
@@ -83,6 +72,15 @@ class Command(ABC):
         names = self._merkely_env_var_names
         objects = [getattr(self, name) for name in names]
         return namedtuple('MerkelyEnvVars', tuple(names))(*objects)
+
+    @property
+    def _merkely_env_var_names(self):  # pragma: no cover
+        """
+        The names of the MERKELY_... env-var names for
+        this command, in display-order.
+        Used in living documentation.
+        """
+        raise NotImplementedError(self.name)
 
     # - - - - - - - - - - - - - - - - - - - - -
     # Merkely access env-vars
