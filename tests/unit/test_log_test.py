@@ -4,7 +4,7 @@ from tests.utils import *
 
 USER_DATA = "/app/tests/data/user_data.json"
 
-DOMAIN = "app.compliancedb.com"
+DOMAIN = "app.merkely.com"
 OWNER = "compliancedb"
 PIPELINE = "lib-controls-test-pipeline"
 

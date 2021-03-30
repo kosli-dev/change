@@ -1,6 +1,6 @@
 from env_vars import StaticDefaultedEnvVar
 
-DEFAULT_HOST = "https://app.compliancedb.com"
+DEFAULT_HOST = "https://app.merkely.com"
 
 
 class HostEnvVar(StaticDefaultedEnvVar):

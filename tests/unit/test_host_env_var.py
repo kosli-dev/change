@@ -1,7 +1,7 @@
 from env_vars import HostEnvVar
 
 NAME = "MERKELY_HOST"
-DEFAULT = "https://app.compliancedb.com"
+DEFAULT = "https://app.merkely.com"
 
 
 def test_value_when_set_from_env_var():
