@@ -10,7 +10,7 @@ def test_real_example():
     fingerprinter = DockerFingerprinter()
     image_name = 'python:3.7-alpine'  # The base image of merkely/change
     expected = '13032d90afaaa111e92920eea2b1abb0a6b6eafa6863ad7a4bd082a9c8574240'
-    assert fingerprinter.sha(f"docker://{image_name}") == expected
+    assert fingerprinter.sha(f"{DOCKER_PROTOCOL}{image_name}") == expected
 
 
 def test_getting_sha_of_bad_image_name_raises():
