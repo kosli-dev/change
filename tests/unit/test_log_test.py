@@ -38,7 +38,10 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
             "is_compliant": True,
             "url": build_url
         },
-        "evidence_type": evidence_type
+        "evidence_type": evidence_type,
+        "user_data": {
+            "status": "deployed"
+        }
     }
 
     # make merkely call
@@ -53,9 +56,6 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
 
     assert method == expected_method
     assert url == expected_url
-
-    expected_payload["user_data"] = {'status': 'deployed'}
-
     assert payload == expected_payload
 
 
@@ -69,11 +69,14 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {
-            "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites",
+            "description": "JUnit results xml verified by merkely/change: All tests passed in 2 test suites",
             "is_compliant": True,
             "url": build_url
         },
-        "evidence_type": evidence_type
+        "evidence_type": evidence_type,
+        "user_data": {
+            "status": "deployed"
+        }
     }
 
     # make merkely call
@@ -86,18 +89,8 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
 
     capsys_read(capsys)
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
-
-    # image name has changed
-    string = expected_payload['contents']['description']
-    string = string.replace('compliancedb/cdb_controls', 'merkely/change')
-    expected_payload['contents']['description'] = string
-
-    # user_data works in new code
-    expected_payload["user_data"] = {'status': 'deployed'}
-
     assert payload == expected_payload
 
 
