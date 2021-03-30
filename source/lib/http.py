@@ -9,7 +9,7 @@ from requests.auth import HTTPBasicAuth
 def http_get_json(url, api_token):
     print("Getting json:")
     print("From this url: " + url)
-    if in_dry_run():
+    if in_dry_run(api_token):
         print("DRY RUN: Get not performed")
     else:
         auth = HTTPBasicAuth(api_token, 'unused')
@@ -23,7 +23,7 @@ def http_put_payload(url, payload, api_token):
     print("Putting this payload:")
     print(pretty_json(payload))
     print("To this url: " + url)
-    if in_dry_run():
+    if in_dry_run(api_token):
         print("DRY RUN: Put not sent")
     else:
         auth = HTTPBasicAuth(api_token, 'unused')
@@ -37,7 +37,7 @@ def http_post_payload(url, payload, api_token):
     print("Posting this payload:")
     print(pretty_json(payload))
     print("To this url: " + url)
-    if in_dry_run():
+    if in_dry_run(api_token):
         print("DRY RUN: Post not sent")
     else:
         auth = HTTPBasicAuth(api_token, 'unused')
@@ -65,5 +65,5 @@ def pretty_json(payload):
     return json.dumps(payload, sort_keys=True, indent=4)
 
 
-def in_dry_run():
-    return os.getenv('CDB_DRY_RUN') == "TRUE" or os.getenv('MERKELY_DRY_RUN') == "TRUE"
+def in_dry_run(_api_token):
+    return os.getenv('MERKELY_DRY_RUN') == "TRUE"

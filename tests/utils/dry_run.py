@@ -1,9 +1,6 @@
 from .scoped_env_vars import ScopedEnvVars
 
-DRY_RUN = {
-    "CDB_DRY_RUN": "TRUE",
-    "MERKELY_DRY_RUN": "TRUE"
-}
+DRY_RUN = {"MERKELY_DRY_RUN": "TRUE"}
 
 
 def dry_run(ev, expected_set_vars=None):
