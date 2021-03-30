@@ -1,27 +1,68 @@
 from errors import ChangeError
 from fingerprinters import DockerFingerprinter
 from pytest import raises
+import docker
 
 DOCKER_PROTOCOL = "docker://"
 
 
-def X_test_real_example():
-    # Requires docker socket to be mounted. No good for Windows.
-    # TODO: Stub the docker call
-    fingerprinter = DockerFingerprinter()
-    image_name = 'python:3.7-alpine'  # The base image of merkely/change
-    expected = '13032d90afaaa111e92920eea2b1abb0a6b6eafa6863ad7a4bd082a9c8574240'
-    assert fingerprinter.sha(f"{DOCKER_PROTOCOL}{image_name}") == expected
+class DockerImagesGetAttrStub:
+    def __init__(self, repo_digests):
+        self._repo_digests = repo_digests
+    @property
+    def images(self):
+        stubber = self
+        class Getter:
+            def get(self, _image_name):
+                class Attrs:
+                    @property
+                    def attrs(self):
+                        return {
+                            "RepoDigests": stubber._repo_digests
+                        }
+                return Attrs()
+        return Getter()
 
 
-def X_test_getting_sha_of_bad_image_name_raises():
-    # Requires docker socket to be mounted. No good for Windows.
-    # TODO: Stub the docker call
+class DockerImageNotFoundStub:
+    @property
+    def images(self):
+        raise docker.errors.ImageNotFound("")
+
+
+def test_gets_sha_when_image_retrieved_from_registry(mocker):
+    sha256 = '13032d90afaaa111e92920eea2b1abb0a6b6eafa6863ad7a4bd082a9c8574240'
+    stub = DockerImagesGetAttrStub([f"acme@sha256:{sha256}"])
+    mocker.patch('fingerprinters.docker_fingerprinter.docker.from_env', return_value=stub)
+    image_name = 'acme/road-runner:3.7'
     fingerprinter = DockerFingerprinter()
-    bad_image_name = 'python:3.7-alpine-does-not-exist'
+    assert fingerprinter.sha(f"{DOCKER_PROTOCOL}{image_name}") == sha256
+
+
+def test_fails_to_get_sha_when_image_not_retrieved_from_registry(mocker):
+    stub = DockerImagesGetAttrStub([])
+    mocker.patch('fingerprinters.docker_fingerprinter.docker.from_env', return_value=stub)
+
+    fingerprinter = DockerFingerprinter()
+    image_name = 'acme/road-runner:3.7'
     with raises(ChangeError) as exc:
-        fingerprinter.sha(f"docker://{bad_image_name}")
-    start = f"Cannot determine digest for image: {bad_image_name}"
+        fingerprinter.sha(f"{DOCKER_PROTOCOL}{image_name}")
+
+    start = f"Cannot determine digest for image: {image_name}"
+    diagnostic = str(exc.value)
+    assert diagnostic.startswith(start), diagnostic
+
+
+def test_fails_to_get_sha_when_image_does_not_exist(mocker):
+    stub = DockerImageNotFoundStub()
+    mocker.patch('fingerprinters.docker_fingerprinter.docker.from_env', return_value=stub)
+
+    fingerprinter = DockerFingerprinter()
+    image_name = 'acme/road-runner:3.7'
+    with raises(ChangeError) as exc:
+        fingerprinter.sha(f"{DOCKER_PROTOCOL}{image_name}")
+
+    start = f"Cannot determine digest for image: {image_name}"
     diagnostic = str(exc.value)
     assert diagnostic.startswith(start), diagnostic
 
