@@ -54,9 +54,6 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
     assert method == expected_method
     assert url == expected_url
 
-    #string = expected_payload['contents']['description']
-    #string = string.replace('compliancedb/cdb_controls', 'merkely/change')
-    #expected_payload['contents']['description'] = string
     expected_payload["user_data"] = {'status': 'deployed'}
 
     assert payload == expected_payload
