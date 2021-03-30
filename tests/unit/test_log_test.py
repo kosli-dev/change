@@ -25,20 +25,6 @@ def test_non_zero_status_when_no_data_directory(capsys):
 
 
 def test_zero_exit_status_when_there_is_a_data_directory(capsys):
-    """
-    The lib code looks at CDB_USER_DATA but the line to add
-    the json (in cdb_utils.py build_evidence_dict) is this:
-
-    if user_data is not None:
-        evidence["user_data"]: user_data
-
-    which should be
-
-    if user_data is not None:
-        evidence["user_data"] = user_data
-
-    So that functionality does not exist in the old lib code.
-    """
     image_name = "acme/widget:4.67"
     sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
     build_url = "https://gitlab/build/1457"
@@ -48,7 +34,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
     expected_payload = {
         "contents": {
-            "description": "JUnit results xml verified by compliancedb/cdb_controls: All tests passed in 2 test suites",
+            "description": "JUnit results xml verified by merkely/change: All tests passed in 2 test suites",
             "is_compliant": True,
             "url": build_url
         },
@@ -65,16 +51,12 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
 
     capsys_read(capsys)  # keeping stdout silent
 
-    # verify matching data
     assert method == expected_method
     assert url == expected_url
 
-    # image name has changed
-    string = expected_payload['contents']['description']
-    string = string.replace('compliancedb/cdb_controls', 'merkely/change')
-    expected_payload['contents']['description'] = string
-
-    # user_data works in new code
+    #string = expected_payload['contents']['description']
+    #string = string.replace('compliancedb/cdb_controls', 'merkely/change')
+    #expected_payload['contents']['description'] = string
     expected_payload["user_data"] = {'status': 'deployed'}
 
     assert payload == expected_payload
