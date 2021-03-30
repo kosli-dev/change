@@ -92,7 +92,6 @@ test_unit:
 		${SOURCE_VOLUME_MOUNTS} \
 		${TESTS_VOLUME_MOUNT} \
 	    --volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
-	    --volume /var/run/docker.sock:/var/run/docker.sock \
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
 			${IMAGE} tests/unit/${TARGET}
 
