@@ -56,7 +56,7 @@ class DockerFingerprinter(Fingerprinter):
             # For example, see
             # https://github.com/merkely-development/loan-calculator/runs/1903030144?check_suite_focus=true
             message = " ".join([
-                f"Cannot determine digest for image: {string}.",
+                f"Cannot determine digest for image: {image_name}",
                 "Check the image name is correct.",
                 "Check the image has been pushed to a registry."
             ])

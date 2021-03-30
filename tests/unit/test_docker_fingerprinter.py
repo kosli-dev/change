@@ -5,6 +5,25 @@ from pytest import raises
 DOCKER_PROTOCOL = "docker://"
 
 
+def test_real_example():
+    # Requires docker socket to be mounted
+    fingerprinter = DockerFingerprinter()
+    image_name = 'python:3.7-alpine'  # The base image of merkely/change
+    expected = '13032d90afaaa111e92920eea2b1abb0a6b6eafa6863ad7a4bd082a9c8574240'
+    assert fingerprinter.sha(f"docker://{image_name}") == expected
+
+
+def test_getting_sha_of_bad_image_name_raises():
+    # Requires docker socket to be mounted
+    fingerprinter = DockerFingerprinter()
+    bad_image_name = 'python:3.7-alpine-does-not-exist'
+    with raises(ChangeError) as exc:
+        fingerprinter.sha(f"docker://{bad_image_name}")
+    start = f"Cannot determine digest for image: {bad_image_name}"
+    diagnostic = str(exc.value)
+    assert diagnostic.startswith(start), diagnostic
+
+
 def test_handles_only_its_own_protocol():
     fingerprinter = DockerFingerprinter()
     assert fingerprinter.handles_protocol(DOCKER_PROTOCOL)
