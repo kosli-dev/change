@@ -2,6 +2,7 @@ from docutils import nodes
 from docutils.parsers.rst import Directive
 from commands import Command, External
 import requests
+import subprocess
 
 
 class DescribeCommand(Directive):
@@ -129,7 +130,8 @@ def literal_block_link(command_name, ci_name):
         workflow_url = 'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows'
         if command_name == 'request_approval':
             url = f'{workflow_url}/request_approval.yml'
-            #ref = precise_url(url, 'MERKELY_COMMAND: request_approval')
+            #ref = github_request_approval_line_url('MERKELY_COMMAND: request_approval')
+            #ref = bitbucket_request_approval_line_url('MERKELY_COMMAND: request_approval')
             ref = url
         elif command_name == 'control_deployment':
             ref = f'{workflow_url}/deploy_to_production.yml'
@@ -143,12 +145,31 @@ def literal_block_link(command_name, ci_name):
     return para
 
 
-def precise_url(url, search_text):
-    url = 'https://raw.githubusercontent.com/merkely-development/loan-calculator/master/.github/workflows/request_approval.yml'
-    lines = requests.get(url).text.splitlines()
+# Working towards URL's that target individual lines...
+def github_request_approval_line_url(search_text):
+    org = 'merkely-development'
+    repo = 'loan-calculator'
+    raw_url = f'https://raw.githubusercontent.com/{org}/{repo}/master/.github/workflows/request_approval.yml'
+    url = f'https://github.com/{org}/{repo}/blob/master/.github/workflows/request_approval.yml'
+    lines = requests.get(raw_url).text.splitlines()
     indices = [i for i, line in enumerate(lines) if search_text in line]
     index = indices[0] + 1
-    return f'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/request_approval.yml#L{index}'
+    return f'{url}#L{index}'
+
+
+def bitbucket_request_approval_line_url(search_text):
+    org = 'merkely'
+    repo = 'loan-calculator'
+    base_url = f"https://bitbucket.org/{org}/{repo}"
+    bytes = subprocess.check_output(['git', 'ls-remote', f"{base_url}/src/master"])
+    stdout = bytes.decode('utf-8')
+    long_sha = stdout.split()[0]  # eg 1d513d611f297e61a97bf766388f0c9df6ff13d4
+    short_sha = long_sha[:7]      # eg 1d513d6
+    raw_url = f"{base_url}/raw/{short_sha}/bitbucket-pipelines.yml"
+    lines = requests.get(raw_url).text.splitlines()
+    indices = [i for i, line in enumerate(lines) if search_text in line]
+    index = indices[0] + 1
+    return f"{base_url}/src/{short_sha}/bitbucket-pipelines.yml#lines-{index}"
 
 
 def setup(app):
