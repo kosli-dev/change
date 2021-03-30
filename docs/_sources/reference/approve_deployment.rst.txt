@@ -1,5 +1,7 @@
 .. This file was auto-generated from /app/source/doc_gen.py
 
+.. _approve_deployment-label:
+
 Approve Deployment
 ------------------
 

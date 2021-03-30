@@ -119,15 +119,19 @@
       
   <div class="section" id="creating-approvals">
 <h1>Creating Approvals<a class="headerlink" href="#creating-approvals" title="Permalink to this headline">¶</a></h1>
-<p>Many software development processes require an active decision to document an approval for deployment. This Human-in-the-Loop decision must be taken by someone responsible for accepting the risk of a given deployment. In order to be able to accept the risk, two criteria must be fulfilled:</p>
+<p>Many software development processes require an active decision to document an approval for deployment.
+This Human-in-the-Loop decision must be taken by someone responsible for accepting the risk of a given deployment.
+In order to be able to accept the risk, two criteria must be fulfilled:</p>
 <ol class="arabic simple">
-<li><p>The change must be understood</p></li>
-<li><p>The acceptance must be documented</p></li>
+<li><p>The change must be understood.</p></li>
+<li><p>The acceptance must be documented.</p></li>
 </ol>
-<p>You can create the documentation for this approval automatically in your pipelines using Merkely commands.</p>
+<p>Merkely creates the documentation for approvals automatically in your pipelines.</p>
 <img alt="../_images/approvals.png" src="../_images/approvals.png" />
-<p>Merkely makes a dashboard for the cumulative change in the deployment, based on a list of the source git commits.  Provide two git references: one for what is currently in production, and one for what you would like to deploy.  The command will generate the git commit list between these two commits.</p>
-<p>In this example from the image above, to create the approval for deploying the artifact created at the master commit you would use the following parameters in the <span class="xref std std-ref">log_approval</span>:</p>
+<p>Merkely makes a dashboard for the cumulative change in the deployment, based on a list of the source git commits.
+You simply provide two git references: one for what is currently in production, and one for what you would like to deploy.
+Merkely will generate the git commit list between these two commits.
+In this example from the image above, to document the approval for deploying the artifact created at the master commit you would use the following parameters.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 60%" />
@@ -146,10 +150,9 @@
 <h2>Pipeline approvals vs. Merkely approvals<a class="headerlink" href="#pipeline-approvals-vs-merkely-approvals" title="Permalink to this headline">¶</a></h2>
 <p>Merkely provides two methods for documenting deployment approvals:</p>
 <ul class="simple">
-<li><p>Pipeline approval: an approval accepted externally to Merkely, for instance in an external CI tool.</p></li>
-<li><p>Merkely approval: an approval to be accepted in Merkely.</p></li>
+<li><p>Pipeline approval: The <a class="reference internal" href="../reference/approve_deployment.html#approve-deployment-label"><span class="std std-ref">Approve Deployment</span></a> command documents an approval accepted externally to Merkely, for example in a CI pipeline .yml file.</p></li>
+<li><p>Merkely approval: The <a class="reference internal" href="../reference/request_approval.html#request-approval-label"><span class="std std-ref">Request Approval</span></a> command documents an approval to be accepted in Merkely. After the command has completed the approval must be accepted within the Merkely application.</p></li>
 </ul>
-<p>To create a pipeline approval, simply set the <code class="code docutils literal notranslate"><span class="pre">MERKELY_IS_APPROVED</span></code> parameter to <code class="code docutils literal notranslate"><span class="pre">TRUE</span></code>.  This will allow you to document an approval for example made in your CI tool and set it immediately to approved.  If you set this instead to <code class="code docutils literal notranslate"><span class="pre">FALSE</span></code>, it is possible to approve in the Merkely application.</p>
 </div>
 <div class="section" id="tracking-branches-for-production">
 <h2>Tracking branches for production<a class="headerlink" href="#tracking-branches-for-production" title="Permalink to this headline">¶</a></h2>
