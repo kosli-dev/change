@@ -58,12 +58,11 @@ def reference_command_rst(command_name):
     ci_names = ['bitbucket', 'github']
     tab = " " * 3
     title = " ".join(list(s.capitalize() for s in command_name.split('_')))
-    hyphenated = "-".join(s for s in command_name.split('_'))
     rst = "\n".join([
         f".. This file was auto-generated from {__file__}",
         "",
         f".. _{command_name}-label:",
-        "",
+        "", # required!
         title,
         "-" * len(title),
         "",

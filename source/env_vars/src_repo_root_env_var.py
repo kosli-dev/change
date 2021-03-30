@@ -21,7 +21,7 @@ class SrcRepoRootEnvVar(StaticDefaultedEnvVar):
             f"Defaults to `{DEFAULT_DIR}`.",
         ])
         if ci_name == 'github':
-            note += " ".join([
+            note += " " + " ".join([
                 "In a uses: directive the repository directory is",
                 "automatically volume-mounted to ${{ github.workspace }}."
             ])
