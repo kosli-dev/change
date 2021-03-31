@@ -3,20 +3,6 @@ import subprocess
 
 REF_FILES = {}
 
-"""
-change_makefile_url = 'https://github.com/merkely-development/change/blob/master/Makefile'
-if ci_name == 'docker':
-    ref = change_makefile_url
-elif ci_name == 'bitbucket':
-    ref = 'https://bitbucket.org/merkely/loan-calculator/src/master/bitbucket-pipelines.yml'
-elif ci_name == 'github':
-    workflow_url = 'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows'
-    if command_name == 'control_deployment':
-        ref = f'{workflow_url}/deploy_to_production.yml'
-    else:
-        ref = f'{workflow_url}/master_pipeline.yml'
-"""
-
 
 def curl_ref_files():
     """
