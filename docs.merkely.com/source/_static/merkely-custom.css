@@ -35,23 +35,20 @@ body {
   padding-bottom: 10px;
 }
 
-.literal-block-link {
+//= = = = = = = = = = = = = = = = = = = = = = = = =
+
+.form-group {
+  display: none !important; // search is not functioning
+}
+
+.tab-content > .tab-pane {
+  max-width: 910px; // full-width is way too much
+}
+
+p.literal-block-link {
   padding-top: 10px;
 }
 
 a.copybtn {
-  position: absolute;
-  top: .4em;
-  right: .1em;
-  width: 2em;
-  height: 2em;
-  opacity: 0.7;
-}
-
-.nav.navbar-nav {
-  display: none; // drop-down looks terrible
-}
-
-.form-group {
-  display: none !important; // search is not functioning
+  opacity: 3.7; // bolder
 }

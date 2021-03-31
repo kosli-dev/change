@@ -37,7 +37,6 @@ Tracking branches for production
 In a typical setup, you need to add a :code:`production` tracking branch in git that is updated on every deployment. For example:
 
 .. code-block:: bash
-    :linenos:
 
     git checkout production
     git merge --ff-only master

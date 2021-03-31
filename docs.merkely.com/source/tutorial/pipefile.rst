@@ -6,7 +6,6 @@ Merkely uses a declarative Pipefile to define the DevOps Change Management needs
 
 .. literalinclude:: ../app/tests/unit/test-pipefile.json
     :language: JSON
-    :linenos:
 
 
 To make integration with Merkely easy to implement in devops pipelines we provide a docker image `merkely/change

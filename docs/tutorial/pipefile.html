@@ -121,17 +121,7 @@
   <div class="section" id="defining-your-pipeline">
 <h1>Defining Your Pipeline<a class="headerlink" href="#defining-your-pipeline" title="Permalink to this headline">¶</a></h1>
 <p>Merkely uses a declarative Pipefile to define the DevOps Change Management needs of a pipeline.  It is a JSON file, typically stored in your source code repository that tells Merkely about your software delivery process and what process and control evidence to expect.</p>
-<div class="highlight-JSON notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;acme-cern&quot;</span><span class="p">,</span>
     <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hadroncollider-game&quot;</span><span class="p">,</span>
     <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Accelerating particles then smashing them together&quot;</span><span class="p">,</span>
@@ -143,7 +133,7 @@
     <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 <p>To make integration with Merkely easy to implement in devops pipelines we provide a docker image <a class="reference external" href="https://github.com/merkely-development/change">merkely/change</a>.  Using commands in this image you can define, log and control different aspects of your software delivery process automatically.</p>
 <p>For example, to declare the pipeline definition in Merkely you use the command <a class="reference internal" href="../reference/declare_pipeline.html#declare-pipeline-label"><span class="std std-ref">Declare Pipeline</span></a>
 like so:</p>

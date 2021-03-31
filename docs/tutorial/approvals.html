@@ -158,15 +158,12 @@ In this example from the image above, to document the approval for deploying the
 <div class="section" id="tracking-branches-for-production">
 <h2>Tracking branches for production<a class="headerlink" href="#tracking-branches-for-production" title="Permalink to this headline">¶</a></h2>
 <p>In a typical setup, you need to add a <code class="code docutils literal notranslate"><span class="pre">production</span></code> tracking branch in git that is updated on every deployment. For example:</p>
-<div class="highlight-bash notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span>git checkout production
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git checkout production
 git merge --ff-only master
 <span class="c1"># YOUR DEPLOYMENT COMMAND HERE</span>
 git push origin production
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 </div>
 
