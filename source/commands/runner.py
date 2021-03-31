@@ -2,6 +2,7 @@ from errors import ChangeError
 from commands import Command
 from lib.http import *
 from lib.in_dry_run import *
+import json
 
 
 def run(external):
@@ -36,6 +37,10 @@ def run(external):
         return callback(response)
     else:
         return method, url, payload
+
+
+def pretty_json(payload):
+    return json.dumps(payload, sort_keys=True, indent=4)
 
 
 def main(external):

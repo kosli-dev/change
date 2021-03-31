@@ -50,7 +50,3 @@ def raise_unless_success(response):
 
 def json_content_header():
     return {"Content-Type": "application/json"}
-
-
-def pretty_json(payload):
-    return json.dumps(payload, sort_keys=True, indent=4)
