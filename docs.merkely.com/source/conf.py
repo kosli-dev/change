@@ -14,7 +14,7 @@ import os
 import sys
 
 sys.path.append(os.path.abspath("./_ext"))
-sys.path.append(os.path.abspath("/app/source"))
+sys.path.append(os.path.abspath("/app/source/docs"))
 extensions = [
     'describe_command',
     'describe_fingerprint',
@@ -82,8 +82,7 @@ def env_get_outdated(app, env, added, changed, removed):
     return ['index']
 
 
-import doc_gen
-import doc_data
+from docs import doc_gen, doc_data
 
 
 def setup(app):

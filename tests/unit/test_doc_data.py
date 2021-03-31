@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append(os.path.abspath("/app/source"))
-import doc_data
+from docs import doc_data
 from pyfakefs.fake_filesystem_unittest import TestCase
 
 

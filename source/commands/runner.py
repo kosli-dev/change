@@ -13,7 +13,7 @@ def run(external):
     klass = Command.named(name)
     command = klass(external)
     for env_var in command.merkely_env_vars:
-        env_var.value
+        env_var.value  # check required env-vars are set
 
     method, url, payload, callback = command()
     api_token = command.api_token.value
