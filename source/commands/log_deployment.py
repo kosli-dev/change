@@ -17,7 +17,7 @@ class LogDeployment(Command):
 
     def doc_ref(self, ci_name):
         if ci_name == 'docker':
-            return docker_change_makefile_line_ref('merkely_log_deployment')
+            return docker_change_makefile_line_ref('merkely_log_deployment:')
         if ci_name == 'github':
             return github_loan_calculator_master_line_ref('MERKELY_COMMAND: log_deployment')
         if ci_name == 'bitbucket':

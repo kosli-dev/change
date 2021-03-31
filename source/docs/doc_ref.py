@@ -52,7 +52,8 @@ def docker_change_makefile_line_ref(search_text):
     json = REF_FILES[base_url]
     lines = json["lines"]
     url = json['ref_url']
-    indices = [i for i, line in enumerate(lines) if search_text in line]
+    indices = [i for i, line in enumerate(lines) if search_text == line.strip()]
+    assert len(indices) == 1
     index = indices[0] + 1
     return f'{url}#L{index}'
 
