@@ -19,9 +19,6 @@ def test_no_retries_when_http_call_is_not_503(capsys):
 
     assert len(responses.calls) == 1
 
-    trailing_lines = extract_trailing_blurb(capsys_read(capsys))
-    assert trailing_lines == ['{"success": 42}']
-
 
 @responses.activate
 def test_503_post_retries_5_times_then_raises_HttpRetryExhausted(capsys):
@@ -96,8 +93,8 @@ def test_get_stops_retrying_when_non_503_and_returns_response_json(capsys):
 
 
 def assert_5_retries(capsys):
-    trailing_lines = extract_trailing_blurb(capsys_read(capsys))
-    assert trailing_lines == [
+    stdout = capsys_read(capsys).splitlines()
+    assert stdout == [
         'Response.status=503, retrying in 0.001 seconds...',
         'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
         'Retry 2/5: response.status=503, retrying in 0.004 seconds...',
@@ -108,8 +105,8 @@ def assert_5_retries(capsys):
 
 
 def assert_1_retry(capsys):
-    trailing_lines = extract_trailing_blurb(capsys_read(capsys))
-    assert trailing_lines == [
+    stdout = capsys_read(capsys).splitlines()
+    assert stdout == [
         'Response.status=503, retrying in 0.001 seconds...',
         'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
         'Retry 2/5: response.status=200',

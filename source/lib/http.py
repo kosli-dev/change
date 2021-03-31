@@ -7,8 +7,6 @@ from requests.auth import HTTPBasicAuth
 
 
 def http_get_json(url, api_token):
-    print("Getting json:")
-    print("From this url: " + url)
     if in_dry_run(api_token):
         print("DRY RUN: Get not performed")
     else:
@@ -20,9 +18,6 @@ def http_get_json(url, api_token):
 
 
 def http_put_payload(url, payload, api_token):
-    print("Putting this payload:")
-    print(pretty_json(payload))
-    print("To this url: " + url)
     if in_dry_run(api_token):
         print("DRY RUN: Put not sent")
     else:
@@ -34,9 +29,6 @@ def http_put_payload(url, payload, api_token):
 
 
 def http_post_payload(url, payload, api_token):
-    print("Posting this payload:")
-    print(pretty_json(payload))
-    print("To this url: " + url)
     if in_dry_run(api_token):
         print("DRY RUN: Post not sent")
     else:
