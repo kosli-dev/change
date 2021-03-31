@@ -71,6 +71,9 @@ html_static_path = ['_static']
 html_css_files = [
     "merkely-custom.css",
 ]
+html_js_files = [
+    'merkely-custom.js'
+]
 
 html_extra_path = ['CNAME', '.nojekyll']
 

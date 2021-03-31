@@ -122,6 +122,7 @@ def add_literal_block_link(div, command, ci_name):
         para = nodes.paragraph(text="")
         para += nodes.reference('', 'Open an example, similar to the fragment below, from a git repo.', internal=False, refuri=ref)
         para.update_basic_atts({
+            # For css formatting. See docs.merkely.com/source/_static/merkely-custom.css
             "classes": ['literal-block-link']
         })
         div += para

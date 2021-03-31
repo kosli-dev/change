@@ -24,7 +24,10 @@ def curl_ref_files():
         REF_FILES[json["base_url"]] = json
 
 """
-Loan-Calculator's Github Action pipeline is split into three files
+Custom functions that return the URL <a ref=""> targets which appear
+above the live-documentation fragment for a command being used in
+a file in a public git repo. Target specific line numbers. 
+Note that loan-calculator's Github Action pipeline is split into three files
 because Github Actions does not yet support manual approval steps.
 """
 
