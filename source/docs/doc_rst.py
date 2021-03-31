@@ -5,7 +5,7 @@ from functools import cmp_to_key
 REFERENCE_DIR = '/docs/source/reference'
 
 
-def auto_generate_rst_files():
+def create_rst_files():
     """
     Called from docs.merkely.com/source/conf.py
     Builds the Reference .rst files for each command.

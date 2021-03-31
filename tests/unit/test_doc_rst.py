@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append(os.path.abspath("/app/source"))
-from docs import doc_gen
+from docs import doc_rst
 from pyfakefs.fake_filesystem_unittest import TestCase
 
 
@@ -10,6 +10,6 @@ class AutoGenerateReferenceRstFilesTestCase(TestCase):
         self.setUpPyfakefs()
 
     def test_auto_generate(self):
-        os.makedirs(doc_gen.REFERENCE_DIR)
-        doc_gen.auto_generate_rst_files()
+        os.makedirs(doc_rst.REFERENCE_DIR)
+        doc_rst.create_rst_files()
         # TODO: assert rst files exist

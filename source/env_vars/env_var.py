@@ -69,7 +69,7 @@ class EnvVar(ABC):
     def doc_example(self, ci_name, command_name):
         """
         Used in living documentation. Never raises.
-        See docs.merkely.com/source/doc_data.py
+        See docs.merkely.com/source/docs/doc_txt.py
         """
 
     @abstractmethod

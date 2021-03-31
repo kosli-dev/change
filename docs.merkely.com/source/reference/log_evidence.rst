@@ -1,4 +1,4 @@
-.. This file was auto-generated from /app/source/docs/doc_gen.py
+.. This file was auto-generated from /app/source/docs/doc_rst.py
 
 .. _log_evidence-label:
 

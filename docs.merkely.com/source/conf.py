@@ -82,12 +82,13 @@ def env_get_outdated(app, env, added, changed, removed):
     return ['index']
 
 
-from docs import doc_gen, doc_data
+from docs import doc_rst, doc_txt
 
 
 def setup(app):
-    doc_gen.auto_generate_rst_files()
-    doc_data.auto_generate_txt_files()
+    #doc_links.
+    doc_rst.create_rst_files()
+    doc_txt.create_txt_files()
     app.add_css_file("merkely-custom.css")
     app.connect('env-get-outdated', env_get_outdated)
 
