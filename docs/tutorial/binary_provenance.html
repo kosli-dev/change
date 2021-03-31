@@ -120,11 +120,11 @@
       
   <div class="section" id="logging-artifacts">
 <h1>Logging Artifacts<a class="headerlink" href="#logging-artifacts" title="Permalink to this headline">¶</a></h1>
-<p>To register an artifact in Merkely, you use the <cite>log_artifact</cite> command.  To get the sha256 for your artifact, you have three options:</p>
+<p>To register an artifact in Merkely, you use the <a class="reference internal" href="../reference/log_artifact.html#log-artifact-label"><span class="std std-ref">Log Artifact</span></a> command.  To get the sha256 for your artifact, you have three options:</p>
 <ul class="simple">
-<li><p>Explicitly provide the sha256 of the binary to the command.</p></li>
-<li><p>Provide the full path to the file - the command will calculate the sha digest.</p></li>
 <li><p>Provide the docker image and access to the docker daemon - the command will use the docker daemon to query the repoDigest of the docker image. This requires the image to be pushed to a registry first.</p></li>
+<li><p>Provide the full path of the file and access to the file - the command will calculate the sha digest.</p></li>
+<li><p>Explicitly provide the sha256 of the binary and the name of the binary to the command.</p></li>
 </ul>
 <p>Here is an example using a docker image:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
