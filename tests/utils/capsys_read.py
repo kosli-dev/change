@@ -1,12 +1,4 @@
 
-def capsys_read(capsys, streams=None):
+def capsys_read(capsys):
     out, err = capsys.readouterr()
-    if streams is None:
-        streams = ["out", "err"]
-    actual = ""
-    for stream in streams:
-        if stream == "out":
-            actual += out
-        if stream == "err":
-            actual += err
-    return actual
+    return out + err

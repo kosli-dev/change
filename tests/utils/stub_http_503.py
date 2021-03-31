@@ -2,10 +2,8 @@ import json
 import responses
 
 
-def stub_http_503(method, count, url=None):
-    # Eg during deployment rollover
-    if url is None:
-        url = "https://test.compliancedb.com/api/v1/{}/".format(method.lower())
+def stub_http_503(method, count):
+    url = "https://test.merkely.com/api/v1/{}/".format(method.lower())
 
     def request_callback(request):
         headers = {}
