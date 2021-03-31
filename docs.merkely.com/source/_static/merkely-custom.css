@@ -4,17 +4,17 @@ body {
 
 :root {
   --custom-color: #f0f0f0;
-  --cdb-green: #00f4b9;
-  --cdb-red: #ff3e15;
-  --cdb-dblue: #00117a;
-  --cdb-ddblue: #010d5a;
-  --cdb-mblue: #0139d3;
-  --cdb-lblue: #01abe9; /* #1EAEDB; is what skeleton has for links - may want to harmonize this */
-  --cdb-mbackground: rgba(1, 57, 210, 0.04);
-  --cdb-black: #13151b;
-  --cdb-sblack: #000000;
-  --cdb-grey: #cfcfd1;
-  --cdb-white: #fff;
+  --merkely-green: #00f4b9;
+  --merkely-red: #ff3e15;
+  --merkely-dblue: #00117a;
+  --merkely-ddblue: #010d5a;
+  --merkely-mblue: #0139d3;
+  --merkely-lblue: #01abe9; /* #1EAEDB; is what skeleton has for links - may want to harmonize this */
+  --merkely-mbackground: rgba(1, 57, 210, 0.04);
+  --merkely-black: #13151b;
+  --merkely-sblack: #000000;
+  --merkely-grey: #cfcfd1;
+  --merkely-white: #fff;
 }
 
 .navbar {
@@ -22,8 +22,8 @@ body {
 }
 
 .navbar-default {
-  background-color: var(--cdb-ddblue);
-  border-color: var(--cdb-ddblue);
+  background-color: var(--merkely-ddblue);
+  border-color: var(--merkely-ddblue);
 }
 
 .navbar .container {
