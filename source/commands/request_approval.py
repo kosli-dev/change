@@ -19,14 +19,13 @@ class RequestApproval(Command):
         else:
             return []
 
-    def X_doc_ref(self, ci_name):
+    def doc_ref(self, ci_name):
         if ci_name == 'docker':
-            return docker_request_approval_line_url('merkely_request_approval')
+            return docker_change_makefile_line_ref('merkely_request_approval')
         if ci_name == 'github':
-            return github_request_approval_line_url('MERKELY_COMMAND: request_approval')
+            return github_loan_calculator_request_approval_line_ref('MERKELY_COMMAND: request_approval')
         if ci_name == 'bitbucket':
-            return bitbucket_request_approval_line_url('MERKELY_COMMAND: request_approval')
-        return ""
+            return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: request_approval')
 
     def __call__(self):
         commit_list = list_commits_between(repo_at(self.src_repo_root.value),

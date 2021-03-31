@@ -1,4 +1,5 @@
 from commands import Command
+from docs import *
 from env_vars import *
 from lib.api_schema import ApiSchema
 from lib.git import repo_at, list_commits_between
@@ -17,6 +18,11 @@ class ApproveDeployment(Command):
             ]
         else:
             return []
+
+    def doc_ref(self, ci_name):
+        if ci_name == 'docker':
+            return docker_change_makefile_line_ref('merkely_approve_deployment')
+        return ""
 
     def __call__(self):
         commit_list = list_commits_between(repo_at(self.src_repo_root.value),

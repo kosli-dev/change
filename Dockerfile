@@ -3,7 +3,7 @@ FROM python:3.7-alpine
 WORKDIR /app
 COPY requirements.txt requirements.txt
 
-RUN apk update
+RUN apk update && apk add git
 
 # openssl is needed for file based sha
 RUN apk add openssl libffi-dev libgit2-dev=1.1.0-r1

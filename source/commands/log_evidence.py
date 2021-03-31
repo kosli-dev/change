@@ -1,4 +1,5 @@
 from commands import Command
+from docs import *
 from env_vars import *
 from lib.api_schema import ApiSchema
 
@@ -13,6 +14,14 @@ class LogEvidence(Command):
             return ["/var/run/docker.sock:/var/run/docker.sock"]
         else:
             return []
+
+    def doc_ref(self, ci_name):
+        if ci_name == 'docker':
+            return docker_change_makefile_line_ref('merkely_log_evidence')
+        if ci_name == 'github':
+            return github_loan_calculator_master_line_ref('MERKELY_COMMAND: log_evidence')
+        if ci_name == 'bitbucket':
+            return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: log_evidence')
 
     def __call__(self):
         self._print_compliance()

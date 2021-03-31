@@ -18,6 +18,9 @@ class ControlPullRequest(Command):
         else:
             return []
 
+    def doc_ref(self, ci_name):
+        return ""
+
     def __call__(self):
         is_compliant, pull_requests = get_pull_request_for_current_commit(self.env)
         payload = {

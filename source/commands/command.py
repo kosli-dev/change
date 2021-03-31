@@ -67,8 +67,7 @@ class Command(ABC):
         """
         Used in living documentation.
         """
-        #raise NotImplementedError(self.name)
-        return ""
+        raise NotImplementedError(self.name)
 
     @property
     def merkely_env_vars(self):

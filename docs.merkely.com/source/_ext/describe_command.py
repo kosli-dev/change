@@ -117,31 +117,10 @@ def env_vars_to_table(env_vars, ci_name, command_name):
 
 
 def add_literal_block_link(div, command, ci_name):
-    """
-    change_makefile_url = 'https://github.com/merkely-development/change/blob/master/Makefile'
-    if command_name == 'approve_deployment':
-        # Currently only one 'docker' use
-        ref = change_makefile_url
-    elif ci_name == 'docker':
-        ref = change_makefile_url
-    elif ci_name == 'bitbucket':
-        ref = 'https://bitbucket.org/merkely/loan-calculator/src/master/bitbucket-pipelines.yml'
-    elif ci_name == 'github':
-        workflow_url = 'https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows'
-        if command_name == 'request_approval':
-            url = f'{workflow_url}/request_approval.yml'
-            #ref = github_request_approval_line_url('MERKELY_COMMAND: request_approval')
-            #ref = bitbucket_request_approval_line_url('MERKELY_COMMAND: request_approval')
-            ref = url
-        elif command_name == 'control_deployment':
-            ref = f'{workflow_url}/deploy_to_production.yml'
-        else:
-            ref = f'{workflow_url}/master_pipeline.yml'
-    """
     ref = command.doc_ref(ci_name)
     if ref != "":
         para = nodes.paragraph(text="")
-        para += nodes.reference('', 'See an example of use in a git repo.', internal=False, refuri=ref)
+        para += nodes.reference('', 'Open an example, similar to the fragment below, from a git repo.', internal=False, refuri=ref)
         para.update_basic_atts({
             "classes": ['literal-block-link']
         })

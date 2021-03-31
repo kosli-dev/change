@@ -86,7 +86,7 @@ from docs import doc_rst, doc_txt, doc_ref
 
 
 def setup(app):
-    doc_ref.curl_link_targets()
+    doc_ref.curl_ref_files()
     doc_rst.create_rst_files()
     doc_txt.create_txt_files()
     app.add_css_file("merkely-custom.css")

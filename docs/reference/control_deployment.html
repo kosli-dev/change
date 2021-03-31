@@ -126,6 +126,7 @@
    <li><a data-toggle="tab" href="#github">Github</a></li>
 </ul>
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile#L253">Open an example, similar to the fragment below, from a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_COMMAND</span><span class="o">=</span><span class="n">control_deployment</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_FINGERPRINT}</span><span class="s2">&quot;</span> \
@@ -179,6 +180,7 @@
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
+<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/7a3a95e/bitbucket-pipelines.yml#lines-211">Open an example, similar to the fragment below, from a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;fail_the_pipeline_unless_approved_for_deployment_in_merkely
         name: Fail the pipeline unless approved for deployment in Merkely
         services: [ docker ]
@@ -233,6 +235,7 @@
 </table>
 </div>
 <div class="github tab-pane docutils container" id="github">
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/deploy_to_production.yml#L43">Open an example, similar to the fragment below, from a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Fail the pipeline unless approved for deployment in Merkely
       uses: docker://merkely/change:latest
       env:
