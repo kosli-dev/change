@@ -4,9 +4,6 @@ from errors import ChangeError
 from tests.utils import *
 from pytest import raises
 
-BITBUCKET_API_TOKEN = "6199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
-BITBUCKET_API_USER = "test_user"
-
 BB = 'bitbucket.org'
 BB_ORG = 'acme'
 BB_REPO = 'road-runner'
@@ -200,6 +197,10 @@ def mocked_bitbucket_pull_requests_api_response():
             }
         ]
     }
+
+
+BITBUCKET_API_TOKEN = "6199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
+BITBUCKET_API_USER = "test_user"
 
 
 def control_pull_request_env():
