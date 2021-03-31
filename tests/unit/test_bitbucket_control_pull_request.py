@@ -46,11 +46,12 @@ def test_bitbucket(capsys, mocker):
         "evidence_type": EVIDENCE_TYPE
     }
 
+    rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response())
+    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+
     ev = control_pull_request_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response())
-            mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
@@ -80,13 +81,14 @@ def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
         "evidence_type": EVIDENCE_TYPE
     }
 
+    response = mocked_bitbucket_pull_requests_api_response()
+    response['participants'] = []
+    rv1 = MockedAPIResponse(200, response)
+    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+
     ev = control_pull_request_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            response = mocked_bitbucket_pull_requests_api_response()
-            response['participants'] = []
-            rv1 = MockedAPIResponse(200, response)
-            mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
@@ -98,13 +100,14 @@ def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
 
 
 def test_bitbucket_not_compliant_raises(capsys, mocker):
+    response = mocked_bitbucket_pull_requests_api_response()
+    response['values'] = []
+    rv1 = MockedAPIResponse(200, response)
+    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+
     ev = control_pull_request_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            response = mocked_bitbucket_pull_requests_api_response()
-            response['values'] = []
-            rv1 = MockedAPIResponse(200, response)
-            mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
             external = External(env=env, docker_fingerprinter=fingerprinter)
             exit_code = main(external)
 
@@ -117,11 +120,12 @@ def test_bitbucket_not_compliant_raises(capsys, mocker):
 
 
 def test_bitbucket_api_response_202(capsys, mocker):
+    rv1 = MockedAPIResponse(202, {})
+    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+
     ev = control_pull_request_env()
     with dry_run(ev) as env:
             with raises(ChangeError) as exc:
-                rv1 = MockedAPIResponse(202, {})
-                mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
                 external = External(env=env)
                 _, _, _ = run(external)
 
@@ -130,11 +134,12 @@ def test_bitbucket_api_response_202(capsys, mocker):
 
 
 def test_bitbucket_api_response_404(capsys, mocker):
+    rv1 = MockedAPIResponse(404, {})
+    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+
     ev = control_pull_request_env()
     with dry_run(ev) as env:
             with raises(ChangeError) as exc:
-                rv1 = MockedAPIResponse(404, {})
-                mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
                 external = External(env=env)
                 _, _, _ = run(external)
 
@@ -148,11 +153,12 @@ def test_bitbucket_api_response_404(capsys, mocker):
 
 def test_bitbucket_api_response_505(capsys, mocker):
     # Test error message in case of unexpected status code from Bitbucket API
+    rv1 = MockedAPIResponse(505, {"Message": "Test error"})
+    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+
     ev = control_pull_request_env()
     with dry_run(ev) as env:
             with raises(ChangeError) as exc:
-                rv1 = MockedAPIResponse(505, {"Message": "Test error"})
-                mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
                 external = External(env=env)
                 _, _, _ = run(external)
 
