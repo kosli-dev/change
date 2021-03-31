@@ -63,11 +63,12 @@ class Command(ABC):
         """
         raise NotImplementedError(self.name)
 
-    #def doc_link(self, _ci_name):  # pragma: no cover
-    #    """
-    #    Used in living documentation.
-    #    """
-    #    raise NotImplementedError(self.name)
+    def doc_ref(self, _ci_name):  # pragma: no cover
+        """
+        Used in living documentation.
+        """
+        #raise NotImplementedError(self.name)
+        return ""
 
     @property
     def merkely_env_vars(self):

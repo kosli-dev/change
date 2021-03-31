@@ -126,7 +126,6 @@
    <li><a data-toggle="tab" href="#github">Github</a></li>
 </ul>
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile">See an example of use in a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=approve_deployment \
     --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
@@ -206,7 +205,6 @@
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile">See an example of use in a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;approve_a_deployment
         name: Approve a deployment
         services: [ docker ]
@@ -285,7 +283,6 @@
 </table>
 </div>
 <div class="github tab-pane docutils container" id="github">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile">See an example of use in a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Approve a deployment
       uses: docker://merkely/change:latest
       env:

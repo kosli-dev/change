@@ -1,4 +1,5 @@
 from commands import Command
+from docs import *
 from env_vars import *
 from lib.api_schema import ApiSchema
 from lib.git import repo_at, list_commits_between
@@ -17,6 +18,15 @@ class RequestApproval(Command):
             ]
         else:
             return []
+
+    def X_doc_ref(self, ci_name):
+        if ci_name == 'docker':
+            return docker_request_approval_line_url('merkely_request_approval')
+        if ci_name == 'github':
+            return github_request_approval_line_url('MERKELY_COMMAND: request_approval')
+        if ci_name == 'bitbucket':
+            return bitbucket_request_approval_line_url('MERKELY_COMMAND: request_approval')
+        return ""
 
     def __call__(self):
         commit_list = list_commits_between(repo_at(self.src_repo_root.value),

@@ -213,6 +213,25 @@ merkely_log_test:
 		${IMAGE}
 
 
+merkely_request_approval:
+	docker run \
+		--env MERKELY_COMMAND=request_approval \
+		--env MERKELY_FINGERPRINT="${MERKELY_FINGERPRINT}" \
+		--env MERKELY_OLDEST_SRC_COMMITISH="${MERKELY_OLDEST_SRC_COMMITISH}" \
+		--env MERKELY_NEWEST_SRC_COMMITISH="${MERKELY_NEWEST_SRC_COMMITISH}" \
+		--env MERKELY_DESCRIPTION="${MERKELY_DESCRIPTION}" \
+		--env MERKELY_SRC_REPO_ROOT="${MERKELY_SRC_REPO_ROOT}" \
+		--env MERKELY_USER_DATA="${MERKELY_USER_DATA}" \
+		--env MERKELY_API_TOKEN="${MERKELY_API_TOKEN}" \
+		--env MERKELY_HOST="${MERKELY_HOST}" \
+        --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
+        --env-file ${CI_ENV_FILE} \
+		--rm \
+		--volume ${PWD}:/src \
+		--volume /var/run/docker.sock:/var/run/docker.sock \
+		merkely/change
+
+
 merkely_approve_deployment:
 	docker run \
 		--env MERKELY_COMMAND=approve_deployment \

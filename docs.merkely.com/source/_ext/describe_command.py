@@ -1,8 +1,6 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from commands import Command, External
-import requests
-import subprocess
 
 
 class DescribeCommand(Directive):
@@ -38,10 +36,12 @@ def invocation_full(command_name, ci_name):
     with open(filename, "rt") as file:
         text = file.read()
 
+    command = command_for(command_name)
+
     div = nodes.container()
-    div += literal_block_link(command_name, ci_name)
+    add_literal_block_link(div, command, ci_name)
     div += nodes.literal_block(text=text)
-    div += parameters(command_name, ci_name)
+    div += parameters(command, ci_name)
 
     # Add bootstrap "tab-pane" to connect to
     #    <ul class="nav nav-tabs">...</ul>
@@ -64,10 +64,9 @@ def invocation_minimum(command_name):
     return [nodes.literal_block(text=text)]
 
 
-def parameters(command_name, ci_name):
-    command = command_for(command_name)
+def parameters(command, ci_name):
     env_vars = command.merkely_env_vars
-    return [env_vars_to_table(env_vars, ci_name, command_name)]
+    return [env_vars_to_table(env_vars, ci_name, command.name.value)]
 
 
 def command_for(name):
@@ -117,7 +116,8 @@ def env_vars_to_table(env_vars, ci_name, command_name):
     return table
 
 
-def literal_block_link(command_name, ci_name):
+def add_literal_block_link(div, command, ci_name):
+    """
     change_makefile_url = 'https://github.com/merkely-development/change/blob/master/Makefile'
     if command_name == 'approve_deployment':
         # Currently only one 'docker' use
@@ -137,39 +137,15 @@ def literal_block_link(command_name, ci_name):
             ref = f'{workflow_url}/deploy_to_production.yml'
         else:
             ref = f'{workflow_url}/master_pipeline.yml'
-    para = nodes.paragraph(text="")
-    para += nodes.reference('', 'See an example of use in a git repo.', internal=False, refuri=ref)
-    para.update_basic_atts({
-        "classes": ['literal-block-link']
-    })
-    return para
-
-
-# Working towards URL's that target individual lines...
-def github_request_approval_line_url(search_text):
-    org = 'merkely-development'
-    repo = 'loan-calculator'
-    raw_url = f'https://raw.githubusercontent.com/{org}/{repo}/master/.github/workflows/request_approval.yml'
-    url = f'https://github.com/{org}/{repo}/blob/master/.github/workflows/request_approval.yml'
-    lines = requests.get(raw_url).text.splitlines()
-    indices = [i for i, line in enumerate(lines) if search_text in line]
-    index = indices[0] + 1
-    return f'{url}#L{index}'
-
-
-def bitbucket_request_approval_line_url(search_text):
-    org = 'merkely'
-    repo = 'loan-calculator'
-    base_url = f"https://bitbucket.org/{org}/{repo}"
-    bytes = subprocess.check_output(['git', 'ls-remote', f"{base_url}/src/master"])
-    stdout = bytes.decode('utf-8')
-    long_sha = stdout.split()[0]  # eg 1d513d611f297e61a97bf766388f0c9df6ff13d4
-    short_sha = long_sha[:7]      # eg 1d513d6
-    raw_url = f"{base_url}/raw/{short_sha}/bitbucket-pipelines.yml"
-    lines = requests.get(raw_url).text.splitlines()
-    indices = [i for i, line in enumerate(lines) if search_text in line]
-    index = indices[0] + 1
-    return f"{base_url}/src/{short_sha}/bitbucket-pipelines.yml#lines-{index}"
+    """
+    ref = command.doc_ref(ci_name)
+    if ref != "":
+        para = nodes.paragraph(text="")
+        para += nodes.reference('', 'See an example of use in a git repo.', internal=False, refuri=ref)
+        para.update_basic_atts({
+            "classes": ['literal-block-link']
+        })
+        div += para
 
 
 def setup(app):
