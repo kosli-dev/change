@@ -1,7 +1,7 @@
 from errors import ChangeError
 from commands import Command
 from lib.http import *
-import os
+from lib.in_dry_run import *
 
 
 def run(external):
@@ -36,10 +36,6 @@ def run(external):
         return callback(response)
     else:
         return method, url, payload
-
-
-def in_dry_run(env):
-    return env.get('MERKELY_DRY_RUN', 'FALSE') == "TRUE"
 
 
 def main(external):
