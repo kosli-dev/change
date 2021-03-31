@@ -202,19 +202,6 @@ def mocked_bitbucket_pull_requests_api_response():
     }
 
 
-test_pipefile = {
-    "owner": OWNER,
-    "name": PIPELINE,
-    "description": "Test Pipeline Controls for Merkely",
-    "visibility": "public",
-    "template": [
-        "artifact",
-        "unit_test",
-        "coverage"
-    ]
-}
-
-
 def control_pull_request_env():
     return {
         "MERKELY_COMMAND": "control_pull_request",
