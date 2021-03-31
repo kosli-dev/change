@@ -14,9 +14,9 @@ def run(external):
     for env_var in command.merkely_env_vars:
         env_var.value
 
+    method, url, payload, callback = command()
     api_token = command.api_token.value
     dry_run = in_dry_run(api_token)
-    method, url, payload, callback = command()
     if method == 'GET':
         print("Getting json:")
         print("From this url: " + url)
@@ -32,7 +32,7 @@ def run(external):
         print("To this url: " + url)
         response = http_post_payload(url=url, payload=payload, api_token=api_token, dry_run=dry_run)
 
-    if callback is not None:
+    if not dry_run and callback is not None:
         return callback(response)
     else:
         return method, url, payload

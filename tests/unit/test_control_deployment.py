@@ -15,18 +15,16 @@ SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 def test_when_no_approvals_then_raises(mocker):
     mocked_get = mocker.patch('commands.runner.http_get_json', return_value=[])
 
-    ev = control_deployment_env()
-
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            with raises(ChangeError):
-                run(external)
+    env = control_deployment_env()
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        with raises(ChangeError):
+            run(external)
 
     mocked_get.assert_called_once_with(
         url=f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}/approvals/",
         api_token="MY_SUPER_SECRET_API_TOKEN",
-        dry_run=True
+        dry_run=False
     )
 
 
@@ -35,19 +33,17 @@ def test_when_approved_then_does_not_raise(mocker):
     mocked_get = mocker.patch('commands.runner.http_get_json', return_value=mock_payload)
     mocker.patch('commands.control_deployment.control_deployment_approved', return_value=True)
 
-    ev = control_deployment_env()
-
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    env = control_deployment_env()
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     assert mock_payload == payload
 
     mocked_get.assert_called_once_with(
         url=f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}/approvals/",
         api_token="MY_SUPER_SECRET_API_TOKEN",
-        dry_run=True
+        dry_run=False
     )
 
 
