@@ -19,7 +19,7 @@ class LogArtifact(Command):
         if ci_name == 'docker':
             return docker_change_makefile_line_ref('merkely_log_artifact:')
         if ci_name == 'github':
-            return github_loan_calculator_master_line_ref('MERKELY_COMMAND: log_artifact')
+            return github_loan_calculator_master_pipeline_line_ref('MERKELY_COMMAND: log_artifact')
         if ci_name == 'bitbucket':
             return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: log_artifact')
 

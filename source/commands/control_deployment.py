@@ -19,7 +19,7 @@ class ControlDeployment(Command):
         if ci_name == 'docker':
             return docker_change_makefile_line_ref('merkely_control_deployment:')
         if ci_name == 'github':
-            return github_deploy_to_production_line_ref('MERKELY_COMMAND: control_deployment')
+            return github_loan_calculator_deploy_to_production_line_ref('MERKELY_COMMAND: control_deployment')
         if ci_name == 'bitbucket':
             return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: control_deployment')
 
