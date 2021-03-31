@@ -19,8 +19,8 @@
     <script src="../_static/merkely-custom.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="../concepts/index.html" />
-    <link rel="prev" title="Logging Deployments" href="deployments.html" />
+    <link rel="next" title="Logging Deployments" href="deployments.html" />
+    <link rel="prev" title="Logging Controls" href="controls.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -63,8 +63,8 @@
 <li class="toctree-l1"><a class="reference internal" href="pipefile.html">Defining Your Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="binary_provenance.html">Logging Artifacts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="controls.html">Logging Controls</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deployments.html">Logging Deployments</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Creating Approvals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployments.html">Logging Deployments</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Concepts:</span></p>
 <ul>
@@ -84,7 +84,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../reference/control_deployment.html">Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_deployment.html">Log Deployment</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Fingerprints:</span></p>
+<p class="caption"><span class="caption-text">Fingerprint Reference:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../fingerprints/docker_fingerprint.html">Docker Fingerprint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fingerprints/file_fingerprint.html">File Fingerprint</a></li>
@@ -147,23 +147,17 @@ In this example from the image above, to document the approval for deploying the
 </tr>
 </tbody>
 </table>
-<div class="section" id="pipeline-approvals-vs-merkely-approvals">
-<h2>Pipeline approvals vs. Merkely approvals<a class="headerlink" href="#pipeline-approvals-vs-merkely-approvals" title="Permalink to this headline">¶</a></h2>
 <p>Merkely provides two methods for documenting deployment approvals:</p>
 <ul class="simple">
 <li><p>Pipeline approval: The <a class="reference internal" href="../reference/approve_deployment.html#approve-deployment-label"><span class="std std-ref">Approve Deployment</span></a> command documents an approval accepted externally to Merkely, for example in a CI pipeline .yml file.</p></li>
-<li><p>Merkely approval: The <a class="reference internal" href="../reference/request_approval.html#request-approval-label"><span class="std std-ref">Request Approval</span></a> command documents an approval to be accepted in Merkely. After the command has completed the approval must be accepted within the Merkely application.</p></li>
+<li><p>Merkely approval: The <a class="reference internal" href="../reference/request_approval.html#request-approval-label"><span class="std std-ref">Request Approval</span></a> command documents an approval to be accepted in Merkely. Once the command has completed the approval can be accepted within the Merkely application.</p></li>
 </ul>
-</div>
-<div class="section" id="tracking-branches-for-production">
-<h2>Tracking branches for production<a class="headerlink" href="#tracking-branches-for-production" title="Permalink to this headline">¶</a></h2>
 <p>In a typical setup, you need to add a <code class="code docutils literal notranslate"><span class="pre">production</span></code> tracking branch in git that is updated on every deployment. For example:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git checkout production
 git merge --ff-only master
 <span class="c1"># YOUR DEPLOYMENT COMMAND HERE</span>
 git push origin production
 </pre></div>
-</div>
 </div>
 </div>
 

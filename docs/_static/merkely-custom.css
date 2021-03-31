@@ -1,3 +1,7 @@
+/* = = = = = = = = = = = = = = = = = = = = = = = = = = = = */
+/* Beware: It seems you cant use // comments in this file  */
+/* = = = = = = = = = = = = = = = = = = = = = = = = = = = = */
+
 body {
   padding-right: 60px;
 }
@@ -35,14 +39,8 @@ body {
   padding-bottom: 10px;
 }
 
-//= = = = = = = = = = = = = = = = = = = = = = = = =
-
-.form-group {
-  display: none !important; // search is not functioning
-}
-
 .tab-content > .tab-pane {
-  max-width: 910px; // full-width is way too much
+  max-width: 910px !important; /* full-width is way too much */
 }
 
 p.literal-block-link {
@@ -50,5 +48,16 @@ p.literal-block-link {
 }
 
 a.copybtn {
-  opacity: 3.7; // bolder
+  opacity: 3.7; /* bolder */
+  width: 1.5em; /* bigger */
+  height: 1.5em;
 }
+
+ul.nav.navbar-nav {
+  display: none !important; /* Content drop-down looks bad, not needed */
+}
+
+div.form-group {
+  display: none !important; /* Search is not working */
+}
+

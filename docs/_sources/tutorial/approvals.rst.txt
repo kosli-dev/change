@@ -23,17 +23,13 @@ In this example from the image above, to document the approval for deploying the
 | MERKELY_NEWEST_SRC_COMMITISH | master             |
 +------------------------------+--------------------+
 
-Pipeline approvals vs. Merkely approvals
-----------------------------------------
 
 Merkely provides two methods for documenting deployment approvals:
 
 * Pipeline approval: The :ref:`approve_deployment-label` command documents an approval accepted externally to Merkely, for example in a CI pipeline .yml file.
-* Merkely approval: The :ref:`request_approval-label` command documents an approval to be accepted in Merkely. After the command has completed the approval must be accepted within the Merkely application.
+* Merkely approval: The :ref:`request_approval-label` command documents an approval to be accepted in Merkely. Once the command has completed the approval can be accepted within the Merkely application.
 
 
-Tracking branches for production
---------------------------------
 In a typical setup, you need to add a :code:`production` tracking branch in git that is updated on every deployment. For example:
 
 .. code-block:: bash

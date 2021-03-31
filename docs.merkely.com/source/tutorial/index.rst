@@ -4,6 +4,6 @@
 	pipefile
 	binary_provenance
 	controls
-	deployments
 	approvals
+	deployments
 

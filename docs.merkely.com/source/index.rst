@@ -28,6 +28,6 @@ DevOps Change Management with Merkely
 
 .. toctree::
    :maxdepth: 1
-   :caption: Fingerprints:
+   :caption: Fingerprint Reference:
 
    fingerprints/index
