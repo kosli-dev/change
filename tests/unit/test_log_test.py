@@ -98,6 +98,46 @@ IMAGE_NAME = "acme/widget:4.67"
 EVIDENCE_TYPE = "coverage"
 
 
+def test_junit_xml_with_error_results_dir_specified_with_env_var(capsys):
+    image_name = "acme/widget:4.67"
+    sha256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
+    build_url = "https://gitlab/build/1457"
+    evidence_type = "coverage"
+
+    expected_method = "PUT"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{sha256}"
+    expected_payload = {
+        "contents": {
+            "description": "JUnit results xml verified by merkely/change: Tests contain errors",
+            "is_compliant": False,
+            "url": build_url
+        },
+        "evidence_type": evidence_type,
+        "user_data": {
+            "status": "deployed"
+        }
+    }
+
+    ev = log_test_env()
+    ev['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/control_junit/xml_with_error"
+    with dry_run(ev) as env:
+        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
+
+    capsys_read(capsys)
+
+    assert method == expected_method
+    assert url == expected_url
+    assert payload == expected_payload
+
+
+API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
+BUILD_URL = "https://gitlab/build/1457"
+IMAGE_NAME = "acme/widget:4.67"
+EVIDENCE_TYPE = "coverage"
+
+
 def log_test_env():
     protocol = "docker://"
     return {
@@ -110,4 +150,3 @@ def log_test_env():
         "MERKELY_USER_DATA": USER_DATA,
         "MERKELY_API_TOKEN": API_TOKEN,
     }
-
