@@ -16,7 +16,7 @@ def run(external):
 
     method, url, payload, callback = command()
     api_token = command.api_token.value
-    dry_run = in_dry_run(api_token)
+    dry_run = in_dry_run(external.env)
     if method == 'GET':
         print("Getting json:")
         print("From this url: " + url)
@@ -38,8 +38,8 @@ def run(external):
         return method, url, payload
 
 
-def in_dry_run(_api_token):
-    return os.getenv('MERKELY_DRY_RUN') == "TRUE"
+def in_dry_run(env):
+    return env.get('MERKELY_DRY_RUN', 'FALSE') == "TRUE"
 
 
 def main(external):
