@@ -2,7 +2,7 @@ from errors import ChangeError
 from commands import Command
 from env_vars import *
 from lib.api_schema import ApiSchema
-from junitparser import JUnitXml
+from junitparser import JUnitXml, JUnitXmlError
 import os
 import glob
 
@@ -146,7 +146,10 @@ def is_compliant_test_results(file_path):
     return:
         A tuple, with is_compliant, plus a message string
     """
-    test_xml = JUnitXml.fromfile(file_path)
+    try:
+        test_xml = JUnitXml.fromfile(file_path)
+    except JUnitXmlError:
+        raise ChangeError(f"XML file {file_path} not JUnit format.")
     if test_xml._tag == "testsuites":
         for suite in test_xml:
             suite_is_compliant, message = is_compliant_suite(suite)

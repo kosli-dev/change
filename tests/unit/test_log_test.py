@@ -47,6 +47,26 @@ def test_non_zero_status_when_dir_exists_but_has_no_xml_files(capsys):
     ]
 
 
+def test_non_zero_status_when_dir_exists_but_xml_files_are_not_JUnit(capsys):
+    ev = log_test_env()
+    dir_name = "/app/tests/data/control_junit/xml_but_not_junit"
+    path_name = f"{dir_name}/not_junit.xml"
+    ev['MERKELY_TEST_RESULTS_DIR'] = dir_name
+    with dry_run(ev) as env:
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            status = main(external)
+
+    assert status != 0
+    output = capsys_read(capsys)
+    lines = list(output.split("\n"))
+    assert lines == [
+        'MERKELY_COMMAND=log_test',
+        f"Error: XML file {path_name} not JUnit format.",
+        ''
+    ]
+
+
 def test_zero_exit_status_when_there_is_a_data_directory(capsys):
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"

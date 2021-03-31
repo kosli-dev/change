@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wibble>
+    <error message="Error while executing test testCreatePlugin()!" type="error">
+        Some random exception happened during the execution
+    </error>
+</wibble>
