@@ -47,6 +47,7 @@ class LogDeployment(Command):
             'pipeline',
             'api_token',
             'host',
+            'dry_run'
         ]
 
 class DescriptionEnvVar(RequiredEnvVar):

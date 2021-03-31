@@ -57,4 +57,5 @@ class LogArtifact(Command):
             'pipeline',
             'api_token',
             'host',
+            'dry_run'
         ]

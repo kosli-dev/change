@@ -51,6 +51,7 @@ class LogEvidence(Command):
             'pipeline',
             'api_token',
             'host',
+            'dry_run'
         ]
 
 

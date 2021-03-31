@@ -20,6 +20,7 @@ from .src_repo_root_env_var import SrcRepoRootEnvVar
 from .evidence_type_env_var import EvidenceTypeEnvVar
 from .host_env_var import HostEnvVar
 from .user_data_env_var import UserDataEnvVar
+from .dry_run_env_var import DryRunEnvVar
 
 from .compound_ci_env_var import CompoundCiEnvVar
 

@@ -1,6 +1,6 @@
 from env_vars import StaticDefaultedEnvVar
 
-DEFAULT = '"FALSE'
+DEFAULT = '"FALSE"'
 
 class DryRunEnvVar(StaticDefaultedEnvVar):
 
@@ -12,6 +12,8 @@ class DryRunEnvVar(StaticDefaultedEnvVar):
 
     def doc_note(self, _ci_name, _command_name):
         return " ".join([
-            "...TODO...",
+            'When set to "TRUE", prints the command\'s url+payload',
+            ", does not make any HTTP calls to Merkely",
+            ", and exits the command with a zero status code.",
             f"Defaults to {DEFAULT}",
         ])

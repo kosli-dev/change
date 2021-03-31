@@ -29,4 +29,5 @@ class DeclarePipeline(Command):
             'pipe_path',
             'api_token',
             'host',
+            'dry_run'
         ]

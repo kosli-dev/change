@@ -70,6 +70,7 @@ class ApproveDeployment(Command):
             'pipeline',
             'api_token',
             'host',
+            'dry_run'
         ]
 
 

@@ -138,6 +138,7 @@
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_PIPELINE}</span><span class="s2">&quot;</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_API_TOKEN}</span><span class="s2">&quot;</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_HOST</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_HOST}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_DRY_RUN</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_DRY_RUN}</span><span class="s2">&quot;</span> \
     <span class="o">--</span><span class="n">rm</span> \
     <span class="o">--</span><span class="n">volume</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span> \
     <span class="n">merkely</span><span class="o">/</span><span class="n">change</span>
@@ -190,6 +191,10 @@
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
 <td><p>The API hostname for Merkely. Defaults to https://app.merkely.com</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_DRY_RUN</p></td>
+<td><p>no</p></td>
+<td><p>When set to “TRUE”, prints the command’s url/payload , does not make any HTTP calls to Merkely , and exits the command with a zero status code. Defaults to “FALSE”</p></td>
 </tr>
 </tbody>
 </table>
@@ -260,6 +265,10 @@
 <td><p>no</p></td>
 <td><p>The API hostname for Merkely. Defaults to https://app.merkely.com</p></td>
 </tr>
+<tr class="row-even"><td><p>MERKELY_DRY_RUN</p></td>
+<td><p>no</p></td>
+<td><p>When set to “TRUE”, prints the command’s url/payload , does not make any HTTP calls to Merkely , and exits the command with a zero status code. Defaults to “FALSE”</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -324,6 +333,10 @@
 <tr class="row-odd"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
 <td><p>The API hostname for Merkely. Defaults to https://app.merkely.com</p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_DRY_RUN</p></td>
+<td><p>no</p></td>
+<td><p>When set to “TRUE”, prints the command’s url/payload , does not make any HTTP calls to Merkely , and exits the command with a zero status code. Defaults to “FALSE”</p></td>
 </tr>
 </tbody>
 </table>

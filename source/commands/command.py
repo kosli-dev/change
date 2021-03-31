@@ -120,6 +120,10 @@ class Command(ABC):
         return CIBuildUrlEnvVar(self.env)
 
     @property
+    def dry_run(self):
+        return DryRunEnvVar(self.env)
+
+    @property
     def fingerprint(self):
         return FingerprintEnvVar(self._external)
 
