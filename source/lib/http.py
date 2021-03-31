@@ -6,7 +6,7 @@ import requests as req  # for unit/test_dry_run.py
 from requests.auth import HTTPBasicAuth
 
 
-def http_get_json(url, api_token):
+def http_get_json(*, url, api_token):
     if in_dry_run(api_token):
         print("DRY RUN: Get not performed")
     else:
@@ -17,7 +17,7 @@ def http_get_json(url, api_token):
     return None
 
 
-def http_put_payload(url, payload, api_token):
+def http_put_payload(*, url, payload, api_token):
     if in_dry_run(api_token):
         print("DRY RUN: Put not sent")
     else:
@@ -28,7 +28,7 @@ def http_put_payload(url, payload, api_token):
         raise_unless_success(response)
 
 
-def http_post_payload(url, payload, api_token):
+def http_post_payload(*, url, payload, api_token):
     if in_dry_run(api_token):
         print("DRY RUN: Post not sent")
     else:
