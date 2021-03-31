@@ -1,24 +1,23 @@
 from lib.http_retry import HttpRetry
 from errors import ChangeError
 import json
-import os
 import requests as req  # for unit/test_dry_run.py
 from requests.auth import HTTPBasicAuth
 
 
-def http_get_json(*, url, api_token):
-    if in_dry_run(api_token):
+def http_get_json(*, url, api_token, dry_run):
+    if dry_run:
         print("DRY RUN: Get not performed")
+        return None
     else:
         auth = HTTPBasicAuth(api_token, 'unused')
         response = HttpRetry().get(url, auth=auth)
         raise_unless_success(response)
         return response.json()
-    return None
 
 
-def http_put_payload(*, url, payload, api_token):
-    if in_dry_run(api_token):
+def http_put_payload(*, url, payload, api_token, dry_run):
+    if dry_run:
         print("DRY RUN: Put not sent")
     else:
         auth = HTTPBasicAuth(api_token, 'unused')
@@ -28,8 +27,8 @@ def http_put_payload(*, url, payload, api_token):
         raise_unless_success(response)
 
 
-def http_post_payload(*, url, payload, api_token):
-    if in_dry_run(api_token):
+def http_post_payload(*, url, payload, api_token, dry_run):
+    if dry_run:
         print("DRY RUN: Post not sent")
     else:
         auth = HTTPBasicAuth(api_token, 'unused')
@@ -55,7 +54,3 @@ def json_content_header():
 
 def pretty_json(payload):
     return json.dumps(payload, sort_keys=True, indent=4)
-
-
-def in_dry_run(_api_token):
-    return os.getenv('MERKELY_DRY_RUN') == "TRUE"
