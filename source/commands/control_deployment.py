@@ -25,8 +25,9 @@ class ControlDeployment(Command):
 
     def __call__(self):
         url = ApiSchema.url_for_artifact_approvals(self.host.value, self.merkelypipe, self.fingerprint.sha)
+
         def callback(response):
-            approvals = response
+            approvals = response.json()
             is_approved = control_deployment_approved(approvals)
             if not is_approved:
                 raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not approved.")

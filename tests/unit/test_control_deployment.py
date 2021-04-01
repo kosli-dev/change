@@ -13,7 +13,7 @@ SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 
 
 def test_when_no_approvals_then_raises(mocker):
-    mocked_get = mocker.patch('commands.runner.http_get_json', return_value=[])
+    mocked_get = mocker.patch('commands.runner.http_get_json', return_value=GetJsonStub([]))
 
     env = control_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -30,7 +30,7 @@ def test_when_no_approvals_then_raises(mocker):
 
 def test_when_approved_then_does_not_raise(mocker):
     mock_payload = [{"some_random": "stuff"}]
-    mocked_get = mocker.patch('commands.runner.http_get_json', return_value=mock_payload)
+    mocked_get = mocker.patch('commands.runner.http_get_json', return_value=GetJsonStub(mock_payload))
     mocker.patch('commands.control_deployment.control_deployment_approved', return_value=True)
 
     env = control_deployment_env()
@@ -45,6 +45,14 @@ def test_when_approved_then_does_not_raise(mocker):
         api_token="MY_SUPER_SECRET_API_TOKEN",
         dry_run=False
     )
+
+
+class GetJsonStub:
+    def __init__(self, json):
+        self._json = json
+
+    def json(self):
+        return self._json
 
 
 def control_deployment_env():
