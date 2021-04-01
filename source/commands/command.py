@@ -146,9 +146,3 @@ class Command(ABC):
 
     def __call__(self):  # pragma: no cover
         raise NotImplementedError(self.name)
-
-    @property
-    def in_dry_run(self):
-        global_off = self.api_token.value == 'DRY_RUN'
-        local_off = self.dry_run.value == "TRUE"
-        return global_off or local_off

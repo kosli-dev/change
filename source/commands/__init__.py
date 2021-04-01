@@ -12,4 +12,4 @@ from .log_evidence import LogEvidence
 from .approve_deployment import ApproveDeployment
 from .request_approval import RequestApproval
 
-from .runner import run, main
+from .runner import run, main, in_dry_run

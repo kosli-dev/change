@@ -17,7 +17,7 @@ def run(external):
 
     method, url, payload, callback = command()
 
-    dry_run = command.in_dry_run
+    dry_run = in_dry_run(command)
     api_token = command.api_token.value
 
     if method == 'GET':
@@ -55,6 +55,12 @@ def run(external):
         return callback(response)
     else:
         return method, url, payload
+
+
+def in_dry_run(command):
+    global_off = command.api_token.value == 'DRY_RUN'
+    local_off = command.dry_run.value == "TRUE"
+    return global_off or local_off
 
 
 def raise_unless_success(response):
