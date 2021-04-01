@@ -14,14 +14,14 @@ class Command(ABC):
         self._external = external
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # Class methods
+    # Builder methods
 
-    @classmethod
-    def names(cls):
+    @staticmethod
+    def names():
         return copy.deepcopy(Command.__names)
 
-    @classmethod
-    def named(_cls, string):
+    @staticmethod
+    def named(string):
         name = "".join(list(s.capitalize() for s in string.split('_')))
         try:
             return Command.__classes[name]
