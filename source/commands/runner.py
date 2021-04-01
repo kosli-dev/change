@@ -38,7 +38,7 @@ def run(external):
             response = None
         else:
             response = http_put_payload(url, payload, api_token)
-            
+
     if method == 'POST':
         print("Posting this payload:")
         print(pretty_json(payload))
