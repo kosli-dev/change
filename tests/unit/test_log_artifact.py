@@ -41,7 +41,6 @@ def test_all_env_vars_image(capsys):
 
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
-        'MERKELY_IS_COMPLIANT: True',
     ]
 
 
@@ -81,7 +80,6 @@ def test_all_env_vars_file(capsys):
 
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
-        'MERKELY_IS_COMPLIANT: True',
     ]
 
 
@@ -117,7 +115,6 @@ def test_all_env_vars_sha(capsys):
 
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_artifact',
-        'MERKELY_IS_COMPLIANT: True',
     ]
 
 

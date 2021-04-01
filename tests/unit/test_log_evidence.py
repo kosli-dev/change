@@ -37,7 +37,6 @@ def test_docker_protocol(capsys):
 
     assert extract_blurb(capsys_read(capsys)) == [
         'MERKELY_COMMAND=log_evidence',
-        'MERKELY_IS_COMPLIANT: True',
     ]
 
 

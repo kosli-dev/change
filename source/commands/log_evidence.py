@@ -24,7 +24,6 @@ class LogEvidence(Command):
             return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: log_evidence')
 
     def __call__(self):
-        self._print_compliance()
         payload = {
             "evidence_type": self.evidence_type.value,
             "user_data": self.user_data.value,

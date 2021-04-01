@@ -146,13 +146,6 @@ class Command(ABC):
         return IsCompliantEnvVar(self.env)
 
     # - - - - - - - - - - - - - - - - - - - - -
-    # subclass helpers
-
-    def _print_compliance(self):
-        env_var = self.is_compliant
-        print(f"{env_var.name}: {env_var.value == 'TRUE'}")
-
-    # - - - - - - - - - - - - - - - - - - - - -
     # Subclass command implementation
 
     def __call__(self):  # pragma: no cover

@@ -24,7 +24,6 @@ class LogArtifact(Command):
             return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: log_artifact')
 
     def __call__(self):
-        self._print_compliance()
         payload = {
             "sha256": self.fingerprint.sha,
             "filename": self.fingerprint.artifact_basename,
