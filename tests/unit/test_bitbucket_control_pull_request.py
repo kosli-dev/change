@@ -48,12 +48,11 @@ def test_bitbucket(capsys, mocker):
 
     rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response())
     mocked_get = mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
-
-    ev = control_pull_request_env()
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    mocked_http_put_payload = mocker.patch('commands.runner.http_put_payload', return_value=MockedAPIResponse(200, {}))
+    env = control_pull_request_env()
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     silence(capsys)
 
@@ -66,7 +65,7 @@ def test_bitbucket(capsys, mocker):
                     auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN)),
         mocker.call('test_self_uri', auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN))]
     assert mocked_get.call_args_list == expected_mock_calls
-
+    mocked_http_put_payload.assert_called_once()
 
 def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
     expected_method = "PUT"
@@ -111,18 +110,17 @@ def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
     assert mocked_get.call_args_list == expected_mock_calls
 
 
-def X_test_bitbucket_not_compliant_raises(capsys, mocker):
-    # Turned off to get dry-run from api_token in place
+def test_bitbucket_not_compliant_raises(capsys, mocker):
     response = mocked_bitbucket_pull_requests_api_response()
     response['values'] = []
-    rv1 = MockedAPIResponse(200, response)
-    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+    mocked_get = mocker.patch('commands.control_pull_request.requests.get',
+                              return_value=MockedAPIResponse(200, response))
+    mocked_http_put_payload = mocker.patch('commands.runner.http_put_payload', return_value=MockedAPIResponse(200, {}))
 
-    ev = control_pull_request_env()
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            exit_code = main(external)
+    env = control_pull_request_env()
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        exit_code = main(external)
 
     assert exit_code != 0
 
@@ -130,6 +128,52 @@ def X_test_bitbucket_not_compliant_raises(capsys, mocker):
     lines = stdout.split("\n")
     last_line = lines[-2]  # ignore trailing newline
     assert last_line[:6] == 'Error:'
+    mocked_http_put_payload.assert_called_once()
+    expected_get_mock_calls = [
+        mocker.call(f'https://api.bitbucket.org/2.0/repositories/{OWNER}/{PIPELINE}/commit/{COMMIT}/pullrequests',
+                    auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN))]
+    assert mocked_get.call_args_list == expected_get_mock_calls
+
+
+def test_bitbucket_pr_details_request_fails(capsys, mocker):
+    expected_method = "PUT"
+    expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
+    expected_payload = {
+        "contents": {
+            "description": DESCRIPTION,
+            "is_compliant": True,
+            "source": [
+                {
+                    "pullRequestMergeCommit": COMMIT,
+                    "pullRequestURL": "test_html_uri"
+                }
+            ],
+            "url": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}"
+        },
+        "evidence_type": EVIDENCE_TYPE
+    }
+
+    return_values = [MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response()),
+                     MockedAPIResponse(403, {})]
+    mocked_get = mocker.patch('commands.control_pull_request.requests.get', side_effect=return_values)
+
+    ev = control_pull_request_env()
+    with dry_run(ev) as env:
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
+
+    stdout = capsys_read(capsys).split("\n")
+    assert 'Error occurred in fetching pull request details. Please review repository permissions.' in stdout
+    assert method == expected_method
+    assert url == expected_url
+    assert payload == expected_payload
+
+    expected_mock_calls = [
+        mocker.call(f'https://api.bitbucket.org/2.0/repositories/{OWNER}/{PIPELINE}/commit/{COMMIT}/pullrequests',
+                    auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN)),
+        mocker.call('test_self_uri', auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN))]
+    assert mocked_get.call_args_list == expected_mock_calls
 
 
 def test_bitbucket_api_response_202(capsys, mocker):
@@ -138,9 +182,10 @@ def test_bitbucket_api_response_202(capsys, mocker):
 
     ev = control_pull_request_env()
     with dry_run(ev) as env:
-        with raises(ChangeError) as exc:
-            external = External(env=env)
-            _, _, _ = run(external)
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+            with raises(ChangeError) as exc:
+                external = External(env=env, docker_fingerprinter=fingerprinter)
+                _, _, _ = run(external)
 
     silence(capsys)
     assert str(exc.value) == "Repository pull requests are still being indexed, please retry."
@@ -157,9 +202,10 @@ def test_bitbucket_api_response_404(capsys, mocker):
 
     ev = control_pull_request_env()
     with dry_run(ev) as env:
-        with raises(ChangeError) as exc:
-            external = External(env=env)
-            _, _, _ = run(external)
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+            with raises(ChangeError) as exc:
+                external = External(env=env, docker_fingerprinter=fingerprinter)
+                _, _, _ = run(external)
 
     silence(capsys)
     expected_error_message = " ".join([
@@ -181,9 +227,10 @@ def test_bitbucket_api_response_505(capsys, mocker):
 
     ev = control_pull_request_env()
     with dry_run(ev) as env:
-        with raises(ChangeError) as exc:
-            external = External(env=env)
-            _, _, _ = run(external)
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+            with raises(ChangeError) as exc:
+                external = External(env=env, docker_fingerprinter=fingerprinter)
+                _, _, _ = run(external)
 
     silence(capsys)
     message = 'Exception occurred in fetching pull requests. Http return code is 505'

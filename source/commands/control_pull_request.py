@@ -22,6 +22,7 @@ class ControlPullRequest(Command):
         return ""
 
     def __call__(self):
+        url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         is_compliant, pull_requests = get_pull_request_for_current_commit(self.env)
         payload = {
             "evidence_type": self.evidence_type.value,
@@ -32,7 +33,6 @@ class ControlPullRequest(Command):
                 "source": pull_requests,
             }
         }
-        url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
 
         def callback(_response):
             if not is_compliant:
