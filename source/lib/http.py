@@ -1,7 +1,6 @@
 from lib.http_retry import HttpRetry
 from errors import ChangeError
 import json
-import requests as req  # for unit/test_dry_run.py
 from requests.auth import HTTPBasicAuth
 
 
