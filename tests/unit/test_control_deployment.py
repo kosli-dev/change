@@ -48,9 +48,14 @@ def test_when_approved_then_does_not_raise(mocker):
 class GetJsonStub:
     def __init__(self, json):
         self._json = json
-
+    @property
+    def status_code(self):
+        return 200
     def json(self):
         return self._json
+    @property
+    def text(self):
+        return ""
 
 
 def control_deployment_env():

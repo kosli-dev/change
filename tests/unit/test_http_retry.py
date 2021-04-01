@@ -110,5 +110,4 @@ def assert_1_retry(capsys):
         'Response.status=503, retrying in 0.001 seconds...',
         'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
         'Retry 2/5: response.status=200',
-        '{"success": 42}'
     ]
