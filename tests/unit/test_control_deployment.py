@@ -30,7 +30,8 @@ def test_when_no_approvals_then_raises(mocker):
 def test_when_approved_then_does_not_raise(mocker):
     mock_payload = [{"some_random": "stuff"}]
     mocked_get = mocker.patch('commands.runner.http_get_json', return_value=GetJsonStub(mock_payload))
-    mocker.patch('commands.control_deployment.control_deployment_approved', return_value=True)
+    mocked_control_deployment_approved = mocker.patch('commands.control_deployment.control_deployment_approved',
+                                                      return_value=True)
 
     env = control_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -43,6 +44,7 @@ def test_when_approved_then_does_not_raise(mocker):
         f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}/approvals/",
         "MY_SUPER_SECRET_API_TOKEN",
     )
+    mocked_control_deployment_approved.assert_called_once_with([{'some_random': 'stuff'}],)
 
 
 class GetJsonStub:

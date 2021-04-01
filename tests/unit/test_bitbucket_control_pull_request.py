@@ -22,6 +22,9 @@ SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 DESCRIPTION = "Bitbucket pull request"
 EVIDENCE_TYPE = "pull_request"
 
+BITBUCKET_API_TOKEN = "6199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
+BITBUCKET_API_USER = "test_user"
+
 
 def test_bitbucket(capsys, mocker):
     expected_method = "PUT"
@@ -44,7 +47,7 @@ def test_bitbucket(capsys, mocker):
     }
 
     rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response())
-    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+    mocked_get = mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
 
     ev = control_pull_request_env()
     with dry_run(ev) as env:
@@ -57,6 +60,12 @@ def test_bitbucket(capsys, mocker):
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
+
+    expected_mock_calls = [
+        mocker.call(f'https://api.bitbucket.org/2.0/repositories/{OWNER}/{PIPELINE}/commit/{COMMIT}/pullrequests',
+                    auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN)),
+        mocker.call('test_self_uri', auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN))]
+    assert mocked_get.call_args_list == expected_mock_calls
 
 
 def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
@@ -81,7 +90,7 @@ def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
     response = mocked_bitbucket_pull_requests_api_response()
     response['participants'] = []
     rv1 = MockedAPIResponse(200, response)
-    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+    mocked_get = mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
 
     ev = control_pull_request_env()
     with dry_run(ev) as env:
@@ -94,6 +103,12 @@ def test_bitbucket_pull_requests_with_no_approvers(capsys, mocker):
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
+
+    expected_mock_calls = [
+        mocker.call(f'https://api.bitbucket.org/2.0/repositories/{OWNER}/{PIPELINE}/commit/{COMMIT}/pullrequests',
+                    auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN)),
+        mocker.call('test_self_uri', auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN))]
+    assert mocked_get.call_args_list == expected_mock_calls
 
 
 def X_test_bitbucket_not_compliant_raises(capsys, mocker):
@@ -119,52 +134,66 @@ def X_test_bitbucket_not_compliant_raises(capsys, mocker):
 
 def test_bitbucket_api_response_202(capsys, mocker):
     rv1 = MockedAPIResponse(202, {})
-    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+    mocked_get = mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
 
     ev = control_pull_request_env()
     with dry_run(ev) as env:
-            with raises(ChangeError) as exc:
-                external = External(env=env)
-                _, _, _ = run(external)
+        with raises(ChangeError) as exc:
+            external = External(env=env)
+            _, _, _ = run(external)
 
     capsys_read(capsys)
     assert str(exc.value) == "Repository pull requests are still being indexed, please retry."
 
+    expected_mock_calls = [
+        mocker.call(f'https://api.bitbucket.org/2.0/repositories/{OWNER}/{PIPELINE}/commit/{COMMIT}/pullrequests',
+                    auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN))]
+    assert mocked_get.call_args_list == expected_mock_calls
+
 
 def test_bitbucket_api_response_404(capsys, mocker):
     rv1 = MockedAPIResponse(404, {})
-    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+    mocked_get = mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
 
     ev = control_pull_request_env()
     with dry_run(ev) as env:
-            with raises(ChangeError) as exc:
-                external = External(env=env)
-                _, _, _ = run(external)
+        with raises(ChangeError) as exc:
+            external = External(env=env)
+            _, _, _ = run(external)
 
     capsys_read(capsys)
     expected_error_message = " ".join([
-            "Repository does not exists or pull requests are not indexed.",
-            "Please make sure Pull Request Commit Links app is installed"
-        ])
+        "Repository does not exists or pull requests are not indexed.",
+        "Please make sure Pull Request Commit Links app is installed"
+    ])
     assert str(exc.value) == expected_error_message
+
+    expected_mock_calls = [
+        mocker.call(f'https://api.bitbucket.org/2.0/repositories/{OWNER}/{PIPELINE}/commit/{COMMIT}/pullrequests',
+                    auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN))]
+    assert mocked_get.call_args_list == expected_mock_calls
 
 
 def test_bitbucket_api_response_505(capsys, mocker):
     # Test error message in case of unexpected status code from Bitbucket API
     rv1 = MockedAPIResponse(505, {"Message": "Test error"})
-    mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
+    mocked_get = mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
 
     ev = control_pull_request_env()
     with dry_run(ev) as env:
-            with raises(ChangeError) as exc:
-                external = External(env=env)
-                _, _, _ = run(external)
+        with raises(ChangeError) as exc:
+            external = External(env=env)
+            _, _, _ = run(external)
 
     capsys_read(capsys)
     message = 'Exception occurred in fetching pull requests. Http return code is 505'
     message += '\n    {"Message": "Test error"}'
     assert str(exc.value) == message
 
+    expected_mock_calls = [
+        mocker.call(f'https://api.bitbucket.org/2.0/repositories/{OWNER}/{PIPELINE}/commit/{COMMIT}/pullrequests',
+                    auth=(BITBUCKET_API_USER, BITBUCKET_API_TOKEN))]
+    assert mocked_get.call_args_list == expected_mock_calls
 
 class MockedAPIResponse:
     def __init__(self, status_code, response_body):
@@ -198,10 +227,6 @@ def mocked_bitbucket_pull_requests_api_response():
             }
         ]
     }
-
-
-BITBUCKET_API_TOKEN = "6199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
-BITBUCKET_API_USER = "test_user"
 
 
 def control_pull_request_env():
