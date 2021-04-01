@@ -33,15 +33,17 @@ class DockerImageNotFoundStub:
 def test_gets_sha_when_image_retrieved_from_registry(mocker):
     sha256 = '13032d90afaaa111e92920eea2b1abb0a6b6eafa6863ad7a4bd082a9c8574240'
     stub = DockerImagesGetAttrStub([f"acme@sha256:{sha256}"])
-    mocker.patch('fingerprinters.docker_fingerprinter.docker.from_env', return_value=stub)
+    mocked_docker_image = mocker.patch('fingerprinters.docker_fingerprinter.docker.from_env', return_value=stub)
     image_name = 'acme/road-runner:3.7'
     fingerprinter = DockerFingerprinter()
     assert fingerprinter.sha(f"{DOCKER_PROTOCOL}{image_name}") == sha256
 
+    mocked_docker_image.assert_called_once()
+
 
 def test_fails_to_get_sha_when_image_not_retrieved_from_registry(mocker):
     stub = DockerImagesGetAttrStub([])
-    mocker.patch('fingerprinters.docker_fingerprinter.docker.from_env', return_value=stub)
+    mocked_docker_image = mocker.patch('fingerprinters.docker_fingerprinter.docker.from_env', return_value=stub)
 
     fingerprinter = DockerFingerprinter()
     image_name = 'acme/road-runner:3.7'
@@ -51,11 +53,13 @@ def test_fails_to_get_sha_when_image_not_retrieved_from_registry(mocker):
     start = f"Cannot determine digest for image: {image_name}"
     diagnostic = str(exc.value)
     assert diagnostic.startswith(start), diagnostic
+
+    mocked_docker_image.assert_called_once()
 
 
 def test_fails_to_get_sha_when_image_does_not_exist(mocker):
     stub = DockerImageNotFoundStub()
-    mocker.patch('fingerprinters.docker_fingerprinter.docker.from_env', return_value=stub)
+    mocked_docker_image = mocker.patch('fingerprinters.docker_fingerprinter.docker.from_env', return_value=stub)
 
     fingerprinter = DockerFingerprinter()
     image_name = 'acme/road-runner:3.7'
@@ -65,6 +69,8 @@ def test_fails_to_get_sha_when_image_does_not_exist(mocker):
     start = f"Cannot determine digest for image: {image_name}"
     diagnostic = str(exc.value)
     assert diagnostic.startswith(start), diagnostic
+
+    mocked_docker_image.assert_called_once()
 
 
 def test_handles_only_its_own_protocol():
