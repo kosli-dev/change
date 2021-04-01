@@ -85,6 +85,7 @@ test_unit:
 	$(eval COVERAGE_DIR = tmp/coverage/unit)
 	rm -rf ${COVERAGE_DIR} && mkdir -p ${COVERAGE_DIR}
 	docker run \
+		--env TEST_ARG=${TEST_ARG} \
 		--name ${CONTAINER} \
 		${DOCKER_RUN_TTY} \
 		${DOCKER_RUN_INTERACTIVE} \
