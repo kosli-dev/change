@@ -23,6 +23,6 @@ def stub_http_503(method, count):
     if method == "POST":
         payload = {"name": "cern", "template": ["artefact", "unit_test"]}
     if method == "PUT":
-        payload = {"name": "git", "template": ["artefact", "coverage"]}
+        payload = {"name": "nasa", "template": ["artefact", "coverage"]}
     api_token = ""
     return url, payload, api_token

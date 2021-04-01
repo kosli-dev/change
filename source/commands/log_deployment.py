@@ -24,6 +24,7 @@ class LogDeployment(Command):
             return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: log_deployment')
 
     def __call__(self):
+        url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
         payload = {
             "artifact_sha256": self.fingerprint.sha,
             "build_url": self.ci_build_url.value,
@@ -31,7 +32,6 @@ class LogDeployment(Command):
             "environment": self.environment.value,
             "user_data": self.user_data.value
         }
-        url = ApiSchema.url_for_deployments(self.host.value, self.merkelypipe)
         return 'POST', url, payload, None
 
     @property

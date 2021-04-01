@@ -25,10 +25,12 @@ class MockDockerFingerprinter(DockerFingerprinter):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if not self.__called:
-            print(exc_type)
-            print(exc_val)
-            print(exc_tb)
-            self.__failed(["Expected call did not happen"])
+            self.__failed([
+                "Expected call did not happen",
+                f"exc_type = {exc_type}",
+                f"exc_val = {exc_val}",
+                f"exc_tb = {exc_tb}"
+            ])
 
     def __failed(self, lines):
         message = "\n".join([
