@@ -6,7 +6,7 @@ SHA256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
 
 
 def test_GET_command(mocker):
-    _mocked = mocker.patch('lib.http_retry.http.get', return_value=HttpStatus200())
+    _mocked = mocker.patch('lib.http_retry.http.get', return_value=HttpStatus(200))
     env = control_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
         external = External(env=env, docker_fingerprinter=fingerprinter)
@@ -17,7 +17,7 @@ def test_GET_command(mocker):
 
 
 def test_PUT_command(mocker):
-    _mocked = mocker.patch('lib.http_retry.http.put', return_value=HttpStatus200())
+    _mocked = mocker.patch('lib.http_retry.http.put', return_value=HttpStatus(200))
     env = log_evidence_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
         external = External(env=env, docker_fingerprinter=fingerprinter)
@@ -28,7 +28,7 @@ def test_PUT_command(mocker):
 
 
 def test_POST_command(mocker):
-    _mocked = mocker.patch('lib.http_retry.http.post', return_value=HttpStatus200())
+    _mocked = mocker.patch('lib.http_retry.http.post', return_value=HttpStatus(200))
     env = log_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
         external = External(env=env, docker_fingerprinter=fingerprinter)
@@ -38,10 +38,23 @@ def test_POST_command(mocker):
     #assert mocked.assert_called_once_with(...)
 
 
-class HttpStatus200:
+def test_command_raises_when_http_response_is_not_200_or_201(mocker):
+    _mocked = mocker.patch('lib.http_retry.http.post', return_value=HttpStatus(403))
+    env = log_deployment_env()
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        exit_code = main(external)
+
+    assert exit_code != 0
+    #assert mocked.assert_called_once_with(...)
+
+
+class HttpStatus:
+    def __init__(self, code):
+        self._code = code
     @property
     def status_code(self):
-        return 200
+        return self._code
     @property
     def text(self):
         return ""
