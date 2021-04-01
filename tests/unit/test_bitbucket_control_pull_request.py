@@ -55,7 +55,7 @@ def test_bitbucket(capsys, mocker):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url
@@ -142,7 +142,7 @@ def test_bitbucket_api_response_202(capsys, mocker):
             external = External(env=env)
             _, _, _ = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
     assert str(exc.value) == "Repository pull requests are still being indexed, please retry."
 
     expected_mock_calls = [
@@ -161,7 +161,7 @@ def test_bitbucket_api_response_404(capsys, mocker):
             external = External(env=env)
             _, _, _ = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
     expected_error_message = " ".join([
         "Repository does not exists or pull requests are not indexed.",
         "Please make sure Pull Request Commit Links app is installed"
@@ -185,7 +185,7 @@ def test_bitbucket_api_response_505(capsys, mocker):
             external = External(env=env)
             _, _, _ = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
     message = 'Exception occurred in fetching pull requests. Http return code is 505'
     message += '\n    {"Message": "Test error"}'
     assert str(exc.value) == message

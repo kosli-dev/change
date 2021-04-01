@@ -34,7 +34,7 @@ def test_docker_image(capsys):
                 external = External(env=env, docker_fingerprinter=fingerprinter)
                 method, url, payload = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url

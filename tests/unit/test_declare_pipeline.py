@@ -25,7 +25,7 @@ def test_green(capsys):
     with dry_run(core_env_vars('declare_pipeline')) as env, scoped_merkelypipe_json():
         method, url, payload = run(External(env=env))
 
-    capsys_read(capsys)
+    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url

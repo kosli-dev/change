@@ -25,7 +25,7 @@ def test_raises_when_merkely_command_is_empty_string(capsys):
     with dry_run(ev) as env, raises(ChangeError):
         run(External(env=env))
 
-    capsys_read(capsys)
+    silence(capsys)
 
 
 def test_raises_when_merkely_command_is_unknown(capsys):
@@ -35,7 +35,7 @@ def test_raises_when_merkely_command_is_unknown(capsys):
     with dry_run(ev) as env, raises(ChangeError):
         run(External(env=env))
 
-    capsys_read(capsys)
+    silence(capsys)
 
 
 def test_merkely_command_when_method_is_get(capsys, mocker):
@@ -46,7 +46,7 @@ def test_merkely_command_when_method_is_get(capsys, mocker):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
     assert method == 'GET'
     assert len(url) > 0
     assert payload != []
@@ -61,7 +61,7 @@ def test_merkely_command_when_method_is_post(capsys):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
 
     assert method == 'POST'
     assert len(url) > 0
@@ -77,7 +77,7 @@ def test_merkely_command_when_method_is_put(capsys):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
 
     assert method == 'PUT'
     assert len(url) > 0

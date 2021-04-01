@@ -42,20 +42,22 @@ def test_docker_image(capsys):
                 external = External(env=env, docker_fingerprinter=fingerprinter)
                 method, url, payload = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
 
 
-def test_raises_when_src_repo_root_does_not_exist():
+def test_raises_when_src_repo_root_does_not_exist(capsys):
     ev = approve_deployment_env()
     with dry_run(ev) as env:
         with raises(ChangeError) as exc:
             run(External(env=env))
 
     assert str(exc.value) == "Error: Repository not found at /src/.git"
+
+    silence(capsys)
 
 
 def approve_deployment_env():

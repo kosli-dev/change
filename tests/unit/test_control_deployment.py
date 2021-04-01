@@ -12,7 +12,7 @@ IMAGE_NAME = "acme/road-runner:4.56"
 SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 
 
-def test_when_no_approvals_then_raises(mocker):
+def test_when_no_approvals_then_raises(capsys, mocker):
     mocked_get = mocker.patch('commands.runner.http_get_json', return_value=GetJsonStub([]))
 
     env = control_deployment_env()
@@ -26,8 +26,10 @@ def test_when_no_approvals_then_raises(mocker):
         "MY_SUPER_SECRET_API_TOKEN",
     )
 
+    silence(capsys)
 
-def test_when_approved_then_does_not_raise(mocker):
+
+def test_when_approved_then_does_not_raise(capsys, mocker):
     mock_payload = [{"some_random": "stuff"}]
     mocked_get = mocker.patch('commands.runner.http_get_json', return_value=GetJsonStub(mock_payload))
     mocked_control_deployment_approved = mocker.patch('commands.control_deployment.control_deployment_approved',
@@ -45,6 +47,8 @@ def test_when_approved_then_does_not_raise(mocker):
         "MY_SUPER_SECRET_API_TOKEN",
     )
     mocked_control_deployment_approved.assert_called_once_with([{'some_random': 'stuff'}],)
+
+    silence(capsys)
 
 
 class GetJsonStub:

@@ -54,6 +54,7 @@ def test_raises_when_not_found(capsys):
         # no /data/Merkelypipe.json
         run(External(env=env))
 
+    silence(capsys)
 
 def test_raises_when_invalid_json(capsys):
     with dry_run(core_env_vars('log_artifact')) as env:
@@ -62,6 +63,8 @@ def test_raises_when_invalid_json(capsys):
             with raises(ChangeError):
                 run(external)
 
+    silence(capsys)
+
 
 def test_raises_when_is_a_dir(capsys):
     with dry_run(core_env_vars('log_artifact')) as env:
@@ -69,7 +72,7 @@ def test_raises_when_is_a_dir(capsys):
         with ScopedDirCopier("/app/tests/data", "/data/Merkelypipe.json"):
             with raises(ChangeError):
                 run(external)
-
+    silence(capsys)
 
 """
 Possible further tests:

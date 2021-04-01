@@ -92,7 +92,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
                 external = External(env=env, docker_fingerprinter=fingerprinter)
                 method, url, payload = run(external)
 
-    capsys_read(capsys)  # keeping stdout silent
+    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url
@@ -124,7 +124,7 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url
@@ -156,7 +156,7 @@ def test_junit_xml_with_error_results_dir_specified_with_env_var(capsys):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    capsys_read(capsys)
+    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url
