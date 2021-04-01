@@ -67,18 +67,14 @@ def control_deployment_env():
 
 
 def log_evidence_env():
-    return {
-        "MERKELY_COMMAND": "log_evidence",
-        "MERKELY_OWNER": OWNER,
-        "MERKELY_PIPELINE": PIPELINE,
+    ev = {
         "MERKELY_FINGERPRINT": f"{PROTOCOL}{IMAGE_NAME}",
-        "MERKELY_API_TOKEN": API_TOKEN,
-        "MERKELY_HOST": f"https://{DOMAIN}",
         "MERKELY_CI_BUILD_URL": CI_BUILD_URL,
         "MERKELY_IS_COMPLIANT": "TRUE",
         "MERKELY_EVIDENCE_TYPE": "unit_test",
         "MERKELY_DESCRIPTION": "branch coverage"
     }
+    return {**core_env_vars("log_evidence"), **ev}
 
 
 def log_deployment_env():
@@ -87,8 +83,6 @@ def log_deployment_env():
         "MERKELY_CI_BUILD_URL": CI_BUILD_URL,
         "MERKELY_ENVIRONMENT": ENVIRONMENT,
         "MERKELY_DESCRIPTION": DESCRIPTION,
-        "MERKELY_HOST": f"https://{DOMAIN}",
         "MERKELY_USER_DATA": USER_DATA,
     }
-    # MERKELY_OWNER and MERKELY_PIPELINE set in core_env_vars
     return {**core_env_vars("log_deployment"), **ev}
