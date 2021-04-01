@@ -33,6 +33,7 @@ class ControlPullRequest(Command):
             }
         }
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
+
         def callback(_response):
             if not is_compliant:
                 raise ChangeError(f"Artifact with sha {self.fingerprint.sha} is not compliant")

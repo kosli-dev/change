@@ -24,6 +24,7 @@ class LogEvidence(Command):
             return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: log_evidence')
 
     def __call__(self):
+        url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         payload = {
             "evidence_type": self.evidence_type.value,
             "user_data": self.user_data.value,
@@ -33,7 +34,6 @@ class LogEvidence(Command):
                 "description": self.description.value
             }
         }
-        url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         return 'PUT', url, payload, None
 
     @property

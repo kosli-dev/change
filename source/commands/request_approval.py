@@ -28,6 +28,7 @@ class RequestApproval(Command):
             return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: request_approval')
 
     def __call__(self):
+        url = ApiSchema.url_for_approvals(self.host.value, self.merkelypipe)
         commit_list = list_commits_between(repo_at(self.src_repo_root.value),
                                            self.newest_src_commitish.value,
                                            self.oldest_src_commitish.value)
@@ -38,7 +39,6 @@ class RequestApproval(Command):
             "user_data": self.user_data.value,
             "approvals": []
         }
-        url = ApiSchema.url_for_approvals(self.host.value, self.merkelypipe)
         return 'POST', url, payload, None
 
     @property

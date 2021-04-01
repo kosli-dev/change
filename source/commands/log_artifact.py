@@ -24,6 +24,7 @@ class LogArtifact(Command):
             return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: log_artifact')
 
     def __call__(self):
+        url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)
         payload = {
             "sha256": self.fingerprint.sha,
             "filename": self.fingerprint.artifact_basename,
@@ -34,7 +35,6 @@ class LogArtifact(Command):
             "is_compliant": self.is_compliant.value == 'TRUE',
             "user_data": self.user_data.value
         }
-        url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)
         return 'PUT', url, payload, None
 
     @property
