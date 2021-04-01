@@ -1,7 +1,6 @@
 from errors import ChangeError
 from commands import Command
 from lib.http import *
-from lib.in_dry_run import *
 import json
 
 
@@ -17,7 +16,7 @@ def run(external):
 
     method, url, payload, callback = command()
     api_token = command.api_token.value
-    dry_run = in_dry_run(external.env)
+    dry_run = command.in_dry_run
     if method == 'GET':
         print("Getting json:")
         print("From this url: " + url)
