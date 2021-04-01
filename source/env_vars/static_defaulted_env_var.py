@@ -11,8 +11,12 @@ class StaticDefaultedEnvVar(DefaultedEnvVar):
         self.__default = default
 
     @property
+    def default(self):
+        return self.__default
+
+    @property
     def value(self):
         if self.string != "":
             return self.string
         else:
-            return self.__default
+            return self.default

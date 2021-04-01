@@ -89,7 +89,7 @@ class Command(ABC):
 
     @property
     def merkelypipe(self):
-        if self.name.string == "declare_pipeline":
+        if self.name.value == "declare_pipeline":
             json = self._external.merkelypipe
         else:
             json = {}
