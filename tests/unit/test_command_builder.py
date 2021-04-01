@@ -16,7 +16,7 @@ def test_command_named_raises_when_unknown():
     assert str(exc.value) == 'Unknown command: xyz'
 
 
-def test_command_class_iteration():
-    names = list(name for name in Command.all().keys())
-    assert 'DeclarePipeline' in names
-    assert 'LogArtifact' in names
+def test_known_command_names():
+    names = (Command.names())
+    assert 'declare_pipeline' in names
+    assert 'log_artifact' in names

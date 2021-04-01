@@ -17,10 +17,6 @@ class Command(ABC):
     # Class methods
 
     @classmethod
-    def all(cls):
-        return Command.__classes
-
-    @classmethod
     def names(cls):
         return copy.deepcopy(Command.__names)
 
