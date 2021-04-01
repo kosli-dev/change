@@ -25,6 +25,8 @@ def test_raises_when_merkely_command_is_empty_string(capsys):
     with dry_run(ev) as env, raises(ChangeError):
         run(External(env=env))
 
+    capsys_read(capsys)
+
 
 def test_raises_when_merkely_command_is_unknown(capsys):
     ev = core_env_vars()
@@ -33,19 +35,18 @@ def test_raises_when_merkely_command_is_unknown(capsys):
     with dry_run(ev) as env, raises(ChangeError):
         run(External(env=env))
 
+    capsys_read(capsys)
+
 
 def test_merkely_command_when_method_is_get(capsys, mocker):
     # ControlDeployment command is used for this test
-
     ev = control_deployment_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            mocker.patch('commands.control_deployment.control_deployment_approved', return_value=True)
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
     capsys_read(capsys)
-
     assert method == 'GET'
     assert len(url) > 0
     assert payload != []
