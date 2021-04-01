@@ -5,7 +5,7 @@ IMAGE_NAME = "acme/widget:4.67"
 SHA256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
 
 
-def test_GET_command(mocker):
+def test_GET_command(mocker, capsys):
     _mocked = mocker.patch('lib.http_retry.http.get', return_value=HttpStatus(200))
     env = control_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -14,9 +14,10 @@ def test_GET_command(mocker):
 
     assert exit_code == 144
     #assert mocked.assert_called_once_with(...)
+    silence(capsys)
 
 
-def test_PUT_command(mocker):
+def test_PUT_command(mocker, capsys):
     _mocked = mocker.patch('lib.http_retry.http.put', return_value=HttpStatus(200))
     env = log_evidence_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -25,9 +26,10 @@ def test_PUT_command(mocker):
 
     assert exit_code == 0
     #assert mocked.assert_called_once_with(...)
+    silence(capsys)
 
 
-def test_POST_command(mocker):
+def test_POST_command(mocker, capsys):
     _mocked = mocker.patch('lib.http_retry.http.post', return_value=HttpStatus(200))
     env = log_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -36,9 +38,10 @@ def test_POST_command(mocker):
 
     assert exit_code == 0
     #assert mocked.assert_called_once_with(...)
+    silence(capsys)
 
 
-def test_command_raises_when_http_response_is_not_200_or_201(mocker):
+def test_command_raises_when_http_response_is_not_200_or_201(mocker, capsys):
     _mocked = mocker.patch('lib.http_retry.http.post', return_value=HttpStatus(403))
     env = log_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -47,6 +50,7 @@ def test_command_raises_when_http_response_is_not_200_or_201(mocker):
 
     assert exit_code != 0
     #assert mocked.assert_called_once_with(...)
+    silence(capsys)
 
 
 class HttpStatus:
