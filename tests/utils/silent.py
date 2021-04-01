@@ -1,4 +1,7 @@
 
+def silence(capsys):
+    return capsys.readouterr()
+
 
 def silent(capsys):
     """

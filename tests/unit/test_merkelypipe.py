@@ -50,13 +50,13 @@ def test_env_var_can_override_the_default():
 
 
 def test_raises_when_not_found(capsys):
-    with dry_run(core_env_vars()) as env, raises(ChangeError):
+    with dry_run(core_env_vars('log_artifact')) as env, raises(ChangeError):
         # no /data/Merkelypipe.json
         run(External(env=env))
 
 
 def test_raises_when_invalid_json(capsys):
-    with dry_run(core_env_vars()) as env:
+    with dry_run(core_env_vars('log_artifact')) as env:
         external = External(env=env)
         with ScopedFileCopier("/app/tests/data/Merkelypipe.bad.json", "/Merkelypipe.json"):
             with raises(ChangeError):
@@ -64,7 +64,7 @@ def test_raises_when_invalid_json(capsys):
 
 
 def test_raises_when_is_a_dir(capsys):
-    with dry_run(core_env_vars()) as env:
+    with dry_run(core_env_vars('log_artifact')) as env:
         external = External(env=env)
         with ScopedDirCopier("/app/tests/data", "/data/Merkelypipe.json"):
             with raises(ChangeError):
@@ -73,7 +73,6 @@ def test_raises_when_is_a_dir(capsys):
 
 """
 Possible further tests:
-
-json has no key "owner"
-json "owner" value not string
+TODO: json has no key "owner"
+TODO: json "owner" value not string
 """
