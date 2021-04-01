@@ -24,7 +24,7 @@ def run(external):
             print("DRY RUN: Get not performed")
             response = None
         else:
-            response = http_get_json(url=url, api_token=api_token, dry_run=dry_run)
+            response = http_get_json(url=url, api_token=api_token)
     if method == 'PUT':
         print("Putting this payload:")
         print(pretty_json(payload))
@@ -33,7 +33,7 @@ def run(external):
             print("DRY RUN: Put not sent")
             response = None
         else:
-            response = http_put_payload(url=url, payload=payload, api_token=api_token, dry_run=dry_run)
+            response = http_put_payload(url=url, payload=payload, api_token=api_token)
     if method == 'POST':
         print("Posting this payload:")
         print(pretty_json(payload))
@@ -42,7 +42,7 @@ def run(external):
             print("DRY RUN: Post not sent")
             response = None
         else:
-            response = http_post_payload(url=url, payload=payload, api_token=api_token, dry_run=dry_run)
+            response = http_post_payload(url=url, payload=payload, api_token=api_token)
 
     if not dry_run and callback is not None:
         return callback(response)

@@ -4,14 +4,14 @@ import json
 from requests.auth import HTTPBasicAuth
 
 
-def http_get_json(*, url, api_token, dry_run):
+def http_get_json(*, url, api_token):
     auth = HTTPBasicAuth(api_token, 'unused')
     response = HttpRetry().get(url, auth=auth)
     raise_unless_success(response)
     return response
 
 
-def http_put_payload(*, url, payload, api_token, dry_run):
+def http_put_payload(*, url, payload, api_token):
     auth = HTTPBasicAuth(api_token, 'unused')
     headers = json_content_header()
     data = json.dumps(payload)
@@ -20,7 +20,7 @@ def http_put_payload(*, url, payload, api_token, dry_run):
     return response
 
 
-def http_post_payload(*, url, payload, api_token, dry_run):
+def http_post_payload(*, url, payload, api_token):
     auth = HTTPBasicAuth(api_token, 'unused')
     headers = json_content_header()
     data = json.dumps(payload)

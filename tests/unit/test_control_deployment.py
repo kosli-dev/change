@@ -24,7 +24,6 @@ def test_when_no_approvals_then_raises(mocker):
     mocked_get.assert_called_once_with(
         url=f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}/approvals/",
         api_token="MY_SUPER_SECRET_API_TOKEN",
-        dry_run=False
     )
 
 
@@ -43,7 +42,6 @@ def test_when_approved_then_does_not_raise(mocker):
     mocked_get.assert_called_once_with(
         url=f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}/approvals/",
         api_token="MY_SUPER_SECRET_API_TOKEN",
-        dry_run=False
     )
 
 
