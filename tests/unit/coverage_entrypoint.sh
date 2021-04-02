@@ -28,6 +28,7 @@ pytest \
        --cov-config=tests/unit/.coveragerc \
        --cov=source/ \
        --cov=tests/ \
+       --cov-branch \
        --junitxml=htmlcov/junit.xml \
        -o junit_family=xunit1 \
        --pythonwarnings=ignore::pytest.PytestCollectionWarning \
@@ -48,8 +49,8 @@ readonly REPORT_FILENAME=htmlcov/summary.txt
 coverage report -m > "${REPORT_FILENAME}"
 
 # Create a file containing the coverage percentage
-cat "${REPORT_FILENAME}" | grep TOTAL | awk '{print "COVERAGE=\""$4"\""}' > htmlcov/test_coverage.sh
+cat "${REPORT_FILENAME}" | grep TOTAL | awk '{print "TEST_BRANCH_COVERAGE=\""$6"\""}' > htmlcov/test_branch_coverage.sh
 
 # Create a file containing the number of test cases
-TEST_CASES=`pytest --collect-only -q | head -n -2 | wc -l`
-echo TEST_CASES=$TEST_CASES > htmlcov/test_cases.sh
+TEST_CASE_COUNT=`pytest --collect-only -q | head -n -2 | wc -l`
+echo TEST_CASE_COUNT=${TEST_CASE_COUNT} > htmlcov/test_case_count.sh

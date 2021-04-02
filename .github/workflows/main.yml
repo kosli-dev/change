@@ -90,7 +90,7 @@ jobs:
         MERKELY_IS_COMPLIANT: 'TRUE'
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
-        source tmp/coverage/unit/htmlcov/test_coverage.sh
-        source tmp/coverage/unit/htmlcov/test_cases.sh
-        export MERKELY_DESCRIPTION="${TEST_CASES} tests passed with ${COVERAGE} coverage"
+        source tmp/coverage/unit/htmlcov/test_branch_coverage.sh
+        source tmp/coverage/unit/htmlcov/test_case_count.sh
+        export MERKELY_DESCRIPTION="${TEST_CASE_COUNT} tests passed with ${TEST_BRANCH_COVERAGE} branch coverage"
         make merkely_log_evidence
