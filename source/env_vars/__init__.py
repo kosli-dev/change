@@ -21,6 +21,7 @@ from .evidence_type_env_var import EvidenceTypeEnvVar
 from .host_env_var import HostEnvVar
 from .user_data_env_var import UserDataEnvVar
 from .dry_run_env_var import DryRunEnvVar
+from .test_results_dir_env_var import TestResultsDirEnvVar
 
 from .compound_ci_env_var import CompoundCiEnvVar
 

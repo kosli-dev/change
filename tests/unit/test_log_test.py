@@ -1,15 +1,17 @@
 from commands import main, run, External
-
+from env_vars import TestResultsDirEnvVar
 from tests.utils import *
 
 USER_DATA = "/app/tests/data/user_data.json"
 
 DOMAIN = "app.merkely.com"
 OWNER = "acme"
-PIPELINE = "lib-controls-test-pipeline"
+PIPELINE = "road-runner"
 
 IMAGE_NAME = "acme/widget:4.67"
 SHA256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
+
+DEFAULT_TEST_RESULTS_DIR = TestResultsDirEnvVar({}).default
 
 
 def test_non_zero_status_when_no_data_directory(capsys):
@@ -19,18 +21,19 @@ def test_non_zero_status_when_no_data_directory(capsys):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             status = main(external)
 
-    assert_merkely_error(status, capsys, 'no directory /data/junit/')
+    assert_merkely_error(status, capsys, f"no directory {DEFAULT_TEST_RESULTS_DIR}")
 
 
 def test_non_zero_status_when_dir_exists_but_has_no_xml_files(capsys):
     ev = log_test_env()
-    ev['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/"
+    empty_dir = "/app/tests/data/"
+    ev['MERKELY_TEST_RESULTS_DIR'] = empty_dir
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             status = main(external)
 
-    assert_merkely_error(status, capsys, "No test suites in /app/tests/data/")
+    assert_merkely_error(status, capsys, f"No test suites in {empty_dir}")
 
 
 def test_non_zero_status_when_dir_exists_but_xml_files_are_not_JUnit(capsys):
@@ -67,7 +70,7 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
     ev = log_test_env()
     with dry_run(ev) as env:
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            with ScopedDirCopier('/app/tests/data/control_junit/xml_with_passed_results', '/data/junit'):
+            with ScopedDirCopier('/app/tests/data/control_junit/xml_with_passed_results', DEFAULT_TEST_RESULTS_DIR):
                 external = External(env=env, docker_fingerprinter=fingerprinter)
                 method, url, payload = run(external)
 

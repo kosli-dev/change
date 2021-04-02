@@ -7,8 +7,6 @@ from junitparser import JUnitXml, JUnitXmlError
 import os
 import glob
 
-DEFAULT_TEST_DIR = "/data/junit/"
-
 
 class LogTest(Command):
 
@@ -16,13 +14,13 @@ class LogTest(Command):
         return " ".join([
             "Logs JUnit xml format test summary evidence in Merkely.",
             "The JUnit xml format is used by many tools, not just testing frameworks.",
-            f"By default, looks for JUnit .xml files in the {DEFAULT_TEST_DIR} dir."
+            f"By default, looks for JUnit .xml files in the {self.default_test_results_dir} dir."
         ])
 
     def doc_volume_mounts(self, ci_name):
         if ci_name == 'docker':
             return [
-                "${YOUR_TEST_RESULTS_DIR}:/data/junit",
+                f"${{YOUR_TEST_RESULTS_DIR}}:{self.default_test_results_dir}",
                 "/var/run/docker.sock:/var/run/docker.sock",
             ]
         else:
@@ -84,6 +82,10 @@ class LogTest(Command):
             'dry_run'
         ]
 
+    @property
+    def default_test_results_dir(self):
+        return self.test_results_dir.default
+
 
 class DescriptionEnvVar(StaticDefaultedEnvVar):
 
@@ -103,27 +105,7 @@ class DescriptionEnvVar(StaticDefaultedEnvVar):
             f'followed by a summary, eg "{self._default_suffix}"'
         ])
 
-
-class TestResultsDirEnvVar(StaticDefaultedEnvVar):
-    
-    def __init__(self, env):
-        super().__init__(env, "MERKELY_TEST_RESULTS_DIR", DEFAULT_TEST_DIR)
-
-    def doc_example(self, ci_name, _command_name):
-        if ci_name == 'github':
-            return True, "${{ github.workspace }}/build/test"
-        if ci_name == 'bitbucket':
-            return True, "${PWD}/build/test/"
-        return False, ""
-
-    def doc_note(self, _ci_name, _command_name):
-        return " ".join([
-            "The directory where Merkely will look for JUnit .xml files.",
-            "Must be volume-mounted in the container.",
-            f"Defaults to {DEFAULT_TEST_DIR}"
-        ])
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 def is_compliant_tests_directory(test_results_directory):
