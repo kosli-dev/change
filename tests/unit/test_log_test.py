@@ -20,8 +20,8 @@ def test_non_zero_status_when_no_data_directory(capsys):
             status = main(external)
 
     assert status != 0
-    output = capsys_read(capsys)
-    lines = list(output.split("\n"))
+    stdout = capsys_read(capsys)
+    lines = list(stdout.split("\n"))
     assert lines == [
         'MERKELY_COMMAND=log_test',
         "Error: no directory /data/junit/",
@@ -38,8 +38,8 @@ def test_non_zero_status_when_dir_exists_but_has_no_xml_files(capsys):
             status = main(external)
 
     assert status != 0
-    output = capsys_read(capsys)
-    lines = list(output.split("\n"))
+    stdout = capsys_read(capsys)
+    lines = list(stdout.split("\n"))
     assert lines == [
         'MERKELY_COMMAND=log_test',
         "Error: No test suites in /app/tests/data/",
@@ -58,8 +58,8 @@ def test_non_zero_status_when_dir_exists_but_xml_files_are_not_JUnit(capsys):
             status = main(external)
 
     assert status != 0
-    output = capsys_read(capsys)
-    lines = list(output.split("\n"))
+    stdout = capsys_read(capsys)
+    lines = list(stdout.split("\n"))
     assert lines == [
         'MERKELY_COMMAND=log_test',
         f"Error: XML file {path_name} not JUnit format.",
