@@ -27,7 +27,7 @@ jobs:
         run: echo "MERKELY_FINGERPRINT=docker://${TAGGED_IMAGE}" >> ${GITHUB_ENV}
 
 
-      - name: Approve deployment in Merkely
+      - name: Approve deployment
         env:
           MERKELY_NEWEST_SRC_COMMITISH: ${GITHUB_SHA}
           MERKELY_OLDEST_SRC_COMMITISH: "origin/latest"
