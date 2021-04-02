@@ -27,6 +27,7 @@ pytest \
        --capture=no \
        --cov-config=tests/unit/.coveragerc \
        --cov=source/ \
+       --cov=tests/ \
        --junitxml=htmlcov/junit.xml \
        -o junit_family=xunit1 \
        --pythonwarnings=ignore::pytest.PytestCollectionWarning \
