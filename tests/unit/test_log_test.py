@@ -19,14 +19,7 @@ def test_non_zero_status_when_no_data_directory(capsys):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             status = main(external)
 
-    assert status != 0
-    stdout = capsys_read(capsys)
-    lines = list(stdout.split("\n"))
-    assert lines == [
-        'MERKELY_COMMAND=log_test',
-        "Error: no directory /data/junit/",
-        ''
-    ]
+    assert_merkely_error(status, capsys, 'no directory /data/junit/')
 
 
 def test_non_zero_status_when_dir_exists_but_has_no_xml_files(capsys):
@@ -37,14 +30,7 @@ def test_non_zero_status_when_dir_exists_but_has_no_xml_files(capsys):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             status = main(external)
 
-    assert status != 0
-    stdout = capsys_read(capsys)
-    lines = list(stdout.split("\n"))
-    assert lines == [
-        'MERKELY_COMMAND=log_test',
-        "Error: No test suites in /app/tests/data/",
-        ''
-    ]
+    assert_merkely_error(status, capsys, "No test suites in /app/tests/data/")
 
 
 def test_non_zero_status_when_dir_exists_but_xml_files_are_not_JUnit(capsys):
@@ -57,14 +43,7 @@ def test_non_zero_status_when_dir_exists_but_xml_files_are_not_JUnit(capsys):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             status = main(external)
 
-    assert status != 0
-    stdout = capsys_read(capsys)
-    lines = list(stdout.split("\n"))
-    assert lines == [
-        'MERKELY_COMMAND=log_test',
-        f"Error: XML file {path_name} not JUnit format.",
-        ''
-    ]
+    assert_merkely_error(status, capsys, f"XML file {path_name} not JUnit format.")
 
 
 def test_zero_exit_status_when_there_is_a_data_directory(capsys):
@@ -162,6 +141,16 @@ def test_junit_xml_with_error_results_dir_specified_with_env_var(capsys):
     assert url == expected_url
     assert payload == expected_payload
 
+
+def assert_merkely_error(status, capsys, expected):
+    assert status != 0
+    stdout = capsys_read(capsys)
+    lines = list(stdout.split("\n"))
+    assert lines == [
+        'MERKELY_COMMAND=log_test',
+       f"Error: {expected}",
+        ''
+    ]
 
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 BUILD_URL = "https://gitlab/build/1457"
