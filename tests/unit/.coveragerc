@@ -1,7 +1,11 @@
 [report]
-omit = source/doc_data.py
-      source/doc_gen.py
+omit = source/docs/doc_ref.py
+      source/docs/doc_rst.py
+      source/docs/doc_txt.py
+      source/docs/__init__.py
 
 [run]
-omit = source/doc_data.py
-      source/doc_gen.py
+omit = source/docs/doc_ref.py
+      source/docs/doc_rst.py
+      source/docs/doc_txt.py
+      source/docs/__init__.py
