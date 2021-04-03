@@ -127,7 +127,7 @@
    <li><a data-toggle="tab" href="#github">Github</a></li>
 </ul>
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile#L199">Open an example, similar to the fragment below, from a git repo.</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile#L200">Open an example, similar to the fragment below, from a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=log_test \
     --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
@@ -142,7 +142,7 @@
     --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
     --env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \
     --rm \
-    --volume ${YOUR_TEST_RESULTS_DIR}:/data/junit \
+    --volume ${YOUR_TEST_RESULTS_DIR}:/data/junit/ \
     --volume /var/run/docker.sock:/var/run/docker.sock \
     merkely/change
 </pre></div>
