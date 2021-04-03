@@ -5,24 +5,21 @@ from requests.auth import HTTPBasicAuth
 
 def http_get_json(url, api_token):
     auth = HTTPBasicAuth(api_token, 'unused')
-    response = HttpRetry().get(url, auth=auth)
-    return response
+    return HttpRetry().get(url, auth=auth)
 
 
 def http_put_payload(url, payload, api_token):
     auth = HTTPBasicAuth(api_token, 'unused')
     headers = json_content_header()
     data = json.dumps(payload)
-    response = HttpRetry().put(url, auth=auth, headers=headers, data=data)
-    return response
+    return HttpRetry().put(url, auth=auth, headers=headers, data=data)
 
 
 def http_post_payload(url, payload, api_token):
     auth = HTTPBasicAuth(api_token, 'unused')
     headers = json_content_header()
     data = json.dumps(payload)
-    response = HttpRetry().post(url, auth=auth, headers=headers, data=data)
-    return response
+    return HttpRetry().post(url, auth=auth, headers=headers, data=data)
 
 
 def json_content_header():
