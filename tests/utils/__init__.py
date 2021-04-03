@@ -7,7 +7,7 @@ from .retry_backoff_factor import *
 from .stub_http_503 import *
 from .capsys_read import *
 from .core_env_vars import *
-from .extract import *
+from .extract_blurb import *
 from .dry_run import *
 from .mock_docker_fingerprinter import *
 from .mock_file_fingerprinter import *
