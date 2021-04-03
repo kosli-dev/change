@@ -23,9 +23,8 @@ def github_loan_calculator_curler(filename):
     branch = 'master'
     base_url = f'https://raw.githubusercontent.com/{org}/{repo}/{branch}/{dir}{filename}'
     lines = requests.get(base_url).text.splitlines()
-    REF_FILES[filename]  = {
-        "base_url": base_url,
-        "ref_url": f'https://github.com/{org}/{repo}/blob/{branch}/{dir}{filename}',
+    REF_FILES[filename] = {
+        "href_url": f'https://github.com/{org}/{repo}/blob/{branch}/{dir}{filename}',
         "lines": lines
     }
 
@@ -43,8 +42,7 @@ def bitbucket_load_calculator_curler(filename):
     raw_url = f"{base_url}/raw/{short_sha}/{filename}"
     lines = requests.get(raw_url).text.splitlines()
     REF_FILES[filename] = {
-        "base_url": base_url,
-        "ref_url": f"{base_url}/src/{short_sha}/{filename}",
+        "href_url": f"{base_url}/src/{short_sha}/{filename}",
         "lines": lines
     }
 
@@ -94,7 +92,7 @@ def bitbucket_loan_calculator_line_ref(search_text):
 def line_number(search_text, filename):
     json = REF_FILES[filename]
     lines = json["lines"]
-    url = json["ref_url"]
+    url = json["href_url"]
     indices = [i for i, line in enumerate(lines) if search_text == line.strip()]
     assert len(indices) > 0
     return url, indices[0] + 1  # Human counting is 1-based
