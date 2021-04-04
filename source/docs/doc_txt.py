@@ -7,7 +7,7 @@ REFERENCE_DIR = '/docs/build/reference'
 
 def create_txt_files():
     """
-    Called from docs.merkely.com/source/conf.py    
+    Called from docs.merkely.com/source/conf.py
     Generates text files containing documentation fragment for each
     command (eg 'log_test') in each supported CI system (eg 'bitbucket')
     """
