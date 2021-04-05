@@ -3,8 +3,8 @@ from fingerprinters import FileFingerprinter
 
 class MockFileFingerprinter(FileFingerprinter):
 
-    def __init__(self, image_name, digest):
-        self.__expected = image_name
+    def __init__(self, filename, digest):
+        self.__expected = filename
         self.__digest = digest
         self.__called = False
 
@@ -23,13 +23,12 @@ class MockFileFingerprinter(FileFingerprinter):
             ]
             self.__failed(lines)
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, _exc_tb):
         if not self.__called:
             self.__failed([
-                "Expected call did not happen",
+                "Expected sha() call did not happen",
                 f"exc_type = {exc_type}",
-                f"exc_val = {exc_val}",
-                f"exc_tb = {exc_tb}"
+                f"exc_val = {exc_val}"
             ])
 
     def __failed(self, lines):
