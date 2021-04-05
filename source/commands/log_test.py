@@ -17,14 +17,11 @@ class LogTest(Command):
             f"By default, looks for JUnit .xml files in the {self.default_test_results_dir} dir."
         ])
 
-    def doc_volume_mounts(self, ci_name):
-        if ci_name == 'docker':
-            return [
-                f"${{YOUR_TEST_RESULTS_DIR}}:{self.default_test_results_dir}",
-                "/var/run/docker.sock:/var/run/docker.sock",
-            ]
-        else:
-            return []
+    def doc_volume_mounts(self):
+        return [
+            f"${{YOUR_TEST_RESULTS_DIR}}:{self.default_test_results_dir}",
+            "/var/run/docker.sock:/var/run/docker.sock",
+        ]
 
     def doc_ref(self):
         return {

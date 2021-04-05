@@ -9,7 +9,7 @@ class DeclarePipeline(Command):
     def doc_summary(self, _ci_name):
         return "Declares a pipeline in Merkely."
 
-    def doc_volume_mounts(self, _ci_name):
+    def doc_volume_mounts(self):
         return []
 
     def doc_ref(self):

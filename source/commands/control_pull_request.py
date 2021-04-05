@@ -12,11 +12,8 @@ class ControlPullRequest(Command):
     def doc_summary(self, _ci_name):
         return ""
 
-    def doc_volume_mounts(self, ci_name):
-        if ci_name == 'docker':
-            return ["/var/run/docker.sock:/var/run/docker.sock"]
-        else:
-            return []
+    def doc_volume_mounts(self):
+        return ["/var/run/docker.sock:/var/run/docker.sock"]
 
     def doc_ref(self):
         return {}

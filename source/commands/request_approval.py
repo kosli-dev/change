@@ -10,14 +10,11 @@ class RequestApproval(Command):
     def doc_summary(self, _ci_name):
         return "Request an approval in Merkely."
 
-    def doc_volume_mounts(self, ci_name):
-        if ci_name == 'docker':
-            return [
-                "${PWD}:/src",
-                "/var/run/docker.sock:/var/run/docker.sock"
-            ]
-        else:
-            return []
+    def doc_volume_mounts(self):
+        return [
+            "${PWD}:/src",
+            "/var/run/docker.sock:/var/run/docker.sock"
+        ]
 
     def doc_ref(self):
         return {

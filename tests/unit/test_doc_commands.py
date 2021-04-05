@@ -18,12 +18,11 @@ def test_doc_summary_for_all_commands():
 
 def test_doc_volume_mounts_for_all_commands():
     for command_name in Command.names():
-        for ci_name in CI_NAMES:
-            volume_mounts = command_for(command_name).doc_volume_mounts(ci_name)
-            for volume_mount in volume_mounts:
-                diagnostic = command_name + ':' + ci_name
-                assert isinstance(volume_mount, str), diagnostic
-                assert len(volume_mount) > 0, diagnostic
+        volume_mounts = command_for(command_name).doc_volume_mounts()
+        assert type(volume_mounts) is list
+        for volume_mount in volume_mounts:
+            assert isinstance(volume_mount, str), command_name
+            assert len(volume_mount) > 0, command_name
 
 
 def command_for(name):
