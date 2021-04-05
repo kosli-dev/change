@@ -35,12 +35,11 @@ def test_docker_image(capsys):
         ]
     }
 
-    ev = approve_deployment_env()
-    with dry_run(ev) as env:
-        with ScopedDirCopier("/test_src", "/src"):
-            with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-                external = External(env=env, docker_fingerprinter=fingerprinter)
-                method, url, payload = run(external)
+    env = dry_run(approve_deployment_env())
+    with ScopedDirCopier("/test_src", "/src"):
+        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
 
     silence(capsys)
 
@@ -50,10 +49,9 @@ def test_docker_image(capsys):
 
 
 def test_raises_when_src_repo_root_does_not_exist(capsys):
-    ev = approve_deployment_env()
-    with dry_run(ev) as env:
-        with raises(ChangeError) as exc:
-            run(External(env=env))
+    env = dry_run(approve_deployment_env())
+    with raises(ChangeError) as exc:
+        run(External(env=env))
 
     assert str(exc.value) == "Error: Repository not found at /src/.git"
 

@@ -1,4 +1,3 @@
-from .scoped_env_vars import *
 from .scoped_dir_copier import *
 from .scoped_file_copier import *
 from .scoped_merkelypipe_json import *

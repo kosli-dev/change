@@ -1,7 +1,5 @@
 from commands import run, External
-#from lib import *
 from tests.utils import *
-#from pytest import raises
 
 DOMAIN = "app.merkely.com"
 OWNER = "acme"
@@ -27,12 +25,11 @@ def test_docker_image(capsys):
         "approvals": []
     }
 
-    ev = request_approval_env()
-    with dry_run(ev) as env:
-        with ScopedDirCopier("/test_src", "/src"):
-            with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-                external = External(env=env, docker_fingerprinter=fingerprinter)
-                method, url, payload = run(external)
+    env = dry_run(request_approval_env())
+    with ScopedDirCopier("/test_src", "/src"):
+        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
 
     silence(capsys)
 

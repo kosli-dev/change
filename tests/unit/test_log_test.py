@@ -15,36 +15,33 @@ DEFAULT_TEST_RESULTS_DIR = TestResultsDirEnvVar({}).default
 
 
 def test_non_zero_status_when_no_data_directory(capsys):
-    ev = log_test_env()
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            status = main(external)
+    env = dry_run(log_test_env())
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        status = main(external)
 
     assert_merkely_error(status, capsys, f"no directory {DEFAULT_TEST_RESULTS_DIR}")
 
 
 def test_non_zero_status_when_dir_exists_but_has_no_xml_files(capsys):
-    ev = log_test_env()
     empty_dir = "/app/tests/data/"
-    ev['MERKELY_TEST_RESULTS_DIR'] = empty_dir
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            status = main(external)
+    env = dry_run(log_test_env())
+    env['MERKELY_TEST_RESULTS_DIR'] = empty_dir
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        status = main(external)
 
     assert_merkely_error(status, capsys, f"No test suites in {empty_dir}")
 
 
 def test_non_zero_status_when_dir_exists_but_xml_files_are_not_JUnit(capsys):
-    ev = log_test_env()
     dir_name = "/app/tests/data/control_junit/xml_but_not_junit"
     path_name = f"{dir_name}/not_junit.xml"
-    ev['MERKELY_TEST_RESULTS_DIR'] = dir_name
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            status = main(external)
+    env = dry_run(log_test_env())
+    env['MERKELY_TEST_RESULTS_DIR'] = dir_name
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        status = main(external)
 
     assert_merkely_error(status, capsys, f"XML file {path_name} not JUnit format.")
 
@@ -67,12 +64,11 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
         }
     }
 
-    ev = log_test_env()
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            with ScopedDirCopier('/app/tests/data/control_junit/xml_with_passed_results', DEFAULT_TEST_RESULTS_DIR):
-                external = External(env=env, docker_fingerprinter=fingerprinter)
-                method, url, payload = run(external)
+    env = dry_run(log_test_env())
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        with ScopedDirCopier('/app/tests/data/control_junit/xml_with_passed_results', DEFAULT_TEST_RESULTS_DIR):
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
 
     silence(capsys)
 
@@ -99,12 +95,11 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
         }
     }
 
-    ev = log_test_env()
-    ev['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/control_junit/xml_with_passed_results"
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    env = dry_run(log_test_env())
+    env['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/control_junit/xml_with_passed_results"
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     silence(capsys)
 
@@ -131,12 +126,11 @@ def test_junit_xml_with_error_results_dir_specified_with_env_var(capsys):
         }
     }
 
-    ev = log_test_env()
-    ev['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/control_junit/xml_with_error"
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    env = dry_run(log_test_env())
+    env['MERKELY_TEST_RESULTS_DIR'] = "/app/tests/data/control_junit/xml_with_error"
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     silence(capsys)
 

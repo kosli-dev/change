@@ -11,28 +11,28 @@ DOMAIN = "app.merkely.com"
 
 
 def test_raises_when_merkely_command_not_set(capsys):
-    ev = core_env_vars('log_artifact')
-    ev.pop("MERKELY_COMMAND")
+    env = dry_run(core_env_vars('log_artifact'))
+    env.pop("MERKELY_COMMAND")
 
-    with dry_run(ev) as env, raises(ChangeError):
+    with raises(ChangeError):
         run(External(env=env))
 
 
 def test_raises_when_merkely_command_is_empty_string(capsys):
-    ev = core_env_vars('log_artifact')
-    ev["MERKELY_COMMAND"] = ""
+    env = dry_run(core_env_vars('log_artifact'))
+    env["MERKELY_COMMAND"] = ""
 
-    with dry_run(ev) as env, raises(ChangeError):
+    with raises(ChangeError):
         run(External(env=env))
 
     silence(capsys)
 
 
 def test_raises_when_merkely_command_is_unknown(capsys):
-    ev = core_env_vars('log_artifact')
-    ev["MERKELY_COMMAND"] = "wibble"
+    env = dry_run(core_env_vars('log_artifact'))
+    env["MERKELY_COMMAND"] = "wibble"
 
-    with dry_run(ev) as env, raises(ChangeError):
+    with raises(ChangeError):
         run(External(env=env))
 
     silence(capsys)
@@ -40,11 +40,10 @@ def test_raises_when_merkely_command_is_unknown(capsys):
 
 def test_merkely_command_when_method_is_get(capsys, mocker):
     # ControlDeployment command is used for this test
-    ev = control_deployment_env()
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    env = dry_run(control_deployment_env())
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     silence(capsys)
     assert method == 'GET'
@@ -54,12 +53,10 @@ def test_merkely_command_when_method_is_get(capsys, mocker):
 
 def test_merkely_command_when_method_is_post(capsys):
     # LogDeployment command is used for this test
-
-    ev = log_deployment_env()
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    env = dry_run(log_deployment_env())
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     silence(capsys)
 
@@ -70,12 +67,10 @@ def test_merkely_command_when_method_is_post(capsys):
 
 def test_merkely_command_when_method_is_put(capsys):
     # LogEvidence command is used for this test
-
-    ev = log_evidence_env()
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    env = dry_run(log_evidence_env())
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     silence(capsys)
 

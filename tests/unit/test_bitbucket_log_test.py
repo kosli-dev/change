@@ -36,12 +36,11 @@ def test_bitbucket(capsys):
         },
     }
 
-    ev = log_test_env()
-    with dry_run(ev) as env:
-        with ScopedDirCopier('/app/tests/data/control_junit/xml_with_fails', '/data/junit'):
-            with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-                external = External(env=env, docker_fingerprinter=fingerprinter)
-                method, url, payload = run(external)
+    env = dry_run(log_test_env())
+    with ScopedDirCopier('/app/tests/data/control_junit/xml_with_fails', '/data/junit'):
+        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+            external = External(env=env, docker_fingerprinter=fingerprinter)
+            method, url, payload = run(external)
 
     silence(capsys)
 

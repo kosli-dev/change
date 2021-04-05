@@ -28,12 +28,11 @@ def test_all_env_vars_image(capsys):
     }
 
     protocol = "docker://"
-    ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    env = dry_run(log_artifact_env(commit))
+    env["MERKELY_FINGERPRINT"] = f"{protocol}{image_name}"
+    with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     assert method == expected_method
     assert url == expected_url
@@ -67,12 +66,11 @@ def test_all_env_vars_file(capsys):
     }
 
     protocol = "file://"
-    ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{artifact_name}"
-    with dry_run(ev) as env:
-        with MockFileFingerprinter(artifact_name, sha256) as fingerprinter:
-            external = External(env=env, file_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    env = dry_run(log_artifact_env(commit))
+    env["MERKELY_FINGERPRINT"] = f"{protocol}{artifact_name}"
+    with MockFileFingerprinter(artifact_name, sha256) as fingerprinter:
+        external = External(env=env, file_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     assert method == expected_method
     assert url == expected_url
@@ -104,10 +102,9 @@ def test_all_env_vars_sha(capsys):
     }
 
     protocol = "sha256://"
-    ev = log_artifact_env(commit)
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{artifact_name}"
-    with dry_run(ev) as env:
-        method, url, payload = run(External(env=env))
+    env = dry_run(log_artifact_env(commit))
+    env["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{artifact_name}"
+    method, url, payload = run(External(env=env))
 
     assert method == expected_method
     assert url == expected_url

@@ -33,11 +33,10 @@ def test_bitbucket(capsys):
         "user_data": USER_DATA_JSON,
     }
 
-    ev = log_deployment_env()
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    env = dry_run(log_deployment_env())
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     assert method == expected_method
     assert url == expected_url

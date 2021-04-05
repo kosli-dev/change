@@ -27,12 +27,11 @@ def test_docker_image(capsys):
     }
 
     protocol = "docker://"
-    ev = log_deployment_env()
-    ev["MERKELY_FINGERPRINT"] = f"{protocol}{IMAGE_NAME}"
-    with dry_run(ev) as env:
-        with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
-            external = External(env=env, docker_fingerprinter=fingerprinter)
-            method, url, payload = run(external)
+    env = dry_run(log_deployment_env())
+    env["MERKELY_FINGERPRINT"] = f"{protocol}{IMAGE_NAME}"
+    with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
+        external = External(env=env, docker_fingerprinter=fingerprinter)
+        method, url, payload = run(external)
 
     assert method == expected_method
     assert url == expected_url

@@ -22,7 +22,8 @@ def test_green(capsys):
         "visibility": "public"
     }
 
-    with dry_run(core_env_vars('declare_pipeline')) as env, scoped_merkelypipe_json():
+    env = dry_run(core_env_vars('declare_pipeline'))
+    with scoped_merkelypipe_json():
         method, url, payload = run(External(env=env))
 
     silence(capsys)
