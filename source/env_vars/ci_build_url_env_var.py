@@ -34,5 +34,10 @@ class CIBuildUrlEnvVar(CompoundCiEnvVar):
     def doc_example(self, _ci_name, _command_name):
         return False, ""
 
-    def doc_note(self, _ci_name, _command_name):
-        return "Link to the build in the ci system."
+    def doc_note(self, ci_name, _command_name):
+        note = "Link to the build in the ci system."
+        cev = self._ci_env_vars
+        if ci_name in cev:
+            note += f" Defaults to :code:`{cev[ci_name].string}`"
+        return note
+

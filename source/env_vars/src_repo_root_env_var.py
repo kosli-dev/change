@@ -18,11 +18,11 @@ class SrcRepoRootEnvVar(StaticDefaultedEnvVar):
     def doc_note(self, ci_name, _command_name):
         note = " ".join([
             "The directory where the source git repository is volume-mounted.",
-            f"Defaults to `{DEFAULT_DIR}`.",
+            f"Defaults to :code:`{DEFAULT_DIR}`.",
         ])
         if ci_name == 'github':
             note += " " + " ".join([
-                "In a uses: directive the repository directory is",
-                "automatically volume-mounted to ${{ github.workspace }}."
+                "In a :code:`uses:` directive the repository directory is",
+                "automatically volume-mounted to :code:`${{ github.workspace }}`."
             ])
         return note
