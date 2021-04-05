@@ -61,6 +61,8 @@ def min_lines_for(command_name):
     def env(var):
         if var.name == "MERKELY_COMMAND":
             value = var.value
+        elif var.name == 'MERKELY_FINGERPRINT':
+            value = 'docker://acme/road-runner:2.3'
         else:
             value = '"' + "${" + var.name + "}" + '"'
         return lc(f'{tab}--env {var.name}={value}')

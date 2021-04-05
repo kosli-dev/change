@@ -1,0 +1,39 @@
+
+.. _docker_fingerprint-label:
+
+Docker Fingerprint
+==================
+
+Notes
+-----
+.. describe_fingerprint:: docker_fingerprinter notes
+
+Example
+-------
+.. describe_fingerprint:: docker_fingerprinter example
+
+.. _file_fingerprint-label:
+
+File Fingerprint
+================
+
+Notes
+-----
+.. describe_fingerprint:: file_fingerprinter notes
+
+Example
+-------
+.. describe_fingerprint:: file_fingerprinter example
+
+.. _sha256_fingerprint-label:
+
+Sha256 Fingerprint
+==================
+
+Notes
+-----
+.. describe_fingerprint:: sha256_fingerprinter notes
+
+Example
+-------
+.. describe_fingerprint:: sha256_fingerprinter example

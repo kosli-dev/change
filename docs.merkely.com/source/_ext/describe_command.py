@@ -106,7 +106,7 @@ def env_vars_to_table(env_vars, ci_name, command_name):
         note = env_var.doc_note(ci_name, command_name)
         if note == "<FINGERPRINT_LINK>":
             ref = "../../fingerprints/docker_fingerprint.html"
-            para = nodes.paragraph(text="")
+            para = nodes.paragraph(text="The artifact's ")
             para += nodes.reference('', 'Fingerprint', internal=False, refuri=ref)
             row += nodes.entry("", para)
         else:

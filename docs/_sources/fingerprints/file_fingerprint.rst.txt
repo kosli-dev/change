@@ -1,3 +1,5 @@
+.. _file_fingerprint-label:
+
 File Fingerprint
 ================
 
@@ -8,3 +10,6 @@ Notes
 Example
 -------
 .. describe_fingerprint:: file_fingerprinter example
+
+* See also :ref:`docker_fingerprint-label`
+* See also :ref:`sha256_fingerprint-label`

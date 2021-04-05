@@ -123,7 +123,7 @@
 <p>…</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_COMMAND</span><span class="o">=</span><span class="n">log_deployment</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_FINGERPRINT}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="n">docker</span><span class="p">:</span><span class="o">//</span><span class="n">acme</span><span class="o">/</span><span class="n">road</span><span class="o">-</span><span class="n">runner</span><span class="p">:</span><span class="mf">2.3</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_CI_BUILD_URL}</span><span class="s2">&quot;</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_DESCRIPTION</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_DESCRIPTION}</span><span class="s2">&quot;</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_ENVIRONMENT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_ENVIRONMENT}</span><span class="s2">&quot;</span> \

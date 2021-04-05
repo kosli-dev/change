@@ -6,7 +6,8 @@ import re
 PROTOCOL = 'sha256://'
 
 NOTES = " ".join([
-    f"The string `{PROTOCOL}` followed by the artifact's 64 character sha256,",
+    'To explicitly provide the sha256 of an artifact (image or file)',
+    f"use the string `{PROTOCOL}` followed by the artifact's 64 character sha256,",
     "then `/`, then it's non-empty name."
 ])
 

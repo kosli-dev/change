@@ -6,7 +6,9 @@ import requests
 PROTOCOL = 'docker://'
 
 NOTES = " ".join([
-    f'The string `{PROTOCOL}` followed by the name+tag of the docker image to fingerprint.',
+    f'To fingerprint a docker image use the string `{PROTOCOL}`',
+    'followed by the name+tag of the docker image.',
+    'The command uses the docker daemon to query the repoDigest of the docker image.',
     'The docker socket must be volume-mounted.',
     'The image must have been pushed to a registry.'
 ])

@@ -5,8 +5,11 @@ import subprocess
 
 PROTOCOL = 'file://'
 
+
 NOTES = " ".join([
-    f'The string `{PROTOCOL}` followed by the full path of the file to fingerprint.',
+    f'To fingerprint a file use the string `{PROTOCOL}` followed by',
+    'the full path of the file to fingerprint.',
+    'The command will calculate the sha digest.',
     'The full path must be volume-mounted.',
 ])
 
