@@ -7,6 +7,7 @@ DOCS_CACHE_DIR = "/app/tests/data/docs_cache"
 
 
 def refresh_doc_ref_cache():  # pragma: no cover
+    # TODO: Create makefile target that calls this function
     files = doc_ref.curl_ref_files()
     for filename, content in files.items():
         with open(f"{DOCS_CACHE_DIR}/{filename}", "w") as file:

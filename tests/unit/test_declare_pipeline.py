@@ -23,7 +23,9 @@ def test_green(capsys):
     }
 
     env = dry_run(core_env_vars('declare_pipeline'))
-    with scoped_merkelypipe_json():
+    directory = "/app/tests/data"
+    filename = "Merkelypipe.json"
+    with ScopedFileCopier(f"{directory}/{filename}", "/data/Merkelypipe.json"):
         method, url, payload = run(External(env=env))
 
     silence(capsys)

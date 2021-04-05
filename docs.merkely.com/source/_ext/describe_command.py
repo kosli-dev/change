@@ -109,6 +109,7 @@ def env_vars_to_table(env_vars, ci_name, command_name):
             para = nodes.paragraph(text="The artifact's ")
             para += nodes.reference('', 'Fingerprint', internal=False, refuri=ref)
 
+            #https://docutils.sourceforge.io/docs/ref/doctree.html
             #div = nodes.inline(text="blah")
             #div.update_basic_atts({"classes": ['inline-code']})
             #para += div

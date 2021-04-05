@@ -1,6 +1,5 @@
 from .scoped_dir_copier import *
 from .scoped_file_copier import *
-from .scoped_merkelypipe_json import *
 from .silence import *
 from .retry_backoff_factor import *
 from .stub_http_503 import *
