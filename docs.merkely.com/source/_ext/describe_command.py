@@ -108,6 +108,11 @@ def env_vars_to_table(env_vars, ci_name, command_name):
             ref = "../../fingerprints/docker_fingerprint.html"
             para = nodes.paragraph(text="The artifact's ")
             para += nodes.reference('', 'Fingerprint', internal=False, refuri=ref)
+
+            #div = nodes.inline(text="blah")
+            #div.update_basic_atts({"classes": ['inline-code']})
+            #para += div
+
             row += nodes.entry("", para)
         else:
             row += nodes.entry("", nodes.paragraph(text=note))

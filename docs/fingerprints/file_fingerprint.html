@@ -3,7 +3,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>File Fingerprint &#8212; Merkely  documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
@@ -58,7 +59,7 @@
      href="../index.html">Contents <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Quick Start:</span></p>
+      aria-labelledby="dLabelGlobalToc"><p><span class="caption-text">Quick Start:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/pipefile.html">Defining Your Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/binary_provenance.html">Logging Artifacts</a></li>
@@ -66,14 +67,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/approvals.html">Creating Approvals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/deployments.html">Logging Deployments</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Concepts:</span></p>
+<p><span class="caption-text">Concepts:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/devops_change_is_the_new_normal.html">DevOps: Change is the New Normal</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/devops_and_change_management.html">DevOps and Change Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/value_stream.html">Mapping your value stream</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../concepts/binary_provenance.html">Understanding Binary Provenance</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Command Reference:</span></p>
+<p><span class="caption-text">Command Reference:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../reference/declare_pipeline.html">Declare Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_artifact.html">Log Artifact</a></li>
@@ -84,7 +85,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../reference/control_deployment.html">Control Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_deployment.html">Log Deployment</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Fingerprint Reference:</span></p>
+<p><span class="caption-text">Fingerprint Reference:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="docker_fingerprint.html">Docker Fingerprint</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">File Fingerprint</a></li>
@@ -118,13 +119,13 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="file-fingerprint">
+  <section id="file-fingerprint">
 <span id="file-fingerprint-label"></span><h1>File Fingerprint<a class="headerlink" href="#file-fingerprint" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="notes">
+<section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
 <p>To fingerprint a file use the string `file://` followed by the full path of the file to fingerprint. The command will calculate the sha digest. The full path must be volume-mounted.</p>
-</div>
-<div class="section" id="example">
+</section>
+<section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     ...
@@ -137,8 +138,8 @@
 <li><p>See also <a class="reference internal" href="docker_fingerprint.html#docker-fingerprint-label"><span class="std std-ref">Docker Fingerprint</span></a></p></li>
 <li><p>See also <a class="reference internal" href="sha256_fingerprint.html#sha256-fingerprint-label"><span class="std std-ref">Sha256 Fingerprint</span></a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>

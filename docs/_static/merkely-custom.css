@@ -61,3 +61,11 @@ div.form-group {
   display: none !important; /* Search is not working */
 }
 
+.inline-code {
+  /* Mimic <code> */
+  font-family: monospace;
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #c7254e;
+  background-color: #f9f2f4;
+}
