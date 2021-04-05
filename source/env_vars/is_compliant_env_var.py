@@ -14,4 +14,4 @@ class IsCompliantEnvVar(RequiredEnvVar):
         return False, ""
 
     def doc_note(self, _ci_name, _command_name):
-        return "TRUE if the artifact is considered compliant from you build process."
+        return 'Set this to "TRUE" if the artifact is considered compliant from you build process.'
