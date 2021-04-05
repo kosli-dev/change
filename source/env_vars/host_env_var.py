@@ -14,5 +14,5 @@ class HostEnvVar(StaticDefaultedEnvVar):
     def doc_note(self, _ci_name, _command_name):
         return " ".join([
             "The API hostname for Merkely.",
-            f"Defaults to {DEFAULT_HOST}",
+            f"Defaults to :code:`{DEFAULT_HOST}`",
         ])

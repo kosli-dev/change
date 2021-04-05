@@ -13,8 +13,8 @@ class DryRunEnvVar(StaticDefaultedEnvVar):
 
     def doc_note(self, _ci_name, _command_name):
         return " ".join([
-            'When set to "TRUE", prints the command\'s url+payload,',
+            'When set to :code:`"TRUE"`, prints the command\'s url+payload,',
             "does not make any HTTP calls to Merkely,",
             "and exits the command with a zero status code.",
-            f"Defaults to {DEFAULT}",
+            f"Defaults to :code:`{DEFAULT}`",
         ])

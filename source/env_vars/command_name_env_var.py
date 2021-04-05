@@ -12,5 +12,5 @@ class CommandNameEnvVar(RequiredEnvVar):
     def doc_note(self, _ci_name, command_name):
         return " ".join([
             "The Merkely command to execute.",
-            f"This page documents a value of `{command_name}`"
+            f"This page documents a value of :code:`{command_name}`"
         ])

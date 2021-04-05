@@ -24,5 +24,5 @@ class UserDataEnvVar(DefaultedEnvVar):
         return " ".join([
             "A pathed filename containing json content to embed in the data logged to Merkely.",
             "If provided, must be volume-mounted in the container.",
-            f"If not provided, the json content defaults to {DEFAULT}",
+            f"If not provided, the json content defaults to :code:`{DEFAULT}`",
         ])

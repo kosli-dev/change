@@ -7,8 +7,8 @@ PROTOCOL = 'sha256://'
 
 NOTES = " ".join([
     'To explicitly provide the sha256 of an artifact (image or file)',
-    f"use the string `{PROTOCOL}` followed by the artifact's 64 character sha256,",
-    "then `/`, then it's non-empty name."
+    f"use the string :code:`{PROTOCOL}` followed by the artifact's 64 character sha256,",
+    "then :code:`/`, then it's non-empty name."
 ])
 
 EXAMPLE = "\n".join([

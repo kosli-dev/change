@@ -121,7 +121,7 @@
       
   <section id="log-test">
 <span id="log-test-label"></span><h1>Log Test<a class="headerlink" href="#log-test" title="Permalink to this headline">¶</a></h1>
-<p>Logs JUnit xml format test summary evidence in Merkely. The JUnit xml format is used by many tools, not just testing frameworks. By default, looks for JUnit .xml files in the /data/junit/ dir.</p>
+<p><span>Logs JUnit xml format test summary evidence in Merkely. The JUnit xml format is used by many tools, not just testing frameworks. By default, looks for JUnit .xml files in the </span><span class="inline-code">/data/junit/</span><span> dir.</span></p>
 <ul class="nav nav-tabs">
    <li class="active"><a data-toggle="tab" href="#docker">Docker</a></li>
    <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
@@ -158,7 +158,7 @@
 <tbody>
 <tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
 <td><p>yes</p></td>
-<td><p>The Merkely command to execute. This page documents a value of `log_test`</p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">log_test</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
 <td><p>yes</p></td>
@@ -166,43 +166,43 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_EVIDENCE_TYPE</p></td>
 <td><p>yes</p></td>
-<td><p>The evidence type.</p></td>
+<td><p><span>The evidence type.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_TEST_RESULTS_DIR</p></td>
 <td><p>no</p></td>
-<td><p>The directory where Merkely will look for JUnit .xml files. Must be volume-mounted in the container. Defaults to /data/junit/</p></td>
+<td><p><span>The directory where Merkely will look for JUnit .xml files. Must be volume-mounted in the container. Defaults to </span><span class="inline-code">/data/junit/</span><span></span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>no</p></td>
-<td><p>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by a summary, eg “All tests passed in 1 test suites”</p></td>
+<td><p><span>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by a summary, eg “All tests passed in 1 test suites”</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
 <td><p>yes</p></td>
-<td><p>Link to the build in the ci system.</p></td>
+<td><p><span>Link to the build in the ci system.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>
-<td><p>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to {}</p></td>
+<td><p><span>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to </span><span class="inline-code">{}</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
+<td><p><span>Your user/organization name in Merkely.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
 <td><p>yes</p></td>
-<td><p>Your pipeline name in your user/organization in Merkely.</p></td>
+<td><p><span>Your pipeline name in your user/organization in Merkely.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
-<td><p>Your secret API token for Merkely. To turn off all commands in a pipeline set this to “DRY_RUN”.</p></td>
+<td><p><span>Your secret API token for Merkely. To turn off all commands in a pipeline set this to </span><span class="inline-code">“DRY_RUN”</span><span>.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>The API hostname for Merkely. Defaults to https://app.merkely.com</p></td>
+<td><p><span>The API hostname for Merkely. Defaults to </span><span class="inline-code">https://app.merkely.com</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_DRY_RUN</p></td>
 <td><p>no</p></td>
-<td><p>When set to “TRUE”, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to “FALSE”</p></td>
+<td><p><span>When set to </span><span class="inline-code">“TRUE”</span><span>, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to </span><span class="inline-code">“FALSE”</span><span></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -235,7 +235,7 @@
 <tbody>
 <tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
 <td><p>yes</p></td>
-<td><p>The Merkely command to execute. This page documents a value of `log_test`</p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">log_test</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
 <td><p>yes</p></td>
@@ -243,43 +243,43 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_EVIDENCE_TYPE</p></td>
 <td><p>yes</p></td>
-<td><p>The evidence type.</p></td>
+<td><p><span>The evidence type.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_TEST_RESULTS_DIR</p></td>
 <td><p>no</p></td>
-<td><p>The directory where Merkely will look for JUnit .xml files. Must be volume-mounted in the container. Defaults to /data/junit/</p></td>
+<td><p><span>The directory where Merkely will look for JUnit .xml files. Must be volume-mounted in the container. Defaults to </span><span class="inline-code">/data/junit/</span><span></span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>no</p></td>
-<td><p>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by a summary, eg “All tests passed in 1 test suites”</p></td>
+<td><p><span>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by a summary, eg “All tests passed in 1 test suites”</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
 <td><p>no</p></td>
-<td><p>Link to the build in the ci system.</p></td>
+<td><p><span>Link to the build in the ci system.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>
-<td><p>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to {}</p></td>
+<td><p><span>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to </span><span class="inline-code">{}</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
+<td><p><span>Your user/organization name in Merkely.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
 <td><p>yes</p></td>
-<td><p>Your pipeline name in your user/organization in Merkely.</p></td>
+<td><p><span>Your pipeline name in your user/organization in Merkely.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
-<td><p>Your secret API token for Merkely. To turn off all commands in a pipeline set this to “DRY_RUN”.</p></td>
+<td><p><span>Your secret API token for Merkely. To turn off all commands in a pipeline set this to </span><span class="inline-code">“DRY_RUN”</span><span>.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>The API hostname for Merkely. Defaults to https://app.merkely.com</p></td>
+<td><p><span>The API hostname for Merkely. Defaults to </span><span class="inline-code">https://app.merkely.com</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_DRY_RUN</p></td>
 <td><p>no</p></td>
-<td><p>When set to “TRUE”, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to “FALSE”</p></td>
+<td><p><span>When set to </span><span class="inline-code">“TRUE”</span><span>, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to </span><span class="inline-code">“FALSE”</span><span></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -308,7 +308,7 @@
 <tbody>
 <tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
 <td><p>yes</p></td>
-<td><p>The Merkely command to execute. This page documents a value of `log_test`</p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">log_test</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
 <td><p>yes</p></td>
@@ -316,43 +316,43 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_EVIDENCE_TYPE</p></td>
 <td><p>yes</p></td>
-<td><p>The evidence type.</p></td>
+<td><p><span>The evidence type.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_TEST_RESULTS_DIR</p></td>
 <td><p>no</p></td>
-<td><p>The directory where Merkely will look for JUnit .xml files. Must be volume-mounted in the container. Defaults to /data/junit/</p></td>
+<td><p><span>The directory where Merkely will look for JUnit .xml files. Must be volume-mounted in the container. Defaults to </span><span class="inline-code">/data/junit/</span><span></span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>no</p></td>
-<td><p>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by a summary, eg “All tests passed in 1 test suites”</p></td>
+<td><p><span>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by a summary, eg “All tests passed in 1 test suites”</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
 <td><p>no</p></td>
-<td><p>Link to the build in the ci system.</p></td>
+<td><p><span>Link to the build in the ci system.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>
-<td><p>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to {}</p></td>
+<td><p><span>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to </span><span class="inline-code">{}</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
+<td><p><span>Your user/organization name in Merkely.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
 <td><p>yes</p></td>
-<td><p>Your pipeline name in your user/organization in Merkely.</p></td>
+<td><p><span>Your pipeline name in your user/organization in Merkely.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
-<td><p>Your secret API token for Merkely. To turn off all commands in a pipeline set this to “DRY_RUN”.</p></td>
+<td><p><span>Your secret API token for Merkely. To turn off all commands in a pipeline set this to </span><span class="inline-code">“DRY_RUN”</span><span>.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>The API hostname for Merkely. Defaults to https://app.merkely.com</p></td>
+<td><p><span>The API hostname for Merkely. Defaults to </span><span class="inline-code">https://app.merkely.com</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_DRY_RUN</p></td>
 <td><p>no</p></td>
-<td><p>When set to “TRUE”, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to “FALSE”</p></td>
+<td><p><span>When set to </span><span class="inline-code">“TRUE”</span><span>, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to </span><span class="inline-code">“FALSE”</span><span></span></p></td>
 </tr>
 </tbody>
 </table>

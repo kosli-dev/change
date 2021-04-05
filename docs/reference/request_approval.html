@@ -121,7 +121,7 @@
       
   <section id="request-approval">
 <span id="request-approval-label"></span><h1>Request Approval<a class="headerlink" href="#request-approval" title="Permalink to this headline">¶</a></h1>
-<p>Request an approval in Merkely.</p>
+<p><span>Request an approval in Merkely.</span></p>
 <ul class="nav nav-tabs">
    <li class="active"><a data-toggle="tab" href="#docker">Docker</a></li>
    <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
@@ -158,7 +158,7 @@
 <tbody>
 <tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
 <td><p>yes</p></td>
-<td><p>The Merkely command to execute. This page documents a value of `request_approval`</p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">request_approval</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
 <td><p>yes</p></td>
@@ -166,43 +166,43 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_OLDEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the oldest change in the approval request.</p></td>
+<td><p><span>The source commit-ish for the oldest change in the approval request.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_NEWEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the newest change in the approval request.</p></td>
+<td><p><span>The source commit-ish for the newest change in the approval request.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>yes</p></td>
-<td><p>A description for the approval request.</p></td>
+<td><p><span>A description for the approval request.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>
-<td><p>The directory where the source git repository is volume-mounted. Defaults to `/src`.</p></td>
+<td><p><span>The directory where the source git repository is volume-mounted. Defaults to `/src`.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>
-<td><p>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to {}</p></td>
+<td><p><span>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to </span><span class="inline-code">{}</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
+<td><p><span>Your user/organization name in Merkely.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
 <td><p>yes</p></td>
-<td><p>Your pipeline name in your user/organization in Merkely.</p></td>
+<td><p><span>Your pipeline name in your user/organization in Merkely.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
-<td><p>Your secret API token for Merkely. To turn off all commands in a pipeline set this to “DRY_RUN”.</p></td>
+<td><p><span>Your secret API token for Merkely. To turn off all commands in a pipeline set this to </span><span class="inline-code">“DRY_RUN”</span><span>.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>The API hostname for Merkely. Defaults to https://app.merkely.com</p></td>
+<td><p><span>The API hostname for Merkely. Defaults to </span><span class="inline-code">https://app.merkely.com</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_DRY_RUN</p></td>
 <td><p>no</p></td>
-<td><p>When set to “TRUE”, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to “FALSE”</p></td>
+<td><p><span>When set to </span><span class="inline-code">“TRUE”</span><span>, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to </span><span class="inline-code">“FALSE”</span><span></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -237,7 +237,7 @@
 <tbody>
 <tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
 <td><p>yes</p></td>
-<td><p>The Merkely command to execute. This page documents a value of `request_approval`</p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">request_approval</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
 <td><p>yes</p></td>
@@ -245,43 +245,43 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_OLDEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the oldest change in the approval request.</p></td>
+<td><p><span>The source commit-ish for the oldest change in the approval request.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_NEWEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the newest change in the approval request.</p></td>
+<td><p><span>The source commit-ish for the newest change in the approval request.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>yes</p></td>
-<td><p>A description for the approval request.</p></td>
+<td><p><span>A description for the approval request.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>
-<td><p>The directory where the source git repository is volume-mounted. Defaults to `/src`.</p></td>
+<td><p><span>The directory where the source git repository is volume-mounted. Defaults to `/src`.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>
-<td><p>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to {}</p></td>
+<td><p><span>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to </span><span class="inline-code">{}</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
+<td><p><span>Your user/organization name in Merkely.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
 <td><p>yes</p></td>
-<td><p>Your pipeline name in your user/organization in Merkely.</p></td>
+<td><p><span>Your pipeline name in your user/organization in Merkely.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
-<td><p>Your secret API token for Merkely. To turn off all commands in a pipeline set this to “DRY_RUN”.</p></td>
+<td><p><span>Your secret API token for Merkely. To turn off all commands in a pipeline set this to </span><span class="inline-code">“DRY_RUN”</span><span>.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>The API hostname for Merkely. Defaults to https://app.merkely.com</p></td>
+<td><p><span>The API hostname for Merkely. Defaults to </span><span class="inline-code">https://app.merkely.com</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_DRY_RUN</p></td>
 <td><p>no</p></td>
-<td><p>When set to “TRUE”, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to “FALSE”</p></td>
+<td><p><span>When set to </span><span class="inline-code">“TRUE”</span><span>, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to </span><span class="inline-code">“FALSE”</span><span></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -312,7 +312,7 @@
 <tbody>
 <tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
 <td><p>yes</p></td>
-<td><p>The Merkely command to execute. This page documents a value of `request_approval`</p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">request_approval</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
 <td><p>yes</p></td>
@@ -320,43 +320,43 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_OLDEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the oldest change in the approval request.</p></td>
+<td><p><span>The source commit-ish for the oldest change in the approval request.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_NEWEST_SRC_COMMITISH</p></td>
 <td><p>yes</p></td>
-<td><p>The source commit-ish for the newest change in the approval request.</p></td>
+<td><p><span>The source commit-ish for the newest change in the approval request.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>yes</p></td>
-<td><p>A description for the approval request.</p></td>
+<td><p><span>A description for the approval request.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_SRC_REPO_ROOT</p></td>
 <td><p>no</p></td>
-<td><p>The directory where the source git repository is volume-mounted. Defaults to `/src`. In a uses: directive the repository directory is automatically volume-mounted to ${{ github.workspace }}.</p></td>
+<td><p><span>The directory where the source git repository is volume-mounted. Defaults to `/src`. In a uses: directive the repository directory is automatically volume-mounted to ${{ github.workspace }}.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
 <td><p>no</p></td>
-<td><p>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to {}</p></td>
+<td><p><span>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to </span><span class="inline-code">{}</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>
-<td><p>Your user/organization name in Merkely.</p></td>
+<td><p><span>Your user/organization name in Merkely.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
 <td><p>yes</p></td>
-<td><p>Your pipeline name in your user/organization in Merkely.</p></td>
+<td><p><span>Your pipeline name in your user/organization in Merkely.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
 <td><p>yes</p></td>
-<td><p>Your secret API token for Merkely. To turn off all commands in a pipeline set this to “DRY_RUN”.</p></td>
+<td><p><span>Your secret API token for Merkely. To turn off all commands in a pipeline set this to </span><span class="inline-code">“DRY_RUN”</span><span>.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_HOST</p></td>
 <td><p>no</p></td>
-<td><p>The API hostname for Merkely. Defaults to https://app.merkely.com</p></td>
+<td><p><span>The API hostname for Merkely. Defaults to </span><span class="inline-code">https://app.merkely.com</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_DRY_RUN</p></td>
 <td><p>no</p></td>
-<td><p>When set to “TRUE”, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to “FALSE”</p></td>
+<td><p><span>When set to </span><span class="inline-code">“TRUE”</span><span>, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to </span><span class="inline-code">“FALSE”</span><span></span></p></td>
 </tr>
 </tbody>
 </table>

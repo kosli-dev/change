@@ -14,7 +14,7 @@ class LogTest(Command):
         return " ".join([
             "Logs JUnit xml format test summary evidence in Merkely.",
             "The JUnit xml format is used by many tools, not just testing frameworks.",
-            f"By default, looks for JUnit .xml files in the {self.default_test_results_dir} dir."
+            f"By default, looks for JUnit .xml files in the :code:`{self.default_test_results_dir}` dir."
         ])
 
     def doc_volume_mounts(self):

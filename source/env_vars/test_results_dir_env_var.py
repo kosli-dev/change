@@ -19,5 +19,5 @@ class TestResultsDirEnvVar(StaticDefaultedEnvVar):
         return " ".join([
             "The directory where Merkely will look for JUnit .xml files.",
             "Must be volume-mounted in the container.",
-            f"Defaults to {DEFAULT_TEST_RESULTS_DIR}"
+            f"Defaults to :code:`{DEFAULT_TEST_RESULTS_DIR}`"
         ])

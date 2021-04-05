@@ -19,6 +19,6 @@ class PipePathEnvVar(StaticDefaultedEnvVar):
         return " ".join([
             f"The full path to your Merkelypipe file.",
             "Must be volume-mounted in the container.",
-            f"Defaults to {DEFAULT}.",
+            f"Defaults to :code:`{DEFAULT}`.",
         ])
 
