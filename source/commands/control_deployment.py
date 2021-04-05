@@ -6,7 +6,7 @@ from lib.api_schema import ApiSchema
 
 class ControlDeployment(Command):
 
-    def doc_summary(self, _ci_name):
+    def doc_summary(self):
         return "Fails a pipeline if an artifact is not approved for deployment in Merkely."
 
     def doc_volume_mounts(self):

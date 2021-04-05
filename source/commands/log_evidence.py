@@ -6,7 +6,7 @@ from lib.api_schema import ApiSchema
 
 class LogEvidence(Command):
 
-    def doc_summary(self, _ci_name):
+    def doc_summary(self):
         return "Logs evidence in Merkely."
 
     def doc_volume_mounts(self):

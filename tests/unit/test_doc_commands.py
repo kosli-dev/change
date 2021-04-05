@@ -9,11 +9,9 @@ def test_doc_summary_for_all_commands():
         if command_name == 'control_pull_request':
             # Not on docs yet. Currently only supported on github
             continue
-        for ci_name in CI_NAMES:
-            summary = command_for(command_name).doc_summary(ci_name)
-            diagnostic = command_name + ':' + ci_name
-            assert isinstance(summary, str), diagnostic
-            assert len(summary) > 0, diagnostic
+        summary = command_for(command_name).doc_summary()
+        assert isinstance(summary, str), command_name
+        assert len(summary) > 0, command_name
 
 
 def test_doc_volume_mounts_for_all_commands():

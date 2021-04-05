@@ -9,7 +9,7 @@ from lib.api_schema import ApiSchema
 
 class ControlPullRequest(Command):
 
-    def doc_summary(self, _ci_name):
+    def doc_summary(self):
         return ""
 
     def doc_volume_mounts(self):

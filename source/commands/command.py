@@ -47,19 +47,19 @@ class Command(ABC):
     # - - - - - - - - - - - - - - - - - - - - -
     # Living documentation
 
-    def doc_summary(self, _ci_name):  # pragma: no cover
+    def doc_summary(self):  # pragma: no cover
         """
         Used in living documentation.
         """
         raise NotImplementedError(self.name)
 
-    def doc_volume_mounts(self, _ci_name):  # pragma: no cover
+    def doc_volume_mounts(self):  # pragma: no cover
         """
         Used in living documentation.
         """
         raise NotImplementedError(self.name)
 
-    def doc_ref(self, _ci_name):  # pragma: no cover
+    def doc_ref(self):  # pragma: no cover
         """
         Used in living documentation.
         """

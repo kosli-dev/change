@@ -10,7 +10,7 @@ import glob
 
 class LogTest(Command):
 
-    def doc_summary(self, _ci_name):
+    def doc_summary(self):
         return " ".join([
             "Logs JUnit xml format test summary evidence in Merkely.",
             "The JUnit xml format is used by many tools, not just testing frameworks.",

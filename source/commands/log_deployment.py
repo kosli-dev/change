@@ -6,7 +6,7 @@ from lib.api_schema import ApiSchema
 
 class LogDeployment(Command):
 
-    def doc_summary(self, _ci_name):
+    def doc_summary(self):
         return "Logs a deployment in Merkely."
 
     def doc_volume_mounts(self):

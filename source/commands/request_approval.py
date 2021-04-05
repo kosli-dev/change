@@ -7,7 +7,7 @@ from lib.git import repo_at, list_commits_between
 
 class RequestApproval(Command):
 
-    def doc_summary(self, _ci_name):
+    def doc_summary(self):
         return "Request an approval in Merkely."
 
     def doc_volume_mounts(self):

@@ -13,7 +13,7 @@ class DescribeCommand(Directive):
         description_type = args[1]
         ci_name = args[2]
         if description_type == "summary":
-            return summary(command_name, ci_name)
+            return summary(command_name)
         if description_type == "invocation_full":
             return invocation_full(command_name, ci_name)
         if description_type == "invocation_minimum":
@@ -23,8 +23,8 @@ class DescribeCommand(Directive):
         return []
 
 
-def summary(command_name, ci_name):
-    return [nodes.paragraph(text=command_for(command_name).doc_summary(ci_name))]
+def summary(command_name):
+    return [nodes.paragraph(text=command_for(command_name).doc_summary())]
 
 
 # The Makefile volume-mounts docs.merkely.com/ to docs/
