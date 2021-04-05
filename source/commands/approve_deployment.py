@@ -19,10 +19,10 @@ class ApproveDeployment(Command):
         else:
             return []
 
-    def doc_ref(self, ci_name):
-        if ci_name == 'docker':
-            return docker_change_makefile_line_ref('merkely_approve_deployment:')
-        return ""
+    def doc_ref(self):
+        return {
+          'docker': (docker_change_makefile_line_ref, 'merkely_approve_deployment:'),
+        }
 
     def __call__(self):
         url = ApiSchema.url_for_approvals(self.host.value, self.merkelypipe)

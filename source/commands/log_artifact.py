@@ -15,13 +15,12 @@ class LogArtifact(Command):
         else:
             return []
 
-    def doc_ref(self, ci_name):
-        if ci_name == 'docker':
-            return docker_change_makefile_line_ref('merkely_log_artifact:')
-        if ci_name == 'github':
-            return github_loan_calculator_master_pipeline_line_ref('MERKELY_COMMAND: log_artifact')
-        if ci_name == 'bitbucket':
-            return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: log_artifact')
+    def doc_ref(self):
+        return {
+            'docker': (docker_change_makefile_line_ref, 'merkely_log_artifact:'),
+            'github': (github_loan_calculator_master_pipeline_line_ref, 'MERKELY_COMMAND: log_artifact'),
+            'bitbucket': (bitbucket_loan_calculator_line_ref, 'MERKELY_COMMAND: log_artifact'),
+        }
 
     def __call__(self):
         url = ApiSchema.url_for_artifacts(self.host.value, self.merkelypipe)

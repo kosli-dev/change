@@ -18,8 +18,8 @@ class ControlPullRequest(Command):
         else:
             return []
 
-    def doc_ref(self, ci_name):
-        return ""
+    def doc_ref(self):
+        return {}
 
     def __call__(self):
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)

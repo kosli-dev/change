@@ -117,8 +117,11 @@ def env_vars_to_table(env_vars, ci_name, command_name):
 
 
 def add_literal_block_link(div, command, ci_name):
-    ref = command.doc_ref(ci_name)
-    if ref != "":
+    result = command.doc_ref().get(ci_name, None)
+    if result is not None:
+        f = result[0]
+        s = result[1]
+        ref = f(s)
         para = nodes.paragraph(text="")
         text = 'Open an example, similar to the fragment below, from a git repo.'
         para += nodes.reference('', text, internal=False, refuri=ref)

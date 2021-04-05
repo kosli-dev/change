@@ -12,13 +12,12 @@ class DeclarePipeline(Command):
     def doc_volume_mounts(self, _ci_name):
         return []
 
-    def doc_ref(self, ci_name):
-        if ci_name == 'docker':
-            return docker_change_makefile_line_ref('merkely_declare_pipeline:')
-        if ci_name == 'github':
-            return github_loan_calculator_master_pipeline_line_ref('MERKELY_COMMAND: declare_pipeline')
-        if ci_name == 'bitbucket':
-            return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: declare_pipeline')
+    def doc_ref(self):
+        return {
+            'docker': (docker_change_makefile_line_ref, 'merkely_declare_pipeline:'),
+            'github': (github_loan_calculator_master_pipeline_line_ref, 'MERKELY_COMMAND: declare_pipeline'),
+            'bitbucket': (bitbucket_loan_calculator_line_ref, 'MERKELY_COMMAND: declare_pipeline'),
+        }
 
     def __call__(self):
         url = ApiSchema.url_for_pipelines(self.host.value, self.merkelypipe)

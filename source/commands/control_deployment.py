@@ -15,13 +15,12 @@ class ControlDeployment(Command):
         else:
             return []
 
-    def doc_ref(self, ci_name):
-        if ci_name == 'docker':
-            return docker_change_makefile_line_ref('merkely_control_deployment:')
-        if ci_name == 'github':
-            return github_loan_calculator_deploy_to_production_line_ref('MERKELY_COMMAND: control_deployment')
-        if ci_name == 'bitbucket':
-            return bitbucket_loan_calculator_line_ref('MERKELY_COMMAND: control_deployment')
+    def doc_ref(self):
+        return {
+            'docker': (docker_change_makefile_line_ref, 'merkely_control_deployment:'),
+            'github': (github_loan_calculator_deploy_to_production_line_ref, 'MERKELY_COMMAND: control_deployment'),
+            'bitbucket': (bitbucket_loan_calculator_line_ref, 'MERKELY_COMMAND: control_deployment'),
+        }
 
     def __call__(self):
         url = ApiSchema.url_for_artifact_approvals(self.host.value, self.merkelypipe, self.fingerprint.sha)
