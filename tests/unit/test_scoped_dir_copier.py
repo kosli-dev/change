@@ -17,7 +17,7 @@ def test_target_dir_exists_in_with_statement_but_not_before_and_not_after():
     assert not path.isdir(target_dir)
 
 
-def test_source_dir_does_not_exist_raises():
+def test_raises_when_source_dir_does_not_exist():
     source_dir = '/app/tests/data/does/not/exist'
     target_dir = '/tmp/a/b/c'
 
@@ -32,7 +32,7 @@ def test_source_dir_does_not_exist_raises():
     assert not path.isdir(target_dir)
 
 
-def test_target_dir_already_exists_raises():
+def test_raises_when_target_dir_already_exists():
     source_dir = '/app/tests/data'
     target_dir = '/app/tests/data'
 

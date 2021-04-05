@@ -8,9 +8,9 @@ class ScopedFileCopier(object):
 
     def __init__(self, source_file, target_file):
         if not path.isfile(source_file):
-            raise self.Error("source file '{} does not exist".format(source_file))
+            raise self.Error(f"source file '{source_file}' does not exist")
         if path.exists(target_file):
-            raise self.Error("target file '{}' already exists".format(target_file))
+            raise self.Error(f"target file '{target_file}' already exists")
         self._source_file = source_file
         self._target_file = target_file
 
