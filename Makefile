@@ -118,6 +118,13 @@ build_docs:
 		${DOCS_IMAGE} make clean html
 	@cp -RP ${ROOT_DIR}/docs.merkely.com/build/html/. docs/.
 
+refresh_doc_ref_cache:
+	@docker run \
+		--entrypoint="" \
+		--rm \
+		-v ${ROOT_DIR}:/app \
+		${IMAGE} python /app/source/docs/doc_ref_cache.py
+
 # - - - - - - - - - - - - - - - - - - - -
 
 push:

@@ -1,8 +1,7 @@
 import os
 import sys
 sys.path.append(os.path.abspath("/app/source"))
-from docs import REF_FILES
-from .doc_ref_cache import read_doc_ref_cache
+from docs.doc_ref_cache import read_doc_ref_cache
 from commands import Command
 
 CI_NAMES = ['docker', 'github', 'bitbucket']
