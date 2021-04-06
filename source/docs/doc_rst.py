@@ -21,7 +21,7 @@ def create_rst_files():
             'approve_deployment',
             'request_approval',
             'control_deployment',
-            'control_pull_request',
+            'control_pull_request',  # TODO: check ordering for this
             'log_deployment',
         ]
         return order.index(lhs) - order.index(rhs)
