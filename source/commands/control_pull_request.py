@@ -85,7 +85,7 @@ class EvidenceTypeEnvVar(StaticDefaultedEnvVar):
         return False, ""
 
     def doc_note(self, _ci_name, _command_name):
-        return "The evidence type."
+        return f"The evidence type. Defaults to :code:`{self.default}`"
 
 
 def get_pull_request_for_current_commit(env):
