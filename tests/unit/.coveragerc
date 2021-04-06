@@ -2,10 +2,12 @@
 omit = source/docs/doc_ref.py
       source/docs/doc_rst.py
       source/docs/doc_txt.py
+      source/docs/compound_para.py
       source/docs/__init__.py
 
 [run]
 omit = source/docs/doc_ref.py
       source/docs/doc_rst.py
       source/docs/doc_txt.py
+      source/docs/compound_para.py
       source/docs/__init__.py

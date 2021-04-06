@@ -1,7 +1,7 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from fingerprinters import build_fingerprinter
-import re
+from docs import compound_para
 
 
 class DescribeFingerprint(Directive):
@@ -20,11 +20,12 @@ class DescribeFingerprint(Directive):
 
 def notes(name):
     notes = build_fingerprinter(name).notes
-    return [compound_para(notes)]
+    return [compound_para(nodes, notes)]
 
 
 def example(name):
-    return [nodes.literal_block(text=build_fingerprinter(name).example)]
+    text = build_fingerprinter(name).example
+    return [nodes.literal_block(text=text)]
 
 
 def setup(app):
@@ -34,20 +35,3 @@ def setup(app):
         'parallel_read_safe': True,
         'parallel_write_safe': True,
     }
-
-
-def compound_para(text):
-    # https://docutils.sourceforge.io/docs/ref/doctree.html
-    # Allow living documentation notes in source/ to contain embedded rst
-    para = nodes.paragraph(text="")
-    regex = re.compile(r':code:`(?P<content>.*?)`')
-    for part in re.split(r'(:code:`.*?`)', text):
-        match = regex.match(part)
-        if match is None:
-            div = nodes.inline(text=part)
-        else:
-            div = nodes.inline(text=match.group('content'))
-            div.update_basic_atts({"classes": ['inline-code']})
-        para += div
-
-    return para

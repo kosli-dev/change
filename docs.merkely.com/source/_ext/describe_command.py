@@ -1,7 +1,7 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
 from commands import Command, External
-import re
+from docs import compound_para
 
 
 class DescribeCommand(Directive):
@@ -26,7 +26,7 @@ class DescribeCommand(Directive):
 
 def summary(command_name):
     text = command_for(command_name).doc_summary()
-    return [compound_para(text)]
+    return [compound_para(nodes, text)]
 
 
 # The Makefile volume-mounts docs.merkely.com/ to docs/
@@ -112,7 +112,7 @@ def env_vars_to_table(env_vars, ci_name, command_name):
             para += nodes.reference('', 'Fingerprint', internal=False, refuri=ref)
             row += nodes.entry("", para)
         else:
-            para = compound_para(note)
+            para = compound_para(nodes, note)
             row += nodes.entry("", para)
         tbody += row
     tgroup += tbody
@@ -135,23 +135,6 @@ def add_literal_block_link(div, command, ci_name):
             "classes": ['literal-block-link']
         })
         div += para
-
-
-def compound_para(text):
-    # https://docutils.sourceforge.io/docs/ref/doctree.html
-    # Allow living documentation notes in source/ to contain embedded rst
-    para = nodes.paragraph(text="")
-    regex = re.compile(r':code:`(?P<content>.*?)`')
-    for part in re.split(r'(:code:`.*?`)', text):
-        match = regex.match(part)
-        if match is None:
-            div = nodes.inline(text=part)
-        else:
-            div = nodes.inline(text=match.group('content'))
-            div.update_basic_atts({"classes": ['inline-code']})
-        para += div
-
-    return para
 
 
 def setup(app):
