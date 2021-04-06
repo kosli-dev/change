@@ -14,6 +14,7 @@ Control Deployment
       <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
       <li><a data-toggle="tab" href="#github">Github</a></li>
    </ul>
+
    <div class="tab-content">
 
 .. describe_command:: control_deployment invocation_full docker

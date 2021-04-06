@@ -10,4 +10,5 @@
    approve_deployment
    request_approval
    control_deployment
+   control_pull_request
    log_deployment

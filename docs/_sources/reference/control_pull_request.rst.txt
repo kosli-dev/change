@@ -1,25 +1,23 @@
 .. This file was auto-generated from /app/source/docs/doc_rst.py
 
-.. _log_test-label:
+.. _control_pull_request-label:
 
-Log Test
---------
+Control Pull Request
+--------------------
 
-.. describe_command:: log_test summary unused
+.. describe_command:: control_pull_request summary unused
 
 .. raw:: html
 
    <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#docker">Docker</a></li>
       <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
-      <li><a data-toggle="tab" href="#github">Github</a></li>
    </ul>
 
    <div class="tab-content">
 
-.. describe_command:: log_test invocation_full docker
-.. describe_command:: log_test invocation_full bitbucket
-.. describe_command:: log_test invocation_full github
+.. describe_command:: control_pull_request invocation_full docker
+.. describe_command:: control_pull_request invocation_full bitbucket
 
 .. raw:: html
 

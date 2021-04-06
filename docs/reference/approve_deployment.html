@@ -83,6 +83,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Approve Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="request_approval.html">Request Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="control_deployment.html">Control Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control_pull_request.html">Control Pull Request</a></li>
 <li class="toctree-l1"><a class="reference internal" href="log_deployment.html">Log Deployment</a></li>
 </ul>
 <p><span class="caption-text">Fingerprint Reference:</span></p>
@@ -127,8 +128,9 @@
    <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
    <li><a data-toggle="tab" href="#github">Github</a></li>
 </ul>
+
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile#L235">Open an example, similar to the fragment below, from a git repo.</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile#L242">Open an example, similar to the fragment below, from a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
     --env MERKELY_COMMAND=approve_deployment \
     --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \

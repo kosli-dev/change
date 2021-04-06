@@ -11,7 +11,6 @@ def create_rst_files():
     Builds the Reference .rst files for each command.
     """
     command_names = Command.names()
-    command_names.remove('control_pull_request')  # Currently only github
 
     def cmp_names(lhs, rhs):
         order = [
@@ -22,6 +21,7 @@ def create_rst_files():
             'approve_deployment',
             'request_approval',
             'control_deployment',
+            'control_pull_request',
             'log_deployment',
         ]
         return order.index(lhs) - order.index(rhs)
@@ -53,14 +53,13 @@ def reference_index_rst(command_names):
 
 
 def reference_command_rst(command_name):
-    ci_names = ['bitbucket', 'github']
     tab = " " * 3
     title = " ".join(list(s.capitalize() for s in command_name.split('_')))
     rst = "\n".join([
         f".. This file was auto-generated from {__file__}",
         "",
         f".. _{command_name}-label:",
-        "", # required!
+        "",  # required!
         title,
         "-" * len(title),
         "",
@@ -68,20 +67,27 @@ def reference_command_rst(command_name):
         "",
         ".. raw:: html",
         "",
-        f'{tab}<ul class="nav nav-tabs">',
-        f'{tab}{tab}<li class="active"><a data-toggle="tab" href="#docker">Docker</a></li>',
-        "",
+        f'{tab}<ul class="nav nav-tabs">\n',
     ])
 
+    if command_name == 'control_pull_request':
+        ci_names = ['docker', 'bitbucket']  # No support for github yet
+    else:
+        ci_names = ['docker', 'bitbucket', 'github']
+
     for ci_name in ci_names:
+        if ci_name == 'docker':
+            active = ' class="active"'
+        else:
+            active = ''
         cap = ci_name.capitalize()
-        rst += f'{tab}{tab}<li><a data-toggle="tab" href="#{ci_name}">{cap}</a></li>\n'
+        rst += f'{tab}{tab}<li{active}><a data-toggle="tab" href="#{ci_name}">{cap}</a></li>\n'
 
     rst += "\n".join([
         f"{tab}</ul>",
+        "",
         f'{tab}<div class="tab-content">',
         "",
-        f".. describe_command:: {command_name} invocation_full docker",
         "",
     ])
 

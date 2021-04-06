@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>Log Test &#8212; Merkely  documentation</title>
+    <title>Control Pull Request &#8212; Merkely  documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -20,8 +20,8 @@
     <script src="../_static/merkely-custom.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Approve Deployment" href="approve_deployment.html" />
-    <link rel="prev" title="Log Evidence" href="log_evidence.html" />
+    <link rel="next" title="Log Deployment" href="log_deployment.html" />
+    <link rel="prev" title="Control Deployment" href="control_deployment.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -79,11 +79,11 @@
 <li class="toctree-l1"><a class="reference internal" href="declare_pipeline.html">Declare Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="log_artifact.html">Log Artifact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="log_evidence.html">Log Evidence</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Log Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="log_test.html">Log Test</a></li>
 <li class="toctree-l1"><a class="reference internal" href="approve_deployment.html">Approve Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="request_approval.html">Request Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="control_deployment.html">Control Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="control_pull_request.html">Control Pull Request</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Control Pull Request</a></li>
 <li class="toctree-l1"><a class="reference internal" href="log_deployment.html">Log Deployment</a></li>
 </ul>
 <p><span class="caption-text">Fingerprint Reference:</span></p>
@@ -120,34 +120,29 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <section id="log-test">
-<span id="log-test-label"></span><h1>Log Test<a class="headerlink" href="#log-test" title="Permalink to this headline">¶</a></h1>
-<p><span>Logs JUnit xml format test summary evidence in Merkely. The JUnit xml format is used by many tools, not just testing frameworks. By default, looks for JUnit .xml files in the </span><span class="inline-code">/data/junit/</span><span> dir.</span></p>
+  <section id="control-pull-request">
+<span id="control-pull-request-label"></span><h1>Control Pull Request<a class="headerlink" href="#control-pull-request" title="Permalink to this headline">¶</a></h1>
+<p><span></span></p>
 <ul class="nav nav-tabs">
    <li class="active"><a data-toggle="tab" href="#docker">Docker</a></li>
    <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
-   <li><a data-toggle="tab" href="#github">Github</a></li>
 </ul>
 
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile#L207">Open an example, similar to the fragment below, from a git repo.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=log_test \
-    --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-    --env MERKELY_EVIDENCE_TYPE=&quot;${MERKELY_EVIDENCE_TYPE}&quot; \
-    --env MERKELY_TEST_RESULTS_DIR=&quot;${MERKELY_TEST_RESULTS_DIR}&quot; \
-    --env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \
-    --env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \
-    --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
-    --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
-    --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
-    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
-    --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
-    --env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \
-    --rm \
-    --volume ${YOUR_TEST_RESULTS_DIR}:/data/junit/ \
-    --volume /var/run/docker.sock:/var/run/docker.sock \
-    merkely/change
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_COMMAND</span><span class="o">=</span><span class="n">control_pull_request</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_FINGERPRINT}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_CI_BUILD_URL}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_DESCRIPTION</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_DESCRIPTION}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_EVIDENCE_TYPE</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_EVIDENCE_TYPE}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_OWNER</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_OWNER}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_PIPELINE}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_API_TOKEN}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_HOST</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_HOST}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_DRY_RUN</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_DRY_RUN}</span><span class="s2">&quot;</span> \
+    <span class="o">--</span><span class="n">rm</span> \
+    <span class="o">--</span><span class="n">volume</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span> \
+    <span class="n">merkely</span><span class="o">/</span><span class="n">change</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -160,31 +155,23 @@
 <tbody>
 <tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
 <td><p>yes</p></td>
-<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">log_test</span><span></span></p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">control_pull_request</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
 <td><p>yes</p></td>
 <td><p>The artifact’s <a class="reference external" href="../../fingerprints/docker_fingerprint.html">Fingerprint</a></p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_EVIDENCE_TYPE</p></td>
-<td><p>yes</p></td>
-<td><p><span>The evidence type.</span></p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_TEST_RESULTS_DIR</p></td>
-<td><p>no</p></td>
-<td><p><span>The directory where Merkely will look for JUnit .xml files. Must be volume-mounted in the container. Defaults to </span><span class="inline-code">/data/junit/</span><span></span></p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
-<td><p>no</p></td>
-<td><p><span>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by a summary, eg “All tests passed in 1 test suites”</span></p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
+<tr class="row-even"><td><p>MERKELY_CI_BUILD_URL</p></td>
 <td><p>yes</p></td>
 <td><p><span>Link to the build in the ci system.</span></p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
+<tr class="row-odd"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>no</p></td>
-<td><p><span>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to </span><span class="inline-code">{}</span><span></span></p></td>
+<td><p><span>Bitbucket pull request.</span></p></td>
+</tr>
+<tr class="row-even"><td><p>MERKELY_EVIDENCE_TYPE</p></td>
+<td><p>no</p></td>
+<td><p><span>The evidence type.</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>
@@ -210,18 +197,15 @@
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
-<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/7a3a95e/bitbucket-pipelines.yml#lines-90">Open an example, similar to the fragment below, from a git repo.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;log_unit_test_results_in_merkely
-        name: Log unit test results in Merkely
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;
+        name: 
         services: [ docker ]
         script:
           - *export_merkely_fingerprint_env_vars
           - pipe: docker://merkely/change:latest
             variables:
-              MERKELY_COMMAND: log_test
+              MERKELY_COMMAND: control_pull_request
               MERKELY_FINGERPRINT: ${MERKELY_FINGERPRINT}
-              MERKELY_EVIDENCE_TYPE: unit_test
-              MERKELY_TEST_RESULTS_DIR: ${PWD}/build/test/
               MERKELY_OWNER: ${MERKELY_OWNER}
               MERKELY_PIPELINE: ${MERKELY_PIPELINE}
               MERKELY_API_TOKEN: ${MERKELY_API_TOKEN}
@@ -237,104 +221,23 @@
 <tbody>
 <tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
 <td><p>yes</p></td>
-<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">log_test</span><span></span></p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">control_pull_request</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
 <td><p>yes</p></td>
 <td><p>The artifact’s <a class="reference external" href="../../fingerprints/docker_fingerprint.html">Fingerprint</a></p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_EVIDENCE_TYPE</p></td>
-<td><p>yes</p></td>
-<td><p><span>The evidence type.</span></p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_TEST_RESULTS_DIR</p></td>
-<td><p>no</p></td>
-<td><p><span>The directory where Merkely will look for JUnit .xml files. Must be volume-mounted in the container. Defaults to </span><span class="inline-code">/data/junit/</span><span></span></p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
-<td><p>no</p></td>
-<td><p><span>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by a summary, eg “All tests passed in 1 test suites”</span></p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
+<tr class="row-even"><td><p>MERKELY_CI_BUILD_URL</p></td>
 <td><p>no</p></td>
 <td><p><span>Link to the build in the ci system. Defaults to </span><span class="inline-code">https://bitbucket.org/${BITBUCKET_WORKSPACE}/${BITBUCKET_REPO_SLUG}/addon/pipelines/home#!/results/${BITBUCKET_BUILD_NUMBER}</span><span></span></p></td>
 </tr>
-<tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
+<tr class="row-odd"><td><p>MERKELY_DESCRIPTION</p></td>
 <td><p>no</p></td>
-<td><p><span>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to </span><span class="inline-code">{}</span><span></span></p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
-<td><p>yes</p></td>
-<td><p><span>Your user/organization name in Merkely.</span></p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_PIPELINE</p></td>
-<td><p>yes</p></td>
-<td><p><span>Your pipeline name in your user/organization in Merkely.</span></p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_API_TOKEN</p></td>
-<td><p>yes</p></td>
-<td><p><span>Your secret API token for Merkely. To turn off all commands in a pipeline set this to </span><span class="inline-code">“DRY_RUN”</span><span>.</span></p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_HOST</p></td>
-<td><p>no</p></td>
-<td><p><span>The API hostname for Merkely. Defaults to </span><span class="inline-code">https://app.merkely.com</span><span></span></p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_DRY_RUN</p></td>
-<td><p>no</p></td>
-<td><p><span>When set to </span><span class="inline-code">“TRUE”</span><span>, prints the command’s url+payload, does not make any HTTP calls to Merkely, and exits the command with a zero status code. Defaults to </span><span class="inline-code">“FALSE”</span><span></span></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="github tab-pane docutils container" id="github">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/master/.github/workflows/master_pipeline.yml#L74">Open an example, similar to the fragment below, from a git repo.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Log unit test results in Merkely
-      uses: docker://merkely/change:latest
-      env:
-        MERKELY_COMMAND: log_test
-        MERKELY_FINGERPRINT: docker://${{ env.IMAGE_TAGGED }}
-        MERKELY_EVIDENCE_TYPE: unit_test
-        MERKELY_TEST_RESULTS_DIR: ${{ github.workspace }}/build/test
-        MERKELY_OWNER: ${{ env.MERKELY_OWNER }}
-        MERKELY_PIPELINE: ${{ env.MERKELY_PIPELINE }}
-        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
-</pre></div>
-</div>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>ENV_VAR_NAME</p></th>
-<th class="head"><p>Required?</p></th>
-<th class="head"><p>Notes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
-<td><p>yes</p></td>
-<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">log_test</span><span></span></p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
-<td><p>yes</p></td>
-<td><p>The artifact’s <a class="reference external" href="../../fingerprints/docker_fingerprint.html">Fingerprint</a></p></td>
+<td><p><span>Bitbucket pull request.</span></p></td>
 </tr>
 <tr class="row-even"><td><p>MERKELY_EVIDENCE_TYPE</p></td>
-<td><p>yes</p></td>
+<td><p>no</p></td>
 <td><p><span>The evidence type.</span></p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_TEST_RESULTS_DIR</p></td>
-<td><p>no</p></td>
-<td><p><span>The directory where Merkely will look for JUnit .xml files. Must be volume-mounted in the container. Defaults to </span><span class="inline-code">/data/junit/</span><span></span></p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_DESCRIPTION</p></td>
-<td><p>no</p></td>
-<td><p><span>A description of the test summary. Defaults to “JUnit results xml verified by merkely/change: ” followed by a summary, eg “All tests passed in 1 test suites”</span></p></td>
-</tr>
-<tr class="row-odd"><td><p>MERKELY_CI_BUILD_URL</p></td>
-<td><p>no</p></td>
-<td><p><span>Link to the build in the ci system. Defaults to </span><span class="inline-code">${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}</span><span></span></p></td>
-</tr>
-<tr class="row-even"><td><p>MERKELY_USER_DATA</p></td>
-<td><p>no</p></td>
-<td><p><span>A pathed filename containing json content to embed in the data logged to Merkely. If provided, must be volume-mounted in the container. If not provided, the json content defaults to </span><span class="inline-code">{}</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_OWNER</p></td>
 <td><p>yes</p></td>

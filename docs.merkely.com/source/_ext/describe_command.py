@@ -120,7 +120,8 @@ def env_vars_to_table(env_vars, ci_name, command_name):
 
 
 def add_literal_block_link(div, command, ci_name):
-    result = command.doc_ref().get(ci_name, None)
+    ref = command.doc_ref()
+    result = ref.get(ci_name, None)
     if result is not None:
         f = result[0]
         s = result[1]

@@ -22,19 +22,18 @@ def create_txt_files():
 def generate_docs():
     docs = {}
     command_names = sorted(Command.names())
-    command_names.remove('control_pull_request')  # Currently only github
 
     for command_name in command_names:
         filename = f"{REFERENCE_DIR}/min/{command_name}.txt"
         lines = min_lines_for(command_name)
         docs[filename] = lines
-    ci_names = [
-        'docker',
-        'bitbucket',
-        'github',
-    ]
-    for ci_name in ci_names:
-        for command_name in command_names:
+
+    for command_name in command_names:
+        if command_name == 'control_pull_request':
+            ci_names = ['docker', 'bitbucket']
+        else:
+            ci_names = ['docker', 'bitbucket', 'github']
+        for ci_name in ci_names:
             filename = f"{REFERENCE_DIR}/{ci_name}/{command_name}.txt"
             lines = lines_for(ci_name, command_name)
             docs[filename] = lines
@@ -99,7 +98,8 @@ yml_name_texts = {
     'log_test': 'Log unit test results in Merkely',
     'request_approval': 'Request approval in Merkely',
     'approve_deployment': 'Approve a deployment',
-    'control_deployment': 'Fail the pipeline unless approved for deployment in Merkely'
+    'control_deployment': 'Fail the pipeline unless approved for deployment in Merkely',
+    'control_pull_request': '',  # TODO: fill in
 }
 
 

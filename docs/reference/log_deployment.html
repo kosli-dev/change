@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="&lt;no title&gt;" href="../fingerprints/index.html" />
-    <link rel="prev" title="Control Deployment" href="control_deployment.html" />
+    <link rel="prev" title="Control Pull Request" href="control_pull_request.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -83,6 +83,7 @@
 <li class="toctree-l1"><a class="reference internal" href="approve_deployment.html">Approve Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="request_approval.html">Request Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="control_deployment.html">Control Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control_pull_request.html">Control Pull Request</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Log Deployment</a></li>
 </ul>
 <p><span class="caption-text">Fingerprint Reference:</span></p>
@@ -127,8 +128,9 @@
    <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
    <li><a data-toggle="tab" href="#github">Github</a></li>
 </ul>
+
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile#L267">Open an example, similar to the fragment below, from a git repo.</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/master/Makefile#L274">Open an example, similar to the fragment below, from a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_COMMAND</span><span class="o">=</span><span class="n">log_deployment</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_FINGERPRINT}</span><span class="s2">&quot;</span> \
