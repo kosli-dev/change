@@ -206,7 +206,7 @@ def test_bitbucket_api_response_404(capsys, mocker):
 
     silence(capsys)
     expected_error_message = " ".join([
-        "Repository does not exists or pull requests are not indexed.",
+        "Repository does not exist or pull requests are not indexed.",
         "Please make sure Pull Request Commit Links app is installed"
     ])
     assert str(exc.value) == expected_error_message
