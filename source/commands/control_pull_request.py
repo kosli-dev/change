@@ -10,7 +10,7 @@ from lib.api_schema import ApiSchema
 class ControlPullRequest(Command):
 
     def doc_summary(self):
-        return ""
+        return ""  # TODO: Fill this in
 
     def doc_volume_mounts(self):
         return ["/var/run/docker.sock:/var/run/docker.sock"]
@@ -116,7 +116,7 @@ def get_pull_requests_from_bitbucket_api(workspace, repository, commit, username
         raise ChangeError(message)
     elif response.status_code == 404:
         message = " ".join([
-            "Repository does not exists or pull requests are not indexed.",
+            "Repository does not exist or pull requests are not indexed.",
             "Please make sure Pull Request Commit Links app is installed"
         ])
         raise ChangeError(message)
