@@ -185,10 +185,7 @@ Eg:
     )
     const prNum = ev.pull_request.number 
 
-This could be awkward. The information in the file $GITHUB_EVENT_PATH
-needs to get inside the merkely/change container somehow. volume-mounting is
-problematic (in general as some CI's don't allow it).
-Or do it CI itself and create an env-var. Maybe will require some jq.
-Look into using pygit with David? 
+The information in the file $GITHUB_EVENT_PATH needs to get inside 
+the merkely/change container somehow. 
 Will also need (username,password)
 """
