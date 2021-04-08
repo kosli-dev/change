@@ -18,10 +18,10 @@ def create_rst_files():
             'log_artifact',
             'log_evidence',
             'log_test',
+            'control_pull_request',
             'approve_deployment',
             'request_approval',
             'control_deployment',
-            'control_pull_request',  # TODO: check ordering for this
             'log_deployment',
         ]
         return order.index(lhs) - order.index(rhs)

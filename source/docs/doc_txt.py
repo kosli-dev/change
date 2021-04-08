@@ -99,7 +99,7 @@ yml_name_texts = {
     'request_approval': 'Request approval in Merkely',
     'approve_deployment': 'Approve a deployment',
     'control_deployment': 'Fail the pipeline unless approved for deployment in Merkely',
-    'control_pull_request': 'Control pull request',  # TODO: fill in
+    'control_pull_request': 'Fail the pipeline unless approved pull_request for this commit',
 }
 
 

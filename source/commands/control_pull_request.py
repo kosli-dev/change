@@ -10,7 +10,9 @@ from lib.api_schema import ApiSchema
 class ControlPullRequest(Command):
 
     def doc_summary(self):
-        return ""  # TODO: Fill this in
+        return "Fail the pipeline unless approved pull_request for this commit"
+        # Checks the bitbucket pull request associated with this commit.
+        # Fails the pipeline if no approved pull request found.
 
     def doc_volume_mounts(self):
         return ["/var/run/docker.sock:/var/run/docker.sock"]
