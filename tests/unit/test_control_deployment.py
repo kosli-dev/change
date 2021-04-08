@@ -13,7 +13,7 @@ SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 
 
 def test_when_no_approvals_then_raises(capsys, mocker):
-    mocked_get = mocker.patch('commands.runner.http_get_json', return_value=GetJsonStub([]))
+    mocked_get = mocker.patch('commands.runner.Http.get_json', return_value=GetJsonStub([]))
 
     env = control_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -31,7 +31,7 @@ def test_when_no_approvals_then_raises(capsys, mocker):
 
 def test_when_approved_then_does_not_raise(capsys, mocker):
     mock_payload = [{"some_random": "stuff"}]
-    mocked_get = mocker.patch('commands.runner.http_get_json', return_value=GetJsonStub(mock_payload))
+    mocked_get = mocker.patch('commands.runner.Http.get_json', return_value=GetJsonStub(mock_payload))
     mocked_control_deployment_approved = mocker.patch('commands.control_deployment.control_deployment_approved',
                                                       return_value=True)
 

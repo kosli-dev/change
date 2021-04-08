@@ -48,7 +48,7 @@ def test_bitbucket(capsys, mocker):
 
     rv1 = MockedAPIResponse(200, mocked_bitbucket_pull_requests_api_response())
     mocked_get = mocker.patch('commands.control_pull_request.requests.get', return_value=rv1)
-    mocked_http_put_payload = mocker.patch('commands.runner.http_put_payload', return_value=MockedAPIResponse(200, {}))
+    mocked_http_put_payload = mocker.patch('commands.runner.Http.put_payload', return_value=MockedAPIResponse(200, {}))
     env = control_pull_request_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
         external = External(env=env, docker_fingerprinter=fingerprinter)
@@ -115,7 +115,7 @@ def test_bitbucket_not_compliant_raises(capsys, mocker):
     response['values'] = []
     mocked_get = mocker.patch('commands.control_pull_request.requests.get',
                               return_value=MockedAPIResponse(200, response))
-    mocked_http_put_payload = mocker.patch('commands.runner.http_put_payload', return_value=MockedAPIResponse(200, {}))
+    mocked_http_put_payload = mocker.patch('commands.runner.Http.put_payload', return_value=MockedAPIResponse(200, {}))
 
     env = control_pull_request_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
