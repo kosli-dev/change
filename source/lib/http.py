@@ -5,8 +5,8 @@ from requests.auth import HTTPBasicAuth
 
 class Http:
 
-    def __init__(self):
-        pass
+    def __init__(self, stdout):
+        self._stdout = stdout
 
     def get_json(self, url, api_token):
         auth = HTTPBasicAuth(api_token, 'unused')

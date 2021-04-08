@@ -2,6 +2,7 @@ import json
 import os
 from errors import ChangeError
 from fingerprinters import *
+from lib.stdout import Stdout
 
 
 class External:
@@ -77,11 +78,3 @@ class External:
             raise ChangeError(f"{filename} is a directory.")
         except json.decoder.JSONDecodeError as exc:
             raise ChangeError(f"{filename} invalid json - {str(exc)}")
-
-
-import builtins
-
-
-class Stdout:
-    def print(self, string):
-        builtins.print(string)

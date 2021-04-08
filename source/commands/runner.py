@@ -28,7 +28,7 @@ def run(external):
             stdout.print("DRY RUN: Get not performed")
             response = None
         else:
-            response = Http().get_json(url, api_token)
+            response = Http(stdout).get_json(url, api_token)
 
     if method == 'PUT':
         stdout.print("Putting this payload:")
@@ -38,7 +38,7 @@ def run(external):
             stdout.print("DRY RUN: Put not sent")
             response = None
         else:
-            response = Http().put_payload(url, payload, api_token)
+            response = Http(stdout).put_payload(url, payload, api_token)
 
     if method == 'POST':
         stdout.print("Posting this payload:")
@@ -48,7 +48,7 @@ def run(external):
             stdout.print("DRY RUN: Post not sent")
             response = None
         else:
-            response = Http().post_payload(url, payload, api_token)
+            response = Http(stdout).post_payload(url, payload, api_token)
 
     if response is not None:
         raise_unless_success(response)
