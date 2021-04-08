@@ -80,10 +80,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_artifact.html">Log Artifact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_evidence.html">Log Evidence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_test.html">Log Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/control_pull_request.html">Control Pull Request</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/approve_deployment.html">Approve Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/request_approval.html">Request Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/control_deployment.html">Control Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/control_pull_request.html">Control Pull Request</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_deployment.html">Log Deployment</a></li>
 </ul>
 <p><span class="caption-text">Fingerprint Reference:</span></p>
@@ -122,7 +122,22 @@
       
   <section id="logging-controls">
 <h1>Logging Controls<a class="headerlink" href="#logging-controls" title="Permalink to this headline">¶</a></h1>
-<p>…</p>
+<p>An important aspect of DevOps compliance is meeting the expectations of
+risk controls in the pipeline.  Examples include:</p>
+<ul class="simple">
+<li><p>Running unit tests/integration tests</p></li>
+<li><p>Performing security scanning</p></li>
+<li><p>Code coverage</p></li>
+<li><p>etc</p></li>
+</ul>
+<p>In your <a class="reference internal" href="../reference/declare_pipeline.html#declare-pipeline-label"><span class="std std-ref">Declare Pipeline</span></a> command you specify the names of the controls you expect to be performed in the pipeline.  As you execute these steps, you can use these commands to log the evidence that these controls have been performed.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../reference/control_pull_request.html#control-pull-request-label"><span class="std std-ref">Control Pull Request</span></a> command to control and send evidence that a pull request is approved for this commit</p></li>
+<li><p><a class="reference internal" href="../reference/log_test.html#log-test-label"><span class="std std-ref">Log Test</span></a> command to send evidence that a test has been executed</p></li>
+<li><p><a class="reference internal" href="../reference/log_evidence.html#log-evidence-label"><span class="std std-ref">Log Evidence</span></a> command to send evidence that a generic control has been performed</p></li>
+</ul>
+<img alt="../_images/controls.png" src="../_images/controls.png" />
+<p>Here is an example of how to use <a class="reference internal" href="../reference/log_evidence.html#log-evidence-label"><span class="std std-ref">Log Evidence</span></a> from your pipeline:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_COMMAND</span><span class="o">=</span><span class="n">log_evidence</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="n">docker</span><span class="p">:</span><span class="o">//</span><span class="n">acme</span><span class="o">/</span><span class="n">road</span><span class="o">-</span><span class="n">runner</span><span class="p">:</span><span class="mf">2.3</span> \

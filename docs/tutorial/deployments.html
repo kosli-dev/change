@@ -80,10 +80,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_artifact.html">Log Artifact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_evidence.html">Log Evidence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_test.html">Log Test</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/control_pull_request.html">Control Pull Request</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/approve_deployment.html">Approve Deployment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/request_approval.html">Request Approval</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/control_deployment.html">Control Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/control_pull_request.html">Control Pull Request</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/log_deployment.html">Log Deployment</a></li>
 </ul>
 <p><span class="caption-text">Fingerprint Reference:</span></p>
@@ -122,7 +122,7 @@
       
   <section id="logging-deployments">
 <h1>Logging Deployments<a class="headerlink" href="#logging-deployments" title="Permalink to this headline">¶</a></h1>
-<p>…</p>
+<p>An important aspect of change management is logging all changes to production environments.  To do this from a devops context, we use the <a class="reference internal" href="../reference/log_deployment.html#log-deployment-label"><span class="std std-ref">Log Deployment</span></a> command.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_COMMAND</span><span class="o">=</span><span class="n">log_deployment</span> \
     <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="n">docker</span><span class="p">:</span><span class="o">//</span><span class="n">acme</span><span class="o">/</span><span class="n">road</span><span class="o">-</span><span class="n">runner</span><span class="p">:</span><span class="mf">2.3</span> \

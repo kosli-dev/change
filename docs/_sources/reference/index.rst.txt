@@ -7,8 +7,8 @@
    log_artifact
    log_evidence
    log_test
+   control_pull_request
    approve_deployment
    request_approval
    control_deployment
-   control_pull_request
    log_deployment
