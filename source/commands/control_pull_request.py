@@ -20,7 +20,7 @@ class ControlPullRequest(Command):
 
     def __call__(self):
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
-        is_compliant, pull_requests = get_pull_request_for_current_commit(self.env)
+        is_compliant, pull_requests = self._get_pull_request_for_current_commit(self.env)
         payload = {
             "evidence_type": self.evidence_type.value,
             "contents": {
@@ -61,6 +61,86 @@ class ControlPullRequest(Command):
             'dry_run'
         ]
 
+    def _get_pull_request_for_current_commit(self, env):
+        workspace = env.get('BITBUCKET_WORKSPACE', None)
+        repository = env.get('BITBUCKET_REPO_SLUG', None)
+        commit = env.get('BITBUCKET_COMMIT', None)
+        user = env.get('BITBUCKET_API_USER', None)
+        password = env.get('BITBUCKET_API_TOKEN', None)
+
+        is_compliant, pull_requests = self._get_pull_requests_from_bitbucket_api(
+            workspace=workspace, repository=repository, commit=commit,
+            username=user, password=password)
+
+        return is_compliant, pull_requests
+
+    def _get_pull_requests_from_bitbucket_api(self, workspace, repository, commit, username, password):
+        is_compliant = False
+        pull_requests_evidence = []
+
+        url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repository}/commit/{commit}/pullrequests"
+        print("Getting pull requests from " + url)
+        response = requests.get(url, auth=(username, password))
+        if response.status_code == 200:
+            is_compliant = self._parse_response(commit, password, pull_requests_evidence, response, username)
+        elif response.status_code == 202:
+            message = "Repository pull requests are still being indexed, please retry."
+            raise ChangeError(message)
+        elif response.status_code == 404:
+            message = " ".join([
+                "Repository does not exist or pull requests are not indexed.",
+                "Please make sure Pull Request Commit Links app is installed"
+            ])
+            raise ChangeError(message)
+        else:
+            message = " ".join([
+                "Exception occurred in fetching pull requests.",
+                f"Http return code is {response.status_code}"
+            ])
+            message += f"\n    {response.text}"
+            raise ChangeError(message)
+
+        return is_compliant, pull_requests_evidence
+
+    def _parse_response(self, commit, password, pull_requests_evidence, response, username):
+        print("Pull requests response: " + response.text)
+        pull_requests_json = json.loads(response.text)
+        pull_requests = pull_requests_json["values"]
+        for pr in pull_requests:
+            pr_evidence = {}
+
+            pr_html_url = pr['links']['html']['href']
+            pr_api_url = pr['links']['self']['href']
+
+            pr_evidence['pullRequestMergeCommit'] = commit
+            pr_evidence['pullRequestURL'] = pr_html_url
+
+            pr_evidence = self._get_pull_request_details_from_bitbucket(pr_evidence, pr_api_url, username, password)
+
+            pull_requests_evidence.append(pr_evidence)
+        is_compliant = pull_requests_evidence != []
+        return is_compliant
+
+
+    def _get_pull_request_details_from_bitbucket(self, pr_evidence, pr_api_url, username, password):
+        response = requests.get(pr_api_url, auth=(username, password))
+        if response.status_code == 200:
+            pr_json = json.loads(response.text)
+            pr_evidence['pullRequestState'] = pr_json['state']
+            participants = pr_json['participants']
+            approvers = ""
+            if len(participants) > 0:
+                for participant in participants:
+                    if participant['approved']:
+                        approvers = approvers + participant['user']['display_name'] + ","
+                approvers = approvers[:-1]
+                pr_evidence['approvers'] = approvers
+            else:
+                print("No approvers found")
+        else:
+            print("Error occurred in fetching pull request details. Please review repository permissions.")
+        return pr_evidence
+
 
 class DescriptionEnvVar(StaticDefaultedEnvVar):
 
@@ -86,89 +166,6 @@ class EvidenceTypeEnvVar(StaticDefaultedEnvVar):
 
     def doc_note(self, _ci_name, _command_name):
         return f"The evidence type. Defaults to :code:`{self.default}`"
-
-
-def get_pull_request_for_current_commit(env):
-    workspace = env.get('BITBUCKET_WORKSPACE', None)
-    repository = env.get('BITBUCKET_REPO_SLUG', None)
-    commit = env.get('BITBUCKET_COMMIT', None)
-    user = env.get('BITBUCKET_API_USER', None)
-    password = env.get('BITBUCKET_API_TOKEN', None)
-
-    is_compliant, pull_requests = get_pull_requests_from_bitbucket_api(
-        workspace=workspace, repository=repository, commit=commit,
-        username=user, password=password)
-
-    return is_compliant, pull_requests
-
-
-def get_pull_requests_from_bitbucket_api(workspace, repository, commit, username, password):
-    is_compliant = False
-    pull_requests_evidence = []
-
-    url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repository}/commit/{commit}/pullrequests"
-    print("Getting pull requests from " + url)
-    response = requests.get(url, auth=(username, password))
-    if response.status_code == 200:
-        is_compliant = parse_response(commit, password, pull_requests_evidence, response, username)
-    elif response.status_code == 202:
-        message = "Repository pull requests are still being indexed, please retry."
-        raise ChangeError(message)
-    elif response.status_code == 404:
-        message = " ".join([
-            "Repository does not exist or pull requests are not indexed.",
-            "Please make sure Pull Request Commit Links app is installed"
-        ])
-        raise ChangeError(message)
-    else:
-        message = " ".join([
-            "Exception occurred in fetching pull requests.",
-            f"Http return code is {response.status_code}"
-        ])
-        message += f"\n    {response.text}"
-        raise ChangeError(message)
-
-    return is_compliant, pull_requests_evidence
-
-
-def parse_response(commit, password, pull_requests_evidence, response, username):
-    print("Pull requests response: " + response.text)
-    pull_requests_json = json.loads(response.text)
-    pull_requests = pull_requests_json["values"]
-    for pr in pull_requests:
-        pr_evidence = {}
-
-        pr_html_url = pr['links']['html']['href']
-        pr_api_url = pr['links']['self']['href']
-
-        pr_evidence['pullRequestMergeCommit'] = commit
-        pr_evidence['pullRequestURL'] = pr_html_url
-
-        pr_evidence = get_pull_request_details_from_bitbucket(pr_evidence, pr_api_url, username, password)
-
-        pull_requests_evidence.append(pr_evidence)
-    is_compliant = pull_requests_evidence != []
-    return is_compliant
-
-
-def get_pull_request_details_from_bitbucket(pr_evidence, pr_api_url, username, password):
-    response = requests.get(pr_api_url, auth=(username, password))
-    if response.status_code == 200:
-        pr_json = json.loads(response.text)
-        pr_evidence['pullRequestState'] = pr_json['state']
-        participants = pr_json['participants']
-        approvers = ""
-        if len(participants) > 0:
-            for participant in participants:
-                if participant['approved']:
-                    approvers = approvers + participant['user']['display_name'] + ","
-            approvers = approvers[:-1]
-            pr_evidence['approvers'] = approvers
-        else:
-            print("No approvers found")
-    else:
-        print("Error occurred in fetching pull request details. Please review repository permissions.")
-    return pr_evidence
 
 
 """
