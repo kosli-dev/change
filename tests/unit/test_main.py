@@ -1,13 +1,11 @@
 from commands import External, main
 from tests.utils import *
 
-from requests.auth import HTTPBasicAuth
-
 IMAGE_NAME = "acme/widget:4.67"
 SHA256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
 
 
-def test_GET_command(mocker, capsys):
+def test_GET_command(mocker):
     mocked_get = mocker.patch('lib.http_retry.http.get', return_value=HttpStatus(200))
     env = control_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -17,10 +15,9 @@ def test_GET_command(mocker, capsys):
     assert exit_code == 144
     # assert mocked.assert_called_once_with(...)
     mocked_get.assert_called_once()
-    silence(capsys)
 
 
-def test_PUT_command(mocker, capsys):
+def test_PUT_command(mocker):
     mocked_put = mocker.patch('lib.http_retry.http.put', return_value=HttpStatus(200))
     env = log_evidence_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -30,10 +27,9 @@ def test_PUT_command(mocker, capsys):
     assert exit_code == 0
     # assert mocked.assert_called_once_with(...)
     mocked_put.assert_called_once()
-    silence(capsys)
 
 
-def test_POST_command(mocker, capsys):
+def test_POST_command(mocker):
     mocked_post = mocker.patch('lib.http_retry.http.post', return_value=HttpStatus(200))
     env = log_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -43,10 +39,9 @@ def test_POST_command(mocker, capsys):
     assert exit_code == 0
     # assert mocked.assert_called_once_with(...)
     mocked_post.assert_called_once()
-    silence(capsys)
 
 
-def test_command_raises_when_http_response_is_not_200_or_201(mocker, capsys):
+def test_command_raises_when_http_response_is_not_200_or_201(mocker):
     mocked_post = mocker.patch('lib.http_retry.http.post', return_value=HttpStatus(403))
     env = log_deployment_env()
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
@@ -56,7 +51,6 @@ def test_command_raises_when_http_response_is_not_200_or_201(mocker, capsys):
     assert exit_code != 0
     # assert mocked.assert_called_once_with(...)
     mocked_post.assert_called_once()
-    silence(capsys)
 
 
 class HttpStatus:

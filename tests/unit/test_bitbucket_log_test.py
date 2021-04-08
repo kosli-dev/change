@@ -21,7 +21,7 @@ PIPELINE = "test-pipefile"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
-def test_bitbucket(capsys):
+def test_bitbucket():
     expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
@@ -41,8 +41,6 @@ def test_bitbucket(capsys):
         with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
-
-    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url

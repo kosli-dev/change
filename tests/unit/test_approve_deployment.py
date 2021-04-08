@@ -11,7 +11,7 @@ PIPELINE = "lib-controls-test-pipeline"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
-def test_docker_image(capsys):
+def test_docker_image():
     image_name = "acme/runner:4.56"
     sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 
@@ -41,21 +41,17 @@ def test_docker_image(capsys):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    silence(capsys)
-
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
 
 
-def test_raises_when_src_repo_root_does_not_exist(capsys):
+def test_raises_when_src_repo_root_does_not_exist():
     env = dry_run(approve_deployment_env())
     with raises(ChangeError) as exc:
         run(External(env=env))
 
     assert str(exc.value) == "Error: Repository not found at /src/.git"
-
-    silence(capsys)
 
 
 def approve_deployment_env():

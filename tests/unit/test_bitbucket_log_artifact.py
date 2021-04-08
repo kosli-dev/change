@@ -17,7 +17,7 @@ IMAGE_NAME = "acme/road-runner:4.67"
 SHA256 = "aacdaef69c676c2466571d3288880d559ccc2032b258fc5e73f99a103db462ee"
 
 
-def test_required_env_vars(capsys):
+def test_required_env_vars():
     expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/"
     expected_payload = {
@@ -35,8 +35,6 @@ def test_required_env_vars(capsys):
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
         external = External(env=env, docker_fingerprinter=fingerprinter)
         method, url, payload = run(external)
-
-    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url

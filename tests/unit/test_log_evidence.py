@@ -12,7 +12,7 @@ SHA256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
 BUILD_URL = "https://gitlab/build/1956"
 
 
-def test_docker_protocol(capsys):
+def test_docker_protocol():
     expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
@@ -33,8 +33,8 @@ def test_docker_protocol(capsys):
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
-
-    assert extract_blurb(capsys_read(capsys)) == [
+    stdout = external.stdout.getvalue()
+    assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_evidence',
     ]
 

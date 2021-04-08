@@ -14,16 +14,17 @@ SHA256 = "aecdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ef"
 DEFAULT_TEST_RESULTS_DIR = TestResultsDirEnvVar({}).default
 
 
-def test_non_zero_status_when_no_data_directory(capsys):
+def test_non_zero_status_when_no_data_directory():
     env = dry_run(log_test_env())
     with MockDockerFingerprinter(IMAGE_NAME, SHA256) as fingerprinter:
         external = External(env=env, docker_fingerprinter=fingerprinter)
         status = main(external)
 
-    assert_merkely_error(status, capsys, f"no directory {DEFAULT_TEST_RESULTS_DIR}")
+    stdout = external.stdout.getvalue()
+    assert_merkely_error(status, stdout, f"no directory {DEFAULT_TEST_RESULTS_DIR}")
 
 
-def test_non_zero_status_when_dir_exists_but_has_no_xml_files(capsys):
+def test_non_zero_status_when_dir_exists_but_has_no_xml_files():
     empty_dir = "/app/tests/data/"
     env = dry_run(log_test_env())
     env['MERKELY_TEST_RESULTS_DIR'] = empty_dir
@@ -31,10 +32,11 @@ def test_non_zero_status_when_dir_exists_but_has_no_xml_files(capsys):
         external = External(env=env, docker_fingerprinter=fingerprinter)
         status = main(external)
 
-    assert_merkely_error(status, capsys, f"No test suites in {empty_dir}")
+    stdout = external.stdout.getvalue()
+    assert_merkely_error(status, stdout, f"No test suites in {empty_dir}")
 
 
-def test_non_zero_status_when_dir_exists_but_xml_files_are_not_JUnit(capsys):
+def test_non_zero_status_when_dir_exists_but_xml_files_are_not_JUnit():
     dir_name = "/app/tests/data/control_junit/xml_but_not_junit"
     path_name = f"{dir_name}/not_junit.xml"
     env = dry_run(log_test_env())
@@ -43,10 +45,11 @@ def test_non_zero_status_when_dir_exists_but_xml_files_are_not_JUnit(capsys):
         external = External(env=env, docker_fingerprinter=fingerprinter)
         status = main(external)
 
-    assert_merkely_error(status, capsys, f"XML file {path_name} not JUnit format.")
+    stdout = external.stdout.getvalue()
+    assert_merkely_error(status, stdout, f"XML file {path_name} not JUnit format.")
 
 
-def test_zero_exit_status_when_there_is_a_data_directory(capsys):
+def test_zero_exit_status_when_there_is_a_data_directory():
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
 
@@ -70,14 +73,12 @@ def test_zero_exit_status_when_there_is_a_data_directory(capsys):
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
 
-    silence(capsys)
-
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
 
 
-def test_junit_xml_results_dir_specified_with_env_var(capsys):
+def test_junit_xml_results_dir_specified_with_env_var():
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
 
@@ -101,14 +102,12 @@ def test_junit_xml_results_dir_specified_with_env_var(capsys):
         external = External(env=env, docker_fingerprinter=fingerprinter)
         method, url, payload = run(external)
 
-    silence(capsys)
-
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
 
 
-def test_junit_xml_with_error_results_dir_specified_with_env_var(capsys):
+def test_junit_xml_with_error_results_dir_specified_with_env_var():
     build_url = "https://gitlab/build/1457"
     evidence_type = "coverage"
 
@@ -132,16 +131,13 @@ def test_junit_xml_with_error_results_dir_specified_with_env_var(capsys):
         external = External(env=env, docker_fingerprinter=fingerprinter)
         method, url, payload = run(external)
 
-    silence(capsys)
-
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
 
 
-def assert_merkely_error(status, capsys, expected):
+def assert_merkely_error(status, stdout, expected):
     assert status != 0
-    stdout = capsys_read(capsys)
     lines = list(stdout.split("\n"))
     assert lines == [
         'MERKELY_COMMAND=log_test',

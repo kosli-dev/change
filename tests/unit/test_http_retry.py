@@ -22,80 +22,86 @@ def test_no_retries_when_http_call_is_not_503():
 
 
 @responses.activate
-def test_503_post_retries_5_times_then_raises_HttpRetryExhausted(capsys):
+def test_503_post_retries_5_times_then_raises_HttpRetryExhausted():
     url, payload, api_token = stub_http_503('POST', 1 + MAX_RETRY_COUNT)
 
+    stdout = Stdout()
     with retry_backoff_factor(0.001), raises(HttpRetryExhausted) as exc_info:
-        Http(Stdout()).post_payload(url, payload, api_token)
+        Http(stdout).post_payload(url, payload, api_token)
 
     assert exc_info.value.url() == url
     assert len(responses.calls) == 1 + MAX_RETRY_COUNT
-    assert_5_retries(capsys)
+    assert_5_retries(stdout.getvalue())
 
 
 @responses.activate
-def test_503_put_retries_5_times_then_raises_HttpRetryExhausted(capsys):
+def test_503_put_retries_5_times_then_raises_HttpRetryExhausted():
     url, payload, api_token = stub_http_503('PUT', 1 + MAX_RETRY_COUNT)
 
+    stdout = Stdout()
     with retry_backoff_factor(0.001), raises(HttpRetryExhausted) as exc_info:
-        Http(Stdout()).put_payload(url, payload, api_token)
+        Http(stdout).put_payload(url, payload, api_token)
 
     assert exc_info.value.url() == url
     assert len(responses.calls) == 1 + MAX_RETRY_COUNT
-    assert_5_retries(capsys)
+    assert_5_retries(stdout.getvalue())
 
 
 @responses.activate
-def test_503_get_retries_5_times_then_raises_HttpRetryExhausted(capsys):
+def test_503_get_retries_5_times_then_raises_HttpRetryExhausted():
     url, _, api_token = stub_http_503('GET', 1 + MAX_RETRY_COUNT)
 
+    stdout = Stdout()
     with retry_backoff_factor(0.001), raises(HttpRetryExhausted) as exc_info:
-        Http(Stdout()).get_json(url, api_token)
+        Http(stdout).get_json(url, api_token)
 
     assert exc_info.value.url() == url
     assert len(responses.calls) == 1 + MAX_RETRY_COUNT
-    assert_5_retries(capsys)
+    assert_5_retries(stdout.getvalue())
 
 
 @responses.activate
-def test_post_stops_retrying_when_non_503_and_returns_response(capsys):
+def test_post_stops_retrying_when_non_503_and_returns_response():
     url, payload, api_token = stub_http_503('POST', 1 + 1)
 
+    stdout = Stdout()
     with retry_backoff_factor(0.001):
-        response = Http(Stdout()).post_payload(url, payload, api_token)
+        response = Http(stdout).post_payload(url, payload, api_token)
 
     assert response is not None
     assert len(responses.calls) == 1 + 1 + 1
-    assert_1_retry(capsys)
+    assert_1_retry(stdout.getvalue())
 
 
 @responses.activate
-def test_put_stops_retrying_when_non_503_and_returns_response(capsys):
+def test_put_stops_retrying_when_non_503_and_returns_response():
     url, payload, api_token = stub_http_503('PUT', 1 + 1)
 
+    stdout = Stdout()
     with retry_backoff_factor(0.001):
-        response = Http(Stdout()).put_payload(url, payload, api_token)
+        response = Http(stdout).put_payload(url, payload, api_token)
 
     assert response is not None
     assert len(responses.calls) == 1 + 1 + 1
-    assert_1_retry(capsys)
+    assert_1_retry(stdout.getvalue())
 
 
 @responses.activate
-def test_get_stops_retrying_when_non_503_and_returns_response(capsys):
+def test_get_stops_retrying_when_non_503_and_returns_response():
     url, _, api_token = stub_http_503('GET', 1 + 1)
 
+    stdout = Stdout()
     with retry_backoff_factor(0.001):
-        response = Http(Stdout()).get_json(url, api_token)
+        response = Http(stdout).get_json(url, api_token)
 
     assert response.json() == {'success': 42}
     assert len(responses.calls) == 1 + 1 + 1
-    assert_1_retry(capsys)
+    assert_1_retry(stdout.getvalue())
 
 
-def assert_5_retries(capsys):
-    stdout = capsys_read(capsys).splitlines()
-    assert stdout == [
+def assert_5_retries(stdout):
+    lines = stdout.splitlines()
+    assert lines == [
         'Response.status=503, retrying in 0.001 seconds...',
         'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
         'Retry 2/5: response.status=503, retrying in 0.004 seconds...',
@@ -105,9 +111,9 @@ def assert_5_retries(capsys):
     ]
 
 
-def assert_1_retry(capsys):
-    stdout = capsys_read(capsys).splitlines()
-    assert stdout == [
+def assert_1_retry(stdout):
+    lines = stdout.splitlines()
+    assert lines == [
         'Response.status=503, retrying in 0.001 seconds...',
         'Retry 1/5: response.status=503, retrying in 0.002 seconds...',
         'Retry 2/5: response.status=200',

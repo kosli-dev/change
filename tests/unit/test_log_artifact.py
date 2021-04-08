@@ -7,7 +7,7 @@ OWNER = "acme"
 PIPELINE = "lib-controls-test-pipeline"
 
 
-def test_all_env_vars_image(capsys):
+def test_all_env_vars_image():
     sha256 = "ddcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db462ee"
     commit = "12037940e4e7503055d8a8eea87e177f04f14616"
     image_name = "acme/widget:3.4"
@@ -38,12 +38,13 @@ def test_all_env_vars_image(capsys):
     assert url == expected_url
     assert payload == expected_payload
 
-    assert extract_blurb(capsys_read(capsys)) == [
+    stdout = external.stdout.getvalue()
+    assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_artifact',
     ]
 
 
-def test_all_env_vars_file(capsys):
+def test_all_env_vars_file():
     commit = "abc50c8a53f79974d615df335669b59fb56a4444"
     sha256 = "ccdd89ccdc05772d90dc6929ad4f1fbc14aa105addf3326aa5cf575a104f5115"
     directory = "app/tests/data"
@@ -75,13 +76,13 @@ def test_all_env_vars_file(capsys):
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
-
-    assert extract_blurb(capsys_read(capsys)) == [
+    stdout = external.stdout.getvalue()
+    assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_artifact',
     ]
 
 
-def test_all_env_vars_sha(capsys):
+def test_all_env_vars_sha():
     commit = "abc50c8a53f79974d615df335669b59fb56a4ed4"
     artifact_name = "door-is-a.jar"
     sha256 = "444daef69c676c2466571d3211180d559ccc2032b258fc5e73f99a103db462ef"
@@ -104,13 +105,14 @@ def test_all_env_vars_sha(capsys):
     protocol = "sha256://"
     env = dry_run(log_artifact_env(commit))
     env["MERKELY_FINGERPRINT"] = f"{protocol}{sha256}/{artifact_name}"
-    method, url, payload = run(External(env=env))
+    external = External(env=env)
+    method, url, payload = run(external)
 
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
-
-    assert extract_blurb(capsys_read(capsys)) == [
+    stdout = external.stdout.getvalue()
+    assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_artifact',
     ]
 

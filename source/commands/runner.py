@@ -79,12 +79,13 @@ def pretty_json(payload):
 
 
 def main(external):
+    stdout = external.stdout
     try:
         run(external)
-        print('Success')
+        stdout.print('Success')
         return 0
     except ChangeError as exc:
-        print(f"Error: {str(exc)}")
+        stdout.print(f"Error: {str(exc)}")
         return 144
 
 

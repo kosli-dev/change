@@ -8,7 +8,7 @@ PIPELINE = "lib-controls-test-pipeline"
 API_TOKEN = "5199831f4ee3b79e7c5b7e0ebe75d67aa66e79d4"
 
 
-def test_docker_image(capsys):
+def test_docker_image():
     image_name = "acme/runner:4.56"
     sha256 = "bbcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 
@@ -30,8 +30,6 @@ def test_docker_image(capsys):
         with MockDockerFingerprinter(image_name, sha256) as fingerprinter:
             external = External(env=env, docker_fingerprinter=fingerprinter)
             method, url, payload = run(external)
-
-    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url

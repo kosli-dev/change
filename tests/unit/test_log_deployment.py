@@ -15,7 +15,7 @@ SHA256 = "efcdaef69c676c2466571d3233380d559ccc2032b258fc5e73f99a103db46212"
 USER_DATA = "/app/tests/data/user_data.json"
 
 
-def test_docker_image(capsys):
+def test_docker_image():
     expected_method = "POST"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{NAME}/deployments/"
     expected_payload = {
@@ -36,8 +36,8 @@ def test_docker_image(capsys):
     assert method == expected_method
     assert url == expected_url
     assert payload == expected_payload
-
-    assert extract_blurb(capsys_read(capsys)) == [
+    stdout = external.stdout.getvalue()
+    assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_deployment',
     ]
 

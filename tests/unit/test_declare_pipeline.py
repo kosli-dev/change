@@ -7,7 +7,7 @@ OWNER = "acme"
 PIPELINE = "lib-controls-test-pipeline"
 
 
-def test_green(capsys):
+def test_green():
     expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/"
     expected_payload = {
@@ -27,8 +27,6 @@ def test_green(capsys):
     filename = "Merkelypipe.json"
     with ScopedFileCopier(f"{directory}/{filename}", "/data/Merkelypipe.json"):
         method, url, payload = run(External(env=env))
-
-    silence(capsys)
 
     assert method == expected_method
     assert url == expected_url

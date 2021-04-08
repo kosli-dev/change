@@ -20,7 +20,7 @@ DESCRIPTION = "branch coverage"
 EVIDENCE_TYPE = "unit_test"
 
 
-def test_bitbucket(capsys):
+def test_bitbucket():
     expected_method = "PUT"
     expected_url = f"https://{DOMAIN}/api/v1/projects/{OWNER}/{PIPELINE}/artifacts/{SHA256}"
     expected_payload = {
@@ -42,7 +42,8 @@ def test_bitbucket(capsys):
     assert url == expected_url
     assert payload == expected_payload
 
-    assert extract_blurb(capsys_read(capsys)) == [
+    stdout = external.stdout.getvalue()
+    assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_evidence',
     ]
 
