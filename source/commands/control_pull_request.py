@@ -61,6 +61,9 @@ class ControlPullRequest(Command):
             'dry_run'
         ]
 
+    def _print(self, string):
+        return self._external.stdout.print(string)
+
     def _get_pull_request_for_current_commit(self, env):
         workspace = env.get('BITBUCKET_WORKSPACE', None)
         repository = env.get('BITBUCKET_REPO_SLUG', None)
@@ -79,7 +82,7 @@ class ControlPullRequest(Command):
         pull_requests_evidence = []
 
         url = f"https://api.bitbucket.org/2.0/repositories/{workspace}/{repository}/commit/{commit}/pullrequests"
-        print("Getting pull requests from " + url)
+        self._print("Getting pull requests from " + url)
         response = requests.get(url, auth=(username, password))
         if response.status_code == 200:
             is_compliant = self._parse_response(commit, password, pull_requests_evidence, response, username)
@@ -103,7 +106,7 @@ class ControlPullRequest(Command):
         return is_compliant, pull_requests_evidence
 
     def _parse_response(self, commit, password, pull_requests_evidence, response, username):
-        print("Pull requests response: " + response.text)
+        self._print("Pull requests response: " + response.text)
         pull_requests_json = json.loads(response.text)
         pull_requests = pull_requests_json["values"]
         for pr in pull_requests:
@@ -121,7 +124,6 @@ class ControlPullRequest(Command):
         is_compliant = pull_requests_evidence != []
         return is_compliant
 
-
     def _get_pull_request_details_from_bitbucket(self, pr_evidence, pr_api_url, username, password):
         response = requests.get(pr_api_url, auth=(username, password))
         if response.status_code == 200:
@@ -136,9 +138,9 @@ class ControlPullRequest(Command):
                 approvers = approvers[:-1]
                 pr_evidence['approvers'] = approvers
             else:
-                print("No approvers found")
+                self._print("No approvers found")
         else:
-            print("Error occurred in fetching pull request details. Please review repository permissions.")
+            self._print("Error occurred in fetching pull request details. Please review repository permissions.")
         return pr_evidence
 
 
