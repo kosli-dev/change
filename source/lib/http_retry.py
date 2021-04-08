@@ -43,9 +43,10 @@ class HttpRetryExhausted(ChangeError):
 
 
 class HttpRetry():
-    def __init__(self):
+    def __init__(self, stdout):
         self._status_retry_list = [503]
         self._max_count = MAX_RETRY_COUNT
+        self._stdout = stdout
 
     def total_sleep_time(self):
         return sum(self._sleep_time(n) for n in range(0, self._max_count))
@@ -84,7 +85,7 @@ class HttpRetry():
     def _log(self, count, status, seconds):
         lhs = self._response_message(count, status)
         rhs = self._retry_message(count, status, seconds)
-        print(f"{lhs}{rhs}")
+        self._stdout.print(f"{lhs}{rhs}")
 
     def _response_message(self, count, status):
         if count == 0:

@@ -8,7 +8,7 @@ from tests.utils import *
 
 
 def test_total_retry_sleep_time_is_about_30_seconds():
-    assert HttpRetry().total_sleep_time() == 31  # 1+2+4+8+16
+    assert HttpRetry(Stdout()).total_sleep_time() == 31  # 1+2+4+8+16
 
 
 @responses.activate

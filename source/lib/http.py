@@ -10,19 +10,19 @@ class Http:
 
     def get_json(self, url, api_token):
         auth = HTTPBasicAuth(api_token, 'unused')
-        return HttpRetry().get(url, auth=auth)
+        return HttpRetry(self._stdout).get(url, auth=auth)
 
     def put_payload(self, url, payload, api_token):
         auth = HTTPBasicAuth(api_token, 'unused')
         headers = self.json_content_header()
         data = json.dumps(payload)
-        return HttpRetry().put(url, auth=auth, headers=headers, data=data)
+        return HttpRetry(self._stdout).put(url, auth=auth, headers=headers, data=data)
 
     def post_payload(self, url, payload, api_token):
         auth = HTTPBasicAuth(api_token, 'unused')
         headers = self.json_content_header()
         data = json.dumps(payload)
-        return HttpRetry().post(url, auth=auth, headers=headers, data=data)
+        return HttpRetry(self._stdout).post(url, auth=auth, headers=headers, data=data)
 
     @staticmethod
     def json_content_header():
