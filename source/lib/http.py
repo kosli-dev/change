@@ -14,15 +14,16 @@ class Http:
 
     def put_payload(self, url, payload, api_token):
         auth = HTTPBasicAuth(api_token, 'unused')
-        headers = json_content_header()
+        headers = self.json_content_header()
         data = json.dumps(payload)
         return HttpRetry().put(url, auth=auth, headers=headers, data=data)
 
     def post_payload(self, url, payload, api_token):
         auth = HTTPBasicAuth(api_token, 'unused')
-        headers = json_content_header()
+        headers = self.json_content_header()
         data = json.dumps(payload)
         return HttpRetry().post(url, auth=auth, headers=headers, data=data)
 
-def json_content_header():
-    return {"Content-Type": "application/json"}
+    @staticmethod
+    def json_content_header():
+        return {"Content-Type": "application/json"}

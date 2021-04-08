@@ -15,6 +15,7 @@ class External:
                  file_fingerprinter=None,
                  sha256_fingerprinter=None):
 
+        self._stdout = Stdout()
         self.__env = env
         self.__docker_fingerprinter = docker_fingerprinter
         self.__file_fingerprinter = file_fingerprinter
@@ -33,16 +34,20 @@ class External:
             self.__sha256_fingerprinter = Sha256Fingerprinter()
 
     @property
+    def stdout(self):
+        return self._stdout
+
+    @property
+    def env(self):
+        return self.__env
+
+    @property
     def merkelypipe(self):
         pipe_path = self.env.get('MERKELY_PIPE_PATH', '/data/Merkelypipe.json')
         if os.path.exists(pipe_path):
             return self.load_json(pipe_path)
         else:
             raise ChangeError(f"{pipe_path} file not found.")
-
-    @property
-    def env(self):
-        return self.__env
 
     def fingerprinter_for(self, string):
         d = self.__docker_fingerprinter
@@ -72,3 +77,11 @@ class External:
             raise ChangeError(f"{filename} is a directory.")
         except json.decoder.JSONDecodeError as exc:
             raise ChangeError(f"{filename} invalid json - {str(exc)}")
+
+
+import builtins
+
+
+class Stdout:
+    def print(self, string):
+        builtins.print(string)

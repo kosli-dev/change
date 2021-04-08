@@ -5,11 +5,12 @@ import json
 
 
 def run(external):
+    stdout = external.stdout
     name = external.env.get("MERKELY_COMMAND", None)
     if name is None:
         raise ChangeError("MERKELY_COMMAND environment-variable is not set.")
 
-    print(f"MERKELY_COMMAND={name}")
+    stdout.print(f"MERKELY_COMMAND={name}")
     klass = Command.named(name)
     command = klass(external)
     for env_var in command.merkely_env_vars:
@@ -21,35 +22,37 @@ def run(external):
     api_token = command.api_token.value
 
     if method == 'GET':
-        print("Getting json:")
-        print("From this url: " + url)
+        stdout.print("Getting json:")
+        stdout.print("From this url: " + url)
         if dry_run:
-            print("DRY RUN: Get not performed")
+            stdout.print("DRY RUN: Get not performed")
             response = None
         else:
             response = Http().get_json(url, api_token)
 
     if method == 'PUT':
-        print("Putting this payload:")
-        print(pretty_json(payload))
-        print("To this url: " + url)
+        stdout.print("Putting this payload:")
+        stdout.print(pretty_json(payload))
+        stdout.print("To this url: " + url)
         if dry_run:
-            print("DRY RUN: Put not sent")
+            stdout.print("DRY RUN: Put not sent")
             response = None
         else:
             response = Http().put_payload(url, payload, api_token)
 
     if method == 'POST':
-        print("Posting this payload:")
-        print(pretty_json(payload))
-        print("To this url: " + url)
+        stdout.print("Posting this payload:")
+        stdout.print(pretty_json(payload))
+        stdout.print("To this url: " + url)
         if dry_run:
-            print("DRY RUN: Post not sent")
+            stdout.print("DRY RUN: Post not sent")
             response = None
         else:
             response = Http().post_payload(url, payload, api_token)
 
-    raise_unless_success(response)
+    if response is not None:
+        raise_unless_success(response)
+        stdout.print(response.text)
 
     if not dry_run and callback is not None:
         return callback(response)
@@ -64,13 +67,9 @@ def in_dry_run(command):
 
 
 def raise_unless_success(response):
-    if response is None:
-        return
     # Eg https://github.com/merkely-development/change/runs/1961998055?check_suite_focus=true
     status_code = response.status_code
-    if status_code in [200, 201]:
-        print(response.text)
-    else:
+    if status_code not in [200, 201]:
         message = f"HTTP status=={status_code}\n{response.text}"
         raise ChangeError(message)
 
