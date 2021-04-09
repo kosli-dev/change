@@ -10,7 +10,7 @@ class DeclarePipeline(Command):
         return "Declares a pipeline in Merkely."
 
     def doc_volume_mounts(self):
-        return []
+        return ["${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"]
 
     def doc_ref(self):
         return {

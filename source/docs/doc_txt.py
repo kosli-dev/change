@@ -36,18 +36,18 @@ def generate_docs():
             ci_names = ['docker', 'bitbucket', 'github']
         for ci_name in ci_names:
             filename = f"{REFERENCE_DIR}/{ci_name}/{command_name}.txt"
-            lines = lines_for(ci_name, command_name)
+            lines = lines_for(data, ci_name, command_name)
             docs[filename] = lines
     return docs
 
 
-def lines_for(ci, command_name):
+def lines_for(data, ci, command_name):
     if ci == 'docker':
-        return lines_for_docker(command_name)
+        return lines_for_docker(data, command_name)
     if ci == 'bitbucket':
-        return lines_for_bitbucket(command_name)
+        return lines_for_bitbucket(data, command_name)
     if ci == 'github':
-        return lines_for_github(command_name)
+        return lines_for_github(data, command_name)
 
 
 def create_data():
@@ -102,10 +102,6 @@ def min_lines_for(data, command_name):
     for mount in data[command_name]['volume_mounts']:
         lines.append(lc(f"{tab}--volume {mount}"))
 
-    # The merkely-pipe volume-mount is always required
-    if command_name == 'declare_pipeline':
-        lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
-
     # The name of the docker image
     lines.append(f"{tab}merkely/change")
 
@@ -125,7 +121,7 @@ yml_name_texts = {
 }
 
 
-def lines_for_docker(command_name):
+def lines_for_docker(data, command_name):
     def lc(string):
         line_continuation = "\\"
         return f"{string} {line_continuation}"
@@ -145,13 +141,11 @@ def lines_for_docker(command_name):
     lines.append(lc(f"{tab}--rm"))
     for mount in command.doc_volume_mounts():
         lines.append(lc(f"{tab}--volume {mount}"))
-    if command_name == 'declare_pipeline':
-        lines.append(lc(tab + "--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json"))
     lines.append(f"{tab}merkely/change")
     return lines
 
 
-def lines_for_github(command_name):
+def lines_for_github(_data, command_name):
     command = command_for(command_name)
     lines = [
         "    - name: {}".format(yml_name_texts[command_name]),
@@ -166,7 +160,7 @@ def lines_for_github(command_name):
     return lines
 
 
-def lines_for_bitbucket(command_name):
+def lines_for_bitbucket(_data, command_name):
     command = command_for(command_name)
     name = yml_name_texts[command_name]
     step_name = "_".join(name.lower().split(' '))
