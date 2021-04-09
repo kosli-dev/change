@@ -20,7 +20,7 @@ def github_loan_calculator_curler(filename):
     else:
         repo = 'loan-calculator'
         dir = '.github/workflows/'
-    branch = 'master'
+    branch = 'main'
     base_url = f'https://raw.githubusercontent.com/{org}/{repo}/{branch}/{dir}{filename}'
     lines = requests.get(base_url).text.splitlines()
     REF_FILES[filename] = {
@@ -32,7 +32,7 @@ def github_loan_calculator_curler(filename):
 def bitbucket_load_calculator_curler(filename):
     org = 'merkely'
     repo = 'loan-calculator'
-    branch = 'master'
+    branch = 'main'
     base_url = f"https://bitbucket.org/{org}/{repo}"
     # On bitbucket, raw_url needs a commit sha on master
     bytes = subprocess.check_output(['git', 'ls-remote', f"{base_url}/src/{branch}"])
