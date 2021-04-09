@@ -1,18 +1,18 @@
 import os
-from commands import Command, External
+from commands import Command
 
 # The Makefile volume-mounts docs.merkely.com/ to docs/
 REFERENCE_DIR = '/docs/build/reference'
 IMAGE_NAME = 'merkely/change:latest'
 
 
-def create_txt_files():
+def create_txt_files(data):
     """
     Called from docs.merkely.com/source/conf.py
     Generates text files containing documentation fragment for each
     command (eg 'log_test') in each supported CI system (eg 'bitbucket')
     """
-    for filename, lines in generate_docs().items():
+    for filename, lines in generate_docs(data).items():
         dir = os.path.dirname(filename)
         if not os.path.exists(dir):
             os.makedirs(dir)
@@ -20,8 +20,7 @@ def create_txt_files():
             file.writelines(line + "\n" for line in lines)
 
 
-def generate_docs():
-    data = create_data()
+def generate_docs(data):
     docs = {}
 
     command_names = sorted(Command.names())
@@ -49,45 +48,6 @@ def lines_for(data, ci, command_name):
         return lines_for_bitbucket(data['bitbucket'], command_name)
     if ci == 'github':
         return lines_for_github(data['github'], command_name)
-
-
-def create_data():
-    # Looking into saving all Docs data into a json file
-    # and then retrieving the json file. This would be
-    # a nice Separation of Concerns and it would also
-    # allow a Go client to generate the equivalent json.
-    data = {
-        'docker': {},
-        'bitbucket': {},
-        'github': {}
-    }
-    command_names = sorted(Command.names())
-    for command_name in command_names:
-        command = command_for(command_name)
-        data['docker'][command_name] = {
-            'volume_mounts': command.doc_volume_mounts(),
-            'env_vars': {}
-        }
-        data['bitbucket'][command_name] = {
-            'env_vars': {}
-        }
-        data['github'][command_name] = {
-            'env_vars': {}
-        }
-        for var in command.merkely_env_vars:
-            data['docker'][command_name]['env_vars'][var.name] = {
-                'name': var.name,
-                'is_required': var.is_required,
-            }
-            data['github'][command_name]['env_vars'][var.name] = {
-                'name': var.name,
-                'example': var.doc_example('github', command_name)
-            }
-            data['bitbucket'][command_name]['env_vars'][var.name] = {
-                'name': var.name,
-                'example': var.doc_example('bitbucket', command_name)
-            }
-    return data
 
 
 def min_lines_for(data, command_name):
@@ -209,9 +169,4 @@ def lines_for_bitbucket(data, command_name):
     return lines
 
 
-def command_for(name):
-    cls = Command.named(name)
-    env = {"MERKELY_COMMAND": name}
-    external = External(env=env)
-    return cls(external)
 

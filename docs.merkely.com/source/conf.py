@@ -49,9 +49,6 @@ exclude_patterns = ['app']
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
-# html_theme = 'alabaster'
-# html_theme = "furo"
 html_theme = 'bootstrap'
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
@@ -85,14 +82,15 @@ def env_get_outdated(app, env, added, changed, removed):
     return ['index']
 
 
-from docs import doc_rst, doc_txt, doc_ref
+from docs import create_data, doc_rst, doc_txt, doc_ref
 
 
 def setup(app):
+    # Auto generate Command reference rst files.
     doc_ref.curl_ref_files()
+    data = create_data()
+    doc_txt.create_txt_files(data)
     doc_rst.create_rst_files()
-    doc_txt.create_txt_files()
-    app.add_css_file("merkely-custom.css")
     app.connect('env-get-outdated', env_get_outdated)
 
 
