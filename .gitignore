@@ -1,13 +1,5 @@
 tmp/
 .idea/*
 __pycache__/
-source/lib/__pycache__/
-source/commands/__pycache__/
-source/env_vars/__pycache__/
-source/errors/__pycache__/
-source/fingerprinters/__pycache__/
-tests/__pycache__/
-tests/unit/__pycache__/
-tests/utils/__pycache__/
 docs/.buildinfo
 docs.merkely.com/build
