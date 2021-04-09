@@ -3,6 +3,7 @@ from commands import Command, External
 
 # The Makefile volume-mounts docs.merkely.com/ to docs/
 REFERENCE_DIR = '/docs/build/reference'
+IMAGE_NAME = 'merkely/change:latest'
 
 
 def create_txt_files():
@@ -22,11 +23,11 @@ def create_txt_files():
 def generate_docs():
     data = create_data()
     docs = {}
-    command_names = sorted(Command.names())
 
+    command_names = sorted(Command.names())
     for command_name in command_names:
         filename = f"{REFERENCE_DIR}/min/{command_name}.txt"
-        lines = min_lines_for(data, command_name)
+        lines = min_lines_for(data['docker'], command_name)
         docs[filename] = lines
 
     for command_name in command_names:
@@ -43,31 +44,48 @@ def generate_docs():
 
 def lines_for(data, ci, command_name):
     if ci == 'docker':
-        return lines_for_docker(data, command_name)
+        return lines_for_docker(data['docker'], command_name)
     if ci == 'bitbucket':
-        return lines_for_bitbucket(data, command_name)
+        return lines_for_bitbucket(data['bitbucket'], command_name)
     if ci == 'github':
-        return lines_for_github(data, command_name)
+        return lines_for_github(data['github'], command_name)
 
 
 def create_data():
-    # Look into saving all Docs data into a json file
+    # Looking into saving all Docs data into a json file
     # and then retrieving the json file. This would be
-    # a nice Separation of Concerns and it should also
-    # a Go client to generate the equivalent json
-    # (assuming we would want that).
-    data = {}
+    # a nice Separation of Concerns and it would also
+    # allow a Go client to generate the equivalent json.
+    data = {
+        'docker': {},
+        'bitbucket': {},
+        'github': {}
+    }
     command_names = sorted(Command.names())
     for command_name in command_names:
         command = command_for(command_name)
-        data[command_name] = {
+        data['docker'][command_name] = {
             'volume_mounts': command.doc_volume_mounts(),
             'env_vars': {}
         }
+        data['bitbucket'][command_name] = {
+            'env_vars': {}
+        }
+        data['github'][command_name] = {
+            'env_vars': {}
+        }
         for var in command.merkely_env_vars:
-            data[command_name]['env_vars'][var.name] = {
+            data['docker'][command_name]['env_vars'][var.name] = {
                 'name': var.name,
                 'is_required': var.is_required,
+            }
+            data['github'][command_name]['env_vars'][var.name] = {
+                'name': var.name,
+                'example': var.doc_example('github', command_name)
+            }
+            data['bitbucket'][command_name]['env_vars'][var.name] = {
+                'name': var.name,
+                'example': var.doc_example('bitbucket', command_name)
             }
     return data
 
@@ -103,8 +121,7 @@ def min_lines_for(data, command_name):
     for mount in data[command_name]['volume_mounts']:
         lines.append(lc(f"{tab}--volume {mount}"))
 
-    # The name of the docker image
-    lines.append(f"{tab}merkely/change")
+    lines.append(f"{tab}{IMAGE_NAME}")
 
     return lines
 
@@ -130,7 +147,7 @@ def lines_for_docker(data, command_name):
     tab = " " * 4
     def env(var):
         if var['name'] == "MERKELY_COMMAND":
-            value = command_name # var.value
+            value = command_name
         else:
             value = '"' + "${" + var['name'] + "}" + '"'
         return lc(f"{tab}--env {var['name']}={value}")
@@ -145,28 +162,28 @@ def lines_for_docker(data, command_name):
     for mount in data[command_name]['volume_mounts']:
         lines.append(lc(f"{tab}--volume {mount}"))
 
-    lines.append(f"{tab}merkely/change")
+    lines.append(f"{tab}{IMAGE_NAME}")
     
     return lines
 
 
-def lines_for_github(_data, command_name):
-    command = command_for(command_name)
+def lines_for_github(data, command_name):
     lines = [
-        "    - name: {}".format(yml_name_texts[command_name]),
-        "      uses: docker://merkely/change:latest",
-        "      env:",
+         "    - name: {}".format(yml_name_texts[command_name]),
+        f"      uses: docker://{IMAGE_NAME}",
+         "      env:",
     ]
     tab = " " * 8
-    for var in command.merkely_env_vars:
-        show, example = var.doc_example('github', command_name)
+
+    for _, var in data[command_name]['env_vars'].items():
+        show, example = var['example']
         if show:
-            lines.append(f'{tab}{var.name}: {example}')
+            lines.append(f"{tab}{var['name']}: {example}")
+
     return lines
 
 
-def lines_for_bitbucket(_data, command_name):
-    command = command_for(command_name)
+def lines_for_bitbucket(data, command_name):
     name = yml_name_texts[command_name]
     step_name = "_".join(name.lower().split(' '))
     if command_name == 'declare_pipeline':
@@ -179,14 +196,16 @@ def lines_for_bitbucket(_data, command_name):
         "        services: [ docker ]",
         "        script:",
        f"          - *{export}",
-        "          - pipe: docker://merkely/change:latest",
+       f"          - pipe: docker://{IMAGE_NAME}",
         "            variables:",
     ]
     tab = " " * 14
-    for var in command.merkely_env_vars:
-        show, example = var.doc_example('bitbucket', command_name)
+
+    for _, var in data[command_name]['env_vars'].items():
+        show, example = var['example']
         if show:
-            lines.append(f'{tab}{var.name}: {example}')
+            lines.append(f"{tab}{var['name']}: {example}")
+
     return lines
 
 

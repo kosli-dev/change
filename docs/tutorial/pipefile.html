@@ -147,7 +147,7 @@ like so:</p>
     --env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \
     --rm \
     --volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \
-    merkely/change
+    merkely/change:latest
 </pre></div>
 </div>
 <p>You send this Pipefile at the start of every CI run.  This allows changes made in the pipefile to automatically propagate to Merkely; with the added benefit that these changes can go through your standard peer review process.</p>
