@@ -20,12 +20,13 @@ def create_txt_files():
 
 
 def generate_docs():
+    data = create_data()
     docs = {}
     command_names = sorted(Command.names())
 
     for command_name in command_names:
         filename = f"{REFERENCE_DIR}/min/{command_name}.txt"
-        lines = min_lines_for(command_name)
+        lines = min_lines_for(data, command_name)
         docs[filename] = lines
 
     for command_name in command_names:
@@ -49,8 +50,29 @@ def lines_for(ci, command_name):
         return lines_for_github(command_name)
 
 
-def min_lines_for(command_name):
-    command = command_for(command_name)
+def create_data():
+    # Look into saving all Docs data into a json file
+    # and then retrieving the json file. This would be
+    # a nice Separation of Concerns and it should also
+    # a Go client to generate the equivalent json
+    # (assuming we would want that).
+    data = {}
+    command_names = sorted(Command.names())
+    for command_name in command_names:
+        command = command_for(command_name)
+        data[command_name] = {
+            'volume_mounts': command.doc_volume_mounts(),
+            'env_vars': {}
+        }
+        for var in command.merkely_env_vars:
+            data[command_name]['env_vars'][var.name] = {
+                'name': var.name,
+                'is_required': var.is_required,
+            }
+    return data
+
+
+def min_lines_for(data, command_name):
     tab = "    "
 
     def lc(string):
@@ -58,26 +80,26 @@ def min_lines_for(command_name):
         return f"{string} {line_continuation}"
 
     def env(var):
-        if var.name == "MERKELY_COMMAND":
-            value = var.value
-        elif var.name == 'MERKELY_FINGERPRINT':
+        if var['name'] == "MERKELY_COMMAND":
+            value = command_name
+        elif var['name'] == 'MERKELY_FINGERPRINT':
             value = 'docker://acme/road-runner:2.3'
         else:
-            value = '"' + "${" + var.name + "}" + '"'
-        return lc(f'{tab}--env {var.name}={value}')
+            value = '"' + "${" + var['name'] + "}" + '"'
+        return lc(f"{tab}--env {var['name']}={value}")
 
     lines = [lc("docker run")]
 
-    for var in command.merkely_env_vars:
-        if var.name == "MERKELY_PIPE_PATH":
+    for _,var in data[command_name]['env_vars'].items():
+        if var['name'] == "MERKELY_PIPE_PATH":
             continue
-        if var.name == "MERKELY_HOST":
+        if var['name'] == "MERKELY_HOST":
             continue
-        if var.is_required:
+        if var['is_required']:
             lines.append(env(var))
 
     lines.append(lc(f"{tab}--rm"))
-    for mount in command.doc_volume_mounts():
+    for mount in data[command_name]['volume_mounts']:
         lines.append(lc(f"{tab}--volume {mount}"))
 
     # The merkely-pipe volume-mount is always required
