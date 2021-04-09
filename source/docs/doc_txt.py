@@ -99,6 +99,7 @@ def min_lines_for(data, command_name):
             lines.append(env(var))
 
     lines.append(lc(f"{tab}--rm"))
+    
     for mount in data[command_name]['volume_mounts']:
         lines.append(lc(f"{tab}--volume {mount}"))
 
@@ -128,20 +129,24 @@ def lines_for_docker(data, command_name):
 
     tab = " " * 4
     def env(var):
-        if var.name == "MERKELY_COMMAND":
-            value = var.value
+        if var['name'] == "MERKELY_COMMAND":
+            value = command_name # var.value
         else:
-            value = '"' + "${" + var.name + "}" + '"'
-        return lc(f'{tab}--env {var.name}={value}')
+            value = '"' + "${" + var['name'] + "}" + '"'
+        return lc(f"{tab}--env {var['name']}={value}")
 
-    command = command_for(command_name)
     lines = [lc("docker run")]
-    for var in command.merkely_env_vars:
+
+    for _, var in data[command_name]['env_vars'].items():
         lines.append(env(var))
+
     lines.append(lc(f"{tab}--rm"))
-    for mount in command.doc_volume_mounts():
+
+    for mount in data[command_name]['volume_mounts']:
         lines.append(lc(f"{tab}--volume {mount}"))
+
     lines.append(f"{tab}merkely/change")
+    
     return lines
 
 
