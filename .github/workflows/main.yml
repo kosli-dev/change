@@ -1,6 +1,9 @@
 name: Main
 
 on:
+  pull_request:
+    branches-ignore:
+      - '**'
   push:
     branches:
       - '**'
