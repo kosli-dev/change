@@ -16,5 +16,6 @@ class DryRunEnvVar(StaticDefaultedEnvVar):
             'When set to :code:`"TRUE"`, prints the command\'s url+payload,',
             "does not make any HTTP calls to Merkely,",
             "and exits the command with a zero status code.",
-            f"Defaults to :code:`{DEFAULT}`",
+            f"Defaults to :code:`{DEFAULT}`.",
+            "See also setting the MERKELY_API_TOKEN (above) to code:`DRY_RUN`."
         ])

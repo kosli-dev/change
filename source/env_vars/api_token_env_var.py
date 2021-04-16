@@ -16,5 +16,5 @@ class ApiTokenEnvVar(RequiredEnvVar):
     def doc_note(self, _ci_name, _command_name):
         return " ".join([
             "Your secret API token for Merkely.",
-            'To turn off all commands in a pipeline set this to :code:`"DRY_RUN"`.',
+            'Set this to :code:`"DRY_RUN"` to turn off all commands in all pipelines.',
         ])
