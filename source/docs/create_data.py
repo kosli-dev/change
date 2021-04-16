@@ -13,7 +13,7 @@ def create_data():
     # Next steps
     # 0. Drop reliance on Command and External
     # 1. Augment this with data used in env-var tables.
-    # 2. Save data into a json file
+    # 2. Save data into a json file in Makefile command.
     # 3. Load this json file in DescribeCommand
     # 4. Then do same for fingerprinter rst Reference files.
     data = {
