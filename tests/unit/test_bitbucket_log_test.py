@@ -28,12 +28,12 @@ def test_bitbucket():
         "contents": {
             "description": "JUnit results xml verified by merkely/change: Tests contain failures",
             "is_compliant": False,
-            "url": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}"
+            "url": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
+            "user_data": {
+                "status": "deployed"
+            },
         },
-        "evidence_type": EVIDENCE_TYPE,
-        "user_data": {
-            "status": "deployed"
-        },
+        "evidence_type": EVIDENCE_TYPE
     }
 
     env = dry_run(log_test_env())

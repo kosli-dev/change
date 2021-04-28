@@ -59,12 +59,12 @@ def test_zero_exit_status_when_there_is_a_data_directory():
         "contents": {
             "description": "JUnit results xml verified by merkely/change: All tests passed in 2 test suites",
             "is_compliant": True,
-            "url": build_url
+            "url": build_url,
+            "user_data": {
+                "status": "deployed"
+            }
         },
         "evidence_type": evidence_type,
-        "user_data": {
-            "status": "deployed"
-        }
     }
 
     env = dry_run(log_test_env())
@@ -88,12 +88,12 @@ def test_junit_xml_results_dir_specified_with_env_var():
         "contents": {
             "description": "JUnit results xml verified by merkely/change: All tests passed in 2 test suites",
             "is_compliant": True,
-            "url": build_url
+            "url": build_url,
+            "user_data": {
+                "status": "deployed"
+            }
         },
         "evidence_type": evidence_type,
-        "user_data": {
-            "status": "deployed"
-        }
     }
 
     env = dry_run(log_test_env())
@@ -117,12 +117,12 @@ def test_junit_xml_with_error_results_dir_specified_with_env_var():
         "contents": {
             "description": "JUnit results xml verified by merkely/change: Tests contain errors",
             "is_compliant": False,
-            "url": build_url
+            "url": build_url,
+            "user_data": {
+                "status": "deployed"
+            }
         },
         "evidence_type": evidence_type,
-        "user_data": {
-            "status": "deployed"
-        }
     }
 
     env = dry_run(log_test_env())

@@ -37,11 +37,11 @@ class LogTest(Command):
         setattr(self, 'default_suffix', message)
         payload = {
             "evidence_type": self.evidence_type.value,
-            "user_data": self.user_data.value,
             "contents": {
                 "is_compliant": is_compliant,
                 "url": self.ci_build_url.value,
-                "description": self.description.value
+                "description": self.description.value,
+                "user_data": self.user_data.value
             }
         }
         return 'PUT', url, payload, None

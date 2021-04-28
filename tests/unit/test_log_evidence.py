@@ -19,10 +19,10 @@ def test_docker_protocol():
         "contents": {
             "description": "branch coverage",
             "is_compliant": True,
-            "url": BUILD_URL
+            "url": BUILD_URL,
+            "user_data": {}
         },
         "evidence_type": "unit_test",
-        "user_data": {},
     }
 
     env = dry_run(log_evidence_env())

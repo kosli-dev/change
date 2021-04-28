@@ -23,11 +23,11 @@ class LogEvidence(Command):
         url = ApiSchema.url_for_artifact(self.host.value, self.merkelypipe, self.fingerprint.sha)
         payload = {
             "evidence_type": self.evidence_type.value,
-            "user_data": self.user_data.value,
             "contents": {
                 "is_compliant": self.is_compliant.value == "TRUE",
                 "url": self.ci_build_url.value,
-                "description": self.description.value
+                "description": self.description.value,
+                "user_data": self.user_data.value
             }
         }
         return 'PUT', url, payload, None

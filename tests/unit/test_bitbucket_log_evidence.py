@@ -28,9 +28,9 @@ def test_bitbucket():
             "description": DESCRIPTION,
             "is_compliant": True,
             "url": f"https://{BB}/{BB_ORG}/{BB_REPO}/addon/pipelines/home#!/results/{BUILD_NUMBER}",
+            "user_data": {}
         },
         "evidence_type": EVIDENCE_TYPE,
-        "user_data": {},
     }
 
     env = dry_run(log_evidence_env())
