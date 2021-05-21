@@ -253,7 +253,7 @@ merkely_approve_deployment:
         --env MERKELY_DRY_RUN=${MERKELY_DRY_RUN} \
         --env-file ${CI_ENV_FILE} \
 		--rm \
-		--volume ${PWD}:/src \
+		--volume ${MERKELY_SRC_REPO_ROOT}:/${MERKELY_SRC_REPO_ROOT} \
 		--volume /var/run/docker.sock:/var/run/docker.sock \
 		merkely/change
 
