@@ -10,24 +10,9 @@ DevOps Change Management with Merkely
 
 .. toctree::
    :maxdepth: 2
-   :caption: Quick Start:
+   :caption: Table of contents
 
-   tutorial/index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Concepts:
-
+   tutorial/pipefile
    concepts/index
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Command Reference:
-
    reference/index
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Fingerprint Reference:
-
    fingerprints/index

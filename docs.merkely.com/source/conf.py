@@ -21,7 +21,7 @@ extensions = [
     'sphinx_copybutton'
 ]
 
-import sphinx_bootstrap_theme
+# import sphinx_bootstrap_theme
 
 # -- Project information -----------------------------------------------------
 
@@ -49,27 +49,33 @@ exclude_patterns = ['app']
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'bootstrap'
-html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+html_theme = 'pydata_sphinx_theme'
 
 html_theme_options = {
-    'bootswatch_theme': "cosmo",
-    'navbar_title': " ",
-    'navbar_site_name': "Contents",
-    'navbar_sidebarrel': False,
-    'navbar_pagenav': False,
-    'source_link_position': "do-not-show",
+    'globaltoc_collapse': True,
+    'navbar_center': [],
+    'navbar_end': ['search-field'],
+    "collapse_navigation": True,
+    "show_prev_next": False
 }
+
+html_sidebars = {
+    '**': ["sidebar-nav-bs"],
+    'index': []
+}
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
 html_css_files = [
-    "merkely-custom.css",
+    'merkely-custom.css',
+    'bootstrap-4.6.0/css/bootstrap.min.css',
 ]
 html_js_files = [
-    'merkely-custom.js'
+    'merkely-custom.js',
+    'bootstrap-4.6.0/js/bootstrap.min.js',
 ]
 
 html_extra_path = ['CNAME', '.nojekyll']
