@@ -1,7 +1,10 @@
 .. This file was auto-generated from /app/source/docs/doc_rst.py
 
+Command Reference
+=================
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
+   :caption: Command Reference:
 
    declare_pipeline
    log_artifact
