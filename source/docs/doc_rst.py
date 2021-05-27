@@ -42,8 +42,11 @@ def reference_index_rst(command_names):
     index = "\n".join([
         f".. This file was auto-generated from {__file__}",
         "",
+        "Command Reference",
+        "=================",
         ".. toctree::",
-        "   :maxdepth: 1",
+        "   :maxdepth: 2",
+        "   :caption: Command Reference:",
         "",
     ])
     for command_name in command_names:
