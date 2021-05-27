@@ -56,11 +56,12 @@ html_theme_options = {
     'navbar_center': [],
     'navbar_end': ['search-field'],
     "collapse_navigation": True,
-    "show_prev_next": False
+    "show_prev_next": False,
+    "page_sidebar_items": [],
 }
 
 html_sidebars = {
-    '**': ["sidebar-nav-bs"],
+    '**': ["global_toc"],
     'index': []
 }
 

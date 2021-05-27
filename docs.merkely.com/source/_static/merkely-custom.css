@@ -2,10 +2,6 @@
 /* Beware: It seems you cant use // comments in this file  */
 /* = = = = = = = = = = = = = = = = = = = = = = = = = = = = */
 
-body {
-  padding-right: 60px;
-}
-
 :root {
   --custom-color: #f0f0f0;
   --merkely-green: #00f4b9;
@@ -14,11 +10,16 @@ body {
   --merkely-ddblue: #010d5a;
   --merkely-mblue: #0139d3;
   --merkely-lblue: #01abe9; /* #1EAEDB; is what skeleton has for links - may want to harmonize this */
+  --merkely-llblue: #f4f6fd;
   --merkely-mbackground: rgba(1, 57, 210, 0.04);
   --merkely-black: #13151b;
   --merkely-sblack: #000000;
   --merkely-grey: #cfcfd1;
   --merkely-white: #fff;
+}
+
+body {
+  background-color: var(--merkely-llblue) !important;
 }
 
 .navbar {
@@ -68,4 +69,12 @@ div.form-group {
   font-size: 90%;
   color: #c7254e;
   background-color: #f9f2f4;
+}
+
+nav#navbar-main {
+  background-color: var(--merkely-ddblue) !important;
+}
+
+.bd-content {
+  background-color: #fff;
 }

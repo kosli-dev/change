@@ -12,7 +12,7 @@ DevOps Change Management with Merkely
    :maxdepth: 2
    :caption: Table of contents
 
-   tutorial/pipefile
+   tutorial/index
    concepts/index
    reference/index
    fingerprints/index
