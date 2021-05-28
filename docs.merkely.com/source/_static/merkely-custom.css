@@ -16,6 +16,10 @@
   --merkely-sblack: #000000;
   --merkely-grey: #cfcfd1;
   --merkely-white: #fff;
+
+  /* Variables from theme */
+  --pst-color-sidebar-link: #001121;
+  --pst-color-sidebar-link-active: var(--merkely-mblue);
 }
 
 /* poppins-500 - latin */
@@ -259,6 +263,45 @@ nav#navbar-main {
   padding-top: 30px;
   position: -webkit-sticky !important;
   position: sticky !important;
+}
+
+.bd-sidebar .caption {
+  display: none;
+}
+
+.bd-sidebar .nav {
+  font-family: "Poppins";
+  font-weight: normal;
+}
+
+.toctree-l1 {
+  margin-bottom: 20px;
+}
+
+.toctree-l2 {
+  margin-bottom: 15px;
+}
+
+.toctree-l1>a {
+  font-size: 16px;
+}
+
+.toctree-l1>a:hover {
+  color: var(--merkely-mblue);
+}
+
+.toctree-l2>a {
+  font-size: 14px;
+  color: #5273c9 !important;
+}
+
+.toctree-l2>a.active {
+  color: var(--merkely-mblue) !important;
+}
+
+.toctree-l1 .toctree-l2 a:hover {
+  font-weight: 600;
+  color: var(--merkely-mblue);
 }
 
 .bd-links {
