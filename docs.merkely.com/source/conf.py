@@ -72,11 +72,11 @@ html_static_path = ['_static']
 
 html_css_files = [
     'merkely-custom.css',
-    'bootstrap-4.6.0/css/bootstrap.min.css',
+    # 'bootstrap-4.6.0/css/bootstrap.min.css',
 ]
 html_js_files = [
     'merkely-custom.js',
-    'bootstrap-4.6.0/js/bootstrap.min.js',
+    # 'bootstrap-4.6.0/js/bootstrap.min.js',
 ]
 
 html_extra_path = ['CNAME', '.nojekyll']

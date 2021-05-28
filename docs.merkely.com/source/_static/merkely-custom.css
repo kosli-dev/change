@@ -78,3 +78,20 @@ nav#navbar-main {
 .bd-content {
   background-color: #fff;
 }
+
+.bd-sidebar {
+  border-right: 0;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+}
+
+.bd-toc {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .bd-content {
+    flex: 0 0 75% !important;
+    max-width: 75% !important;
+  }
+}
