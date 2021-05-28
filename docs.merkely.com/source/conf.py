@@ -53,7 +53,7 @@ html_theme = 'pydata_sphinx_theme'
 
 html_theme_options = {
     'globaltoc_collapse': True,
-    'navbar_center': [],
+    'navbar_center': ['back_to_site'],
     'navbar_end': ['search-field'],
     "collapse_navigation": True,
     "show_prev_next": False,
@@ -72,11 +72,9 @@ html_static_path = ['_static']
 
 html_css_files = [
     'merkely-custom.css',
-    # 'bootstrap-4.6.0/css/bootstrap.min.css',
 ]
 html_js_files = [
     'merkely-custom.js',
-    # 'bootstrap-4.6.0/js/bootstrap.min.js',
 ]
 
 html_extra_path = ['CNAME', '.nojekyll']

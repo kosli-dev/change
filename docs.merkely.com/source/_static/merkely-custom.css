@@ -18,8 +18,100 @@
   --merkely-white: #fff;
 }
 
+/* poppins-500 - latin */
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  src: url("./fonts/poppins/poppins-v15-latin-500.eot"); /* IE9 Compat Modes */
+  src: local(""),
+      url("./fonts/poppins/poppins-v15-latin-500.eot?#iefix")
+          format("embedded-opentype"),
+      /* IE6-IE8 */ url("./fonts/poppins/poppins-v15-latin-500.woff2")
+          format("woff2"),
+      /* Super Modern Browsers */
+          url("./fonts/poppins/poppins-v15-latin-500.woff") format("woff"),
+      /* Modern Browsers */ url("./fonts/poppins/poppins-v15-latin-500.ttf")
+          format("truetype"),
+      /* Safari, Android, iOS */
+          url("./fonts/poppins/poppins-v15-latin-500.svg#Poppins")
+          format("svg"); /* Legacy iOS */
+  font-display: swap;
+}
+
+/* poppins-600 - latin */
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  src: url("./fonts/poppins/poppins-v15-latin-600.eot"); /* IE9 Compat Modes */
+  src: local(""),
+      url("./fonts/poppins/poppins-v15-latin-600.eot?#iefix")
+          format("embedded-opentype"),
+      /* IE6-IE8 */ url("./fonts/poppins/poppins-v15-latin-600.woff2")
+          format("woff2"),
+      /* Super Modern Browsers */
+          url("./fonts/poppins/poppins-v15-latin-600.woff") format("woff"),
+      /* Modern Browsers */ url("/fonts/poppins/poppins-v15-latin-600.ttf")
+          format("truetype"),
+      /* Safari, Android, iOS */
+          url("./fonts/poppins/poppins-v15-latin-600.svg#Poppins")
+          format("svg"); /* Legacy iOS */
+  font-display: swap;
+}
+
+/* poppins-700 - latin */
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  src: url("./fonts/poppins/poppins-v15-latin-700.eot"); /* IE9 Compat Modes */
+  src: local(""),
+      url("./fonts/poppins/poppins-v15-latin-700.eot?#iefix")
+          format("embedded-opentype"),
+      /* IE6-IE8 */ url("./fonts/poppins/poppins-v15-latin-700.woff2")
+          format("woff2"),
+      /* Super Modern Browsers */
+          url("./fonts/poppins/poppins-v15-latin-700.woff") format("woff"),
+      /* Modern Browsers */ url("./fonts/poppins/poppins-v15-latin-700.ttf")
+          format("truetype"),
+      /* Safari, Android, iOS */
+          url("./fonts/poppins/poppins-v15-latin-700.svg#Poppins")
+          format("svg"); /* Legacy iOS */
+  font-display: swap;
+}
+
+/* roboto-500 - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  src: url("./fonts/roboto/roboto-v27-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local(""),
+      url("./fonts/roboto/roboto-v27-latin-regular.eot?#iefix")
+          format("embedded-opentype"),
+      /* IE6-IE8 */ url("./fonts/roboto/roboto-v27-latin-regular.woff2")
+          format("woff2"),
+      /* Super Modern Browsers */
+          url("./fonts/roboto/roboto-v27-latin-regular.woff") format("woff"),
+      /* Modern Browsers */ url("./fonts/roboto/roboto-v27-latin-regular.ttf")
+          format("truetype"),
+      /* Safari, Android, iOS */
+          url("./fonts/roboto/roboto-v27-latin-regular#Roboto")
+          format("svg"); /* Legacy iOS */
+  font-display: swap;
+}
+
 body {
   background-color: var(--merkely-llblue) !important;
+  padding-top: var(--pst-header-height);
+  font-family: "Roboto";
+}
+
+h1 {
+  font-family: "Poppins";
+  font-weight: 600;
+  color: var(--merkely-mblue);
 }
 
 .navbar {
@@ -29,6 +121,18 @@ body {
 .navbar-default {
   background-color: var(--merkely-ddblue);
   border-color: var(--merkely-ddblue);
+}
+
+.back-to-site-btn a {
+  color: #ffffff;
+  font-family: "Poppins";
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.back-to-site-btn a:hover {
+  color: #ffffff;
+  text-decoration: underline;
 }
 
 .navbar .container {
@@ -58,10 +162,6 @@ ul.nav.navbar-nav {
   display: none !important; /* Content drop-down looks bad, not needed */
 }
 
-div.form-group {
-  display: none !important; /* Search is not working */
-}
-
 .inline-code {
   /* Mimic <code> */
   font-family: monospace;
@@ -75,14 +175,28 @@ nav#navbar-main {
   background-color: var(--merkely-ddblue) !important;
 }
 
+#navbar-main .container-xl {
+  padding: 0 !important;
+}
+
+.back-to-site-btn {
+  color: #ffffff;
+}
+
 .bd-content {
   background-color: #fff;
 }
 
 .bd-sidebar {
   border-right: 0;
+  padding-top: 30px;
   position: -webkit-sticky !important;
   position: sticky !important;
+}
+
+.bd-links {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .bd-toc {
