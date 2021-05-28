@@ -29,7 +29,7 @@ project = 'Merkely'
 copyright = '2021, Merkely'
 author = 'Merkely'
 
-html_logo = "_static/images/w-merkely-white.png"
+html_logo = "_static/images/w-merkely-docs-white.svg"
 
 # -- General configuration ---------------------------------------------------
 
@@ -58,6 +58,7 @@ html_theme_options = {
     "collapse_navigation": True,
     "show_prev_next": False,
     "page_sidebar_items": [],
+    "search_bar_text": "Search…"
 }
 
 html_sidebars = {
