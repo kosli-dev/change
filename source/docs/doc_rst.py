@@ -70,7 +70,7 @@ def reference_command_rst(command_name):
         "",
         ".. raw:: html",
         "",
-        f'{tab}<ul class="nav nav-tabs">\n',
+        f'{tab}<ul class="nav nav-tabs" role="tablist">\n',
     ])
 
     if command_name == 'control_pull_request':
@@ -80,11 +80,13 @@ def reference_command_rst(command_name):
 
     for ci_name in ci_names:
         if ci_name == 'docker':
-            active = ' class="active"'
+            active = ' active'
+            aria_selected='true'
         else:
             active = ''
+            aria_selected='false'
         cap = ci_name.capitalize()
-        rst += f'{tab}{tab}<li{active}><a data-toggle="tab" href="#{ci_name}">{cap}</a></li>\n'
+        rst += f'{tab}{tab}<li class="nav-item">\n{tab}{tab}{tab}<a class="nav-link{active}" id="{ci_name}-tab" data-toggle="tab" href="#{ci_name}" role="tab" aria-controls="{ci_name}" aria-selected="{aria_selected}">{cap}</a>\n{tab}{tab}</li>\n'
 
     rst += "\n".join([
         f"{tab}</ul>",
