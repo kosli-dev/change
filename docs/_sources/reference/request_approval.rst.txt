@@ -9,10 +9,16 @@ Request Approval
 
 .. raw:: html
 
-   <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#docker">Docker</a></li>
-      <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
-      <li><a data-toggle="tab" href="#github">Github</a></li>
+   <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+         <a class="nav-link active" id="docker-tab" data-toggle="tab" href="#docker" role="tab" aria-controls="docker" aria-selected="true">Docker</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" id="bitbucket-tab" data-toggle="tab" href="#bitbucket" role="tab" aria-controls="bitbucket" aria-selected="false">Bitbucket</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" id="github-tab" data-toggle="tab" href="#github" role="tab" aria-controls="github" aria-selected="false">Github</a>
+      </li>
    </ul>
 
    <div class="tab-content">

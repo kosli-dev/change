@@ -19,14 +19,21 @@
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     
+  <!-- add `style` or `link` tags with your CSS `@font-face` declarations here -->
+  <!-- ... and optionally preload the `woff2` for snappier page loads -->
+  
       
 
     
+  <link rel="preload" href="../_static/fonts/poppins/poppins-v15-latin-500.woff2" as='font' type='font/woff2' crossorigin>
+  <link rel="preload" href="../_static/fonts/poppins/poppins-v15-latin-600.woff2" as='font' type='font/woff2' crossorigin>
+  <link rel="preload" href="../_static/fonts/poppins/poppins-v15-latin-700.woff2" as='font' type='font/woff2' crossorigin>
+  <link rel="preload" href="../_static/fonts/roboto/roboto-v27-latin-regular.woff2" as='font' type='font/woff2' crossorigin>
+
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/merkely-custom.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-4.6.0/css/bootstrap.min.css" />
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
@@ -37,7 +44,6 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/merkely-custom.js"></script>
-    <script src="../_static/bootstrap-4.6.0/js/bootstrap.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Log Deployment" href="log_deployment.html" />
@@ -58,7 +64,7 @@
     
 
 <a class="navbar-brand" href="../index.html">
-  <img src="../_static/w-merkely-white.png" class="logo" alt="logo">
+  <img src="../_static/w-merkely-docs-white.svg" class="logo" alt="logo">
 </a>
 
 
@@ -73,6 +79,14 @@
   <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
     <div id="navbar-center" class="mr-auto">
       
+      <div class="navbar-center-item">
+        <div class="back-to-site-btn">
+    <a href="https://www.merkely.com">
+        <span class="left-carret"><</span> Back to Website
+    </a>
+</div>
+      </div>
+      
     </div>
 
     <div id="navbar-end">
@@ -80,7 +94,7 @@
       <div class="navbar-end-item">
         <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search…" aria-label="Search…" autocomplete="off" >
 </form>
       </div>
       
@@ -178,7 +192,7 @@
 </ul>
 
     </div>
-  </nav>
+</nav>
             </div>
             
           
@@ -202,10 +216,16 @@
   <div class="section" id="control-deployment">
 <span id="control-deployment-label"></span><h1>Control Deployment<a class="headerlink" href="#control-deployment" title="Permalink to this headline">¶</a></h1>
 <p><span>Fails a pipeline if an artifact is not approved for deployment in Merkely.</span></p>
-<ul class="nav nav-tabs">
-   <li class="active"><a data-toggle="tab" href="#docker">Docker</a></li>
-   <li><a data-toggle="tab" href="#bitbucket">Bitbucket</a></li>
-   <li><a data-toggle="tab" href="#github">Github</a></li>
+<ul class="nav nav-tabs" role="tablist">
+   <li class="nav-item">
+      <a class="nav-link active" id="docker-tab" data-toggle="tab" href="#docker" role="tab" aria-controls="docker" aria-selected="true">Docker</a>
+   </li>
+   <li class="nav-item">
+      <a class="nav-link" id="bitbucket-tab" data-toggle="tab" href="#bitbucket" role="tab" aria-controls="bitbucket" aria-selected="false">Bitbucket</a>
+   </li>
+   <li class="nav-item">
+      <a class="nav-link" id="github-tab" data-toggle="tab" href="#github" role="tab" aria-controls="github" aria-selected="false">Github</a>
+   </li>
 </ul>
 
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
@@ -263,7 +283,7 @@
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
-<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/eb96cd3/bitbucket-pipelines.yml#lines-211">Open an example, similar to the fragment below, from a git repo.</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/cbcd9be/bitbucket-pipelines.yml#lines-213">Open an example, similar to the fragment below, from a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;fail_the_pipeline_unless_approved_for_deployment_in_merkely
         name: Fail the pipeline unless approved for deployment in Merkely
         services: [ docker ]
@@ -318,7 +338,7 @@
 </table>
 </div>
 <div class="github tab-pane docutils container" id="github">
-<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/main/.github/workflows/deploy_to_production.yml#L43">Open an example, similar to the fragment below, from a git repo.</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/main/.github/workflows/deploy_to_production.yml#L44">Open an example, similar to the fragment below, from a git repo.</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Fail the pipeline unless approved for deployment in Merkely
       uses: docker://merkely/change:latest
       env:
