@@ -403,5 +403,10 @@ footer {
   .bd-content {
     flex: 0 0 75% !important;
     max-width: 75% !important;
+    min-height: calc(100vh - var(--pst-header-height));
+  }
+
+  .bd-sidebar {
+    height: 100%;
   }
 }
