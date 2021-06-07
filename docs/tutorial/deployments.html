@@ -51,6 +51,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
+      
+      <link rel="icon" sizes="" href="../_static//images/favicon.png">
+      
+    
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
@@ -196,20 +200,20 @@
   <div class="section" id="logging-deployments">
 <h1>Logging Deployments<a class="headerlink" href="#logging-deployments" title="Permalink to this headline">¶</a></h1>
 <p>An important aspect of change management is logging all changes to production environments.  To do this from a devops context, we use the <a class="reference internal" href="../reference/log_deployment.html#log-deployment-label"><span class="std std-ref">Log Deployment</span></a> command.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_COMMAND</span><span class="o">=</span><span class="n">log_deployment</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="n">docker</span><span class="p">:</span><span class="o">//</span><span class="n">acme</span><span class="o">/</span><span class="n">road</span><span class="o">-</span><span class="n">runner</span><span class="p">:</span><span class="mf">2.3</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_CI_BUILD_URL}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_DESCRIPTION</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_DESCRIPTION}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_ENVIRONMENT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_ENVIRONMENT}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_USER_DATA</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_USER_DATA}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_OWNER</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_OWNER}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_PIPELINE}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_API_TOKEN}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_DRY_RUN</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_DRY_RUN}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">rm</span> \
-    <span class="o">--</span><span class="n">volume</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span> \
-    <span class="n">merkely</span><span class="o">/</span><span class="n">change</span><span class="p">:</span><span class="n">latest</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker run \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_COMMAND=log_deployment \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_FINGERPRINT=docker://acme/road-runner:2.3 \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_ENVIRONMENT=&quot;${MERKELY_ENVIRONMENT}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--rm \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--volume /var/run/docker.sock:/var/run/docker.sock \</span>
+    <span class="l l-Scalar l-Scalar-Plain">merkely/change:latest</span>
 </pre></div>
 </div>
 </div>
@@ -228,18 +232,6 @@
 
   <footer class="footer mt-5 mt-md-0">
   <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2021, Merkely.<br/>
-</p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
-</p>
-    </div>
     
   </div>
 </footer>

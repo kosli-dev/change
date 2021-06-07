@@ -51,6 +51,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
+      
+      <link rel="icon" sizes="" href="../_static//images/favicon.png">
+      
+    
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
@@ -230,23 +234,23 @@
 
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
 <p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/main/Makefile#L172">Open an example, similar to the fragment below, from a git repo.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_COMMAND</span><span class="o">=</span><span class="n">log_artifact</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_FINGERPRINT}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_IS_COMPLIANT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_IS_COMPLIANT}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_ARTIFACT_GIT_COMMIT</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_ARTIFACT_GIT_COMMIT}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_ARTIFACT_GIT_URL</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_ARTIFACT_GIT_URL}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_CI_BUILD_NUMBER</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_CI_BUILD_NUMBER}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_CI_BUILD_URL}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_USER_DATA</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_USER_DATA}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_OWNER</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_OWNER}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_PIPELINE}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_API_TOKEN}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_HOST</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_HOST}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">env</span> <span class="n">MERKELY_DRY_RUN</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{MERKELY_DRY_RUN}</span><span class="s2">&quot;</span> \
-    <span class="o">--</span><span class="n">rm</span> \
-    <span class="o">--</span><span class="n">volume</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker</span><span class="o">.</span><span class="n">sock</span> \
-    <span class="n">merkely</span><span class="o">/</span><span class="n">change</span><span class="p">:</span><span class="n">latest</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker run \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_COMMAND=log_artifact \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_IS_COMPLIANT=&quot;${MERKELY_IS_COMPLIANT}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_ARTIFACT_GIT_COMMIT=&quot;${MERKELY_ARTIFACT_GIT_COMMIT}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_ARTIFACT_GIT_URL=&quot;${MERKELY_ARTIFACT_GIT_URL}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_CI_BUILD_NUMBER=&quot;${MERKELY_CI_BUILD_NUMBER}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--rm \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--volume /var/run/docker.sock:/var/run/docker.sock \</span>
+    <span class="l l-Scalar l-Scalar-Plain">merkely/change:latest</span>
 </pre></div>
 </div>
 <table class="table">
@@ -314,19 +318,19 @@
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
 <p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/cbcd9be/bitbucket-pipelines.yml#lines-61">Open an example, similar to the fragment below, from a git repo.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;log_docker_image_in_merkely
-        name: Log Docker image in Merkely
-        services: [ docker ]
-        script:
-          - *export_merkely_fingerprint_env_vars
-          - pipe: docker://merkely/change:latest
-            variables:
-              MERKELY_COMMAND: log_artifact
-              MERKELY_FINGERPRINT: ${MERKELY_FINGERPRINT}
-              MERKELY_IS_COMPLIANT: &quot;TRUE&quot;
-              MERKELY_OWNER: ${MERKELY_OWNER}
-              MERKELY_PIPELINE: ${MERKELY_PIPELINE}
-              MERKELY_API_TOKEN: ${MERKELY_API_TOKEN}
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">step</span><span class="p">:</span> <span class="nl">&amp;log_docker_image_in_merkely</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Log Docker image in Merkely</span>
+        <span class="nt">services</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">docker</span> <span class="p p-Indicator">]</span>
+        <span class="nt">script</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nv">*export_merkely_fingerprint_env_vars</span>
+          <span class="p p-Indicator">-</span> <span class="nt">pipe</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker://merkely/change:latest</span>
+            <span class="nt">variables</span><span class="p">:</span>
+              <span class="nt">MERKELY_COMMAND</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">log_artifact</span>
+              <span class="nt">MERKELY_FINGERPRINT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${MERKELY_FINGERPRINT}</span>
+              <span class="nt">MERKELY_IS_COMPLIANT</span><span class="p">:</span> <span class="s">&quot;TRUE&quot;</span>
+              <span class="nt">MERKELY_OWNER</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${MERKELY_OWNER}</span>
+              <span class="nt">MERKELY_PIPELINE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${MERKELY_PIPELINE}</span>
+              <span class="nt">MERKELY_API_TOKEN</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${MERKELY_API_TOKEN}</span>
 </pre></div>
 </div>
 <table class="table">
@@ -394,15 +398,15 @@
 </div>
 <div class="github tab-pane docutils container" id="github">
 <p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/main/.github/workflows/master_pipeline.yml#L48">Open an example, similar to the fragment below, from a git repo.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Log Docker image in Merkely
-      uses: docker://merkely/change:latest
-      env:
-        MERKELY_COMMAND: log_artifact
-        MERKELY_FINGERPRINT: docker://${{ env.IMAGE_TAGGED }}
-        MERKELY_IS_COMPLIANT: &quot;TRUE&quot;
-        MERKELY_OWNER: ${{ env.MERKELY_OWNER }}
-        MERKELY_PIPELINE: ${{ env.MERKELY_PIPELINE }}
-        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Log Docker image in Merkely</span>
+      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker://merkely/change:latest</span>
+      <span class="nt">env</span><span class="p">:</span>
+        <span class="nt">MERKELY_COMMAND</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">log_artifact</span>
+        <span class="nt">MERKELY_FINGERPRINT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker://${{ env.IMAGE_TAGGED }}</span>
+        <span class="nt">MERKELY_IS_COMPLIANT</span><span class="p">:</span> <span class="s">&quot;TRUE&quot;</span>
+        <span class="nt">MERKELY_OWNER</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{ env.MERKELY_OWNER }}</span>
+        <span class="nt">MERKELY_PIPELINE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{ env.MERKELY_PIPELINE }}</span>
+        <span class="nt">MERKELY_API_TOKEN</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{ secrets.MERKELY_API_TOKEN }}</span>
 </pre></div>
 </div>
 <table class="table">
@@ -484,18 +488,6 @@
 
   <footer class="footer mt-5 mt-md-0">
   <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2021, Merkely.<br/>
-</p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
-</p>
-    </div>
     
   </div>
 </footer>

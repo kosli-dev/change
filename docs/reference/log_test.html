@@ -51,6 +51,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
+      
+      <link rel="icon" sizes="" href="../_static//images/favicon.png">
+      
+    
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
@@ -230,23 +234,23 @@
 
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
 <p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/main/Makefile#L207">Open an example, similar to the fragment below, from a git repo.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    --env MERKELY_COMMAND=log_test \
-    --env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \
-    --env MERKELY_EVIDENCE_TYPE=&quot;${MERKELY_EVIDENCE_TYPE}&quot; \
-    --env MERKELY_TEST_RESULTS_DIR=&quot;${MERKELY_TEST_RESULTS_DIR}&quot; \
-    --env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \
-    --env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \
-    --env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \
-    --env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \
-    --env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \
-    --env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \
-    --env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \
-    --env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \
-    --rm \
-    --volume ${YOUR_TEST_RESULTS_DIR}:/data/junit/ \
-    --volume /var/run/docker.sock:/var/run/docker.sock \
-    merkely/change:latest
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker run \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_COMMAND=log_test \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_EVIDENCE_TYPE=&quot;${MERKELY_EVIDENCE_TYPE}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_TEST_RESULTS_DIR=&quot;${MERKELY_TEST_RESULTS_DIR}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--rm \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--volume ${YOUR_TEST_RESULTS_DIR}:/data/junit/ \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--volume /var/run/docker.sock:/var/run/docker.sock \</span>
+    <span class="l l-Scalar l-Scalar-Plain">merkely/change:latest</span>
 </pre></div>
 </div>
 <table class="table">
@@ -310,20 +314,20 @@
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
 <p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/cbcd9be/bitbucket-pipelines.yml#lines-92">Open an example, similar to the fragment below, from a git repo.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - step: &amp;log_unit_test_results_in_merkely
-        name: Log unit test results in Merkely
-        services: [ docker ]
-        script:
-          - *export_merkely_fingerprint_env_vars
-          - pipe: docker://merkely/change:latest
-            variables:
-              MERKELY_COMMAND: log_test
-              MERKELY_FINGERPRINT: ${MERKELY_FINGERPRINT}
-              MERKELY_EVIDENCE_TYPE: unit_test
-              MERKELY_TEST_RESULTS_DIR: ${PWD}/build/test/
-              MERKELY_OWNER: ${MERKELY_OWNER}
-              MERKELY_PIPELINE: ${MERKELY_PIPELINE}
-              MERKELY_API_TOKEN: ${MERKELY_API_TOKEN}
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">step</span><span class="p">:</span> <span class="nl">&amp;log_unit_test_results_in_merkely</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Log unit test results in Merkely</span>
+        <span class="nt">services</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">docker</span> <span class="p p-Indicator">]</span>
+        <span class="nt">script</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nv">*export_merkely_fingerprint_env_vars</span>
+          <span class="p p-Indicator">-</span> <span class="nt">pipe</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker://merkely/change:latest</span>
+            <span class="nt">variables</span><span class="p">:</span>
+              <span class="nt">MERKELY_COMMAND</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">log_test</span>
+              <span class="nt">MERKELY_FINGERPRINT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${MERKELY_FINGERPRINT}</span>
+              <span class="nt">MERKELY_EVIDENCE_TYPE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">unit_test</span>
+              <span class="nt">MERKELY_TEST_RESULTS_DIR</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${PWD}/build/test/</span>
+              <span class="nt">MERKELY_OWNER</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${MERKELY_OWNER}</span>
+              <span class="nt">MERKELY_PIPELINE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${MERKELY_PIPELINE}</span>
+              <span class="nt">MERKELY_API_TOKEN</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${MERKELY_API_TOKEN}</span>
 </pre></div>
 </div>
 <table class="table">
@@ -387,16 +391,16 @@
 </div>
 <div class="github tab-pane docutils container" id="github">
 <p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/loan-calculator/blob/main/.github/workflows/master_pipeline.yml#L71">Open an example, similar to the fragment below, from a git repo.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    - name: Log unit test results in Merkely
-      uses: docker://merkely/change:latest
-      env:
-        MERKELY_COMMAND: log_test
-        MERKELY_FINGERPRINT: docker://${{ env.IMAGE_TAGGED }}
-        MERKELY_EVIDENCE_TYPE: unit_test
-        MERKELY_TEST_RESULTS_DIR: ${{ github.workspace }}/build/test
-        MERKELY_OWNER: ${{ env.MERKELY_OWNER }}
-        MERKELY_PIPELINE: ${{ env.MERKELY_PIPELINE }}
-        MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Log unit test results in Merkely</span>
+      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker://merkely/change:latest</span>
+      <span class="nt">env</span><span class="p">:</span>
+        <span class="nt">MERKELY_COMMAND</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">log_test</span>
+        <span class="nt">MERKELY_FINGERPRINT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker://${{ env.IMAGE_TAGGED }}</span>
+        <span class="nt">MERKELY_EVIDENCE_TYPE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">unit_test</span>
+        <span class="nt">MERKELY_TEST_RESULTS_DIR</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{ github.workspace }}/build/test</span>
+        <span class="nt">MERKELY_OWNER</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{ env.MERKELY_OWNER }}</span>
+        <span class="nt">MERKELY_PIPELINE</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{ env.MERKELY_PIPELINE }}</span>
+        <span class="nt">MERKELY_API_TOKEN</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${{ secrets.MERKELY_API_TOKEN }}</span>
 </pre></div>
 </div>
 <table class="table">
@@ -474,18 +478,6 @@
 
   <footer class="footer mt-5 mt-md-0">
   <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2021, Merkely.<br/>
-</p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
-</p>
-    </div>
     
   </div>
 </footer>

@@ -51,6 +51,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
+      
+      <link rel="icon" sizes="" href="../_static//images/favicon.png">
+      
+    
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
@@ -191,11 +195,11 @@
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
-    ...
-    --env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH} \
-    --volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \
-    ...
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker run \</span>
+    <span class="l l-Scalar l-Scalar-Plain">...</span>
+    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_FINGERPRINT=”file://${YOUR_FILE_PATH} \</span>
+    <span class="l l-Scalar l-Scalar-Plain">--volume=${YOUR_FILE_PATH}:${YOUR_FILE_PATH} \</span>
+    <span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -219,18 +223,6 @@
 
   <footer class="footer mt-5 mt-md-0">
   <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2021, Merkely.<br/>
-</p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
-</p>
-    </div>
     
   </div>
 </footer>

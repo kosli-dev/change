@@ -7,20 +7,36 @@ $(document).ready(function () {
    $hrefs.attr('target','_blank');
    $hrefs.attr('rel', 'noopener noreferrer'); // secure linking site
 
-   const $topLevelLinks = $('.toctree-l1>a');
-   $topLevelLinks.each(function() {
+   // This fix is used because of the legacy situation, a better solution
+   // will have to be implemented
+   const $topLevelLinks = $('.bd-sidebar .toctree-l1>a');
+   $topLevelLinks.each(function(index) {
       const $link = $(this);
+      let newLink;
+
       if ($link.text().trim() === 'Quick Start'){
-         $link.attr('href', '../tutorial/pipefile.html')
+         newLink = '../tutorial/pipefile.html';
       }
       if ($link.text().trim() === 'Concepts'){
-         $link.attr('href', '../concepts/devops_change_is_the_new_normal.html')
+         newLink = '../concepts/devops_change_is_the_new_normal.html';
       }
       if ($link.text().trim() === 'Command Reference'){
-         $link.attr('href', '../reference/declare_pipeline.html')
+         newLink = '../reference/declare_pipeline.html';
       }
       if ($link.text().trim() === 'Fingerprint Reference'){
-         $link.attr('href', '../fingerprints/docker_fingerprint.html')
+         newLink = '../fingerprints/docker_fingerprint.html';
       }
+
+      const checkbox = `<input class="toctree-checkbox" name="toctree-checkbox-${index + 2}" type="checkbox">
+                        <label for="toctree-checkbox-${index + 2}">
+                           <a href="${newLink}">
+                              <i class="fas fa-chevron-down"></i>
+                           </a>
+                        </label>`
+
+      $link.attr('href', newLink);
+      $link.parent().not('.active').append(checkbox);
+
+
    });
 });
