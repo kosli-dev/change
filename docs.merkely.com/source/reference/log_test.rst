@@ -23,8 +23,11 @@ Log Test
 
    <div class="tab-content">
 
+.. highlight:: bash
 .. describe_command:: log_test invocation_full docker
+.. highlight:: yaml
 .. describe_command:: log_test invocation_full bitbucket
+.. highlight:: yaml
 .. describe_command:: log_test invocation_full github
 
 .. raw:: html

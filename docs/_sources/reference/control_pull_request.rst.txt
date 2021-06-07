@@ -20,7 +20,9 @@ Control Pull Request
 
    <div class="tab-content">
 
+.. highlight:: bash
 .. describe_command:: control_pull_request invocation_full docker
+.. highlight:: yaml
 .. describe_command:: control_pull_request invocation_full bitbucket
 
 .. raw:: html

@@ -23,8 +23,11 @@ Log Deployment
 
    <div class="tab-content">
 
+.. highlight:: bash
 .. describe_command:: log_deployment invocation_full docker
+.. highlight:: yaml
 .. describe_command:: log_deployment invocation_full bitbucket
+.. highlight:: yaml
 .. describe_command:: log_deployment invocation_full github
 
 .. raw:: html

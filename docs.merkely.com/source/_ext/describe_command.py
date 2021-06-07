@@ -1,5 +1,6 @@
 from docutils import nodes
 from docutils.parsers.rst import Directive
+from sphinx.addnodes import highlightlang
 from commands import Command, External
 from docs import compound_para
 
@@ -43,8 +44,7 @@ def invocation_full(command_name, ci_name):
     div = nodes.container()
     add_literal_block_link(div, command, ci_name)
 
-    # div += nodes.literal_block('', '', nodes.raw(text, text, format='bash'))
-    div += nodes.literal_block(rawsource=text, text=text, format='yaml')
+    div += nodes.literal_block(rawsource=text, text=text)
     div += parameters(command, ci_name)
 
 

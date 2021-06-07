@@ -234,23 +234,23 @@
 
 <div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
 <p class="literal-block-link"><a class="reference external" href="https://github.com/merkely-development/change/blob/main/Makefile#L207">Open an example, similar to the fragment below, from a git repo.</a></p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker run \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_COMMAND=log_test \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_FINGERPRINT=&quot;${MERKELY_FINGERPRINT}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_EVIDENCE_TYPE=&quot;${MERKELY_EVIDENCE_TYPE}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_TEST_RESULTS_DIR=&quot;${MERKELY_TEST_RESULTS_DIR}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_HOST=&quot;${MERKELY_HOST}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--rm \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--volume ${YOUR_TEST_RESULTS_DIR}:/data/junit/ \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--volume /var/run/docker.sock:/var/run/docker.sock \</span>
-    <span class="l l-Scalar l-Scalar-Plain">merkely/change:latest</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+    --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_test <span class="se">\</span>
+    --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_FINGERPRINT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_EVIDENCE_TYPE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_EVIDENCE_TYPE</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_TEST_RESULTS_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_TEST_RESULTS_DIR</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_DESCRIPTION</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_DESCRIPTION</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_CI_BUILD_URL</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_USER_DATA</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_USER_DATA</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_OWNER</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_OWNER</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_PIPELINE</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_API_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_HOST</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_HOST</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_DRY_RUN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_DRY_RUN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --rm <span class="se">\</span>
+    --volume <span class="si">${</span><span class="nv">YOUR_TEST_RESULTS_DIR</span><span class="si">}</span>:/data/junit/ <span class="se">\</span>
+    --volume /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
+    merkely/change:latest
 </pre></div>
 </div>
 <table class="table">

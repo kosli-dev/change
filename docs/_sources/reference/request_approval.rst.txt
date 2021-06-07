@@ -23,8 +23,11 @@ Request Approval
 
    <div class="tab-content">
 
+.. highlight:: bash
 .. describe_command:: request_approval invocation_full docker
+.. highlight:: yaml
 .. describe_command:: request_approval invocation_full bitbucket
+.. highlight:: yaml
 .. describe_command:: request_approval invocation_full github
 
 .. raw:: html

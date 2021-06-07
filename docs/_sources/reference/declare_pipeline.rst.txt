@@ -23,8 +23,11 @@ Declare Pipeline
 
    <div class="tab-content">
 
+.. highlight:: bash
 .. describe_command:: declare_pipeline invocation_full docker
+.. highlight:: yaml
 .. describe_command:: declare_pipeline invocation_full bitbucket
+.. highlight:: yaml
 .. describe_command:: declare_pipeline invocation_full github
 
 .. raw:: html

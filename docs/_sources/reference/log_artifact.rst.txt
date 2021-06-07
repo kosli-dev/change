@@ -23,8 +23,11 @@ Log Artifact
 
    <div class="tab-content">
 
+.. highlight:: bash
 .. describe_command:: log_artifact invocation_full docker
+.. highlight:: yaml
 .. describe_command:: log_artifact invocation_full bitbucket
+.. highlight:: yaml
 .. describe_command:: log_artifact invocation_full github
 
 .. raw:: html
