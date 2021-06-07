@@ -58,7 +58,14 @@ html_theme_options = {
     "collapse_navigation": True,
     "show_prev_next": False,
     "page_sidebar_items": [],
-    "search_bar_text": "Search…"
+    "search_bar_text": "Search…",
+    "footer_items": [],
+    "favicons": [
+        {
+            "rel": "icon",
+            "href": "/images/favicon.png",
+        }
+    ]
 }
 
 html_sidebars = {

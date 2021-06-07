@@ -20,6 +20,8 @@
   /* Variables from theme */
   --pst-color-sidebar-link: #001121;
   --pst-color-sidebar-link-active: var(--merkely-mblue);
+  --pst-color-headerlink: var(--merkely-dblue);
+  --pst-color-headerlink-hover: var(--merkely-dblue);
 }
 
 /* poppins-regular - latin */
@@ -311,7 +313,7 @@ nav#navbar-main {
   color: var(--merkely-mblue)
 }
 
-.toctree-l1>a:hover {
+.bd-sidebar .nav .toctree-l1>a:hover {
   color: var(--merkely-mblue);
 }
 
@@ -336,13 +338,12 @@ nav#navbar-main {
   color: #5273c9 !important;
 }
 
-.toctree-l2>a.active {
+.bd-sidebar .nav .toctree-l2>a.active {
   color: var(--merkely-mblue) !important;
 }
 
-.toctree-l1 .toctree-l2 a:hover {
-  font-weight: 500;
-  color: var(--merkely-mblue);
+.bd-sidebar .nav .toctree-l1 .toctree-l2 a:hover {
+  color: var(--merkely-mblue) !important;
 }
 
 .bd-links {
@@ -359,6 +360,10 @@ nav#navbar-main {
   border-color: #dee2e6 #dee2e6 #fff;
   border-top-left-radius: .25rem;
   border-top-right-radius: .25rem;
+}
+
+footer {
+  display: none;
 }
 
 @media (min-width: 768px) {
