@@ -97,6 +97,10 @@ def reference_command_rst(command_name):
     ])
 
     for ci_name in ci_names:
+        language = 'yaml'
+        if ci_name == 'docker':
+            language = 'bash'
+        rst += f".. highlight:: {language}\n"
         rst += f".. describe_command:: {command_name} invocation_full {ci_name}\n"
 
     rst += "\n".join([
