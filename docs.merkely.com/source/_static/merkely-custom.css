@@ -355,11 +355,43 @@ nav#navbar-main {
   display: none !important;
 }
 
-.nav-tabs .nav-link:hover {
-  border: 1px solid transparent;
-  border-color: #dee2e6 #dee2e6 #fff;
-  border-top-left-radius: .25rem;
-  border-top-right-radius: .25rem;
+.nav-tabs {
+  border-bottom: 0.5px solid #5273c9;
+}
+
+.nav-tabs .nav-item {
+  margin-bottom: -2px;
+}
+
+.nav-tabs .nav-link {
+  font-family: "Poppins";
+  color:#5273c9;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--merkely-mblue);
+  font-weight: bold;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:hover {
+  border: 0.5px solid #5273c9;
+  border-bottom: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+
+}
+
+.nav-tabs .nav-link:not(.active):hover {
+  border: 0.5px solid #5273c9;
+  border-bottom: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.tab-content .container {
+  margin: 0;
+  padding: 0;
 }
 
 footer {
