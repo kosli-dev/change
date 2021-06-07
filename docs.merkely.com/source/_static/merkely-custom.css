@@ -22,6 +22,7 @@
   --pst-color-sidebar-link-active: var(--merkely-mblue);
   --pst-color-headerlink: var(--merkely-dblue);
   --pst-color-headerlink-hover: var(--merkely-dblue);
+  --pst-header-height: 70px;
 }
 
 /* poppins-regular - latin */
@@ -356,11 +357,11 @@ nav#navbar-main {
 }
 
 .nav-tabs {
-  border-bottom: 0.5px solid #5273c9;
+  border-bottom: 1px solid #5273c9;
 }
 
 .nav-tabs .nav-item {
-  margin-bottom: -2px;
+  margin-bottom: -1px;
 }
 
 .nav-tabs .nav-link {
@@ -375,15 +376,15 @@ nav#navbar-main {
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-link.active:hover {
-  border: 0.5px solid #5273c9;
-  border-bottom: none;
+  border: 1px solid #5273c9;
+  border-bottom-color: transparent;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 
 }
 
 .nav-tabs .nav-link:not(.active):hover {
-  border: 0.5px solid #5273c9;
+  border: 1px solid #5273c9;
   border-bottom: none;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
