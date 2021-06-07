@@ -87,6 +87,7 @@ html_js_files = [
 
 html_extra_path = ['CNAME', '.nojekyll']
 
+highlight_language = 'yaml'
 
 # This is a hack to get around a sphinx bug that does not
 # copy static files correctly on change

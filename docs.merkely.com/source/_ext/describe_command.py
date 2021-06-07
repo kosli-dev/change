@@ -42,12 +42,11 @@ def invocation_full(command_name, ci_name):
 
     div = nodes.container()
     add_literal_block_link(div, command, ci_name)
-    div += nodes.literal_block(text=text)
+
+    # div += nodes.literal_block('', '', nodes.raw(text, text, format='bash'))
+    div += nodes.literal_block(rawsource=text, text=text, format='yaml')
     div += parameters(command, ci_name)
 
-    # Add bootstrap "tab-pane" to connect to
-    #    <ul class="nav nav-tabs">...</ul>
-    # inside each command's .rst file
 
     div_classes = [ci_name, "tab-pane"]
     if ci_name == "docker":
