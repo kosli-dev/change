@@ -80,6 +80,7 @@ html_static_path = ['_static']
 
 html_css_files = [
     'merkely-custom.css',
+    'merkely-pygments.css',
 ]
 html_js_files = [
     'merkely-custom.js',
