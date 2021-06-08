@@ -15,10 +15,11 @@ Traditionally, software artifacts (docker images, zip files, etc) are identified
 .. topic:: What is Content-Addressable Storage?
 
 	Content-Addressable Storage is a fancy phrase with a simple meaning: “the content of the binary determines its identity”.  Cryptographic hash functions such as the sha256 digest give you a one-way algorithm for identifying any collection of bytes.  This digest acts as a unique fingerprint.
-
-	.. image:: ../images/fingerprint.png
-
 	Any change to the software package would result in a different fingerprint.
+	
+	.. image:: ../images/fingerprint.png
+		:scale: 33%
+		:alt: Fingerprinting an artifact
 
 There are many advantages to this approach:
 
