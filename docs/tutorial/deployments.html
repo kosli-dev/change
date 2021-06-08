@@ -133,7 +133,7 @@
   <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="pipefile.html">
-     Defining Your Pipeline
+     Instrumenting Your CI Pipeline
     </a>
    </li>
    <li class="toctree-l2">
@@ -200,20 +200,20 @@
   <div class="section" id="logging-deployments">
 <h1>Logging Deployments<a class="headerlink" href="#logging-deployments" title="Permalink to this headline">¶</a></h1>
 <p>An important aspect of change management is logging all changes to production environments.  To do this from a devops context, we use the <a class="reference internal" href="../reference/log_deployment.html#log-deployment-label"><span class="std std-ref">Log Deployment</span></a> command.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker run \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_COMMAND=log_deployment \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_FINGERPRINT=docker://acme/road-runner:2.3 \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_ENVIRONMENT=&quot;${MERKELY_ENVIRONMENT}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--rm \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--volume /var/run/docker.sock:/var/run/docker.sock \</span>
-    <span class="l l-Scalar l-Scalar-Plain">merkely/change:latest</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+    --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_deployment <span class="se">\</span>
+    --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span>docker://acme/road-runner:2.3 <span class="se">\</span>
+    --env <span class="nv">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_CI_BUILD_URL</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_DESCRIPTION</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_DESCRIPTION</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_ENVIRONMENT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_ENVIRONMENT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_USER_DATA</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_USER_DATA</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_OWNER</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_OWNER</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_PIPELINE</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_API_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_DRY_RUN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_DRY_RUN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --rm <span class="se">\</span>
+    --volume /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
+    merkely/change:latest
 </pre></div>
 </div>
 </div>

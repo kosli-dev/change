@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Defining Your Pipeline &#8212; Merkely  documentation</title>
+    <title>Instrumenting Your CI Pipeline &#8212; Merkely  documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -133,7 +133,7 @@
   <ul class="current">
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Defining Your Pipeline
+     Instrumenting Your CI Pipeline
     </a>
    </li>
    <li class="toctree-l2">
@@ -197,37 +197,29 @@
               
               <div>
                 
-  <div class="section" id="defining-your-pipeline">
-<h1>Defining Your Pipeline<a class="headerlink" href="#defining-your-pipeline" title="Permalink to this headline">¶</a></h1>
-<p>Merkely uses a declarative Pipefile to define the DevOps Change Management needs of a pipeline.  It is a JSON file, typically stored in your source code repository that tells Merkely about your software delivery process and what process and control evidence to expect.</p>
-<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;acme-cern&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hadroncollider-game&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Accelerating particles then smashing them together&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;visibility&quot;</span><span class="p">:</span> <span class="s2">&quot;private&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;template&quot;</span><span class="p">:</span> <span class="p">[</span>
-         <span class="s2">&quot;artifact&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;unit_test&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;coverage&quot;</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>To make integration with Merkely easy to implement in devops pipelines we provide a docker image <a class="reference external" href="https://github.com/merkely-development/change">merkely/change</a>.  Using commands in this image you can define, log and control different aspects of your software delivery process automatically.</p>
-<p>For example, to declare the pipeline definition in Merkely you use the command <a class="reference internal" href="../reference/declare_pipeline.html#declare-pipeline-label"><span class="std std-ref">Declare Pipeline</span></a>
+  <div class="section" id="instrumenting-your-ci-pipeline">
+<h1>Instrumenting Your CI Pipeline<a class="headerlink" href="#instrumenting-your-ci-pipeline" title="Permalink to this headline">¶</a></h1>
+<p>To make integration with Merkely easy to implement in devops pipelines we provide a docker image <a class="reference external" href="https://github.com/merkely-development/change">merkely/change</a>.  Using commands in this image you can log and control different aspects of your software delivery process automatically.</p>
+<p>For example, to log your artifact in Merkely you use the command <a class="reference internal" href="../reference/log_artifact.html#log-artifact-label"><span class="std std-ref">Log Artifact</span></a>
 like so:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker run \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_COMMAND=declare_pipeline \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--rm \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--volume ${YOUR_MERKELY_PIPE}:/data/Merkelypipe.json \</span>
-    <span class="l l-Scalar l-Scalar-Plain">merkely/change:latest</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+    --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_artifact <span class="se">\</span>
+    --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span>docker://acme/road-runner:2.3 <span class="se">\</span>
+    --env <span class="nv">MERKELY_IS_COMPLIANT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_IS_COMPLIANT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_ARTIFACT_GIT_COMMIT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_ARTIFACT_GIT_COMMIT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_ARTIFACT_GIT_URL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_ARTIFACT_GIT_URL</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_CI_BUILD_NUMBER</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_CI_BUILD_NUMBER</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_CI_BUILD_URL</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_USER_DATA</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_USER_DATA</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_OWNER</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_OWNER</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_PIPELINE</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_API_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_DRY_RUN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_DRY_RUN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --rm <span class="se">\</span>
+    --volume /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
+    merkely/change:latest
 </pre></div>
 </div>
-<p>You send this Pipefile at the start of every CI run.  This allows changes made in the pipefile to automatically propagate to Merkely; with the added benefit that these changes can go through your standard peer review process.</p>
 </div>
 
 

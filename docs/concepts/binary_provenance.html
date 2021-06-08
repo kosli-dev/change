@@ -204,9 +204,9 @@
 <p>Traditionally, software artifacts (docker images, zip files, etc) are identified using labels, such as, semantic versions, filenames, or other metadata.  We prefer to identify each software artifact by its binary content.</p>
 <div class="topic">
 <p class="topic-title">What is Content-Addressable Storage?</p>
-<p>Content-Addressable Storage is a fancy phrase with a simple meaning: “the content of the binary determines its identity”.  Cryptographic hash functions such as the sha256 digest give you a one-way algorithm for identifying any collection of bytes.  This digest acts as a unique fingerprint.</p>
-<img alt="../_images/fingerprint.png" src="../_images/fingerprint.png" />
-<p>Any change to the software package would result in a different fingerprint.</p>
+<p>Content-Addressable Storage is a fancy phrase with a simple meaning: “the content of the binary determines its identity”.  Cryptographic hash functions such as the sha256 digest give you a one-way algorithm for identifying any collection of bytes.  This digest acts as a unique fingerprint.
+Any change to the software package would result in a different fingerprint.</p>
+<a class="reference internal image-reference" href="../_images/fingerprint.png"><img alt="Fingerprinting an artifact" src="../_images/fingerprint.png" style="width: 364.32px; height: 102.30000000000001px;" /></a>
 </div>
 <p>There are many advantages to this approach:</p>
 <ul class="simple">

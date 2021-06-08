@@ -133,7 +133,7 @@
   <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="pipefile.html">
-     Defining Your Pipeline
+     Instrumenting Your CI Pipeline
     </a>
    </li>
    <li class="toctree-l2">
@@ -200,36 +200,36 @@
   <div class="section" id="logging-controls">
 <h1>Logging Controls<a class="headerlink" href="#logging-controls" title="Permalink to this headline">¶</a></h1>
 <p>An important aspect of DevOps compliance is meeting the expectations of
-risk controls in the pipeline.  Examples include:</p>
+risk controls in your CI pipeline. Examples include:</p>
 <ul class="simple">
 <li><p>Running unit tests/integration tests</p></li>
 <li><p>Performing security scanning</p></li>
 <li><p>Code coverage</p></li>
 <li><p>etc</p></li>
 </ul>
-<p>In your <a class="reference internal" href="../reference/declare_pipeline.html#declare-pipeline-label"><span class="std std-ref">Declare Pipeline</span></a> command you specify the names of the controls you expect to be performed in the pipeline.  As you execute these steps, you can use these commands to log the evidence that these controls have been performed.</p>
+<p>As you execute these steps, you can use the following commands to log the evidence that these controls have been performed.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../reference/control_pull_request.html#control-pull-request-label"><span class="std std-ref">Control Pull Request</span></a> command to control and send evidence that a pull request is approved for this commit</p></li>
 <li><p><a class="reference internal" href="../reference/log_test.html#log-test-label"><span class="std std-ref">Log Test</span></a> command to send evidence that a test has been executed</p></li>
 <li><p><a class="reference internal" href="../reference/log_evidence.html#log-evidence-label"><span class="std std-ref">Log Evidence</span></a> command to send evidence that a generic control has been performed</p></li>
 </ul>
 <img alt="../_images/controls.png" src="../_images/controls.png" />
-<p>Here is an example of how to use <a class="reference internal" href="../reference/log_evidence.html#log-evidence-label"><span class="std std-ref">Log Evidence</span></a> from your pipeline:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker run \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_COMMAND=log_evidence \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_FINGERPRINT=docker://acme/road-runner:2.3 \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_EVIDENCE_TYPE=&quot;${MERKELY_EVIDENCE_TYPE}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_IS_COMPLIANT=&quot;${MERKELY_IS_COMPLIANT}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DESCRIPTION=&quot;${MERKELY_DESCRIPTION}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--rm \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--volume /var/run/docker.sock:/var/run/docker.sock \</span>
-    <span class="l l-Scalar l-Scalar-Plain">merkely/change:latest</span>
+<p>Here is an example of how to use <a class="reference internal" href="../reference/log_evidence.html#log-evidence-label"><span class="std std-ref">Log Evidence</span></a> from your CI pipeline:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+    --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_evidence <span class="se">\</span>
+    --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span>docker://acme/road-runner:2.3 <span class="se">\</span>
+    --env <span class="nv">MERKELY_EVIDENCE_TYPE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_EVIDENCE_TYPE</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_IS_COMPLIANT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_IS_COMPLIANT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_DESCRIPTION</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_DESCRIPTION</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_CI_BUILD_URL</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_USER_DATA</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_USER_DATA</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_OWNER</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_OWNER</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_PIPELINE</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_API_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_DRY_RUN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_DRY_RUN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --rm <span class="se">\</span>
+    --volume /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
+    merkely/change:latest
 </pre></div>
 </div>
 </div>

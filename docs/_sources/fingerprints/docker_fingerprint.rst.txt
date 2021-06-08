@@ -9,6 +9,7 @@ Notes
 
 Example
 -------
+.. highlight:: bash
 .. describe_fingerprint:: docker_fingerprinter example
 
 * See also :ref:`file_fingerprint-label`

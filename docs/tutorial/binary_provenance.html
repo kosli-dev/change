@@ -47,7 +47,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Logging Controls" href="controls.html" />
-    <link rel="prev" title="Defining Your Pipeline" href="pipefile.html" />
+    <link rel="prev" title="Instrumenting Your CI Pipeline" href="pipefile.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -133,7 +133,7 @@
   <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="pipefile.html">
-     Defining Your Pipeline
+     Instrumenting Your CI Pipeline
     </a>
    </li>
    <li class="toctree-l2 current active">
@@ -207,22 +207,22 @@ To get the sha256 for your artifact, you have three options:</p>
 <li><p>Explicitly provide the sha256 of the binary and the name of the binary to the command.</p></li>
 </ul>
 <p>Here is an example using a docker image:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">docker run \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_COMMAND=log_artifact \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_FINGERPRINT=docker://acme/road-runner:2.3 \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_IS_COMPLIANT=&quot;${MERKELY_IS_COMPLIANT}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_ARTIFACT_GIT_COMMIT=&quot;${MERKELY_ARTIFACT_GIT_COMMIT}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_ARTIFACT_GIT_URL=&quot;${MERKELY_ARTIFACT_GIT_URL}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_CI_BUILD_NUMBER=&quot;${MERKELY_CI_BUILD_NUMBER}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_CI_BUILD_URL=&quot;${MERKELY_CI_BUILD_URL}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_USER_DATA=&quot;${MERKELY_USER_DATA}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_OWNER=&quot;${MERKELY_OWNER}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_PIPELINE=&quot;${MERKELY_PIPELINE}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_API_TOKEN=&quot;${MERKELY_API_TOKEN}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--env MERKELY_DRY_RUN=&quot;${MERKELY_DRY_RUN}&quot; \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--rm \</span>
-    <span class="l l-Scalar l-Scalar-Plain">--volume /var/run/docker.sock:/var/run/docker.sock \</span>
-    <span class="l l-Scalar l-Scalar-Plain">merkely/change:latest</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+    --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_artifact <span class="se">\</span>
+    --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span>docker://acme/road-runner:2.3 <span class="se">\</span>
+    --env <span class="nv">MERKELY_IS_COMPLIANT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_IS_COMPLIANT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_ARTIFACT_GIT_COMMIT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_ARTIFACT_GIT_COMMIT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_ARTIFACT_GIT_URL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_ARTIFACT_GIT_URL</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_CI_BUILD_NUMBER</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_CI_BUILD_NUMBER</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_CI_BUILD_URL</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_USER_DATA</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_USER_DATA</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_OWNER</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_OWNER</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_PIPELINE</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_API_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --env <span class="nv">MERKELY_DRY_RUN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_DRY_RUN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --rm <span class="se">\</span>
+    --volume /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
+    merkely/change:latest
 </pre></div>
 </div>
 </div>
