@@ -11,10 +11,10 @@ def create_rst_files():
     Builds the Reference .rst files for each command.
     """
     command_names = Command.names()
+    command_names.remove('declare_pipeline')
 
     def cmp_names(lhs, rhs):
         order = [
-            'declare_pipeline',
             'log_artifact',
             'log_evidence',
             'log_test',

@@ -10,6 +10,7 @@ To get the sha256 for your artifact, you have three options:
 
 Here is an example using a docker image:
 
+.. highlight:: bash
 .. describe_command:: log_artifact invocation_minimum docker
 
 
