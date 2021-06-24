@@ -49,7 +49,7 @@ readonly REPORT_FILENAME=htmlcov/summary.txt
 coverage report -m > "${REPORT_FILENAME}"
 
 # Create a file containing the coverage percentage
-cat "${REPORT_FILENAME}" | grep TOTAL | awk '{print "TEST_BRANCH_COVERAGE=\""$6"\""}' > htmlcov/test_branch_coverage.sh
+cat "${REPORT_FILENAME}" | grep TOTAL | awk '{print "TEST_BRANCH_COVERAGE=\""$6"\""}' | sed 's/%//g' > htmlcov/test_branch_coverage.sh
 
 # Create a file containing the number of test cases
 TEST_CASE_COUNT=`pytest --collect-only -q | head -n -2 | wc -l`

@@ -89,10 +89,16 @@ jobs:
     - name: Log coverage evidence to Merkely
       env:
         MERKELY_EVIDENCE_TYPE: "coverage"
-        MERKELY_IS_COMPLIANT: 'TRUE'
         MERKELY_API_TOKEN: ${{ secrets.MERKELY_API_TOKEN }}
       run: |
         source tmp/coverage/unit/htmlcov/test_branch_coverage.sh
         source tmp/coverage/unit/htmlcov/test_case_count.sh
-        export MERKELY_DESCRIPTION="${TEST_CASE_COUNT} tests passed with ${TEST_BRANCH_COVERAGE} branch coverage"
+        export MERKELY_DESCRIPTION="${TEST_CASE_COUNT} tests passed with ${TEST_BRANCH_COVERAGE}% branch coverage"
+
+        if [ ${TEST_BRANCH_COVERAGE} -ge 100 ]; then
+          export MERKELY_IS_COMPLIANT=TRUE
+        else
+          export MERKELY_IS_COMPLIANT=FALSE
+        fi
+
         make merkely_log_evidence
