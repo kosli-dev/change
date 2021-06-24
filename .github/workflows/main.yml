@@ -95,7 +95,7 @@ jobs:
         source tmp/coverage/unit/htmlcov/test_case_count.sh
         export MERKELY_DESCRIPTION="${TEST_CASE_COUNT} tests passed with ${TEST_BRANCH_COVERAGE}% branch coverage"
 
-        if [ ${TEST_BRANCH_COVERAGE} -ge 100 ]; then
+        if [ ${TEST_BRANCH_COVERAGE} -ge 99 ]; then
           export MERKELY_IS_COMPLIANT=TRUE
         else
           export MERKELY_IS_COMPLIANT=FALSE
