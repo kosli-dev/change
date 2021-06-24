@@ -100,5 +100,9 @@ jobs:
         else
           export MERKELY_IS_COMPLIANT=FALSE
         fi
-
+        echo MERKELY_TEST_COVERAGE_COMPLIANCE=${MERKELY_IS_COMPLIANT} >> ${GITHUB_ENV}
         make merkely_log_evidence
+
+    - name: Fail pipeline-run if test coverage is below minumum
+      run: |
+        [ ${{ env.MERKELY_TEST_COVERAGE_COMPLIANCE }} == 'TRUE' ] || exit 1
