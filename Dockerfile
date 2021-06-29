@@ -8,7 +8,7 @@ RUN apk update
 RUN apk add git
 
 # openssl is needed for file based sha
-RUN apk add openssl libffi-dev libgit2-dev=1.1.0-r1
+RUN apk add openssl libffi-dev libgit2-dev=1.1.0-r2
 
 RUN apk add --no-cache --virtual .build-deps \
   build-base cmake \
