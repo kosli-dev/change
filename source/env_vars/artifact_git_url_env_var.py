@@ -26,7 +26,7 @@ class ArtifactGitUrlEnvVar(CompoundCiEnvVar):
                 CiEnvVar('GITHUB_SERVER_URL'),
                 '/',
                 CiEnvVar('GITHUB_REPOSITORY'),
-                '/commits/',
+                '/commit/',
                 CiEnvVar('GITHUB_SHA')
             )
         }
