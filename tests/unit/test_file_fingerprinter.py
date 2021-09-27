@@ -4,6 +4,7 @@ from pytest import raises
 
 FILE_PROTOCOL = "file://"
 
+# TODO: if file does not exist, a user friendly error is returned
 
 def test_non_empty_filename_properties():
     fingerprinter = FileFingerprinter()

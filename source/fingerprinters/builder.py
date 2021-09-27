@@ -4,6 +4,7 @@ from fingerprinters import *
 FINGERPRINTERS = {
     "docker_fingerprinter": DockerFingerprinter,
     "file_fingerprinter": FileFingerprinter,
+    "dir_fingerprinter": DirFingerprinter,
     "sha256_fingerprinter": Sha256Fingerprinter,
 }
 
