@@ -3,6 +3,8 @@ from fingerprinters import Fingerprinter
 import os
 import subprocess
 import tempfile
+import shutil
+
 
 PROTOCOL = 'dir://'
 
@@ -49,16 +51,18 @@ class DirFingerprinter(Fingerprinter):
 
     def sha(self, string):
         assert self.handles_protocol(string)
-        # openssl is an Alpine package installed in /Dockerfile
-        dir_name = self.artifact_name(string)
+        dir_name = '/' + self.artifact_name(string)
         tmp_dir = tempfile.mkdtemp()
         with open(f"{tmp_dir}/digests", "a+") as digest_file:
-            dir_sha256(f"/{dir_name}", digest_file, tmp_dir)
-        
-        return sha256(f"{tmp_dir}/digests")
+            dir_sha256(digest_file, dir_name, tmp_dir)
+
+        result = sha256(f"{tmp_dir}/digests")
+        shutil.rmtree(tmp_dir)
+        return result
 
 
 def sha256(filepath):
+    # openssl is an Alpine package installed in /Dockerfile
     output = subprocess.check_output(["openssl", "dgst", "-sha256", filepath])
     digest_in_bytes = output.split()[1]
     return digest_in_bytes.decode('utf-8')
@@ -70,7 +74,7 @@ def append_sha256(digest_file, name, tmp_dir):
     digest_file.write(sha256(f"{tmp_dir}/name"))
 
 
-def dir_sha256(dir_name, digest_file, tmp_dir):
+def dir_sha256(digest_file, dir_name, tmp_dir):
     append_sha256(digest_file, dir_name, tmp_dir)
 
     entries = [entry for entry in os.listdir(dir_name)]
@@ -80,4 +84,4 @@ def dir_sha256(dir_name, digest_file, tmp_dir):
             append_sha256(digest_file, pathed_entry, tmp_dir)
             digest_file.write(sha256(pathed_entry))
         else:
-            dir_sha256(pathed_entry, digest_file, tmp_dir)
+            dir_sha256(digest_file, pathed_entry, tmp_dir)

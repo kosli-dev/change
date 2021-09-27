@@ -1,10 +1,12 @@
 from errors import ChangeError
 from fingerprinters import DirFingerprinter
 from pytest import raises
+import os
 
 DIR_PROTOCOL = "dir://"
 
 # TODO: if directory does not exist, a user friendly error is returned
+
 
 def test_empty_dir_properties(tmp_path):
     fingerprinter = DirFingerprinter()
@@ -50,3 +52,17 @@ def test_non_empty_dir_properties():
     assert fingerprinter.artifact_name(string) == path
     assert fingerprinter.artifact_basename(string) == basename
     assert fingerprinter.sha(string) == '8eff10fe50ce2e5f5df04aea3b6f805c3d3e4d9828b27d87d19aef14806d9d60'
+
+
+def test_different_non_empty_dir_properties():
+    fingerprinter = DirFingerprinter()
+    basename = "control_junit"
+    path = f"app/tests/data/{basename}"
+    with open(f"/{path}/extra.file", "w+") as file:
+        file.write("any extra content")
+    string = f"{DIR_PROTOCOL}{path}"
+    assert fingerprinter.artifact_name(string) == path
+    assert fingerprinter.artifact_basename(string) == basename
+    assert fingerprinter.sha(string) == 'eb7dc9fcf956aecad5484b35adc330a5a7718620ee8cbc64f0d223bc95a90d35'
+
+    os.remove(f"/{path}/extra.file")
