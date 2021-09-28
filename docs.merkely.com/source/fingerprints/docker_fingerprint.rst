@@ -13,4 +13,5 @@ Example
 .. describe_fingerprint:: docker_fingerprinter example
 
 * See also :ref:`file_fingerprint-label`
+* See also :ref:`dir_fingerprint-label`
 * See also :ref:`sha256_fingerprint-label`

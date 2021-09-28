@@ -116,7 +116,7 @@
             <!-- Only show if we have sidebars configured, else just a small margin  -->
             <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
     <div class="bd-toc-item active">
-      <p class="caption">
+      <p class="caption" role="heading">
  <span class="caption-text">
   Table of contents
  </span>
@@ -431,7 +431,7 @@
 </tr>
 <tr class="row-even"><td><p>MERKELY_ARTIFACT_GIT_URL</p></td>
 <td><p>no</p></td>
-<td><p><span>The link to the source git commit this build was based on. Defaults to </span><span class="inline-code">${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}</span><span></span></p></td>
+<td><p><span>The link to the source git commit this build was based on. Defaults to </span><span class="inline-code">${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}</span><span></span></p></td>
 </tr>
 <tr class="row-odd"><td><p>MERKELY_CI_BUILD_NUMBER</p></td>
 <td><p>no</p></td>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Logging Deployments &#8212; Merkely  documentation</title>
+    <title>Dir Fingerprint &#8212; Merkely  documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -47,8 +47,8 @@
     <script src="../_static/merkely-custom.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Concepts" href="../concepts/index.html" />
-    <link rel="prev" title="Creating Approvals" href="approvals.html" />
+    <link rel="next" title="Sha256 Fingerprint" href="sha256_fingerprint.html" />
+    <link rel="prev" title="File Fingerprint" href="file_fingerprint.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -122,42 +122,10 @@
  </span>
 </p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="index.html">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../tutorial/index.html">
    Quick Start
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="pipefile.html">
-     Instrumenting Your CI Pipeline
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="binary_provenance.html">
-     Logging Artifacts
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="controls.html">
-     Logging Controls
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="approvals.html">
-     Creating Approvals
-    </a>
-   </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Logging Deployments
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../concepts/index.html">
@@ -169,10 +137,37 @@
    Command Reference
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../fingerprints/index.html">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
    Fingerprint Reference
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="docker_fingerprint.html">
+     Docker Fingerprint
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="file_fingerprint.html">
+     File Fingerprint
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Dir Fingerprint
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sha256_fingerprint.html">
+     Sha256 Fingerprint
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -198,24 +193,26 @@
               
               <div>
                 
-  <div class="section" id="logging-deployments">
-<h1>Logging Deployments<a class="headerlink" href="#logging-deployments" title="Permalink to this headline">¶</a></h1>
-<p>An important aspect of change management is logging all changes to production environments.  To do this from a devops context, we use the <a class="reference internal" href="../reference/log_deployment.html#log-deployment-label"><span class="std std-ref">Log Deployment</span></a> command.</p>
+  <div class="section" id="dir-fingerprint">
+<span id="dir-fingerprint-label"></span><h1>Dir Fingerprint<a class="headerlink" href="#dir-fingerprint" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<p><span>To fingerprint a dir use the string </span><span class="inline-code">dir://</span><span> followed by the full path of the dir to fingerprint. The command will calculate the sha digest. The full path must be volume-mounted.</span></p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
-    --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>log_deployment <span class="se">\</span>
-    --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span>docker://acme/road-runner:2.3 <span class="se">\</span>
-    --env <span class="nv">MERKELY_CI_BUILD_URL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_CI_BUILD_URL</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-    --env <span class="nv">MERKELY_DESCRIPTION</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_DESCRIPTION</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-    --env <span class="nv">MERKELY_ENVIRONMENT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_ENVIRONMENT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-    --env <span class="nv">MERKELY_USER_DATA</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_USER_DATA</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-    --env <span class="nv">MERKELY_OWNER</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_OWNER</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-    --env <span class="nv">MERKELY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_PIPELINE</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-    --env <span class="nv">MERKELY_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_API_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-    --env <span class="nv">MERKELY_DRY_RUN</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_DRY_RUN</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-    --rm <span class="se">\</span>
-    --volume /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
-    merkely/change:latest
+    ...
+    --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span>”dir://<span class="si">${</span><span class="nv">YOUR_DIR_PATH</span><span class="si">}</span> <span class="se">\</span>
+    --volume<span class="o">=</span><span class="si">${</span><span class="nv">YOUR_DIR_PATH</span><span class="si">}</span>:<span class="si">${</span><span class="nv">YOUR_DIR_PATH</span><span class="si">}</span> <span class="se">\</span>
+    ...
 </pre></div>
+</div>
+<ul class="simple">
+<li><p>See also <a class="reference internal" href="docker_fingerprint.html#docker-fingerprint-label"><span class="std std-ref">Docker Fingerprint</span></a></p></li>
+<li><p>See also <a class="reference internal" href="file_fingerprint.html#file-fingerprint-label"><span class="std std-ref">File Fingerprint</span></a></p></li>
+<li><p>See also <a class="reference internal" href="sha256_fingerprint.html#sha256-fingerprint-label"><span class="std std-ref">Sha256 Fingerprint</span></a></p></li>
+</ul>
 </div>
 </div>
 

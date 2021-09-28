@@ -14,3 +14,4 @@ Example
 
 * See also :ref:`docker_fingerprint-label`
 * See also :ref:`file_fingerprint-label`
+* See also :ref:`dir_fingerprint-label`

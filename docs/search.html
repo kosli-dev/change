@@ -120,7 +120,7 @@
             <!-- Only show if we have sidebars configured, else just a small margin  -->
             <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
     <div class="bd-toc-item active">
-      <p class="caption">
+      <p class="caption" role="heading">
  <span class="caption-text">
   Table of contents
  </span>
@@ -170,13 +170,14 @@
                 
   <h1 id="search-documentation">Search</h1>
   
-  <div id="fallback" class="admonition warning">
-  <script>$('#fallback').hide();</script>
+  <noscript>
+  <div class="admonition warning">
   <p>
     Please activate JavaScript to enable the search
     functionality.
   </p>
   </div>
+  </noscript>
   
   
   <p>
@@ -186,7 +187,7 @@
   
   
   <form action="" method="get">
-    <input type="text" name="q" aria-labelledby="search-documentation" value="" />
+    <input type="text" name="q" aria-labelledby="search-documentation" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
     <input type="submit" value="search" />
     <span id="search-progress" style="padding-left: 10px"></span>
   </form>

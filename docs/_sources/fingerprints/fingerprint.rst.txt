@@ -25,6 +25,19 @@ Example
 -------
 .. describe_fingerprint:: file_fingerprinter example
 
+.. _dir_fingerprint-label:
+
+Dir Fingerprint
+===============
+
+Notes
+-----
+.. describe_fingerprint:: dir_fingerprinter notes
+
+Example
+-------
+.. describe_fingerprint:: dir_fingerprinter example
+
 .. _sha256_fingerprint-label:
 
 Sha256 Fingerprint
