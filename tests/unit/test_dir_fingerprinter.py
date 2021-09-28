@@ -6,7 +6,17 @@ import shutil
 
 DIR_PROTOCOL = "dir://"
 
-# TODO: if directory does not exist, a user friendly error is returned
+
+def test_non_existing_dir_error_message():
+    fingerprinter = DirFingerprinter()
+    basename = "c"
+    path = "a/b/c"
+    string = f"{DIR_PROTOCOL}{path}"
+    assert fingerprinter.artifact_name(string) == path
+    assert fingerprinter.artifact_basename(string) == basename
+    with raises(ChangeError) as exc:
+        fingerprinter.sha(string)
+    assert str(exc.value) == "No such directory: '/a/b/c'"
 
 
 def test_empty_dir_properties(tmp_path):

@@ -51,6 +51,8 @@ class FileFingerprinter(Fingerprinter):
         # Mocked in /tests/unit/utils/mock_file_fingerprinter.py
         # openssl is an Alpine package installed in /Dockerfile
         unrooted_filename = self.artifact_name(string)
+        if not os.path.isfile("/" + unrooted_filename):
+            raise ChangeError(f"No such file: '{unrooted_filename}'")
         output = subprocess.check_output(["openssl", "dgst", "-sha256", '/'+unrooted_filename])
         digest_in_bytes = output.split()[1]
         return digest_in_bytes.decode('utf-8')

@@ -52,10 +52,12 @@ class DirFingerprinter(Fingerprinter):
     def sha(self, string):
         assert self.handles_protocol(string)
         dir_name = '/' + self.artifact_name(string)
+        if not os.path.isdir(dir_name):
+            raise ChangeError(f"No such directory: '{dir_name}'")
+
         tmp_dir = tempfile.mkdtemp()
         with open(f"{tmp_dir}/digests", "a+") as digest_file:
             dir_sha256(digest_file, dir_name, tmp_dir)
-
         result = sha256(f"{tmp_dir}/digests")
         shutil.rmtree(tmp_dir)
         return result
