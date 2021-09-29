@@ -70,9 +70,12 @@ def sha256(filepath):
     return digest_in_bytes.decode('utf-8')
 
 
-def append_sha256(digest_file, name, tmp_dir):
+def append_sha256(digest_file, full_path, tmp_dir):
     with open(f"{tmp_dir}/name", "w+") as file:
-        file.write(name)
+        # Basename is used so that the sha256 remains the same
+        # if the directory structure is moved to a different
+        # base directory
+        file.write(os.path.basename(full_path))
     digest_file.write(sha256(f"{tmp_dir}/name"))
 
 

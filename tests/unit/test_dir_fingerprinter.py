@@ -26,7 +26,7 @@ def test_empty_dir_properties(tmp_path):
     string = f"{DIR_PROTOCOL}{path}"
     assert fingerprinter.artifact_name(string) == path
     assert fingerprinter.artifact_basename(string) == basename
-    assert fingerprinter.sha(string) == '0e64e0a7586808ddf0b4e12487006de037b13a3baec4b80293f012b49b84fdeb'
+    assert fingerprinter.sha(string) == '829bc63968bae2f04d69c1a1474c622dcbb4e59a69f961cc9e0816579525138d'
 
 
 def test_dir_with_one_file_with_known_content():
@@ -37,7 +37,7 @@ def test_dir_with_one_file_with_known_content():
     with open(f"/{dir}/file.extra", "w+") as file:
         file.write("this is known extra content")
 
-    assert fingerprinter.sha(f"{DIR_PROTOCOL}{dir}") == '9b9d0a0f475c2e94e21a10a5d05438783bd1effeda27d55ef4f766c8e2c715b2'
+    assert fingerprinter.sha(f"{DIR_PROTOCOL}{dir}") == 'f29c4d614fa3c1fa5e8b82239ad698febe7de2329b7fcc7b35e08e892bc3da85'
     shutil.rmtree(f"/{dir}")
 
 
@@ -74,18 +74,19 @@ def test_non_empty_dir_properties():
     string = f"{DIR_PROTOCOL}{path}"
     assert fingerprinter.artifact_name(string) == path
     assert fingerprinter.artifact_basename(string) == basename
-    assert fingerprinter.sha(string) == '8eff10fe50ce2e5f5df04aea3b6f805c3d3e4d9828b27d87d19aef14806d9d60'
+    assert fingerprinter.sha(string) == '193847dc7a4503ca7f917073c918c0421a1eabf718db00781c44449c7e183427'
 
 
 def test_different_non_empty_dir_properties():
-    fingerprinter = DirFingerprinter()
-    basename = "control_junit"
-    path = f"app/tests/data/{basename}"
-    with open(f"/{path}/extra.file", "w+") as file:
-        file.write("any extra content")
-    string = f"{DIR_PROTOCOL}{path}"
-    assert fingerprinter.artifact_name(string) == path
-    assert fingerprinter.artifact_basename(string) == basename
-    assert fingerprinter.sha(string) == 'eb7dc9fcf956aecad5484b35adc330a5a7718620ee8cbc64f0d223bc95a90d35'
-
-    os.remove(f"/{path}/extra.file")
+    try:
+        fingerprinter = DirFingerprinter()
+        basename = "control_junit"
+        path = f"app/tests/data/{basename}"
+        with open(f"/{path}/extra.file", "w+") as file:
+            file.write("any extra content")
+        string = f"{DIR_PROTOCOL}{path}"
+        assert fingerprinter.artifact_name(string) == path
+        assert fingerprinter.artifact_basename(string) == basename
+        assert fingerprinter.sha(string) == 'd9716ed771129612a91362403190bda2901ea33b6d85a9a1d64b64560fc49288'
+    finally:
+        os.remove(f"/{path}/extra.file")
