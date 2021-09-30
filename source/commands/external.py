@@ -14,13 +14,15 @@ class External:
                  env=None,
                  docker_fingerprinter=None,
                  file_fingerprinter=None,
-                 sha256_fingerprinter=None):
+                 sha256_fingerprinter=None,
+                 dir_fingerprinter=None):
 
         self._stdout = Stdout()
         self.__env = env
         self.__docker_fingerprinter = docker_fingerprinter
         self.__file_fingerprinter = file_fingerprinter
         self.__sha256_fingerprinter = sha256_fingerprinter
+        self.__dir_fingerprinter = dir_fingerprinter
 
         if self.__env is None:
             self.__env = os.environ
@@ -30,6 +32,9 @@ class External:
 
         if self.__file_fingerprinter is None:
             self.__file_fingerprinter = FileFingerprinter()
+
+        if self.__dir_fingerprinter is None:
+            self.__dir_fingerprinter = DirFingerprinter()
 
         if self.__sha256_fingerprinter is None:
             self.__sha256_fingerprinter = Sha256Fingerprinter()
@@ -54,10 +59,13 @@ class External:
         d = self.__docker_fingerprinter
         f = self.__file_fingerprinter
         s = self.__sha256_fingerprinter
+        di = self.__dir_fingerprinter
         if d.handles_protocol(string):
             return d
         elif f.handles_protocol(string):
             return f
+        elif di.handles_protocol(string):
+            return di
         elif s.handles_protocol(string):
             return s
         else:
