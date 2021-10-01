@@ -39,6 +39,7 @@ def test_docker_image():
     stdout = external.stdout.getvalue()
     assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_deployment',
+        'Posting this payload:',
     ]
 
 

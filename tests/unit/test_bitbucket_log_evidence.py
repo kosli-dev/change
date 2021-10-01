@@ -45,6 +45,7 @@ def test_bitbucket():
     stdout = external.stdout.getvalue()
     assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_evidence',
+        'Putting this payload:',
     ]
 
 

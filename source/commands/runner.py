@@ -10,7 +10,9 @@ def run(external):
     if name is None:
         raise ChangeError("MERKELY_COMMAND environment-variable is not set.")
 
-    stdout.print(f"MERKELY_COMMAND={name}")
+    if name != "echo_fingerprint":
+        stdout.print(f"MERKELY_COMMAND={name}")
+
     klass = Command.named(name)
     command = klass(external)
     for env_var in command.merkely_env_vars:
@@ -19,7 +21,7 @@ def run(external):
     method, url, payload, callback = command()
 
     dry_run = in_dry_run(command)
-    api_token = command.api_token.value
+    response = None
 
     if method == 'GET':
         stdout.print("Getting json:")
@@ -28,6 +30,7 @@ def run(external):
             stdout.print("DRY RUN: Get not performed")
             response = None
         else:
+            api_token = command.api_token.value
             response = Http(stdout).get_json(url, api_token)
 
     if method == 'PUT':
@@ -38,6 +41,7 @@ def run(external):
             stdout.print("DRY RUN: Put not sent")
             response = None
         else:
+            api_token = command.api_token.value
             response = Http(stdout).put_payload(url, payload, api_token)
 
     if method == 'POST':
@@ -48,6 +52,7 @@ def run(external):
             stdout.print("DRY RUN: Post not sent")
             response = None
         else:
+            api_token = command.api_token.value
             response = Http(stdout).post_payload(url, payload, api_token)
 
     if response is not None:
@@ -55,12 +60,19 @@ def run(external):
         stdout.print(response.text)
 
     if not dry_run and callback is not None:
-        return callback(response)
+        result = callback(response)
     else:
-        return method, url, payload
+        result = method, url, payload
+
+    if name != 'echo_fingerprint':
+        stdout.print('Success')
+
+    return result
 
 
 def in_dry_run(command):
+    if command.name.value == "echo_fingerprint":
+        return False
     global_off = command.api_token.value == 'DRY_RUN'
     local_off = command.dry_run.value == "TRUE"
     return global_off or local_off
@@ -82,7 +94,6 @@ def main(external):
     stdout = external.stdout
     try:
         run(external)
-        stdout.print('Success')
         return 0
     except ChangeError as exc:
         stdout.print(f"Error: {str(exc)}")

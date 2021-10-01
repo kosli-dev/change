@@ -15,6 +15,7 @@ def create_rst_files():
 
     def cmp_names(lhs, rhs):
         order = [
+            'echo_fingerprint',
             'log_artifact',
             'log_evidence',
             'log_test',

@@ -23,8 +23,10 @@ class MockDockerFingerprinter(DockerFingerprinter):
             ]
             self.__failed(lines)
 
-    def __exit__(self, exc_type, exc_val, _exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         if not self.__called:
+            import traceback
+            traceback.print_tb(exc_tb)
             self.__failed([
                 "Expected sha() call did not happen",
                 f"exc_type = {exc_type}",

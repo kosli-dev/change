@@ -41,6 +41,7 @@ def test_all_env_vars_image():
     stdout = external.stdout.getvalue()
     assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_artifact',
+        'Putting this payload:',
     ]
 
 
@@ -79,6 +80,7 @@ def test_all_env_vars_file():
     stdout = external.stdout.getvalue()
     assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_artifact',
+        'Putting this payload:',
     ]
 
 
@@ -114,6 +116,7 @@ def test_all_env_vars_sha():
     stdout = external.stdout.getvalue()
     assert extract_blurb(stdout) == [
         'MERKELY_COMMAND=log_artifact',
+        'Putting this payload:',
     ]
 
 

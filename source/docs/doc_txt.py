@@ -87,6 +87,7 @@ def min_lines_for(data, command_name):
 
 
 yml_name_texts = {
+    'echo_fingerprint': 'Echo any fingerprint to stdout',
     'declare_pipeline': 'Declare Merkely Pipeline',
     'log_artifact': 'Log Docker image in Merkely',
     'log_deployment': 'Log deployment in Merkely',
