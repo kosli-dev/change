@@ -3,3 +3,4 @@ tmp/
 __pycache__/
 docs/.buildinfo
 docs.merkely.com/build
+docs.merkely.com/.DS_Store

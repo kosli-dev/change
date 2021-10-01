@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Command Reference &#8212; Merkely  documentation</title>
+    <title>Echo Fingerprint &#8212; Merkely  documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -47,8 +47,8 @@
     <script src="../_static/merkely-custom.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Echo Fingerprint" href="echo_fingerprint.html" />
-    <link rel="prev" title="Understanding Binary Provenance" href="../concepts/binary_provenance.html" />
+    <link rel="next" title="Log Artifact" href="log_artifact.html" />
+    <link rel="prev" title="Command Reference" href="index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -133,7 +133,7 @@
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
-  <a class="current reference internal" href="#">
+  <a class="reference internal" href="index.html">
    Command Reference
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
@@ -141,9 +141,9 @@
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="echo_fingerprint.html">
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      Echo Fingerprint
     </a>
    </li>
@@ -218,23 +218,107 @@
               
               <div>
                 
-  <div class="section" id="command-reference">
-<h1>Command Reference<a class="headerlink" href="#command-reference" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Command Reference:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="echo_fingerprint.html">Echo Fingerprint</a></li>
-<li class="toctree-l1"><a class="reference internal" href="log_artifact.html">Log Artifact</a></li>
-<li class="toctree-l1"><a class="reference internal" href="log_evidence.html">Log Evidence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="log_test.html">Log Test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="control_pull_request.html">Control Pull Request</a></li>
-<li class="toctree-l1"><a class="reference internal" href="approve_deployment.html">Approve Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="request_approval.html">Request Approval</a></li>
-<li class="toctree-l1"><a class="reference internal" href="control_deployment.html">Control Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="log_deployment.html">Log Deployment</a></li>
+  <div class="section" id="echo-fingerprint">
+<span id="echo-fingerprint-label"></span><h1>Echo Fingerprint<a class="headerlink" href="#echo-fingerprint" title="Permalink to this headline">¶</a></h1>
+<p><span>Echo any fingerprint to stdout</span></p>
+<ul class="nav nav-tabs" role="tablist">
+   <li class="nav-item">
+      <a class="nav-link active" id="docker-tab" data-toggle="tab" href="#docker" role="tab" aria-controls="docker" aria-selected="true">Docker</a>
+   </li>
+   <li class="nav-item">
+      <a class="nav-link" id="bitbucket-tab" data-toggle="tab" href="#bitbucket" role="tab" aria-controls="bitbucket" aria-selected="false">Bitbucket</a>
+   </li>
+   <li class="nav-item">
+      <a class="nav-link" id="github-tab" data-toggle="tab" href="#github" role="tab" aria-controls="github" aria-selected="false">Github</a>
+   </li>
 </ul>
+
+<div class="tab-content"><div class="docker tab-pane active docutils container" id="docker">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+    --env <span class="nv">MERKELY_COMMAND</span><span class="o">=</span>echo_fingerprint <span class="se">\</span>
+    --env <span class="nv">MERKELY_FINGERPRINT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MERKELY_FINGERPRINT</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+    --rm <span class="se">\</span>
+    merkely/change:latest
+</pre></div>
 </div>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>ENV_VAR_NAME</p></th>
+<th class="head"><p>Required?</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
+<td><p>yes</p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">echo_fingerprint</span><span></span></p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
+<td><p>yes</p></td>
+<td><p>The artifact’s <a class="reference external" href="../../fingerprints/docker_fingerprint.html">Fingerprint</a></p></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="bitbucket tab-pane docutils container" id="bitbucket">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">step</span><span class="p">:</span> <span class="nl">&amp;echo_any_fingerprint_to_stdout</span>
+        <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Echo any fingerprint to stdout</span>
+        <span class="nt">services</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">docker</span> <span class="p p-Indicator">]</span>
+        <span class="nt">script</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nv">*export_merkely_fingerprint_env_vars</span>
+          <span class="p p-Indicator">-</span> <span class="nt">pipe</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker://merkely/change:latest</span>
+            <span class="nt">variables</span><span class="p">:</span>
+              <span class="nt">MERKELY_COMMAND</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">echo_fingerprint</span>
+              <span class="nt">MERKELY_FINGERPRINT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${MERKELY_FINGERPRINT}</span>
+</pre></div>
+</div>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>ENV_VAR_NAME</p></th>
+<th class="head"><p>Required?</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
+<td><p>yes</p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">echo_fingerprint</span><span></span></p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
+<td><p>yes</p></td>
+<td><p>The artifact’s <a class="reference external" href="../../fingerprints/docker_fingerprint.html">Fingerprint</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="github tab-pane docutils container" id="github">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Echo any fingerprint to stdout</span>
+      <span class="nt">uses</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker://merkely/change:latest</span>
+      <span class="nt">env</span><span class="p">:</span>
+        <span class="nt">MERKELY_COMMAND</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">echo_fingerprint</span>
+        <span class="nt">MERKELY_FINGERPRINT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker://${{ env.IMAGE_TAGGED }}</span>
+</pre></div>
+</div>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>ENV_VAR_NAME</p></th>
+<th class="head"><p>Required?</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MERKELY_COMMAND</p></td>
+<td><p>yes</p></td>
+<td><p><span>The Merkely command to execute. This page documents a value of </span><span class="inline-code">echo_fingerprint</span><span></span></p></td>
+</tr>
+<tr class="row-odd"><td><p>MERKELY_FINGERPRINT</p></td>
+<td><p>yes</p></td>
+<td><p>The artifact’s <a class="reference external" href="../../fingerprints/docker_fingerprint.html">Fingerprint</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div>
 
 
               </div>
