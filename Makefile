@@ -289,5 +289,7 @@ merkely_log_deployment:
 
 TIMESTAMP := $(shell date "+%Y-%m-%d-%H-%M-%S")
 release:
+	@git remote update
+	@git status -uno | grep --silent "Your branch is up to date" || (echo "ERROR: your branch is NOT up to date with remote" && return 1)
 	git tag release-${TIMESTAMP}
 	git push origin release-${TIMESTAMP}
