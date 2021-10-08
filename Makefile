@@ -286,3 +286,8 @@ merkely_log_deployment:
         --rm \
         --volume=/var/run/docker.sock:/var/run/docker.sock \
         ${IMAGE}
+
+TIMESTAMP := $(shell date "+%Y-%m-%d-%H-%M-%S")
+release:
+	git tag release-${TIMESTAMP}
+	git push origin release-${TIMESTAMP}
