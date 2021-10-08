@@ -244,7 +244,7 @@ merkely_log_test:
 
 merkely_log_approval:
 	docker run \
-		--env MERKELY_COMMAND=log_approval \
+		--env MERKELY_COMMAND=approve_deployment \
 		--env MERKELY_FINGERPRINT=${MERKELY_FINGERPRINT} \
 		--env MERKELY_NEWEST_SRC_COMMITISH=${MERKELY_NEWEST_SRC_COMMITISH} \
 		--env MERKELY_OLDEST_SRC_COMMITISH=${MERKELY_OLDEST_SRC_COMMITISH} \
