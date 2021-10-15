@@ -26,19 +26,37 @@ def test_empty_dir_properties(tmp_path):
     string = f"{DIR_PROTOCOL}{path}"
     assert fingerprinter.artifact_name(string) == path
     assert fingerprinter.artifact_basename(string) == basename
-    assert fingerprinter.sha(string) == '829bc63968bae2f04d69c1a1474c622dcbb4e59a69f961cc9e0816579525138d'
+    assert fingerprinter.sha(string) == 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
 
 
 def test_dir_with_one_file_with_known_content():
     fingerprinter = DirFingerprinter()
-    dir = f"tmp/test_dir_with_one_file_with_known_content"
+    dir = f"tmp/test_single_dir_with_one_file_with_known_content"
 
     os.mkdir(f"/{dir}")
     with open(f"/{dir}/file.extra", "w+") as file:
         file.write("this is known extra content")
 
-    assert fingerprinter.sha(f"{DIR_PROTOCOL}{dir}") == 'f29c4d614fa3c1fa5e8b82239ad698febe7de2329b7fcc7b35e08e892bc3da85'
+    assert fingerprinter.sha(f"{DIR_PROTOCOL}{dir}") == 'c71f5baef8cce289c9b7c971cf219e21b787a025af68ad6539b82634fe62819e'
     shutil.rmtree(f"/{dir}")
+
+
+def test_digest_is_the_same_for_same_content_in_different_root_directories():
+    fingerprinter = DirFingerprinter()
+
+    dir = f"tmp/test_dir_with_one_file_with_known_content"
+    os.mkdir(f"/{dir}")
+    with open(f"/{dir}/file.extra", "w+") as file:
+        file.write("this is known extra content")
+    assert fingerprinter.sha(f"{DIR_PROTOCOL}{dir}") == 'c71f5baef8cce289c9b7c971cf219e21b787a025af68ad6539b82634fe62819e'
+    shutil.rmtree(f"/{dir}")
+
+    different_dir = f"tmp/test_different_dir_with_one_file_with_known_content"
+    os.mkdir(f"/{different_dir}")
+    with open(f"/{different_dir}/file.extra", "w+") as file:
+        file.write("this is known extra content")
+    assert fingerprinter.sha(f"{DIR_PROTOCOL}{different_dir}") == 'c71f5baef8cce289c9b7c971cf219e21b787a025af68ad6539b82634fe62819e'
+    shutil.rmtree(f"/{different_dir}")
 
 
 def test_handles_only_its_own_protocol():
@@ -74,7 +92,7 @@ def test_non_empty_dir_properties():
     string = f"{DIR_PROTOCOL}{path}"
     assert fingerprinter.artifact_name(string) == path
     assert fingerprinter.artifact_basename(string) == basename
-    assert fingerprinter.sha(string) == '193847dc7a4503ca7f917073c918c0421a1eabf718db00781c44449c7e183427'
+    assert fingerprinter.sha(string) == '4ca24dede15db858aae709933ef48f16031a89a356a6f5d29dd2140a1e3c8313'
 
 
 def test_different_non_empty_dir_properties():
@@ -87,6 +105,6 @@ def test_different_non_empty_dir_properties():
         string = f"{DIR_PROTOCOL}{path}"
         assert fingerprinter.artifact_name(string) == path
         assert fingerprinter.artifact_basename(string) == basename
-        assert fingerprinter.sha(string) == 'd9716ed771129612a91362403190bda2901ea33b6d85a9a1d64b64560fc49288'
+        assert fingerprinter.sha(string) == 'c8c29f1766aba2cf654b4bbf8e372d334180d5762376a8247773e6d5f0ac93c6'
     finally:
         os.remove(f"/{path}/extra.file")

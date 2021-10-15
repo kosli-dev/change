@@ -80,7 +80,6 @@ def append_sha256(digest_file, full_path, tmp_dir):
 
 
 def dir_sha256(digest_file, dir_name, tmp_dir):
-    append_sha256(digest_file, dir_name, tmp_dir)
 
     entries = [entry for entry in os.listdir(dir_name)]
     for entry in sorted(entries):
@@ -89,4 +88,5 @@ def dir_sha256(digest_file, dir_name, tmp_dir):
             append_sha256(digest_file, pathed_entry, tmp_dir)
             digest_file.write(sha256(pathed_entry))
         else:
+            append_sha256(digest_file, dir_name, tmp_dir)
             dir_sha256(digest_file, pathed_entry, tmp_dir)
