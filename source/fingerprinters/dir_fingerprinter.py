@@ -56,6 +56,7 @@ class DirFingerprinter(Fingerprinter):
             raise ChangeError(f"No such directory: '{dir_name}'")
 
         tmp_dir = tempfile.mkdtemp()
+        print(f"Input path: {os.path.basename(dir_name)}")
         with open(f"{tmp_dir}/digests", "a+") as digest_file:
             dir_sha256(digest_file, dir_name, tmp_dir)
         result = sha256(f"{tmp_dir}/digests")
@@ -70,13 +71,18 @@ def sha256(filepath):
     return digest_in_bytes.decode('utf-8')
 
 
-def append_sha256(digest_file, full_path, tmp_dir):
+def append_sha256(digest_file, full_path, tmp_dir, type):
     with open(f"{tmp_dir}/name", "w+") as file:
         # Basename is used so that the sha256 remains the same
         # if the directory structure is moved to a different
         # base directory
         file.write(os.path.basename(full_path))
-    digest_file.write(sha256(f"{tmp_dir}/name"))
+    name_digest = sha256(f"{tmp_dir}/name")    
+    digest_file.write(name_digest)
+    if type == "file":
+        print(f"filename: {full_path} -- filename digest: {name_digest}")
+    if type == "dir":
+        print(f"dirname: {full_path} -- dirname digest: {name_digest}")    
 
 
 def dir_sha256(digest_file, dir_name, tmp_dir):
@@ -85,8 +91,10 @@ def dir_sha256(digest_file, dir_name, tmp_dir):
     for entry in sorted(entries):
         pathed_entry = os.path.join(dir_name, entry)
         if os.path.isfile(pathed_entry):
-            append_sha256(digest_file, pathed_entry, tmp_dir)
-            digest_file.write(sha256(pathed_entry))
+            file_content_digest = sha256(pathed_entry)
+            print(f"filename: {pathed_entry} -- file content digest: {file_content_digest}")
+            append_sha256(digest_file, pathed_entry, tmp_dir, "file")
+            digest_file.write(file_content_digest)
         else:
-            append_sha256(digest_file, dir_name, tmp_dir)
+            append_sha256(digest_file, pathed_entry, tmp_dir, "dir")
             dir_sha256(digest_file, pathed_entry, tmp_dir)

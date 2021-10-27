@@ -92,7 +92,7 @@ def test_non_empty_dir_properties():
     string = f"{DIR_PROTOCOL}{path}"
     assert fingerprinter.artifact_name(string) == path
     assert fingerprinter.artifact_basename(string) == basename
-    assert fingerprinter.sha(string) == '4ca24dede15db858aae709933ef48f16031a89a356a6f5d29dd2140a1e3c8313'
+    assert fingerprinter.sha(string) == '1e51319dc450981e027b6ca7f4a778d1c377d1d7ba4e1e20ee60c16dd00234e2'
 
 
 def test_different_non_empty_dir_properties():
@@ -105,6 +105,18 @@ def test_different_non_empty_dir_properties():
         string = f"{DIR_PROTOCOL}{path}"
         assert fingerprinter.artifact_name(string) == path
         assert fingerprinter.artifact_basename(string) == basename
-        assert fingerprinter.sha(string) == 'c8c29f1766aba2cf654b4bbf8e372d334180d5762376a8247773e6d5f0ac93c6'
+        assert fingerprinter.sha(string) == '2b4c6f203a26d7cfa31a55015668ee56d1b3e4ab25301c47eba31310316daf17'
     finally:
         os.remove(f"/{path}/extra.file")
+        
+def test_nested_dir_properties():
+    # this test is replicating one from the reporter
+    fingerprinter = DirFingerprinter()
+    basename = "nested_dir_fingerprint"
+    path = f"app/tests/data/{basename}"
+    
+    string = f"{DIR_PROTOCOL}{path}"
+    assert fingerprinter.artifact_name(string) == path
+    assert fingerprinter.artifact_basename(string) == basename
+    assert fingerprinter.sha(string) == '5d3c17dae9e208bbb92ee04ff8342abf77cb0959764def4af3ccfe9a2109d4a7'
+    
