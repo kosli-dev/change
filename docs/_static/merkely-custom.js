@@ -21,7 +21,7 @@ $(document).ready(function () {
          newLink = '../concepts/devops_change_is_the_new_normal.html';
       }
       if ($link.text().trim() === 'Command Reference'){
-         newLink = '../reference/log_artifact.html';
+         newLink = '../reference/echo_fingerprint.html';
       }
       if ($link.text().trim() === 'Fingerprint Reference'){
          newLink = '../fingerprints/docker_fingerprint.html';
