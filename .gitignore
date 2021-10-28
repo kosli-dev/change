@@ -1,5 +1,7 @@
 tmp/
 .idea/*
+.vscode/*
+.DS_Store
 __pycache__/
 docs/.buildinfo
 docs.merkely.com/build
