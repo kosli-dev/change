@@ -7,7 +7,7 @@ from lib.api_schema import ApiSchema
 class LogDeployment(Command):
 
     def doc_summary(self):
-        return "Logs a deployment in Merkely."
+        return "Logs a deployment in Merkely. Run this command before deployment."
 
     def doc_volume_mounts(self):
         return ["/var/run/docker.sock:/var/run/docker.sock"]
