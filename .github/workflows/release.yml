@@ -44,14 +44,6 @@ jobs:
           make merkely_approve_deployment
 
 
-      - name: Deploy latest docker image
-        run: |
-          docker tag ${TAGGED_IMAGE} ${LATEST_IMAGE}
-          docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
-          docker push ${LATEST_IMAGE}
-          docker logout
-
-
       - name: Log the deployment in Merkely
         env:
           MERKELY_DESCRIPTION: "Deployment of ${LATEST_IMAGE} to docker hub"
@@ -61,6 +53,14 @@ jobs:
           MERKELY_API_TOKEN: ${{ secrets.CDB_API_TOKEN }}
         run: |
           make merkely_log_deployment
+
+
+      - name: Deploy latest docker image
+        run: |
+          docker tag ${TAGGED_IMAGE} ${LATEST_IMAGE}
+          docker login -u meekrosoft -p ${{ secrets.DOCKER_DEPLOY_TOKEN }}
+          docker push ${LATEST_IMAGE}
+          docker logout
 
 
       - name: Update git branch
