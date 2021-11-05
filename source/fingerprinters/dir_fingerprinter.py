@@ -66,9 +66,15 @@ class DirFingerprinter(Fingerprinter):
 
 def sha256(filepath):
     # openssl is an Alpine package installed in /Dockerfile
-    output = subprocess.check_output(["openssl", "dgst", "-sha256", filepath])
-    digest_in_bytes = output.split()[1]
-    return digest_in_bytes.decode('utf-8')
+    output,error  = subprocess.Popen(
+                    ["openssl", "dgst", "-sha256", "-r", filepath], universal_newlines=True,
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()    
+    if error != "":
+        raise Exception(error)
+    sha = output.split()[0]
+    if len(sha) != 64:
+        raise Exception(f"filename: {filepath} -- sha is not 64 characters long: {sha}")
+    return sha
 
 
 def append_sha256(digest_file, full_path, tmp_dir, type):

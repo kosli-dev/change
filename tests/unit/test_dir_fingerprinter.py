@@ -93,6 +93,15 @@ def test_non_empty_dir_properties():
     assert fingerprinter.artifact_name(string) == path
     assert fingerprinter.artifact_basename(string) == basename
     assert fingerprinter.sha(string) == '1e51319dc450981e027b6ca7f4a778d1c377d1d7ba4e1e20ee60c16dd00234e2'
+    
+def test_dir_with_spaces_in_its_name():
+    fingerprinter = DirFingerprinter()
+    basename = "dir_with_spaces_in_filename"
+    path = f"app/tests/data/{basename}"
+    string = f"{DIR_PROTOCOL}{path}"
+    assert fingerprinter.artifact_name(string) == path
+    assert fingerprinter.artifact_basename(string) == basename
+    assert fingerprinter.sha(string) == '97f71329a9c0ea0bc08196287dad2e20727da7fb665024ca9406aa45337cbce4'    
 
 
 def test_different_non_empty_dir_properties():
