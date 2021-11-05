@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-failsafe-plugin/xsd/failsafe-test-report.xsd" name="com.compliancedb.example.Example1Test" time="0.661" tests="2" errors="0" skipped="0" failures="0">
-  <properties>
-    <property name="java.specification.version" value="14"/>
-    <property name="sun.jnu.encoding" value="UTF-8"/>
-  </properties>
-  <testcase name="createConsent" classname="com.compliancedb.example.Example1Test" time="0.577"/>
-  <testcase name="checkConsentStatus" classname="com.compliancedb.example.Example1Test" time="0.084"/>
-</testsuite>
