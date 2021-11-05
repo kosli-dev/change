@@ -7,15 +7,7 @@ set -eu
 # Defaults to tests/unit/ (the dir name)
 # which runs all the tests
 
-# To run a single test file...
-# $ make test_unit TARGET=FILENAME
-# which will result in ${1}==tests/unit/FILENAME
-
-# To run a single test...
-# $ make test_unit TARGET=FILENAME::TESTNAME
-# which will result in ${1}==tests/unit/FILENAME::TESTNAME
-
-readonly TARGET="${1}"
+readonly TARGET="${@:-tests/unit/}"
 
 # pytest-cov command line options are documented here
 # https://pytest-cov.readthedocs.io/en/latest/config.html
@@ -33,7 +25,7 @@ pytest \
        -o junit_family=xunit1 \
        --pythonwarnings=ignore::pytest.PytestCollectionWarning \
        --verbose \
-         "${TARGET}"
+         ${TARGET}
 
 # coverage is documented here
 # https://coverage.readthedocs.io/en/v4.5.x/index.html

@@ -93,7 +93,7 @@ test_unit:
 		${TESTS_VOLUME_MOUNT} \
 	    --volume ${ROOT_DIR}/${COVERAGE_DIR}/htmlcov:/app/htmlcov \
 		--entrypoint ./tests/unit/coverage_entrypoint.sh \
-			${IMAGE} tests/unit/${TARGET}
+			${IMAGE} "${TARGET}"
 
 pytest_help:
 	@docker run \
