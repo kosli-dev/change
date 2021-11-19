@@ -6,6 +6,7 @@ Command Reference
    :maxdepth: 2
    :caption: Command Reference:
 
+   declare_pipeline
    echo_fingerprint
    log_artifact
    log_evidence

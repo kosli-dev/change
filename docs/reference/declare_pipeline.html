@@ -4,12 +4,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Declare Pipeline &#8212; Merkely  documentation</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -32,12 +31,12 @@
   <link rel="preload" href="../_static/fonts/roboto/roboto-v27-latin-regular.woff2" as='font' type='font/woff2' crossorigin>
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/merkely-custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/merkely-pygments.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -48,15 +47,14 @@
     <script src="../_static/merkely-custom.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Echo Fingerprint" href="echo_fingerprint.html" />
+    <link rel="prev" title="Command Reference" href="index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
+    <meta name="docsearch:language" content="en" />
     
       
       <link rel="icon" sizes="" href="../_static//images/favicon.png">
       
-    
-
-    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -118,12 +116,12 @@
             <!-- Only show if we have sidebars configured, else just a small margin  -->
             <div class="col-12 col-md-3 bd-sidebar"><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
     <div class="bd-toc-item active">
-      <p aria-level="2" class="caption" role="heading">
+      <p class="caption" role="heading">
  <span class="caption-text">
   Table of contents
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../tutorial/index.html">
    Quick Start
@@ -134,10 +132,67 @@
    Concepts
   </a>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="index.html">
    Command Reference
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Declare Pipeline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="echo_fingerprint.html">
+     Echo Fingerprint
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="log_artifact.html">
+     Log Artifact
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="log_evidence.html">
+     Log Evidence
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="log_test.html">
+     Log Test
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="control_pull_request.html">
+     Control Pull Request
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="approve_deployment.html">
+     Approve Deployment
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="request_approval.html">
+     Request Approval
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="control_deployment.html">
+     Control Deployment
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="log_deployment.html">
+     Log Deployment
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../fingerprints/index.html">
@@ -168,7 +223,7 @@
               
               <div>
                 
-  <section id="declare-pipeline">
+  <div class="section" id="declare-pipeline">
 <span id="declare-pipeline-label"></span><h1>Declare Pipeline<a class="headerlink" href="#declare-pipeline" title="Permalink to this headline">¶</a></h1>
 <p><span>Declares a pipeline in Merkely.</span></p>
 <ul class="nav nav-tabs" role="tablist">
@@ -238,7 +293,7 @@
 </table>
 </div>
 <div class="bitbucket tab-pane docutils container" id="bitbucket">
-<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/cbcd9be/bitbucket-pipelines.yml#lines-35">Open an example, similar to the fragment below, from a git repo.</a></p>
+<p class="literal-block-link"><a class="reference external" href="https://bitbucket.org/merkely/loan-calculator/src/4fdb1d2/bitbucket-pipelines.yml#lines-35">Open an example, similar to the fragment below, from a git repo.</a></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">step</span><span class="p">:</span> <span class="nl">&amp;declare_merkely_pipeline</span>
         <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Declare Merkely Pipeline</span>
         <span class="nt">services</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">docker</span> <span class="p p-Indicator">]</span>
@@ -343,7 +398,7 @@
 </tbody>
 </table>
 </div>
-</div></section>
+</div></div>
 
 
               </div>
@@ -355,8 +410,9 @@
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
-<footer class="footer mt-5 mt-md-0">
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  <footer class="footer mt-5 mt-md-0">
   <div class="container">
     
   </div>
